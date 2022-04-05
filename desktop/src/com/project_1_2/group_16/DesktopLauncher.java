@@ -2,12 +2,15 @@ package com.project_1_2.group_16;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.project_1_2.group_16.misc.OPERATING_SYSTEM;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		App.os = OPERATING_SYSTEM.WINDOWS; // modify this
+		// configure os
+		if (System.getProperty("os.name").startsWith("Windows")) {
+			App.os_is_windows = true;
+		}
 
+		// launch game
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setWindowedMode(Lwjgl3ApplicationConfiguration.getDisplayMode().width, 
 							   Lwjgl3ApplicationConfiguration.getDisplayMode().height);

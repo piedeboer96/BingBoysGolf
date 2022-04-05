@@ -8,7 +8,6 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.misc.OPERATING_SYSTEM;
 
 public class Game {
 
@@ -47,7 +46,7 @@ public class Game {
      * Read the input.txt file.
      */
     public static void getInput() {
-        File f = new File(App.os == OPERATING_SYSTEM.WINDOWS ? "./input.txt" : "../input.txt");
+        File f = new File(App.os_is_windows ? "./input.txt" : "../input.txt");
         FileReader fr = null;
         BufferedReader br = null;
         String line;

@@ -29,7 +29,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.misc.ANSI;
-import com.project_1_2.group_16.misc.OPERATING_SYSTEM;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tile;
@@ -80,7 +79,7 @@ public class App extends ApplicationAdapter {
 	public static final float FIELD_DETAIL = FIELD_SIZE * 5f;
 	public static final float RENDER_DISTANCE = FIELD_SIZE * 2f;
 	public static final float TILE_SIZE = FIELD_SIZE / FIELD_DETAIL;
-	public static OPERATING_SYSTEM os;
+	public static boolean os_is_windows;
 
 	// physics
 	public static float pos_x;
@@ -208,7 +207,7 @@ public class App extends ApplicationAdapter {
 	@Override
 	public void render() {
 		// clear screen
-		if (os == OPERATING_SYSTEM.WINDOWS) Gdx.gl.glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		if (os_is_windows) Gdx.gl.glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		ScreenUtils.clear(BACKGROUND);
 		
