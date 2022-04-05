@@ -15,12 +15,12 @@ public class Game {
      * (for self, the best current value for euler 0.05 or 0.005 )
      */
     public static void runEuler() {
-        euler.euler_complete(0.05f, sv);
+        euler.solve(0.05f, sv);
     }
     /**
      * Method to run our RK4 based Engine.
      */
     public static void runRK4() {
-        rk4.rk4Complete(0.05f, sv);
+        rk4.solve(0.05f, sv);
     }
 }

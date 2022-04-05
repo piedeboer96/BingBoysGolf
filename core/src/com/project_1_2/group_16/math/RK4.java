@@ -15,7 +15,7 @@ public class RK4 implements NumericalSolver{
      * @param terrain terrain
      */
     @Override
-    public void Solve(float h, StateVector sv, Terrain terrain) {
+    public void solve(float h, StateVector sv) {
 
         App.pos_x = sv.pos_x;
         App.pos_y = sv.pos_y;

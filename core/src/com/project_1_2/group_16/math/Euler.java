@@ -17,7 +17,7 @@ public class Euler implements NumericalSolver {
      * @param terrain terrain 
      */
     @Override
-    public void Solve(float h, StateVector sv, Terrain terrain) {
+    public void solve(float h, StateVector sv) {
         float pos_x1, pos_y1, vel_x1, vel_y1;
         App.pos_x = sv.pos_x;
         App.pos_y = sv.pos_y;
@@ -55,7 +55,7 @@ public class Euler implements NumericalSolver {
         //check if the ball is rolling
         if (Physics.magnitude(sv.velocity_x, sv.velocity_y) < 0.05) {
             if ((Physics.magnitude(partialDerivatives[0], partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
-                if (Collision.ballIsInTargetRadius(sv)) {
+                if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
                     System.out.println("LOW VELOCITY, HIGH STATIC FRICTION ---> TARGET HIT");
                     App.staticStop = true;
                     App.targetHit = true;
