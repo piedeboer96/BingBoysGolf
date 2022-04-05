@@ -42,13 +42,11 @@ public class Euler implements NumericalSolver {
 
         if (Collision.ballIsInWater(sv)) {
             System.out.println("water");
-            App.ballInWater = true;
             App.hitsCounter++;
         }
 
         if (Collision.ballHitTree(sv)) {
             System.out.println("tree");
-            App.ballInWater = true;
             App.hitsCounter++;
         }
 
@@ -58,7 +56,6 @@ public class Euler implements NumericalSolver {
                 if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
                     System.out.println("LOW VELOCITY, HIGH STATIC FRICTION ---> TARGET HIT");
                     App.staticStop = true;
-                    App.targetHit = true;
                 }
             }
         }

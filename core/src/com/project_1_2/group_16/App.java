@@ -85,10 +85,8 @@ public class App extends ApplicationAdapter {
 	// physics
 	public static float pos_x;
 	public static float pos_y;
-	public static boolean ballRolls;
-	public static boolean ballInWater;
 	public static boolean staticStop;
-	public static boolean targetHit;
+	public static boolean allowHit;
 
 	// sounds
 	private Sound hitSound;
@@ -200,6 +198,8 @@ public class App extends ApplicationAdapter {
 		// sounds
 		this.hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
         this.dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
+
+		App.allowHit = true;
 	}
 
 	@Override
@@ -244,27 +244,14 @@ public class App extends ApplicationAdapter {
 		this.shapeBatch.end();
 
 		// update golfball
-		if (ballRolls) {
+		if (App.allowHit == false) {
 			//Game.runEuler();
 			Game.runRK4();
 		}
 		if(staticStop) { // ball has come to a rest
-			if(targetHit) { // ball has hit the hole
-				ballRolls = false;
-
-				pos_x = Game.sv.pos_x;
-				pos_y = Game.sv.pos_y;
-				Game.sv.velocity_x = 0;
-				Game.sv.velocity_y = 0;
-			}
-			ballRolls=false;
-
-			pos_x = Game.sv.pos_x;
-			pos_y = Game.sv.pos_y;
-			Game.sv.velocity_x = 0;
-			Game.sv.velocity_y = 0;
+			App.allowHit = true;
 		}
-		this.golfball.move(pos_x - this.v.x, pos_y - this.v.z);
+		this.golfball.moveTo(pos_x, pos_y);
 
 		// controls
 		if (this.useFreeCam) this.freeMovement.move(Gdx.input, Gdx.graphics.getDeltaTime());
@@ -292,12 +279,13 @@ public class App extends ApplicationAdapter {
 				this.useFreeCam = true;
 			}
 		}
-		if (input.isKeyJustPressed(Keys.M)) { // move the ball
-			App.ballRolls = true;
-			this.hitSound.play();
-			if (hitsCounter == 0) {
-                hitsCounter++;
-            }
+		if (input.isKeyJustPressed(Keys.M)) { // hit the ball
+			if (App.allowHit) {
+				float vX = 1f, vZ = 1f; // velocity
+				this.hitSound.play();
+				hitsCounter++;
+				App.allowHit = false;
+			}
 		}
 	}
 

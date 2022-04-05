@@ -39,13 +39,11 @@ public class RK4 implements NumericalSolver{
 
         if(Collision.ballIsInWater(sv)) {
             System.out.println("water");
-            App.ballInWater = true;
             App.hitsCounter++;
         }
 
         if(Collision.ballHitTree(sv)) {
             System.out.println("tree");
-            App.ballInWater = true;
             App.hitsCounter++;
         }
 
@@ -59,7 +57,6 @@ public class RK4 implements NumericalSolver{
                     System.out.println("LOW VELOCITY, HIGH STATIC FRICTION ---> TARGET HIT");
                     
                     App.staticStop = true;
-                    App.targetHit = true;
                 }
 
                 System.out.println("LOW VELOCITY, HIGH STATIC FRICTION");
