@@ -5,7 +5,7 @@ import com.project_1_2.group_16.gamelogic.Collision;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.physics.Physics;
 
-public class RK4 {
+public class RK4 implements NumericalSolver{
 
     /**
      * class needed to run the RK4 derivation algorithm which is a more improved version of Euler's implementation by 3 orders
@@ -14,7 +14,8 @@ public class RK4 {
      * @param sv StateVector
      * @param terrain terrain
      */
-    public void rk4Complete(float h, StateVector sv) {
+    @Override
+    public void Solve(float h, StateVector sv, Terrain terrain) {
 
         App.pos_x = sv.pos_x;
         App.pos_y = sv.pos_y;
