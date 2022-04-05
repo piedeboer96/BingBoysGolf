@@ -1,2 +1,25 @@
-# BingBoysGolf
-You will find the greatest golf game of 2022 here!
+### GOLF SIMULATION
+In this repository you will find the golf game of group 16 for Project 1-2.
+
+The physics engine is based on Euler's method and RK4.
+To pick the specific numerical solver the game implements, please comment out the appropriate lines 251/252 in the App.java file
+The graphics library used for this game in LibGDX.
+
+### INSTRUCTIONS
+
+1. Go to desktop/src/com/project_1_2/group16/DesktopLauncher.java and change the "os" variable
+to your operating system (either "WINDOWS" or "MAC").
+
+2. To modify the input, access the input.txt file located in the same folder as this README file.
+note: for the interpreter of the inputfile to work, beware to use the exact same syntax. (e.g whitespaces).
+
+3. Controls of the app:
+- Drag the camera around to view the ball from various angles.
+- To view the terrain freely, press 'C' to enable the free camera.
+- In the free camera, you can move around with WASD or the arrow keys, 
+you can go up by pressing 'SPACE' and down by pressing 'SHIFT'.
+- To make the ball move according to the input velocity, press 'M'.
+note: after pressing 'M' once, pressing it again will not work unless you restart the application.
+- To exit the app, press 'ESC'.
+
+4. To run the app, go back to the DesktopLauncher.java file and run the main class.
