@@ -4,9 +4,11 @@ import com.project_1_2.group_16.math.*;
 
 public class Game {
 
+    // solvers
     public static Euler euler = new Euler();
     public static RK4 rk4 = new RK4();
 
+    // state vectors
     public static StateVector sv = new StateVector(0, 0, 0, 0);
 
     /**

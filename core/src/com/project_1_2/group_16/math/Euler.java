@@ -1,6 +1,6 @@
 package com.project_1_2.group_16.math;
 
-import com.project_1_2.group_16.*;
+import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Collision;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.physics.Acceleration;
@@ -17,6 +17,7 @@ public class Euler implements NumericalSolver {
      */
     @Override
     public void solve(float h, StateVector sv) {
+
         float pos_x1, pos_y1, vel_x1, vel_y1;
         App.pos_x = sv.pos_x;
         App.pos_y = sv.pos_y;
@@ -42,6 +43,13 @@ public class Euler implements NumericalSolver {
 
         if (Collision.ballIsInWater(sv)) {
             System.out.println("water");
+
+            // reset position
+            App.pos_x = App.prevPos.x;
+            App.pos_y = App.prevPos.y;
+            App.staticStop = true;
+
+            // stroke penalty
             App.hitsCounter++;
         }
 
@@ -57,6 +65,8 @@ public class Euler implements NumericalSolver {
                     System.out.println("LOW VELOCITY, HIGH STATIC FRICTION ---> TARGET HIT");
                     App.staticStop = true;
                 }
+                System.out.println("LOW VELOCITY, HIGH STATIC FRICTION");
+                App.staticStop = true;
             }
         }
     }

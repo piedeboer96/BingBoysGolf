@@ -33,10 +33,10 @@ public class Derivation {
      */
     public static Derivation getK1Derivation(StateVector sv, float h) {
         Acceleration acc = new Acceleration();
-        float [] coords = new float[] {sv.getPos_x(), sv.getPos_y()};
+        float [] coords = new float[] {sv.pos_x, sv.pos_y};
         float [] pDerivatives = Terrain.getSlope(coords, h);
         float [] acceleration = new float[] {acc.getAccelerationX(pDerivatives[0], pDerivatives[1], sv), acc.getAccelerationY(pDerivatives[0], pDerivatives[1], sv)};
-        return new Derivation(sv.getVelocity_x() * h, sv.getVelocity_y() * h, acceleration[0] * h, acceleration[1] * h);
+        return new Derivation(sv.velocity_x * h, sv.velocity_y * h, acceleration[0] * h, acceleration[1] * h);
     }
 
     /**
@@ -49,10 +49,10 @@ public class Derivation {
      */
     public static Derivation getK2K3Derivation(StateVector sv, float h, Derivation d) {
         Acceleration acc = new Acceleration();
-        StateVector tempSV = new StateVector(sv.getPos_x() + d.dx_dt/2 , sv.getPos_y() + d.dy_dt/2, sv.getVelocity_x() + d.dvx_dt/2, sv.getVelocity_y() + d.dvy_dt/2);
-        float [] pDerivatives = Terrain.getSlope(new float[]{tempSV.getPos_x(), tempSV.getPos_y()}, h);
+        StateVector tempSV = new StateVector(sv.pos_x + d.dx_dt/2 , sv.pos_y + d.dy_dt/2, sv.velocity_x + d.dvx_dt/2, sv.velocity_y + d.dvy_dt/2);
+        float [] pDerivatives = Terrain.getSlope(new float[]{tempSV.pos_x, tempSV.pos_y}, h);
         float [] acceleration = new float[] {acc.getAccelerationX(pDerivatives[0], pDerivatives[1], tempSV), acc.getAccelerationY(pDerivatives[0], pDerivatives[1], tempSV)};
-        return new Derivation(tempSV.getVelocity_x() * h, tempSV.getVelocity_y() * h, acceleration[0] * h, acceleration[1] * h);
+        return new Derivation(tempSV.velocity_x * h, tempSV.velocity_y * h, acceleration[0] * h, acceleration[1] * h);
     }
 
     /**
@@ -65,10 +65,10 @@ public class Derivation {
      */
     public static Derivation getK4Derivation(StateVector sv, float h, Derivation d) {
         Acceleration acc = new Acceleration();
-        StateVector tempSV = new StateVector(sv.getPos_x() + d.dx_dt , sv.getPos_y() + d.dy_dt, sv.getVelocity_x() + d.dvx_dt, sv.getVelocity_y() + d.dvy_dt);
-        float [] pDerivatives = Terrain.getSlope(new float[]{tempSV.getPos_x(), tempSV.getPos_y()}, h);
+        StateVector tempSV = new StateVector(sv.pos_x + d.dx_dt , sv.pos_y + d.dy_dt, sv.velocity_x + d.dvx_dt, sv.velocity_y + d.dvy_dt);
+        float [] pDerivatives = Terrain.getSlope(new float[]{tempSV.pos_x, tempSV.pos_y}, h);
         float [] acceleration = new float[] {acc.getAccelerationX(pDerivatives[0], pDerivatives[1], tempSV), acc.getAccelerationY(pDerivatives[0], pDerivatives[1], tempSV)};
-        return new Derivation(tempSV.getVelocity_x() * h, tempSV.getVelocity_y() * h, acceleration[0] * h, acceleration[1] * h);
+        return new Derivation(tempSV.velocity_x * h, tempSV.velocity_y * h, acceleration[0] * h, acceleration[1] * h);
     }
 
     /**

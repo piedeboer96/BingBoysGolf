@@ -34,11 +34,21 @@ public class RK4 implements NumericalSolver{
 
         sv.pos_x = pos_x1;
         sv.pos_y = pos_y1;
+
         sv.velocity_x = vel_x1;
         sv.velocity_y = vel_y1;
 
+        System.out.println("sv_END: " + sv);
+
         if(Collision.ballIsInWater(sv)) {
             System.out.println("water");
+            
+            // reset position
+            App.pos_x = App.prevPos.x;
+            App.pos_y = App.prevPos.y;
+            App.staticStop = true;
+
+            // stroke penalty
             App.hitsCounter++;
         }
 
@@ -47,18 +57,14 @@ public class RK4 implements NumericalSolver{
             App.hitsCounter++;
         }
 
+        // check if the ball is still rolling
         if (Physics.magnitude(sv.velocity_x,sv.velocity_y) < 0.05) {
-
             float[] partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
-
             if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
-
                 if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
                     System.out.println("LOW VELOCITY, HIGH STATIC FRICTION ---> TARGET HIT");
-                    
                     App.staticStop = true;
                 }
-
                 System.out.println("LOW VELOCITY, HIGH STATIC FRICTION");
                 App.staticStop = true;
             }

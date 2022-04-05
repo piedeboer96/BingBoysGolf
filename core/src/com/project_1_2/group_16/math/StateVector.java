@@ -21,38 +21,6 @@ public class StateVector {
         this.velocity_y = velocity_y_init;
     }
 
-    /**
-     * Getter position x.
-     * @return pos_x
-     */
-    public float getPos_x() {
-        return pos_x;
-    }
-
-    /**
-     * Get position y
-     * @return pos_y
-     */
-    public float getPos_y() {
-        return pos_y;
-    }
-
-    /**
-     * Get velocity x
-     * @return vel_x
-     */
-    public float getVelocity_x() {
-        return velocity_x;
-    }
-
-    /**
-     * Get velocity y
-     * @return vel_y
-     */
-    public float getVelocity_y() {
-        return velocity_y;
-    }
-
     @Override
     public String toString() {
         return "[ x " + pos_x + " y " + pos_y + " vel_x " + velocity_x + " vel_y " + velocity_y + " ]";

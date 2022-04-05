@@ -66,7 +66,6 @@ public class App extends ApplicationAdapter {
 	// crosshair and text font
 	private Vector2 ch1, ch2, ch3, ch4;
 	private BitmapFont font;
-	public static int hitsCounter;
 
 	// environment (lighting)
 	private Environment environment;
@@ -88,6 +87,8 @@ public class App extends ApplicationAdapter {
 	public static float pos_y;
 	public static boolean staticStop;
 	public static boolean allowHit;
+	public static int hitsCounter;
+	public static Vector2 prevPos;
 
 	// sounds
 	private Sound hitSound;
@@ -98,7 +99,7 @@ public class App extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
-		// input variables
+		// input variables TODO
 		float tX = 5f; // hole pos
 		float tZ = 5f;
 
@@ -200,6 +201,7 @@ public class App extends ApplicationAdapter {
 		this.hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
         this.dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
 
+		// allow gameplay
 		App.allowHit = true;
 	}
 
@@ -282,12 +284,19 @@ public class App extends ApplicationAdapter {
 		}
 		if (input.isKeyJustPressed(Keys.M)) { // hit the ball
 			if (App.allowHit) {
-				float vX = 1f, vZ = 0f; // velocity
+				// get the input velocity
+				float vX = -.5f, vZ = -.5f;
 				this.v.set(this.golfball.getPosition());
 				Game.sv = new StateVector(this.v.x, this.v.z, vX, vZ);
+
+				// sound effect and shot counter
 				this.hitSound.play();
 				hitsCounter++;
+
+				// hit the ball
+				App.prevPos = new Vector2(this.v.x, this.v.z);
 				App.allowHit = false;
+				App.staticStop = false;
 			}
 		}
 	}
@@ -304,7 +313,7 @@ public class App extends ApplicationAdapter {
 		if (height < 0 - TILE_SIZE / 2) { // water texture
 			boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.1098f, 0.6392f, 0.9254f, 1f)));
 		}
-		//else if (x > Game.terrain.sandPosX[0] && x < Game.terrain.sandPosX[1] &&
+		//else if (x > Game.terrain.sandPosX[0] && x < Game.terrain.sandPosX[1] && //TODO
 		//		 z > Game.terrain.sandPosY[0] && z < Game.terrain.sandPosY[1]) { // sandpit texture
 		//	boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.9411f, 0.9411f, 0.4313f, 1f)));
 		//		 }
