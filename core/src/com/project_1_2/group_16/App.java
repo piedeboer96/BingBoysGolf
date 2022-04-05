@@ -44,6 +44,8 @@ public class App extends ApplicationAdapter {
 	private FreeCamera freeMovement;
 	private BallCamera ballMovement;
 	private boolean useFreeCam;
+	private float xDir, zDir;
+	private float power = 2f;
 
 	// batches
 	private ModelBatch modelBatch;
@@ -81,6 +83,8 @@ public class App extends ApplicationAdapter {
 	public static final float RENDER_DISTANCE = FIELD_SIZE * 2f;
 	public static final float TILE_SIZE = FIELD_SIZE / FIELD_DETAIL;
 	public static boolean os_is_windows;
+	private final Sound hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
+    private final Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
 
 	// physics
 	public static float pos_x;
@@ -90,19 +94,14 @@ public class App extends ApplicationAdapter {
 	public static int hitsCounter;
 	public static Vector2 prevPos;
 
-	// sounds
-	private Sound hitSound;
-    private Sound dropSound;
-
 	// util
 	private final Vector3 v = new Vector3();
 	
 	@Override
 	public void create() {
-		// input variables TODO
+		// input variables
 		float tX = 5f; // hole pos
 		float tZ = 5f;
-
 		float r = 0.1f; // hole radius
 
 		// set fullscreen
@@ -197,10 +196,6 @@ public class App extends ApplicationAdapter {
 		this.freeCam.update();
 		this.freeMovement = new FreeCamera(this.freeCam);
 
-		// sounds
-		this.hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
-        this.dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
-
 		// allow gameplay
 		App.allowHit = true;
 	}
@@ -224,6 +219,9 @@ public class App extends ApplicationAdapter {
 		}
 		this.modelBatch.end();
 
+		this.xDir = this.ballCam.direction.x;
+		this.zDir = this.ballCam.direction.z;
+
 		// draw labels
 		this.v.set(this.golfball.getPosition());
 		this.spriteBatch.begin();
@@ -236,6 +234,8 @@ public class App extends ApplicationAdapter {
 		this.font.draw(this.spriteBatch, "Vx = "+Game.sv.velocity_x, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 90f);
 		this.font.draw(this.spriteBatch, "Vy = "+Game.sv.velocity_y, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 105f);
 		this.font.draw(this.spriteBatch, "Shots: "+hitsCounter, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 130f);
+		this.font.draw(this.spriteBatch, "xDir: "+this.xDir, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 155f);
+		this.font.draw(this.spriteBatch, "yDir: "+this.zDir, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 170f);
 		this.font.draw(this.spriteBatch, "FPS: "+Gdx.graphics.getFramesPerSecond(), 5f, SCREEN_HEIGHT - 5f);
 		this.spriteBatch.end();
 
@@ -285,9 +285,8 @@ public class App extends ApplicationAdapter {
 		if (input.isKeyJustPressed(Keys.M)) { // hit the ball
 			if (App.allowHit) {
 				// get the input velocity
-				float vX = -.5f, vZ = -.5f;
 				this.v.set(this.golfball.getPosition());
-				Game.sv = new StateVector(this.v.x, this.v.z, vX, vZ);
+				Game.sv = new StateVector(this.v.x, this.v.z, this.xDir * this.power, this.zDir * this.power);
 
 				// sound effect and shot counter
 				this.hitSound.play();
