@@ -1,4 +1,4 @@
-package com.project_1_2.group_16.physics;
+package com.project_1_2.group_16.math;
 
 public class StateVector {
 
@@ -19,11 +19,6 @@ public class StateVector {
         this.pos_y = pos_y_init;
         this.velocity_x = velocity_x_init;
         this.velocity_y = velocity_y_init;
-    }
-
-    @Override
-    public String toString() {
-        return "[ x " + pos_x + " y " + pos_y + " vel_x " + velocity_x + " vel_y " + velocity_y + " ]";
     }
 
     /**
@@ -56,5 +51,10 @@ public class StateVector {
      */
     public float getVelocity_y() {
         return velocity_y;
+    }
+
+    @Override
+    public String toString() {
+        return "[ x " + pos_x + " y " + pos_y + " vel_x " + velocity_x + " vel_y " + velocity_y + " ]";
     }
 }

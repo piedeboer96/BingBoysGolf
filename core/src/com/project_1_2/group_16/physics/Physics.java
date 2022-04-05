@@ -3,11 +3,6 @@ package com.project_1_2.group_16.physics;
 public class Physics {
 
     /**
-     * Mass of the ball (in kg).
-     */
-    public static final float MASS_BALL = 0.0459f;
-    
-    /**
      * Gravitational constant (in m per sec^2).
      */
     public static final float GRAV_CONSTANT = 9.81f;

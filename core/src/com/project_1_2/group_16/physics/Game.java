@@ -9,8 +9,8 @@ import javax.swing.JOptionPane;
 
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.numerical.Euler;
-import com.project_1_2.group_16.numerical.RK4;
+import com.project_1_2.group_16.math.*;
+
 
 public class Game {
 
@@ -116,7 +116,7 @@ public class Game {
                         break;
                     case "vy":
                         initialVelocity[1] = Float.parseFloat(split[2]);
-                        break;    
+                        break;
 
                 }
             }
@@ -130,7 +130,7 @@ public class Game {
             JOptionPane.showMessageDialog(null, "maximum velocity reached", "error", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
-    
+
         terrain = new Terrain(initialPos, targetPos, radius, frictionGrass, heightF, sandPosX, sandPosY, frictionSand, hM);
         sv = new StateVector(terrain.initialPos[0], terrain.initialPos[1], initialVelocity[0], initialVelocity[1]);
     }

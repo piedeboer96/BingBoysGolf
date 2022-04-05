@@ -1,6 +1,7 @@
-package com.project_1_2.group_16.physics;
+package com.project_1_2.group_16.math;
 
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.physics.Acceleration;
 
 public class Derivation {
 

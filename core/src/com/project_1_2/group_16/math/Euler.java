@@ -1,10 +1,10 @@
-package com.project_1_2.group_16.numerical;
+package com.project_1_2.group_16.math;
 
-import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.*;
+import com.project_1_2.group_16.gamelogic.Collision;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.physics.Acceleration;
 import com.project_1_2.group_16.physics.Physics;
-import com.project_1_2.group_16.physics.StateVector;
 
 public class Euler {
 
@@ -43,13 +43,13 @@ public class Euler {
 
         System.out.println("sv_END: " + sv);
 
-        if (terrain.ballIsInWater(sv)) {
+        if (Collision.ballIsInWater(sv)) {
             System.out.println("water");
             App.ballInWater = true;
             App.hitsCounter++;
         }
 
-        if (terrain.ballHitTree(sv)) {
+        if (Collision.ballHitTree(sv)) {
             System.out.println("tree");
             App.ballInWater = true;
             App.hitsCounter++;
@@ -60,7 +60,7 @@ public class Euler {
 
             if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < terrain.getStaticFriction(sv))) {
 
-                if (terrain.ballIsInTargetRadius(sv)) {
+                if (Collision.ballIsInTargetRadius(sv)) {
                     System.out.println("LOW VELOCITY, HIGH STATIC FRICTION ---> TARGET HIT");
                     App.staticStop = true;
                     App.targetHit = true;

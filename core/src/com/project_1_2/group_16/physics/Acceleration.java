@@ -1,7 +1,7 @@
 package com.project_1_2.group_16.physics;
 
 import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.numerical.*;
+import com.project_1_2.group_16.math.StateVector;
 
 public class Acceleration {
 
