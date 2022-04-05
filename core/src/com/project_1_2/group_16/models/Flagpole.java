@@ -17,12 +17,18 @@ public class Flagpole {
      */
     public ModelInstance instance;
 
+    /**
+     * Radius of the hole
+     */
+    public float r;
+
     // util
     private final Vector3 pos = new Vector3();
     
-    public Flagpole(Model model, Vector3 pos) {
+    public Flagpole(Model model, Vector3 pos, float r) {
         this.model = model;
         this.instance = new ModelInstance(this.model);
+        this.r = r;
         this.pos.set(pos);
 
         this.instance.transform.setTranslation(this.pos);

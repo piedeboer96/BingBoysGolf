@@ -1,6 +1,8 @@
 package com.project_1_2.group_16.gamelogic;
 
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.models.Flagpole;
+
 import static com.project_1_2.group_16.gamelogic.Terrain.*;
 
 public class Collision {
@@ -11,11 +13,11 @@ public class Collision {
      * @param sv stateVector to pull position from
      * @return boolean, whether it is in the radius...
      */
-    public static boolean ballIsInTargetRadius(StateVector sv) {
+    public static boolean ballIsInTargetRadius(StateVector sv, Flagpole t) {
 
-        float R = 0.1f;
-        float dx = Math.abs(sv.pos_x - 1); // 1 = target radius
-        float dy = Math.abs(sv.pos_y - 1);
+        float R = t.r;
+        float dx = Math.abs(sv.pos_x - t.getPosition().x);
+        float dy = Math.abs(sv.pos_y - t.getPosition().z);
 
         if (dx + dy <= R) {
             return true;

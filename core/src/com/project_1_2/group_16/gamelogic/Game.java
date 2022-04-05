@@ -1,4 +1,4 @@
-package com.project_1_2.group_16.physics;
+package com.project_1_2.group_16.gamelogic;
 
 import com.project_1_2.group_16.math.*;
 
@@ -8,26 +8,19 @@ public class Game {
     public static Euler euler = new Euler();
     public static RK4 rk4 = new RK4();
 
-    public static StateVector sv = new StateVector(1, 1, 0, 0);
+    public static StateVector sv = new StateVector(5, 5, 0, 0);
 
     /**
      * A Method to run our Euler based Engine.
      * (for self, the best current value for euler 0.05 or 0.005 )
      */
     public static void runEuler() {
-        euler.euler_complete(0.05f, sv, null);
+        euler.euler_complete(0.05f, sv);
     }
     /**
      * Method to run our RK4 based Engine.
      */
     public static void runRK4() {
-        rk4.rk4Complete(0.05f, sv, null);
-    }
-
-    /**
-     * Read the input.txt file.
-     */
-    public static void getInput() {
-        sv = new StateVector(1, 1, 0, 0);
+        rk4.rk4Complete(0.05f, sv);
     }
 }

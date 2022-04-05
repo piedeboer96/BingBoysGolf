@@ -5,6 +5,9 @@ import com.project_1_2.group_16.math.StateVector;
 
 public class Terrain {
 
+    public static final float kineticGrass = 0.05f;
+    public static final float staticGrass = 0.25f;
+
     /**
      * Here the height method is defined that gives the height based on x,y coordinates.
      * @param x x coordinate
@@ -40,7 +43,8 @@ public class Terrain {
      * @return kinetic friction coefficient
      */
     public static float getKineticFriction(StateVector sv) {
-        return 0.05f;
+        // TODO add sandpits
+        return kineticGrass;
     }
     
     /**
@@ -49,6 +53,7 @@ public class Terrain {
      * @return static friction coefficient
      */
     public static float getStaticFriction(StateVector sv) {
-        return 0.25f;
+        // TODO add sandpits
+        return staticGrass;
     }
 }

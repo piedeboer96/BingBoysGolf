@@ -18,7 +18,7 @@ public class Euler {
      * @param sv StateVector
      * @param terrain terrain
      */
-    public void euler_complete(float h, StateVector sv, Terrain terrain) {
+    public void euler_complete(float h, StateVector sv) {
         float pos_x1, pos_y1, vel_x1, vel_y1;
 
         App.pos_x = sv.pos_x;
@@ -26,8 +26,8 @@ public class Euler {
 
         float[] partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
 
-        float acceleration_x = acceleration.getAccelerationX(partialDerivatives[0], partialDerivatives[1], sv, terrain);
-        float acceleration_y = acceleration.getAccelerationY(partialDerivatives[0], partialDerivatives[1], sv, terrain);
+        float acceleration_x = acceleration.getAccelerationX(partialDerivatives[0], partialDerivatives[1], sv);
+        float acceleration_y = acceleration.getAccelerationY(partialDerivatives[0], partialDerivatives[1], sv);
 
         vel_x1 = sv.velocity_x + (h * acceleration_x);
         vel_y1 = sv.velocity_y + (h * acceleration_y);
@@ -60,7 +60,7 @@ public class Euler {
 
             if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
 
-                if (Collision.ballIsInTargetRadius(sv)) {
+                if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
                     System.out.println("LOW VELOCITY, HIGH STATIC FRICTION ---> TARGET HIT");
                     App.staticStop = true;
                     App.targetHit = true;

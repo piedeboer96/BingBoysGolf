@@ -14,7 +14,7 @@ public class RK4 {
      * @param sv StateVector
      * @param terrain terrain
      */
-    public void rk4Complete(float h, StateVector sv, Terrain terrain) {
+    public void rk4Complete(float h, StateVector sv) {
 
         App.pos_x = sv.pos_x;
         App.pos_y = sv.pos_y;
@@ -22,10 +22,10 @@ public class RK4 {
         float vel_x1, vel_y1, pos_y1, pos_x1;
 
         Derivation k1, k2, k3, k4;
-        k1 = Derivation.getK1Derivation(sv, h, terrain);
-        k2 = Derivation.getK2K3Derivation(sv, h, terrain, k1);
-        k3 = Derivation.getK2K3Derivation(sv, h, terrain, k2);
-        k4 = Derivation.getK4Derivation(sv, h, terrain, k3);
+        k1 = Derivation.getK1Derivation(sv, h);
+        k2 = Derivation.getK2K3Derivation(sv, h, k1);
+        k3 = Derivation.getK2K3Derivation(sv, h, k2);
+        k4 = Derivation.getK4Derivation(sv, h, k3);
 
         pos_x1 = sv.pos_x + ((k1.getDx_dt() + (2 * k2.getDx_dt()) + (2 * k3.getDx_dt()) + k4.getDx_dt())/6f);
         pos_y1 = sv.pos_y + ((k1.getDy_dt() + (2 * k2.getDy_dt()) + (2 * k3.getDy_dt()) + k4.getDy_dt())/6f);
@@ -55,7 +55,7 @@ public class RK4 {
 
             if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
 
-                if (Collision.ballIsInTargetRadius(sv)) {
+                if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
                     System.out.println("LOW VELOCITY, HIGH STATIC FRICTION ---> TARGET HIT");
                     
                     App.staticStop = true;

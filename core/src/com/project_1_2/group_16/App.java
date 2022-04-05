@@ -28,12 +28,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
+import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tile;
-import com.project_1_2.group_16.physics.Game;
 
 public class App extends ApplicationAdapter {
 
@@ -60,7 +60,7 @@ public class App extends ApplicationAdapter {
 	private Golfball golfball;
 
 	// flagpole
-	private Flagpole flagpole;
+	public static Flagpole flagpole;
 
 	// crosshair and text font
 	private Vector2 ch1, ch2, ch3, ch4;
@@ -99,14 +99,11 @@ public class App extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
-		// read input file
-		Game.getInput();
-		Game.runEuler();
-		float gbX = 0f;
-		float gbZ = 0f;
-		float tX = 1f;
-		float tZ = 1f;
-		float r = 0.1f;
+		// input variables
+		float tX = 5f; // hole pos
+		float tZ = 5f;
+
+		float r = 0.1f; // hole radius
 
 		// set fullscreen
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
@@ -147,7 +144,7 @@ public class App extends ApplicationAdapter {
 
 		// create golf ball
 		this.golfball = new Golfball(this.modelBuilder, null);
-		this.golfball.setPosition(gbX, Terrain.getHeight(gbX, gbZ), gbZ);
+		this.golfball.setPosition(0, Terrain.getHeight(0, 0), 0);
 		this.instances.add(this.golfball.instance);
 		Vector3 v = this.golfball.getPosition();
 
@@ -155,9 +152,9 @@ public class App extends ApplicationAdapter {
 		assets.load("flag-model.obj", Model.class);
 		assets.finishLoading();
 		Model flagModel = assets.get("flag-model.obj", Model.class);
-		this.flagpole = new Flagpole(flagModel, new Vector3(tX, Terrain.getHeight(tX, tZ), tZ));
-		this.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
-		this.instances.add(this.flagpole.instance);
+		App.flagpole = new Flagpole(flagModel, new Vector3(tX, Terrain.getHeight(tX, tZ), tZ), r);
+		App.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
+		this.instances.add(App.flagpole.instance);
 
 		// create hole
 		Material holeMaterial = new Material(ColorAttribute.createDiffuse(Color.RED));
@@ -166,7 +163,7 @@ public class App extends ApplicationAdapter {
 		hole.transform.setTranslation(tX, Terrain.getHeight(tX, tZ) - 0.04f, tZ);
 		this.instances.add(hole);
 
-		// create trees
+		// create trees TODO
 		//assets.load("tree_model.g3dj", Model.class);
 		//assets.finishLoading();
 		//Model tree = assets.get("tree_model.g3dj", Model.class);
@@ -194,7 +191,7 @@ public class App extends ApplicationAdapter {
 
 		// create free camera
 		this.freeCam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		this.freeCam.position.set(gbX, Terrain.getHeight(gbX, gbZ) + 0.25f, gbZ - 0.5f);
+		this.freeCam.position.set(0, Terrain.getHeight(0, 0) + 0.25f, -0.5f);
 		this.freeCam.near = 0.1f;
 		this.freeCam.far = RENDER_DISTANCE;
 		this.freeCam.update();

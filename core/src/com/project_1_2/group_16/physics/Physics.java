@@ -16,9 +16,6 @@ public class Physics {
      * @return length
      */
     public static float magnitude(float x1, float x2) {
-        float x1_square = x1 * x1;
-        float x2_square = x2 * x2;
-        float sum = x1_square + x2_square;
-        return (float) Math.sqrt(sum);
+        return (float) Math.sqrt(x1 * x1 + x2 * x2);
     }
 }
