@@ -1,4 +1,4 @@
-### GOLF SIMULATION
+### BINGBOYSGOLF
 In this repository you will find the golf game of group 16 for Project 1-2.
 
 The physics engine is based on Euler's method and RK4.
