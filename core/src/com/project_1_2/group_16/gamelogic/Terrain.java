@@ -1,11 +1,10 @@
-package com.project_1_2.group_16.physics;
+package com.project_1_2.group_16.gamelogic;
 
 import java.util.HashMap;
-
 import com.project_1_2.group_16.App;
-
 import bsh.EvalError;
 import bsh.Interpreter;
+import com.project_1_2.group_16.physics.StateVector;
 
 public class Terrain {
 
@@ -48,8 +47,8 @@ public class Terrain {
 
     /**
      * Here the height method is defined that gives the height based on x,y coordinates.
-     * @param x_pos x coordinate
-     * @param y_pos y coordinate
+     * @param x x coordinate
+     * @param y y coordinate
      * @return height
      */
     public float getHeight(float x, float y) {

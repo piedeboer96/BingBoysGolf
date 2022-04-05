@@ -1,5 +1,7 @@
 package com.project_1_2.group_16.physics;
 
+import com.project_1_2.group_16.gamelogic.Terrain;
+
 public class Derivation {
 
     float dx_dt;

@@ -1,6 +1,10 @@
-package com.project_1_2.group_16.physics;
+package com.project_1_2.group_16.numerical;
 
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.physics.Derivation;
+import com.project_1_2.group_16.physics.Physics;
+import com.project_1_2.group_16.physics.StateVector;
 
 public class RK4 {
 
@@ -24,10 +28,10 @@ public class RK4 {
         k3 = Derivation.getK2K3Derivation(sv, h, terrain, k2);
         k4 = Derivation.getK4Derivation(sv, h, terrain, k3);
 
-        pos_x1 = sv.pos_x + ((k1.dx_dt + (2 * k2.dx_dt) + (2 * k3.dx_dt) + k4.dx_dt)/6f);
-        pos_y1 = sv.pos_y + ((k1.dy_dt + (2 * k2.dy_dt) + (2 * k3.dy_dt) + k4.dy_dt)/6f);
-        vel_x1 = sv.velocity_x + ((k1.dvx_dt + (2 * k2.dvx_dt) + (2 * k3.dvx_dt) + k4.dvx_dt)/6f);
-        vel_y1 = sv.velocity_y + ((k1.dvy_dt + (2 * k2.dvy_dt) + (2 * k3.dvy_dt) + k4.dvy_dt)/6f);
+        pos_x1 = sv.pos_x + ((k1.getDx_dt() + (2 * k2.getDx_dt()) + (2 * k3.getDx_dt()) + k4.getDx_dt())/6f);
+        pos_y1 = sv.pos_y + ((k1.getDy_dt() + (2 * k2.getDy_dt()) + (2 * k3.getDy_dt()) + k4.getDy_dt())/6f);
+        vel_x1 = sv.velocity_x + ((k1.getDvx_dt() + (2 * k2.getDvx_dt()) + (2 * k3.getDvx_dt()) + k4.getDvx_dt())/6f);
+        vel_y1 = sv.velocity_y + ((k1.getDvy_dt() + (2 * k2.getDvy_dt()) + (2 * k3.getDvy_dt()) + k4.getDvy_dt())/6f);
 
         sv.pos_x = pos_x1;
         sv.pos_y = pos_y1;
