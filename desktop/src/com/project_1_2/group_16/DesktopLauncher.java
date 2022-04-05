@@ -6,7 +6,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		// configure os
-		if (System.getProperty("os.name").startsWith("Windows")) {
+		if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
 			App.os_is_windows = true;
 		}
 
