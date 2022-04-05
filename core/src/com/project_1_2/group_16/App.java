@@ -38,7 +38,6 @@ import com.project_1_2.group_16.models.Tile;
 
 public class App extends ApplicationAdapter {
 
-
 	// cameras
 	private PerspectiveCamera freeCam;
 	private PerspectiveCamera ballCam;
@@ -250,7 +249,7 @@ public class App extends ApplicationAdapter {
 			//Game.runEuler();
 			Game.runRK4();
 		}
-		if(staticStop) { // ball has come to a rest
+		if(App.staticStop) { // ball has come to a rest
 			App.allowHit = true;
 		}
 		this.golfball.moveTo(pos_x, pos_y);
@@ -283,8 +282,9 @@ public class App extends ApplicationAdapter {
 		}
 		if (input.isKeyJustPressed(Keys.M)) { // hit the ball
 			if (App.allowHit) {
-				float vX = 1f, vZ = 1f; // velocity
-//				Game.sv = new StateVector(0,0,vX , vZ);
+				float vX = 1f, vZ = 0f; // velocity
+				this.v.set(this.golfball.getPosition());
+				Game.sv = new StateVector(this.v.x, this.v.z, vX, vZ);
 				this.hitSound.play();
 				hitsCounter++;
 				App.allowHit = false;

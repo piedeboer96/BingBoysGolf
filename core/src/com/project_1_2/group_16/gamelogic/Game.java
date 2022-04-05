@@ -1,15 +1,13 @@
 package com.project_1_2.group_16.gamelogic;
 
-import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.math.*;
-
 
 public class Game {
 
     public static Euler euler = new Euler();
     public static RK4 rk4 = new RK4();
 
-    public static StateVector sv;
+    public static StateVector sv = new StateVector(0, 0, 0, 0);
 
     /**
      * A Method to run our Euler based Engine.

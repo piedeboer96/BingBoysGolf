@@ -115,6 +115,6 @@ public class Golfball {
      */
     public Vector3 moveTo(float x, float z) {
         this.v.set(this.getPosition());
-        return this.move(this.v.x - x, this.v.z - z);
+        return this.move(x - this.v.x, z - this.v.z);
     }
 }
