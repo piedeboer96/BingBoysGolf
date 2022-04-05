@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.project_1_2.group_16.physics.Game;
+import com.project_1_2.group_16.gamelogic.Terrain;
 
 public class Tile extends ModelInstance {
 
@@ -18,7 +18,7 @@ public class Tile extends ModelInstance {
         super(model);
 
         // move the tile
-        this.pos.set(x, Game.terrain.getHeight(x, z) - Golfball.SIZE, z);
+        this.pos.set(x, Terrain.getHeight(x, z) - Golfball.SIZE, z);
         this.transform.translate(this.pos);
 
         // calculate bounds

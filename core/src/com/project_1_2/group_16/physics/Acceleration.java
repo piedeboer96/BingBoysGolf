@@ -13,7 +13,7 @@ public class Acceleration {
      * @return acceleration in x direction
      */
     public float getAccelerationX(float dh_dx, float dh_dy, StateVector sv, Terrain terrain) {
-        float kinetic_friction = terrain.getKineticFriction(sv);
+        float kinetic_friction = Terrain.getKineticFriction(sv);
         if (Physics.magnitude(sv.velocity_x,sv.velocity_y) < 0.05  && Physics.magnitude(dh_dx,dh_dy) > 0) {
             return (-Physics.GRAV_CONSTANT * kinetic_friction * dh_dx) / Physics.magnitude(dh_dx, dh_dy);
         }
@@ -28,7 +28,7 @@ public class Acceleration {
      * @return acceleration in y direction
      */
     public float getAccelerationY(float dh_dx, float dh_dy, StateVector sv, Terrain terrain) {
-        float kinetic_friction = terrain.getKineticFriction(sv);
+        float kinetic_friction = Terrain.getKineticFriction(sv);
         if (Physics.magnitude(sv.velocity_x,sv.velocity_y) < 0.05 && Physics.magnitude(dh_dx,dh_dy) > 0) {
             return (-Physics.GRAV_CONSTANT * kinetic_friction * dh_dy) / Physics.magnitude(dh_dx, dh_dy);
         }

@@ -13,9 +13,9 @@ public class Collision {
      */
     public static boolean ballIsInTargetRadius(StateVector sv) {
 
-        float R = targetRadius;
-        float dx = Math.abs(sv.pos_x - targetPos[0]);
-        float dy = Math.abs(sv.pos_y - targetPos[1]);
+        float R = 0.1f;
+        float dx = Math.abs(sv.pos_x - 1); // 1 = target radius
+        float dy = Math.abs(sv.pos_y - 1);
 
         if (dx + dy <= R) {
             return true;
@@ -75,14 +75,12 @@ public class Collision {
      * @return boolean, true if the ball inside the radius of the tree
      */
     public static boolean ballHitTree(StateVector sv) {
-        for (int i = 1; i <= treeCount; i++) {
-            float[] treeArray = trees.get(i);
-            if (ballIsInTreeRadius(sv, treeArray[0], treeArray[1], treeArray[2])) {
-                return true;
-            }
-        }
+        //for (int i = 1; i <= treeCount; i++) {
+        //    float[] treeArray = trees.get(i);
+        //    if (ballIsInTreeRadius(sv, treeArray[0], treeArray[1], treeArray[2])) {
+        //        return true;
+        //    }
+        //}
         return false;
     }
-
-
 }

@@ -28,6 +28,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
+import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
@@ -101,11 +102,11 @@ public class App extends ApplicationAdapter {
 		// read input file
 		Game.getInput();
 		Game.runEuler();
-		float gbX = Game.terrain.initialPos[0];
-		float gbZ = Game.terrain.initialPos[1];
-		float tX = Game.terrain.targetPos[0];
-		float tZ = Game.terrain.targetPos[1];
-		float r = Game.terrain.targetRadius;
+		float gbX = 0f;
+		float gbZ = 0f;
+		float tX = 1f;
+		float tZ = 1f;
+		float r = 0.1f;
 
 		// set fullscreen
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
@@ -130,8 +131,8 @@ public class App extends ApplicationAdapter {
 		// terrain generation
 		for(int i = 0; i < FIELD_DETAIL; i++) {
 			for(int j = 0; j < FIELD_DETAIL; j++) {
-				float x = Game.terrain.initialPos[0] - FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (i + 1);
-				float z = Game.terrain.initialPos[1] - FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (j + 1);
+				float x = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (i + 1);
+				float z = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (j + 1);
 				generateTerrain(x, z);
 			}
 		}
@@ -146,7 +147,7 @@ public class App extends ApplicationAdapter {
 
 		// create golf ball
 		this.golfball = new Golfball(this.modelBuilder, null);
-		this.golfball.setPosition(gbX, Game.terrain.getHeight(gbX, gbZ), gbZ);
+		this.golfball.setPosition(gbX, Terrain.getHeight(gbX, gbZ), gbZ);
 		this.instances.add(this.golfball.instance);
 		Vector3 v = this.golfball.getPosition();
 
@@ -154,7 +155,7 @@ public class App extends ApplicationAdapter {
 		assets.load("flag-model.obj", Model.class);
 		assets.finishLoading();
 		Model flagModel = assets.get("flag-model.obj", Model.class);
-		this.flagpole = new Flagpole(flagModel, new Vector3(tX, Game.terrain.getHeight(tX, tZ), tZ));
+		this.flagpole = new Flagpole(flagModel, new Vector3(tX, Terrain.getHeight(tX, tZ), tZ));
 		this.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
 		this.instances.add(this.flagpole.instance);
 
@@ -162,23 +163,23 @@ public class App extends ApplicationAdapter {
 		Material holeMaterial = new Material(ColorAttribute.createDiffuse(Color.RED));
 		Model holeModel = this.modelBuilder.createCylinder(r, 0.1f, r, 20, holeMaterial, Usage.Position);
 		ModelInstance hole = new ModelInstance(holeModel);
-		hole.transform.setTranslation(tX, Game.terrain.getHeight(tX, tZ) - 0.04f, tZ);
+		hole.transform.setTranslation(tX, Terrain.getHeight(tX, tZ) - 0.04f, tZ);
 		this.instances.add(hole);
 
 		// create trees
-		assets.load("tree_model.g3dj", Model.class);
-		assets.finishLoading();
-		Model tree = assets.get("tree_model.g3dj", Model.class);
-		for (int i = 1; i <= Game.terrain.treeCount; i++) {
-			ModelInstance treeInstance = new ModelInstance(tree);
-			float trX = Game.terrain.trees.get(i)[0];
-			float trZ = Game.terrain.trees.get(i)[1];
-			float trR = Game.terrain.trees.get(i)[2];
-			treeInstance.transform.translate(trX, Game.terrain.getHeight(trX, trZ) - 0.1f, trZ);
-			treeInstance.transform.rotate(Vector3.Y, (float)(Math.random()*360));
-			treeInstance.transform.scale(0.5f * trR, 0.5f * trR, 0.5f * trR);
-			this.trees.add(treeInstance);
-		}
+		//assets.load("tree_model.g3dj", Model.class);
+		//assets.finishLoading();
+		//Model tree = assets.get("tree_model.g3dj", Model.class);
+		//for (int i = 1; i <= Game.terrain.treeCount; i++) {
+		//	ModelInstance treeInstance = new ModelInstance(tree);
+		//	float trX = Game.terrain.trees.get(i)[0];
+		//	float trZ = Game.terrain.trees.get(i)[1];
+		//	float trR = Game.terrain.trees.get(i)[2];
+		//	treeInstance.transform.translate(trX, Game.terrain.getHeight(trX, trZ) - 0.1f, trZ);
+		//	treeInstance.transform.rotate(Vector3.Y, (float)(Math.random()*360));
+		//	treeInstance.transform.scale(0.5f * trR, 0.5f * trR, 0.5f * trR);
+		//	this.trees.add(treeInstance);
+		//}
 
 		// create ball camera
 		this.ballCam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -193,7 +194,7 @@ public class App extends ApplicationAdapter {
 
 		// create free camera
 		this.freeCam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		this.freeCam.position.set(gbX, Game.terrain.getHeight(gbX, gbZ) + 0.25f, gbZ - 0.5f);
+		this.freeCam.position.set(gbX, Terrain.getHeight(gbX, gbZ) + 0.25f, gbZ - 0.5f);
 		this.freeCam.near = 0.1f;
 		this.freeCam.far = RENDER_DISTANCE;
 		this.freeCam.update();
@@ -250,18 +251,6 @@ public class App extends ApplicationAdapter {
 			//Game.runEuler(); 
 			Game.runRK4();
 		}
-		if(ballInWater) { // ball hit the water
-			if (ballRolls) {
-				this.dropSound.play();
-			}
-
-			ballRolls = false;
-
-			pos_x=Game.terrain.initialPos[0];
-			pos_y=Game.terrain.initialPos[1];
-			Game.sv.velocity_x=0;
-			Game.sv.velocity_y=0;
-		}
 		if(staticStop) { // ball has come to a rest
 			if(targetHit) { // ball has hit the hole
 				ballRolls = false;
@@ -278,7 +267,7 @@ public class App extends ApplicationAdapter {
 			Game.sv.velocity_x = 0;
 			Game.sv.velocity_y = 0;
 		}
-		this.golfball.move(pos_x - this.v.x, pos_y - this.v.z, Game.terrain);
+		this.golfball.move(pos_x - this.v.x, pos_y - this.v.z);
 
 		// controls
 		if (this.useFreeCam) this.freeMovement.move(Gdx.input, Gdx.graphics.getDeltaTime());
@@ -321,16 +310,16 @@ public class App extends ApplicationAdapter {
 	 * @param z z-coordinate of the tile
 	 */
 	public void generateTerrain(float x, float z) {
-		float height = Game.terrain.getHeight(x, z) - Golfball.SIZE;
+		float height = Terrain.getHeight(x, z) - Golfball.SIZE;
 
 		Material boxMaterial;
 		if (height < 0 - TILE_SIZE / 2) { // water texture
 			boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.1098f, 0.6392f, 0.9254f, 1f)));
 		}
-		else if (x > Game.terrain.sandPosX[0] && x < Game.terrain.sandPosX[1] &&
-				 z > Game.terrain.sandPosY[0] && z < Game.terrain.sandPosY[1]) { // sandpit texture
-			boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.9411f, 0.9411f, 0.4313f, 1f)));
-				 }
+		//else if (x > Game.terrain.sandPosX[0] && x < Game.terrain.sandPosX[1] &&
+		//		 z > Game.terrain.sandPosY[0] && z < Game.terrain.sandPosY[1]) { // sandpit texture
+		//	boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.9411f, 0.9411f, 0.4313f, 1f)));
+		//		 }
 		else { // grass texture (depending on height)
 			float greenValue = (100 + height * 100) / 255f; 
 			boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.1568f, greenValue, 0.1568f, 1f)));

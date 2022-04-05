@@ -99,9 +99,9 @@ public class Golfball {
      * @param dZ delta Z
      * @return position for chaining
      */
-    public Vector3 move(float dX, float dZ, Terrain terrain) {
+    public Vector3 move(float dX, float dZ) {
         this.v.set(this.getPosition());
-		this.setPosition(this.v.x + dX, terrain.getHeight(this.v.x + dX, this.v.z + dZ) + SIZE / 2, this.v.z + dZ);
+		this.setPosition(this.v.x + dX, Terrain.getHeight(this.v.x + dX, this.v.z + dZ) + SIZE / 2, this.v.z + dZ);
 		this.cam.translate(this.getPosition().sub(this.v));
 		this.cam.update();
         return this.getPosition();
