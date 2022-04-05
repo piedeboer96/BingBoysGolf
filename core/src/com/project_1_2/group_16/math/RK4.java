@@ -12,7 +12,6 @@ public class RK4 implements NumericalSolver{
      * of accuracy. It runs by taking a weighted average of different estimations/derivations k1, k2, k3 and k4.
      * @param h step-size
      * @param sv StateVector
-     * @param terrain terrain
      */
     @Override
     public void solve(float h, StateVector sv) {

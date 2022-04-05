@@ -14,7 +14,6 @@ public class Euler implements NumericalSolver {
      * Euler ODE Solver
      * @param h step-size
      * @param sv state vector of the ball
-     * @param terrain terrain 
      */
     @Override
     public void solve(float h, StateVector sv) {
@@ -23,6 +22,7 @@ public class Euler implements NumericalSolver {
         App.pos_y = sv.pos_y;
 
         float[] partialDerivatives = Terrain.getSlope(new float[]{sv.pos_x, sv.pos_y}, h);
+        
         pos_x1 = sv.pos_x + (h * sv.velocity_x);
         pos_y1 = sv.pos_y + (h * sv.velocity_y);
 
