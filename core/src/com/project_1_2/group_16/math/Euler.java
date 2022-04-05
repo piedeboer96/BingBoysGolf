@@ -26,14 +26,15 @@ public class Euler {
 
         float[] partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
 
+        pos_x1 = sv.pos_x + (h * sv.velocity_x);
+        pos_y1 = sv.pos_y + (h * sv.velocity_y);
+
         float acceleration_x = acceleration.getAccelerationX(partialDerivatives[0], partialDerivatives[1], sv, terrain);
         float acceleration_y = acceleration.getAccelerationY(partialDerivatives[0], partialDerivatives[1], sv, terrain);
 
         vel_x1 = sv.velocity_x + (h * acceleration_x);
         vel_y1 = sv.velocity_y + (h * acceleration_y);
 
-        pos_x1 = sv.pos_x + (h * vel_x1);
-        pos_y1 = sv.pos_y + (h * vel_y1);
 
         sv.pos_x = pos_x1;
         sv.pos_y = pos_y1;
