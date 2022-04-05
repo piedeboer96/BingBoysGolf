@@ -20,7 +20,6 @@ public class Terrain {
             Math.abs(y) > App.FIELD_SIZE / 2 + App.TILE_SIZE) {
             return -1;
         }
-
         return (float)(0.5*(Math.sin((x-y)/7)+0.9));
     }
     

@@ -30,12 +30,14 @@ import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tile;
 
 public class App extends ApplicationAdapter {
+
 
 	// cameras
 	private PerspectiveCamera freeCam;
@@ -282,6 +284,7 @@ public class App extends ApplicationAdapter {
 		if (input.isKeyJustPressed(Keys.M)) { // hit the ball
 			if (App.allowHit) {
 				float vX = 1f, vZ = 1f; // velocity
+//				Game.sv = new StateVector(0,0,vX , vZ);
 				this.hitSound.play();
 				hitsCounter++;
 				App.allowHit = false;
