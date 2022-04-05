@@ -106,4 +106,15 @@ public class Golfball {
 		this.cam.update();
         return this.getPosition();
     }
+
+    /**
+     * Move the golball. The y-coordinate gets calculated based on the height function.
+     * @param x x-coordinate
+     * @param z z-coordinate
+     * @return position for chaining
+     */
+    public Vector3 moveTo(float x, float z) {
+        this.v.set(this.getPosition());
+        return this.move(this.v.x - x, this.v.z - z);
+    }
 }

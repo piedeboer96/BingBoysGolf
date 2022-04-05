@@ -245,8 +245,8 @@ public class App extends ApplicationAdapter {
 
 		// update golfball
 		if (ballRolls) {
-			Game.runEuler();
-//			Game.runRK4();
+			//Game.runEuler();
+			Game.runRK4();
 		}
 		if(staticStop) { // ball has come to a rest
 			if(targetHit) { // ball has hit the hole
