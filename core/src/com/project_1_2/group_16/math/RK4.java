@@ -60,7 +60,7 @@ public class RK4 implements NumericalSolver{
         }
 
         // check if the ball is still rolling
-        if (Physics.magnitude(sv.velocity_x,sv.velocity_y) < 0.05) {
+        if (Physics.magnitude(sv.velocity_x,sv.velocity_y) < h/2) {
             float[] partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
             if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
                 if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
