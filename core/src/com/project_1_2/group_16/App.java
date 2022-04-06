@@ -28,6 +28,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
+import com.project_1_2.group_16.gamelogic.Collision;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
@@ -56,7 +57,6 @@ public class App extends ApplicationAdapter {
 	private AssetManager assets;
 	private ModelBuilder modelBuilder;
 	private Array<ModelInstance> instances;
-	private Array<ModelInstance> trees;
 	private Array<Tile> tiles;
 
 	// golfball
@@ -82,9 +82,10 @@ public class App extends ApplicationAdapter {
 	public static final float FIELD_DETAIL = FIELD_SIZE * 5f;
 	public static final float RENDER_DISTANCE = FIELD_SIZE * 2f;
 	public static final float TILE_SIZE = FIELD_SIZE / FIELD_DETAIL;
+	public static final int NUMBER_OF_TREES = 0;
 	public static boolean os_is_windows;
-	private final Sound hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
-    private final Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
+	private Sound hitSound;
+    private Sound dropSound;
 
 	// physics
 	public static float pos_x;
@@ -99,14 +100,13 @@ public class App extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
-		// input variables
-		float tX = 5f; // hole pos
-		float tZ = 5f;
-		float r = 0.1f; // hole radius
-
 		// set fullscreen
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		Gdx.input.setCursorCatched(true);
+
+		// input variables
+		Vector2 tV = new Vector2(5f, 5f);
+		float tR = 0.1f; // hole radius
 
 		// init batches and other things
 		this.modelBatch = new ModelBatch();
@@ -114,7 +114,6 @@ public class App extends ApplicationAdapter {
 		this.spriteBatch = new SpriteBatch();
 		this.modelBuilder = new ModelBuilder();
 		this.instances = new Array<ModelInstance>();
-		this.trees = new Array<ModelInstance>();
 		this.tiles = new Array<Tile>();
 		this.font = new BitmapFont();
 		this.assets = new AssetManager();
@@ -125,10 +124,12 @@ public class App extends ApplicationAdapter {
 		this.environment.add(SUN_LIGHT);
 
 		// terrain generation
+		Terrain.initSandPits();
+		float x, z;
 		for(int i = 0; i < FIELD_DETAIL; i++) {
 			for(int j = 0; j < FIELD_DETAIL; j++) {
-				float x = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (i + 1);
-				float z = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (j + 1);
+				x = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (i + 1);
+				z = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (j + 1);
 				generateTerrain(x, z);
 			}
 		}
@@ -145,44 +146,37 @@ public class App extends ApplicationAdapter {
 		this.golfball = new Golfball(this.modelBuilder, null);
 		this.golfball.setPosition(0, Terrain.getHeight(0, 0), 0);
 		this.instances.add(this.golfball.instance);
-		Vector3 v = this.golfball.getPosition();
 
 		// create flag
 		assets.load("flag-model.obj", Model.class);
 		assets.finishLoading();
 		Model flagModel = assets.get("flag-model.obj", Model.class);
-		App.flagpole = new Flagpole(flagModel, new Vector3(tX, Terrain.getHeight(tX, tZ), tZ), r);
+		App.flagpole = new Flagpole(flagModel, new Vector3(tV.x, Terrain.getHeight(tV.x, tV.y), tV.y), tR);
 		App.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
 		this.instances.add(App.flagpole.instance);
 
 		// create hole
 		Material holeMaterial = new Material(ColorAttribute.createDiffuse(Color.RED));
-		Model holeModel = this.modelBuilder.createCylinder(r, 0.1f, r, 20, holeMaterial, Usage.Position);
+		Model holeModel = this.modelBuilder.createCylinder(tR, 0.1f, tR, 20, holeMaterial, Usage.Position);
 		ModelInstance hole = new ModelInstance(holeModel);
-		hole.transform.setTranslation(tX, Terrain.getHeight(tX, tZ) - 0.04f, tZ);
+		hole.transform.setTranslation(tV.x, Terrain.getHeight(tV.x, tV.y) - 0.04f, tV.y);
 		this.instances.add(hole);
 
-		// create trees TODO
-		//assets.load("tree_model.g3dj", Model.class);
-		//assets.finishLoading();
-		//Model tree = assets.get("tree_model.g3dj", Model.class);
-		//for (int i = 1; i <= Game.terrain.treeCount; i++) {
-		//	ModelInstance treeInstance = new ModelInstance(tree);
-		//	float trX = Game.terrain.trees.get(i)[0];
-		//	float trZ = Game.terrain.trees.get(i)[1];
-		//	float trR = Game.terrain.trees.get(i)[2];
-		//	treeInstance.transform.translate(trX, Game.terrain.getHeight(trX, trZ) - 0.1f, trZ);
-		//	treeInstance.transform.rotate(Vector3.Y, (float)(Math.random()*360));
-		//	treeInstance.transform.scale(0.5f * trR, 0.5f * trR, 0.5f * trR);
-		//	this.trees.add(treeInstance);
-		//}
+		// create trees
+		assets.load("tree_model.g3dj", Model.class);
+		assets.finishLoading();
+		Model tree = assets.get("tree_model.g3dj", Model.class);
+		Terrain.initTrees(tree);
+		for (int i = 0; i < NUMBER_OF_TREES; i++) {
+			this.instances.add(Terrain.trees.get(i).instance);
+		}
 
 		// create ball camera
 		this.ballCam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		this.ballCam.position.set(v.x, v.y + 0.25f, v.z - 0.5f);
+		this.ballCam.position.set(0, Terrain.getHeight(0, 0) + 0.25f, -0.5f);
 		this.ballCam.near = 0.1f;
 		this.ballCam.far = RENDER_DISTANCE;
-		this.ballCam.lookAt(v);
+		this.ballCam.lookAt(0, Terrain.getHeight(0, 0), 0);
 		this.ballCam.update();
 		this.golfball.cam = this.ballCam;
 		this.ballMovement = new BallCamera(this.ballCam, this.golfball);
@@ -196,21 +190,25 @@ public class App extends ApplicationAdapter {
 		this.freeCam.update();
 		this.freeMovement = new FreeCamera(this.freeCam);
 
+		// sounds
+		this.hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
+		this.dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
+
 		// allow gameplay
+		Game.runRK4();
 		App.allowHit = true;
 	}
 
 	@Override
 	public void render() {
 		// clear screen
-		if (os_is_windows) Gdx.gl.glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		if (App.os_is_windows) Gdx.gl.glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		ScreenUtils.clear(BACKGROUND);
 		
 		// update models
 		this.modelBatch.begin(this.useFreeCam ? this.freeCam : this.ballCam);
 		this.modelBatch.render(this.instances, this.environment);
-		this.modelBatch.render(this.trees, this.environment);
 		for (Tile tile : this.tiles) {
 			this.v.set(tile.transform.getTranslation(this.v));
 			if ((this.useFreeCam ? this.freeCam : this.ballCam).frustum.boundsInFrustum(this.v, tile.getDimensions())) {
@@ -248,8 +246,7 @@ public class App extends ApplicationAdapter {
 
 		// update golfball
 		if (App.allowHit == false) {
-			//Game.runEuler();
-			Game.runRK4();
+			Game.run();
 		}
 		if(App.staticStop) { // ball has come to a rest
 			App.allowHit = true;
@@ -312,10 +309,9 @@ public class App extends ApplicationAdapter {
 		if (height < 0 - TILE_SIZE / 2) { // water texture
 			boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.1098f, 0.6392f, 0.9254f, 1f)));
 		}
-		//else if (x > Game.terrain.sandPosX[0] && x < Game.terrain.sandPosX[1] && //TODO
-		//		 z > Game.terrain.sandPosY[0] && z < Game.terrain.sandPosY[1]) { // sandpit texture
-		//	boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.9411f, 0.9411f, 0.4313f, 1f)));
-		//		 }
+		else if (Collision.isInSandPit(x, z)) { // sandpit texture
+			boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.9411f, 0.9411f, 0.4313f, 1f)));
+		}
 		else { // grass texture (depending on height)
 			float greenValue = (100 + height * 100) / 255f; 
 			boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.1568f, greenValue, 0.1568f, 1f)));

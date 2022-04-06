@@ -2,6 +2,7 @@ package com.project_1_2.group_16.math;
 
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Collision;
+import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.physics.Physics;
 
@@ -54,7 +55,8 @@ public class RK4 implements NumericalSolver{
 
         if(Collision.ballHitTree(sv)) {
             System.out.println("tree");
-            App.hitsCounter++;
+            sv.velocity_x *= -0.8f;
+            sv.velocity_y *= -0.8f;
         }
 
         // check if the ball is still rolling
@@ -62,10 +64,8 @@ public class RK4 implements NumericalSolver{
             float[] partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
             if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
                 if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
-                    System.out.println("LOW VELOCITY, HIGH STATIC FRICTION ---> TARGET HIT");
-                    App.staticStop = true;
+                    Game.endGame();
                 }
-                System.out.println("LOW VELOCITY, HIGH STATIC FRICTION");
                 App.staticStop = true;
             }
         }

@@ -1,12 +1,22 @@
 package com.project_1_2.group_16.gamelogic;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.models.Tree;
 
 public class Terrain {
 
     public static final float kineticGrass = 0.05f;
     public static final float staticGrass = 0.25f;
+
+    public static final List<Sandpit> sandPits = new ArrayList<Sandpit>();
+    public static final List<Tree> trees = new ArrayList<Tree>();
 
     /**
      * Here the height method is defined that gives the height based on x,y coordinates.
@@ -42,7 +52,7 @@ public class Terrain {
      * @return kinetic friction coefficient
      */
     public static float getKineticFriction(StateVector sv) {
-        // TODO add sandpits
+        if (Collision.isInSandPit(sv.pos_x, sv.pos_y)) return Sandpit.kineticFriction;
         return kineticGrass;
     }
     
@@ -52,7 +62,33 @@ public class Terrain {
      * @return static friction coefficient
      */
     public static float getStaticFriction(StateVector sv) {
-        // TODO add sandpits
+        if (Collision.isInSandPit(sv.pos_x, sv.pos_y)) return Sandpit.staticFriction;
         return staticGrass;
+    }
+
+    /**
+     * Add sandpits to the course
+     */
+    public static void initSandPits() {
+        //sandPits.add(new Sandpit(-2f, -1f, -5f, 5f));
+    }
+
+    /**
+     * Add trees to the course
+     * @param model tree model
+     * @param hole hole-reference
+     */
+    public static void initTrees(Model model) {
+        Vector2 trV; float trX, trZ;
+        Vector2 tV = new Vector2(App.flagpole.getPosition().x, App.flagpole.getPosition().z);
+		for (int i = 0; i < App.NUMBER_OF_TREES; i++) {
+			do {
+				trX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
+				trZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
+				trV = new Vector2(trX, trZ);
+			} while (Terrain.getHeight(trX, trZ) < 0.15 && trV.dst(0, 0) < 1 && trV.dst(tV) < 1);
+			float trR = (float)(Math.random() * 0.3 + .2);
+			trees.add(new Tree(model, new Vector3(trV.x, Terrain.getHeight(trV.x, trV.y) - 0.1f, trV.y), trR));
+		}
     }
 }
