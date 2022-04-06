@@ -1,5 +1,6 @@
 package com.project_1_2.group_16.gamelogic;
 
+import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.models.Flagpole;
 
@@ -42,18 +43,17 @@ public class Collision {
         return false;
     }
 
-    /** TODO
+    /**
      * Check if the ball has hit the tree
      * @param sv used to pull the position
      * @return boolean, true if the ball inside the radius of the tree
      */
     public static boolean ballHitTree(StateVector sv) {
-        //for (int i = 1; i <= treeCount; i++) {
-        //    float[] treeArray = trees.get(i);
-        //    if (ballIsInTreeRadius(sv, treeArray[0], treeArray[1], treeArray[2])) {
-        //        return true;
-        //    }
-        //}
+        for (int i = 0; i < App.NUMBER_OF_TREES; i++) {
+            if (ballIsInTreeRadius(sv, Terrain.trees.get(i).pos.x, Terrain.trees.get(i).pos.z, Terrain.trees.get(i).r)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -71,16 +71,30 @@ public class Collision {
         float dx = Math.abs(sv.pos_x - treeCenterX);
         float dy = Math.abs(sv.pos_y - treeCenterY);
 
-        if (dx + dy <= R) {
+        if (dx + dy < R) {
             return true;
         } else if (dx > R) {
             return false;
         } else if (dy > R) {
             return false;
-        } else if (((dx*dx) + (dy*dy)) <= (R*R)) {
+        } else if (((dx*dx) + (dy*dy)) < (R*R)) {
             return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * Checks if a position is within a sandpit
+     * @param x x-coordinate
+     * @param y y-coordinate
+     */
+    public static boolean isInSandPit(float x, float y) {
+        for (Sandpit pit : Terrain.sandPits) {
+            if (x > pit.minX && x < pit.maxX && y > pit.minY && y < pit.maxY) {
+                return true;
+            }
+        }
+        return false;
     }
 }
