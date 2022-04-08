@@ -9,9 +9,7 @@ public interface Theme {
 
     public Material golfballMaterial();
 
-    public Model flagModel(ModelBuilder builder);
-
-    public Material holeMaterial();
+    public Model flagModel(ModelBuilder builder, float r);
 
     public Color grassColor(float height);
 

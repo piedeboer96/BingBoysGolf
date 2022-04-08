@@ -1,6 +1,5 @@
 package com.project_1_2.group_16.ai;
 
-import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.models.Golfball;
 

@@ -1,13 +1,10 @@
 package com.project_1_2.group_16.models;
 
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.themes.Theme;
 
 public class Flagpole {
@@ -23,11 +20,6 @@ public class Flagpole {
     public ModelInstance instance;
 
     /**
-     * Modelinstance of the hole
-     */
-    public ModelInstance hole;
-
-    /**
      * Radius of the hole
      */
     public float r;
@@ -37,17 +29,11 @@ public class Flagpole {
     
     public Flagpole(ModelBuilder builder, Vector3 pos, float r, Theme theme) {
         // flag
-        this.model = theme.flagModel(builder);
+        this.model = theme.flagModel(builder, r);
         this.instance = new ModelInstance(this.model);
         this.r = r;
         this.pos.set(pos);
         this.instance.transform.setTranslation(this.pos);
-
-        // hole
-        Material holeMaterial = theme.holeMaterial();
-		Model holeModel = builder.createCylinder(r, 0.1f, r, 20, holeMaterial, Usage.Position);
-		this.hole = new ModelInstance(holeModel);
-		this.hole.transform.setTranslation(this.pos.x, Terrain.getHeight(this.pos.x, this.pos.y) - 0.04f, this.pos.z);
     }
 
     /**

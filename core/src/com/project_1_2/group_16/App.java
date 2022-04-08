@@ -162,7 +162,6 @@ public class App extends ApplicationAdapter {
 		(this.modelBuilder, new Vector3(tV.x, Terrain.getHeight(tV.x, tV.y), tV.y), tR, this.theme);
 		App.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
 		this.instances.add(App.flagpole.instance);
-		this.instances.add(App.flagpole.hole);
 
 		// create trees
 		assets.load(this.theme.treeModel(), Model.class);
