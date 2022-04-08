@@ -46,7 +46,8 @@ public class App extends ApplicationAdapter {
 	private BallCamera ballMovement;
 	private boolean useFreeCam;
 	private float xDir, zDir;
-	private float power = 2f;
+	private float power = 1;
+	public static boolean goUp;
 
 	// batches
 	private ModelBatch modelBatch;
@@ -82,7 +83,7 @@ public class App extends ApplicationAdapter {
 	public static final float FIELD_DETAIL = FIELD_SIZE * 5f;
 	public static final float RENDER_DISTANCE = FIELD_SIZE * 2f;
 	public static final float TILE_SIZE = FIELD_SIZE / FIELD_DETAIL;
-	public static final int NUMBER_OF_TREES = 0;
+	public static final int NUMBER_OF_TREES = 25;
 	public static boolean os_is_windows;
 	private Sound hitSound;
     private Sound dropSound;
@@ -97,6 +98,7 @@ public class App extends ApplicationAdapter {
 
 	// util
 	private final Vector3 v = new Vector3();
+	private float colorutil;
 	
 	@Override
 	public void create() {
@@ -105,8 +107,11 @@ public class App extends ApplicationAdapter {
 		Gdx.input.setCursorCatched(true);
 
 		// input variables
-		Vector2 tV = new Vector2(5f, 5f);
+		Vector2 gV = new Vector2(-3f, 0f);
+		Vector2 tV = new Vector2(4f, 1f);
 		float tR = 0.1f; // hole radius
+		pos_x = gV.x;
+		pos_y = gV.y;
 
 		// init batches and other things
 		this.modelBatch = new ModelBatch();
@@ -144,7 +149,7 @@ public class App extends ApplicationAdapter {
 
 		// create golf ball
 		this.golfball = new Golfball(this.modelBuilder, null);
-		this.golfball.setPosition(0, Terrain.getHeight(0, 0), 0);
+		this.golfball.setPosition(gV.x, Terrain.getHeight(gV.x, gV.y) , gV.y);
 		this.instances.add(this.golfball.instance);
 
 		// create flag
@@ -166,17 +171,17 @@ public class App extends ApplicationAdapter {
 		assets.load("tree_model.g3dj", Model.class);
 		assets.finishLoading();
 		Model tree = assets.get("tree_model.g3dj", Model.class);
-		Terrain.initTrees(tree);
+		Terrain.initTrees(tree, this.golfball);
 		for (int i = 0; i < NUMBER_OF_TREES; i++) {
 			this.instances.add(Terrain.trees.get(i).instance);
 		}
 
 		// create ball camera
 		this.ballCam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		this.ballCam.position.set(0, Terrain.getHeight(0, 0) + 0.25f, -0.5f);
+		this.ballCam.position.set(gV.x, Terrain.getHeight(gV.x, gV.y) + 0.25f, gV.y - 0.5f);
 		this.ballCam.near = 0.1f;
 		this.ballCam.far = RENDER_DISTANCE;
-		this.ballCam.lookAt(0, Terrain.getHeight(0, 0), 0);
+		this.ballCam.lookAt(gV.x, Terrain.getHeight(gV.x, gV.y), gV.y);
 		this.ballCam.update();
 		this.golfball.cam = this.ballCam;
 		this.ballMovement = new BallCamera(this.ballCam, this.golfball);
@@ -184,7 +189,7 @@ public class App extends ApplicationAdapter {
 
 		// create free camera
 		this.freeCam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		this.freeCam.position.set(0, Terrain.getHeight(0, 0) + 0.25f, -0.5f);
+		this.freeCam.position.set(gV.x, Terrain.getHeight(gV.x, gV.y) + 0.25f, gV.y - 0.5f);
 		this.freeCam.near = 0.1f;
 		this.freeCam.far = RENDER_DISTANCE;
 		this.freeCam.update();
@@ -234,8 +239,23 @@ public class App extends ApplicationAdapter {
 		this.font.draw(this.spriteBatch, "Shots: "+hitsCounter, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 130f);
 		this.font.draw(this.spriteBatch, "xDir: "+this.xDir, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 155f);
 		this.font.draw(this.spriteBatch, "yDir: "+this.zDir, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 170f);
+		this.font.draw(this.spriteBatch, "power: "+(this.power - 1) / 4, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 185f);
 		this.font.draw(this.spriteBatch, "FPS: "+Gdx.graphics.getFramesPerSecond(), 5f, SCREEN_HEIGHT - 5f);
 		this.spriteBatch.end();
+
+		// draw power gauge
+		if (this.power > 1 && App.allowHit) {
+			this.shapeBatch.begin(ShapeType.Filled);
+			this.colorutil = 510 * (this.power - 1) / 4;
+			if (this.colorutil > 255) {
+				this.shapeBatch.setColor(1f, (510f - this.colorutil) / 255f, 0f, 1f);
+			}
+			else {
+				this.shapeBatch.setColor(this.colorutil / 255f, 1f, 0f, 1f);
+			}
+			this.shapeBatch.circle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, this.power * 10f);
+			this.shapeBatch.end();
+		}
 
 		// draw crosshair
 		this.shapeBatch.begin(ShapeType.Line);
@@ -279,8 +299,21 @@ public class App extends ApplicationAdapter {
 				this.useFreeCam = true;
 			}
 		}
-		if (input.isKeyJustPressed(Keys.M)) { // hit the ball
+
+		if (this.ballMovement.powerUp) { // power
+			if (App.goUp) this.power += 0.05f;
+			else this.power -= 0.05f;
+			if (this.power >= 5) {
+				App.goUp = false;
+			}
+			if (this.power < 1) {
+				App.goUp = true;
+			}
+		}
+		if (this.ballMovement.shoot) { // shoot the ball
 			this.shoot(this.xDir * this.power, this.zDir * this.power);
+			this.power = 1f;
+			this.ballMovement.shoot = false;
 		}
 	}
 

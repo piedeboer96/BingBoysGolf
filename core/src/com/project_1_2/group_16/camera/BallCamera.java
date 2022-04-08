@@ -1,9 +1,11 @@
 package com.project_1_2.group_16.camera;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
+import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.models.Golfball;
 
 public class BallCamera implements InputProcessor {
@@ -17,6 +19,16 @@ public class BallCamera implements InputProcessor {
      * Golfball reference.
      */
     private Golfball golfBall;
+
+    /**
+     * If the power is charging.
+     */
+    public boolean powerUp;
+
+    /**
+     * If the ball is ready to shoot.
+     */
+    public boolean shoot;
 
     // utils
     private final Vector3 v = new Vector3();
@@ -49,11 +61,20 @@ public class BallCamera implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.SPACE) {
+            App.goUp = true;
+            this.powerUp = true;
+        }
+
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode == Input.Keys.SPACE) {
+            this.powerUp = false;
+            this.shoot = true;
+        }
         return false;
     }
 
