@@ -40,7 +40,7 @@ public class Euler implements NumericalSolver {
         sv.velocity_x = vel_x1;
         sv.velocity_y = vel_y1;
 
-        System.out.println("sv_END: " + sv);
+//        System.out.println("sv_END: " + sv);
 
         if (Collision.ballIsInWater(sv)) {
             System.out.println("water");
@@ -61,7 +61,7 @@ public class Euler implements NumericalSolver {
         }
 
         //check if the ball is rolling
-        if (Physics.magnitude(sv.velocity_x, sv.velocity_y) < 0.05) {
+        if (Physics.magnitude(sv.velocity_x, sv.velocity_y) < h/2) {
             if ((Physics.magnitude(partialDerivatives[0], partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
                 if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
                     Game.endGame();

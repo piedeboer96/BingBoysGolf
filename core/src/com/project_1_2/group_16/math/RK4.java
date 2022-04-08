@@ -20,18 +20,23 @@ public class RK4 implements NumericalSolver{
         App.pos_x = sv.pos_x;
         App.pos_y = sv.pos_y;
 
+        float vel_x0 = sv.velocity_x;
+        float vel_y0 = sv.velocity_y;
+
         float vel_x1, vel_y1, pos_y1, pos_x1;
 
         Derivation k1, k2, k3, k4;
+
         k1 = Derivation.getK1Derivation(sv, h);
         k2 = Derivation.getK2K3Derivation(sv, h, k1);
         k3 = Derivation.getK2K3Derivation(sv, h, k2);
         k4 = Derivation.getK4Derivation(sv, h, k3);
 
-        pos_x1 = sv.pos_x + ((k1.getDx_dt() + (2 * k2.getDx_dt()) + (2 * k3.getDx_dt()) + k4.getDx_dt())/6f);
-        pos_y1 = sv.pos_y + ((k1.getDy_dt() + (2 * k2.getDy_dt()) + (2 * k3.getDy_dt()) + k4.getDy_dt())/6f);
-        vel_x1 = sv.velocity_x + ((k1.getDvx_dt() + (2 * k2.getDvx_dt()) + (2 * k3.getDvx_dt()) + k4.getDvx_dt())/6f);
-        vel_y1 = sv.velocity_y + ((k1.getDvy_dt() + (2 * k2.getDvy_dt()) + (2 * k3.getDvy_dt()) + k4.getDvy_dt())/6f);
+        pos_x1 = vel_x0!=0? sv.pos_x + (h/6f)*((k1.dx_dt + (2 * k2.dx_dt) + (2 * k3.dx_dt) + k4.dx_dt)) : sv.pos_x;
+        pos_y1 = vel_y0!=0? sv.pos_y + (h/6f)*((k1.dy_dt + (2 * k2.dy_dt) + (2 * k3.dy_dt) + k4.dy_dt)) : sv.pos_y;
+        vel_x1 = vel_x0!=0? sv.velocity_x + (h/6f)*((k1.dvx_dt + (2 * k2.dvx_dt) + (2 * k3.dvx_dt) + k4.dvx_dt)) : 0;
+        vel_y1 = vel_y0!=0? sv.velocity_y + (h/6f)*((k1.dvy_dt + (2 * k2.dvy_dt) + (2 * k3.dvy_dt) + k4.dvy_dt)) : 0;
+
 
         sv.pos_x = pos_x1;
         sv.pos_y = pos_y1;
@@ -39,7 +44,7 @@ public class RK4 implements NumericalSolver{
         sv.velocity_x = vel_x1;
         sv.velocity_y = vel_y1;
 
-        System.out.println("sv_END: " + sv);
+//        System.out.println("sv_END: " + sv);
 
         if(Collision.ballIsInWater(sv)) {
             System.out.println("water");
@@ -60,7 +65,7 @@ public class RK4 implements NumericalSolver{
         }
 
         // check if the ball is still rolling
-        if (Physics.magnitude(sv.velocity_x,sv.velocity_y) < 0.05) {
+        if (Physics.magnitude(sv.velocity_x,sv.velocity_y) < h/2) {
             float[] partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
             if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
                 if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
