@@ -32,10 +32,10 @@ public class RK4 implements NumericalSolver{
         k3 = Derivation.getK2K3Derivation(sv, h, k2);
         k4 = Derivation.getK4Derivation(sv, h, k3);
 
-        pos_x1 = vel_x0!=0? sv.pos_x + (h/6f)*((k1.dx_dt + (2 * k2.dx_dt) + (2 * k3.dx_dt) + k4.dx_dt)) : sv.pos_x;
-        pos_y1 = vel_y0!=0? sv.pos_y + (h/6f)*((k1.dy_dt + (2 * k2.dy_dt) + (2 * k3.dy_dt) + k4.dy_dt)) : sv.pos_y;
-        vel_x1 = vel_x0!=0? sv.velocity_x + (h/6f)*((k1.dvx_dt + (2 * k2.dvx_dt) + (2 * k3.dvx_dt) + k4.dvx_dt)) : 0;
-        vel_y1 = vel_y0!=0? sv.velocity_y + (h/6f)*((k1.dvy_dt + (2 * k2.dvy_dt) + (2 * k3.dvy_dt) + k4.dvy_dt)) : 0;
+        pos_x1 = sv.pos_x + (h/6f)*((k1.dx_dt + (2 * k2.dx_dt) + (2 * k3.dx_dt) + k4.dx_dt));
+        pos_y1 = sv.pos_y + (h/6f)*((k1.dy_dt + (2 * k2.dy_dt) + (2 * k3.dy_dt) + k4.dy_dt));
+        vel_x1 = sv.velocity_x + (h/6f)*((k1.dvx_dt + (2 * k2.dvx_dt) + (2 * k3.dvx_dt) + k4.dvx_dt));
+        vel_y1 =  sv.velocity_y + (h/6f)*((k1.dvy_dt + (2 * k2.dvy_dt) + (2 * k3.dvy_dt) + k4.dvy_dt));
 
 
         sv.pos_x = pos_x1;
