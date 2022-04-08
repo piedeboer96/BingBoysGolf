@@ -36,6 +36,8 @@ import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tile;
+import com.project_1_2.group_16.themes.DefaultTheme;
+import com.project_1_2.group_16.themes.Theme;
 
 public class App extends ApplicationAdapter {
 
@@ -70,11 +72,12 @@ public class App extends ApplicationAdapter {
 	private Vector2 ch1, ch2, ch3, ch4;
 	private BitmapFont font;
 
-	// environment (lighting)
+	// environment
 	private Environment environment;
+	private Theme theme;
 
 	// constants
-	public static final Color BACKGROUND = new Color(178f / 255, 255f / 255, 255f / 255, 1f);
+	public static Color BACKGROUND;
 	public static final ColorAttribute AMBIENT_LIGHT = new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f);
 	public static final DirectionalLight SUN_LIGHT = new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f);
 	public static int SCREEN_WIDTH;
@@ -124,9 +127,11 @@ public class App extends ApplicationAdapter {
 		this.assets = new AssetManager();
 
 		// create environment
+		this.theme = new DefaultTheme();
 		this.environment = new Environment();
 		this.environment.set(AMBIENT_LIGHT);
 		this.environment.add(SUN_LIGHT);
+		BACKGROUND = this.theme.skyColor();
 
 		// terrain generation
 		Terrain.initSandPits();
@@ -148,29 +153,20 @@ public class App extends ApplicationAdapter {
 		this.ch4 = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - SCREEN_HEIGHT / 100);
 
 		// create golf ball
-		this.golfball = new Golfball(this.modelBuilder, null);
-		this.golfball.setPosition(gV.x, Terrain.getHeight(gV.x, gV.y) , gV.y);
+		this.golfball = new Golfball(this.modelBuilder, null, this.theme);
+		this.golfball.setPosition(gV.x, Terrain.getHeight(gV.x, gV.y), gV.y);
 		this.instances.add(this.golfball.instance);
 
 		// create flag
-		assets.load("flag-model.obj", Model.class);
-		assets.finishLoading();
-		Model flagModel = assets.get("flag-model.obj", Model.class);
-		App.flagpole = new Flagpole(flagModel, new Vector3(tV.x, Terrain.getHeight(tV.x, tV.y), tV.y), tR);
+		App.flagpole = new Flagpole
+		(this.modelBuilder, new Vector3(tV.x, Terrain.getHeight(tV.x, tV.y), tV.y), tR, this.theme);
 		App.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
 		this.instances.add(App.flagpole.instance);
 
-		// create hole
-		Material holeMaterial = new Material(ColorAttribute.createDiffuse(Color.RED));
-		Model holeModel = this.modelBuilder.createCylinder(tR, 0.1f, tR, 20, holeMaterial, Usage.Position);
-		ModelInstance hole = new ModelInstance(holeModel);
-		hole.transform.setTranslation(tV.x, Terrain.getHeight(tV.x, tV.y) - 0.04f, tV.y);
-		this.instances.add(hole);
-
 		// create trees
-		assets.load("tree_model.g3dj", Model.class);
+		assets.load(this.theme.treeModel(), Model.class);
 		assets.finishLoading();
-		Model tree = assets.get("tree_model.g3dj", Model.class);
+		Model tree = assets.get(this.theme.treeModel(), Model.class);
 		Terrain.initTrees(tree, this.golfball);
 		for (int i = 0; i < NUMBER_OF_TREES; i++) {
 			this.instances.add(Terrain.trees.get(i).instance);
@@ -351,14 +347,13 @@ public class App extends ApplicationAdapter {
 
 		Material boxMaterial;
 		if (height < 0 - TILE_SIZE / 2) { // water texture
-			boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.1098f, 0.6392f, 0.9254f, 1f)));
+			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.waterColor()));
 		}
 		else if (Collision.isInSandPit(x, z)) { // sandpit texture
-			boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.9411f, 0.9411f, 0.4313f, 1f)));
+			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.sandPitColor()));
 		}
 		else { // grass texture (depending on height)
-			float greenValue = (100 + height * 100) / 255f; 
-			boxMaterial = new Material(ColorAttribute.createDiffuse(new Color(0.1568f, greenValue, 0.1568f, 1f)));
+			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.grassColor(height)));
 		}
 
 		// create model
