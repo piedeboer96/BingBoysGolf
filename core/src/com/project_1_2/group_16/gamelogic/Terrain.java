@@ -8,12 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tree;
 
 public class Terrain {
 
-    public static final float kineticGrass = 0.05f;
-    public static final float staticGrass = 0.25f;
+    public static final float kineticGrass = 0.08f;
+    public static final float staticGrass = 0.20f;
 
     public static final List<Sandpit> sandPits = new ArrayList<Sandpit>();
     public static final List<Tree> trees = new ArrayList<Tree>();
@@ -30,7 +31,8 @@ public class Terrain {
             Math.abs(y) > App.FIELD_SIZE / 2 + App.TILE_SIZE) {
             return -1;
         }
-        return (float)(0.5*(Math.sin((x-y)/7)+0.9));
+        //return (float)(0.5*(Math.sin((x-y)/7)+0.9));
+        return (float)(0.4 * (0.9 - Math.pow(Math.E, -1*((x*x + y*y) / 8))));
     }
     
     /**
@@ -76,17 +78,18 @@ public class Terrain {
     /**
      * Add trees to the course
      * @param model tree model
-     * @param hole hole-reference
+     * @param golfball golfball-reference
      */
-    public static void initTrees(Model model) {
+    public static void initTrees(Model model, Golfball golfball) {
         Vector2 trV; float trX, trZ;
+        Vector2 gV = new Vector2(golfball.getPosition().x, golfball.getPosition().z);
         Vector2 tV = new Vector2(App.flagpole.getPosition().x, App.flagpole.getPosition().z);
 		for (int i = 0; i < App.NUMBER_OF_TREES; i++) {
 			do {
 				trX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
 				trZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
 				trV = new Vector2(trX, trZ);
-			} while (Terrain.getHeight(trX, trZ) < 0.15 && trV.dst(0, 0) < 1 && trV.dst(tV) < 1);
+			} while (Terrain.getHeight(trX, trZ) < 0.1 || trV.dst(gV) < 1 || trV.dst(tV) < 1);
 			float trR = (float)(Math.random() * 0.3 + .2);
 			trees.add(new Tree(model, new Vector3(trV.x, Terrain.getHeight(trV.x, trV.y) - 0.1f, trV.y), trR));
 		}

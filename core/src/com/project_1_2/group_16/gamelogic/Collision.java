@@ -51,6 +51,7 @@ public class Collision {
     public static boolean ballHitTree(StateVector sv) {
         for (int i = 0; i < App.NUMBER_OF_TREES; i++) {
             if (ballIsInTreeRadius(sv, Terrain.trees.get(i).pos.x, Terrain.trees.get(i).pos.z, Terrain.trees.get(i).r)) {
+                Terrain.trees.get(i).r *= 0.95;
                 return true;
             }
         }
