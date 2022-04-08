@@ -60,7 +60,7 @@ public class App extends ApplicationAdapter {
 	private Array<Tile> tiles;
 
 	// golfball
-	private Golfball golfball;
+	public Golfball golfball;
 
 	// flagpole
 	public static Flagpole flagpole;
@@ -280,21 +280,32 @@ public class App extends ApplicationAdapter {
 			}
 		}
 		if (input.isKeyJustPressed(Keys.M)) { // hit the ball
-			if (App.allowHit) {
-				// get the input velocity
-				this.v.set(this.golfball.getPosition());
-				Game.sv = new StateVector(this.v.x, this.v.z, this.xDir * this.power, this.zDir * this.power);
-
-				// sound effect and shot counter
-				this.hitSound.play();
-				hitsCounter++;
-
-				// hit the ball
-				App.prevPos = new Vector2(this.v.x, this.v.z);
-				App.allowHit = false;
-				App.staticStop = false;
-			}
+			this.shoot(this.xDir * this.power, this.zDir * this.power);
 		}
+	}
+
+	/**
+	 * Shoot the ball
+	 * @param vX velocity in the x direction
+	 * @param vY velocity in the y direction
+	 * @return if the shot was successful
+	 */
+	public boolean shoot(float vX, float vY) {
+		if (App.allowHit) {
+			this.v.set(this.golfball.getPosition());
+			Game.sv = new StateVector(this.v.x, this.v.z, vX, vY);
+
+			// sound effect and shot counter
+			this.hitSound.play();
+			hitsCounter++;
+
+			// hit the ball
+			App.prevPos = new Vector2(this.v.x, this.v.z);
+			App.allowHit = false;
+			App.staticStop = false;
+			return true;
+		}
+		return false;
 	}
 
 	/**
