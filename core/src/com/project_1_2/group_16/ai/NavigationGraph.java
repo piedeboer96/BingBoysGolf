@@ -24,6 +24,7 @@ public class NavigationGraph {
         }
     }
 
+    //nice comment
     public int getArrayValue(float x, float y){
         float height = Terrain.getHeight(x, y) - Golfball.SIZE;
         if(height < 0){
