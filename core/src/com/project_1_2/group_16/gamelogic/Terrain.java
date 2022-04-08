@@ -72,7 +72,7 @@ public class Terrain {
      * Add sandpits to the course
      */
     public static void initSandPits() {
-        //sandPits.add(new Sandpit(-2f, -1f, -5f, 5f));
+        sandPits.add(new Sandpit(-2f, -1f, -5f, 5f));
     }
 
     /**
@@ -86,8 +86,8 @@ public class Terrain {
         Vector2 tV = new Vector2(App.flagpole.getPosition().x, App.flagpole.getPosition().z);
 		for (int i = 0; i < App.NUMBER_OF_TREES; i++) {
 			do {
-				trX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
-				trZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
+				trX = (float)(Math.random() * (App.FIELD_SIZE - 0.5) - App.FIELD_SIZE / 2);
+				trZ = (float)(Math.random() * (App.FIELD_SIZE - 0.5) - App.FIELD_SIZE / 2);
 				trV = new Vector2(trX, trZ);
 			} while (Terrain.getHeight(trX, trZ) < 0.1 || trV.dst(gV) < 1 || trV.dst(tV) < 1);
 			float trR = (float)(Math.random() * 0.3 + .2);
