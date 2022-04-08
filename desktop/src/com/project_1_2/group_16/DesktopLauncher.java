@@ -2,6 +2,11 @@ package com.project_1_2.group_16;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.project_1_2.group_16.ai.NavigationGraph;
+
+import java.util.Arrays;
+
+import static com.project_1_2.group_16.ai.NavigationGraph.*;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -16,6 +21,19 @@ public class DesktopLauncher {
 							   Lwjgl3ApplicationConfiguration.getDisplayMode().height);
 		config.setForegroundFPS(30);
 		config.useVsync(false);
+
+
+		NavigationGraph.fillGraphTable();
+
+
+
+		//Uncomment for floadFIll
+//
+//		NavigationGraph.fload_fill((int)NavigationGraph.flood_i,(int)NavigationGraph.flood_j, 1);
+//		System.out.println(Arrays.deepToString(matrixParcour));
+//
+//		System.out.println("flood i, j: " + matrixParcour[(int)flood_i][(int)flood_j]);
+
 		new Lwjgl3Application(new App(), config);
 	}
 }

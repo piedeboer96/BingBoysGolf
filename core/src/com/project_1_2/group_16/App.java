@@ -99,6 +99,9 @@ public class App extends ApplicationAdapter {
 	// util
 	private final Vector3 v = new Vector3();
 	private float colorutil;
+
+	public static Vector2 tV = new Vector2(4f, 1f);
+	public static float tR = 0.1f; // hole radius
 	
 	@Override
 	public void create() {
@@ -108,8 +111,8 @@ public class App extends ApplicationAdapter {
 
 		// input variables
 		Vector2 gV = new Vector2(-3f, 0f);
-		Vector2 tV = new Vector2(4f, 1f);
-		float tR = 0.1f; // hole radius
+
+
 		pos_x = gV.x;
 		pos_y = gV.y;
 
