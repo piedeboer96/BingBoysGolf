@@ -40,7 +40,7 @@ public class Euler implements NumericalSolver {
         sv.velocity_x = vel_x1;
         sv.velocity_y = vel_y1;
 
-        System.out.println("sv_END: " + sv);
+//        System.out.println("sv_END: " + sv);
 
         if (Collision.ballIsInWater(sv)) {
             System.out.println("water");

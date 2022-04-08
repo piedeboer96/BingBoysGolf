@@ -32,7 +32,7 @@ public class Game {
      * Run the physics engine
      */
     public static void run() {
-        Game.solver.solve(0.05f, Game.sv);
+        Game.solver.solve(0.1f, Game.sv);
     }
 
     /**
