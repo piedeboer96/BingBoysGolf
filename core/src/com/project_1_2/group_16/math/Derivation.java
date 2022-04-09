@@ -49,9 +49,9 @@ public class Derivation {
         StateVector tempSV2 = new StateVector(sv.pos_x + h/2, sv.pos_y + h/2 * d.dy_dt, sv.velocity_x + h/2, sv.velocity_y + h/2 * d.dvy_dt);
         float [] pDerivatives = Terrain.getSlope(new float[]{tempSV.pos_x, tempSV.pos_y}, h);
         float [] pDerivatives2 = Terrain.getSlope(new float[]{tempSV2.pos_x, tempSV2.pos_y}, h);
-        float [] acceleration = new float[] {acc.getAccelerationX(pDerivatives[0], pDerivatives[1], tempSV), acc.getAccelerationY(pDerivatives[0], pDerivatives[1], tempSV)};
-        float [] acceleration2 = new float[] {acc.getAccelerationX(pDerivatives2[0], pDerivatives2[1], tempSV2), acc.getAccelerationY(pDerivatives2[0], pDerivatives2[1], tempSV2)};
-        return new Derivation(tempSV.velocity_x, tempSV2.velocity_y, acceleration[0], acceleration2[1]);
+        float accelerationX = acc.getAccelerationX(pDerivatives[0], pDerivatives[1], tempSV);
+        float accelerationY = acc.getAccelerationY(pDerivatives2[0], pDerivatives2[1], tempSV2);
+        return new Derivation(tempSV.velocity_x, tempSV2.velocity_y, accelerationX, accelerationY);
     }
 
     /**
@@ -66,9 +66,9 @@ public class Derivation {
         StateVector tempSV2 = new StateVector(sv.pos_x + h, sv.pos_y + h * d.dy_dt, sv.velocity_x + h, sv.velocity_y + h * d.dvy_dt);
         float [] pDerivatives = Terrain.getSlope(new float[]{tempSV.pos_x, tempSV.pos_y}, h);
         float [] pDerivatives2 = Terrain.getSlope(new float[]{tempSV2.pos_x, tempSV2.pos_y}, h);
-        float [] acceleration = new float[] {acc.getAccelerationX(pDerivatives[0], pDerivatives[1], tempSV), acc.getAccelerationY(pDerivatives[0], pDerivatives[1], tempSV)};
-        float [] acceleration2 = new float[] {acc.getAccelerationX(pDerivatives2[0], pDerivatives2[1], tempSV2), acc.getAccelerationY(pDerivatives2[0], pDerivatives2[1], tempSV2)};
-        return new Derivation(tempSV.velocity_x, tempSV2.velocity_y, acceleration[0], acceleration2[1]);
+        float accelerationX = acc.getAccelerationX(pDerivatives[0], pDerivatives[1], tempSV);
+        float accelerationY = acc.getAccelerationY(pDerivatives2[0], pDerivatives2[1], tempSV2);
+        return new Derivation(tempSV.velocity_x, tempSV2.velocity_y, accelerationX, accelerationY);
     }
 
     /**
