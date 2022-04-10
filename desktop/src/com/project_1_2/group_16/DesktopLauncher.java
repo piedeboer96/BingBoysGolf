@@ -17,7 +17,7 @@ public class DesktopLauncher {
 		}
 
 		// get inputs
-		// ...
+		// (call to input screen)
 		//App.gV = new Vector2(xPositionOfGolfball, yPositionOfGolfball);
 		//App.tV = new Vector2(xPositionOfTarget, yPositionOfTarget);
 		//App.tR = targetRadius;
