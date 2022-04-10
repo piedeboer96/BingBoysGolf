@@ -1,9 +1,12 @@
 package com.project_1_2.group_16.ai;
 
+import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.models.Golfball;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import static com.project_1_2.group_16.App.*;
 
@@ -13,6 +16,8 @@ public class NavigationGraph {
     static int size_X = 100, size_Y = 100;
     static boolean holeSet = false;
     public static int[][] matrixParcour = new int[size_X][size_Y];
+    static int[][] visitedNodes = new int[matrixParcour.length][matrixParcour.length];
+    public static int count = 0;
 
     public static double flood_i, flood_j;
 
@@ -47,60 +52,98 @@ public class NavigationGraph {
         }
     }
 
-    /**
-     *
-     *
-     * @param i
-     * @param j
-     * @param newCol
-     */
-    public static void fload_fill(int i, int j, int newCol){
+    public static void fload_fill(int x, int y){
+        // Creating queue for bfs
+        Queue<Coordinate> queu = new LinkedList<>();
 
-        int oldCol = matrixParcour[(int)flood_i][(int)flood_j];
+        // Pushing Coordinate of {x, y}
+        Coordinate coord = new Coordinate(x,y);
+        queu.add(coord);
+
+        // Marking {x, y} as visited
+        visitedNodes[x][y] = 1;
 
 
-        System.out.println("old col " + oldCol);
 
-        if(oldCol== newCol){
-            return;
+        while (!queu.isEmpty())
+        {
+            count++;
+            Coordinate current = queu.peek();
+            x = current.getX();
+            y = current.getY();
+            int oldCol = matrixParcour[x][y];
+            queu.remove();
+
+
+
+            //down
+            if(isValidStep(x + 1, y, oldCol, oldCol + 1)){
+                if(visitedNodes[x+1][y] == 0){
+                    Coordinate down = new Coordinate(x + 1, y);
+                    queu.add(down);
+                    visitedNodes[x+1][y] = 1;
+                    matrixParcour[x+1][y] = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;
+                }
+
+            }
+
+            //up
+            if(isValidStep(x- 1, y, oldCol, oldCol + 1)){
+                if(visitedNodes[x-1][y] == 0){
+                    Coordinate up = new Coordinate(x - 1, y);
+                    queu.add(up);
+                    visitedNodes[x-1][y] = 1;
+                    matrixParcour[x-1][y] = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;
+                }
+
+            }
+
+            //left
+            if(isValidStep(x, y - 1, oldCol, oldCol + 1)){
+                if(visitedNodes[x][y-1] == 0){
+                    Coordinate left = new Coordinate(x, y-1);
+                    queu.add(left);
+                    visitedNodes[x][y-1] = 1;
+                    matrixParcour[x][y-1] = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;
+                }
+
+            }
+            //right
+            if(isValidStep(x, y + 1, oldCol, oldCol + 1)){
+                if(visitedNodes[x][y+1] == 0){
+                    Coordinate right = new Coordinate(x, y+1);
+                    queu.add(right);
+                    visitedNodes[x][y+1] = 1;
+                    matrixParcour[x][y+1] = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;
+                }
+
+            }
         }
-
-
-        dfs(i, j, 0, 1);
     }
 
-    public static void dfs(int i , int j, int oldCol, int newCol){
-
-
-
-        if(i < 0 || i >= matrixParcour.length || j < 0 || j >= matrixParcour.length || (matrixParcour[i][j] != oldCol && matrixParcour[i][j]!=99)) {
-            System.out.println("ret");
-            return;
-        }else{
-            matrixParcour[i][j] = newCol;
-
-//            System.out.println("hit: " + oldCol++);
-
-            oldCol++;
-
-            dfs(i+1, j, oldCol, oldCol++);
-            dfs( i, j+1, oldCol, oldCol++);
-            dfs( i-1, j, oldCol, oldCol++);
-            dfs( i, j-1, oldCol, oldCol++);
-
-
-
+    public static boolean isValidStep(int i, int j, int oldCol, int newCol){
+        if(i < 0 || i >= matrixParcour.length || j < 0 || j >= matrixParcour.length || (matrixParcour[i][j] != oldCol && matrixParcour[i][j]!=99 && matrixParcour[i][j] == -1)) {
+            return false;
         }
+        return true;
+    }
+}
+
+class Coordinate{
+    int x, y;
+    public Coordinate(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+    public int getX(){
+        return x;
     }
 
-//
-
-
-    public static void main(String[] args) {
-
+    public int getY(){
+        return y;
     }
 
-
-
-
+    public String toString(){
+        return "x : " + this.x + " y: " + this.y;
+    }
 }
