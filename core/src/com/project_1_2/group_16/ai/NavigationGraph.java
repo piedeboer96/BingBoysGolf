@@ -47,7 +47,7 @@ public class NavigationGraph {
               System.out.println("FLOOD i: " + flood_i + " j: " + flood_j);
               return 0;
             }else{
-                return 99;
+                return Integer.MAX_VALUE;
             }
         }
     }
@@ -122,7 +122,7 @@ public class NavigationGraph {
     }
 
     public static boolean isValidStep(int i, int j, int oldCol, int newCol){
-        if(i < 0 || i >= matrixParcour.length || j < 0 || j >= matrixParcour.length || (matrixParcour[i][j] != oldCol && matrixParcour[i][j]!=99 && matrixParcour[i][j] == -1)) {
+        if(i < 0 || i >= matrixParcour.length || j < 0 || j >= matrixParcour.length || (matrixParcour[i][j] != oldCol && matrixParcour[i][j]!=Integer.MAX_VALUE && matrixParcour[i][j] == -1)) {
             return false;
         }
         return true;
