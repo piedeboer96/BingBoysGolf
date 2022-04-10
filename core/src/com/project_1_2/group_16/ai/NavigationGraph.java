@@ -8,7 +8,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import java.util.Arrays;
+
 import static com.project_1_2.group_16.App.*;
+
 
 public class NavigationGraph {
 
