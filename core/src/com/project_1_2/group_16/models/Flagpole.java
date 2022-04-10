@@ -2,8 +2,10 @@ package com.project_1_2.group_16.models;
 
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.project_1_2.group_16.themes.Theme;
 
 public class Flagpole {
 
@@ -25,14 +27,13 @@ public class Flagpole {
     // util
     private final Vector3 pos = new Vector3();
     
-    public Flagpole(Model model, Vector3 pos, float r) {
-        this.model = model;
+    public Flagpole(ModelBuilder builder, Vector3 pos, float r, Theme theme) {
+        // flag
+        this.model = theme.flagModel(builder, r);
         this.instance = new ModelInstance(this.model);
         this.r = r;
         this.pos.set(pos);
-
         this.instance.transform.setTranslation(this.pos);
-        this.instance.transform.scale(0.001f, 0.001f, 0.001f);
     }
 
     /**

@@ -13,3 +13,8 @@ App.allowHit tells you if the ball is still moving or is at a stop
 
 Use Vector3 / Vector2 classes to avoid accessive memory usage
 Use multithreading if you know how to
+
+
+
+You can incease / decrease the tree count by changing App.NUMBER_OF_TREES
+You can add / remove sandpits in Terrain.java (initSandpits)

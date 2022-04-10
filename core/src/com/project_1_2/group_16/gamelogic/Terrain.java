@@ -72,7 +72,8 @@ public class Terrain {
      * Add sandpits to the course
      */
     public static void initSandPits() {
-        //sandPits.add(new Sandpit(-2f, -1f, -5f, 5f));
+        sandPits.add(new Sandpit(-2f, -1f, -5f, 5f));
+
     }
 
     /**
