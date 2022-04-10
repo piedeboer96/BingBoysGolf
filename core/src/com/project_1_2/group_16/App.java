@@ -86,7 +86,6 @@ public class App extends ApplicationAdapter {
 	public static final float FIELD_DETAIL = FIELD_SIZE * 5f;
 	public static final float RENDER_DISTANCE = FIELD_SIZE * 2f;
 	public static final float TILE_SIZE = FIELD_SIZE / FIELD_DETAIL;
-	public static final int NUMBER_OF_TREES = 25;
 	public static boolean os_is_windows;
 	private Sound hitSound;
     private Sound dropSound;
@@ -99,22 +98,22 @@ public class App extends ApplicationAdapter {
 	public static int hitsCounter;
 	public static Vector2 prevPos;
 
+	// input
+	public static Vector2 gV = new Vector2(-3f, 0f);
+	public static Vector2 tV = new Vector2(4f, 1f);
+	public static float tR = 0.1f;
+	public static int NUMBER_OF_SANDPITS;
+	public static int NUMBER_OF_TREES;
+
 	// util
 	private final Vector3 v = new Vector3();
 	private float colorutil;
-
-	public static Vector2 tV = new Vector2(4f, 1f);
-	public static float tR = 0.1f; // hole radius
 	
 	@Override
 	public void create() {
 		// set fullscreen
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		Gdx.input.setCursorCatched(true);
-
-		// input variables
-		Vector2 gV = new Vector2(-3f, 0f);
-
 
 		pos_x = gV.x;
 		pos_y = gV.y;

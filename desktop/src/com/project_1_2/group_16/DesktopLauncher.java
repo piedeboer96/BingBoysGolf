@@ -2,6 +2,7 @@ package com.project_1_2.group_16;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.ai.NavigationGraph;
 
 import java.util.Arrays;
@@ -14,6 +15,14 @@ public class DesktopLauncher {
 		if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
 			App.os_is_windows = true;
 		}
+
+		// get inputs
+		// ...
+		//App.gV = new Vector2(xPositionOfGolfball, yPositionOfGolfball);
+		//App.tV = new Vector2(xPositionOfTarget, yPositionOfTarget);
+		//App.tR = targetRadius;
+		//App.NUMBER_OF_SANDPITS = ...;
+		//App.NUMBER_OF_TREES = ...;
 
 		// launch game
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
