@@ -1,6 +1,5 @@
 package com.project_1_2.group_16.gamelogic;
 
-import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.models.Flagpole;
 
@@ -49,7 +48,7 @@ public class Collision {
      * @return boolean, true if the ball inside the radius of the tree
      */
     public static boolean ballHitTree(StateVector sv) {
-        for (int i = 0; i < App.NUMBER_OF_TREES; i++) {
+        for (int i = 0; i < Terrain.NUMBER_OF_TREES; i++) {
             if (ballIsInTreeRadius(sv, Terrain.trees.get(i).pos.x, Terrain.trees.get(i).pos.z, Terrain.trees.get(i).r)) {
                 Terrain.trees.get(i).r *= 0.95;
                 return true;

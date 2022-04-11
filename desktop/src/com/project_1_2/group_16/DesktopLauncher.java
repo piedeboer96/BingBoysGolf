@@ -15,7 +15,7 @@ public class DesktopLauncher extends Thread {
 		}
 
 		// set it false if you don't want to see the title and the input screen
-		boolean runTitleScreen = false;
+		boolean runTitleScreen = true;
 
 		/*Uncomment for floadFIll
 		long start = System.currentTimeMillis();

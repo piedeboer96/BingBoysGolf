@@ -8,16 +8,29 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.math.StateVector;
-import com.project_1_2.group_16.models.Golfball;
+import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.models.Tree;
+
+import bsh.EvalError;
+import bsh.Interpreter;
 
 public class Terrain {
 
-    public static final float kineticGrass = 0.08f;
-    public static final float staticGrass = 0.20f;
+    public static float kineticFriction = 0.08f;
+    public static float staticFriction = 0.20f;
+
+    public static String heightFunction;
+
+    public static int NUMBER_OF_SANDPITS;
+    public static int NUMBER_OF_TREES;
 
     public static final List<Sandpit> sandPits = new ArrayList<Sandpit>();
     public static final List<Tree> trees = new ArrayList<Tree>();
+
+    public static final Interpreter BSH = new Interpreter();
+    private static String eval;
+
+    private static final float WATER_EDGE = App.FIELD_SIZE / 2 + App.TILE_SIZE;
 
     /**
      * Here the height method is defined that gives the height based on x,y coordinates.
@@ -27,12 +40,22 @@ public class Terrain {
      */
     public static float getHeight(float x, float y) {
         // make everything outside of the rendered area water
-        if (Math.abs(x) > App.FIELD_SIZE / 2 + App.TILE_SIZE ||
-            Math.abs(y) > App.FIELD_SIZE / 2 + App.TILE_SIZE) {
+        if (Math.abs(x) >  WATER_EDGE || Math.abs(y) > WATER_EDGE) {
             return -1;
         }
-        //return (float)(0.5*(Math.sin((x-y)/7)+0.9));
-        return (float)(0.4 * (0.9 - Math.pow(Math.E, -1*((x*x + y*y) / 8))));
+        
+        // evaluate height function
+        eval = ((("float x = "+x).concat("; float y = ")+y).concat("; ")+heightFunction).concat(";");
+        try {
+            return (float)(double)(BSH.eval(eval));
+        } catch (EvalError e) {
+            System.out.println(ANSI.RED+"eval error"+ANSI.RESET+", interpreted: "+eval); 
+            System.exit(0);
+        } catch (ClassCastException e) {
+            System.out.println(ANSI.RED+"cast exception"+ANSI.RESET+", please use double values for height function"); 
+            System.exit(0);
+        }
+        return 0;
     }
     
     /**
@@ -55,7 +78,7 @@ public class Terrain {
      */
     public static float getKineticFriction(StateVector sv) {
         if (Collision.isInSandPit(sv.pos_x, sv.pos_y)) return Sandpit.kineticFriction;
-        return kineticGrass;
+        return kineticFriction;
     }
     
     /**
@@ -65,15 +88,22 @@ public class Terrain {
      */
     public static float getStaticFriction(StateVector sv) {
         if (Collision.isInSandPit(sv.pos_x, sv.pos_y)) return Sandpit.staticFriction;
-        return staticGrass;
+        return staticFriction;
     }
 
     /**
      * Add sandpits to the course
      */
     public static void initSandPits() {
-        sandPits.add(new Sandpit(-2f, -1f, -5f, 5f));
-
+        Vector2 sV; float sX, sZ;
+        for (int i = 0; i < NUMBER_OF_SANDPITS; i++) {
+            do { //TODO
+                sX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
+                sZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
+                sV = new Vector2(sX, sZ);
+            } while (sV.dst(App.gV) < 4 || sV.dst(App.tV) < 4);
+            sandPits.add(new Sandpit(sX - 2f, sX + 2f, sZ - 2f, sZ + 2f));
+        }
     }
 
     /**
@@ -81,16 +111,14 @@ public class Terrain {
      * @param model tree model
      * @param golfball golfball-reference
      */
-    public static void initTrees(Model model, Golfball golfball) {
+    public static void initTrees(Model model) {
         Vector2 trV; float trX, trZ;
-        Vector2 gV = new Vector2(golfball.getPosition().x, golfball.getPosition().z);
-        Vector2 tV = new Vector2(App.flagpole.getPosition().x, App.flagpole.getPosition().z);
-		for (int i = 0; i < App.NUMBER_OF_TREES; i++) {
+		for (int i = 0; i < NUMBER_OF_TREES; i++) {
 			do {
 				trX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
 				trZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
 				trV = new Vector2(trX, trZ);
-			} while (Terrain.getHeight(trX, trZ) < 0.1 || trV.dst(gV) < 1 || trV.dst(tV) < 1);
+			} while (Terrain.getHeight(trX, trZ) < 0.1 || trV.dst(App.gV) < 1 || trV.dst(App.tV) < 1);
 			float trR = (float)(Math.random() * 0.3 + .2);
 			trees.add(new Tree(model, new Vector3(trV.x, Terrain.getHeight(trV.x, trV.y) - 0.1f, trV.y), trR));
 		}

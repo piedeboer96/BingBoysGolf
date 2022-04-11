@@ -104,8 +104,6 @@ public class App extends ApplicationAdapter {
 	public static Vector2 gV = new Vector2(-3f, 0f);
 	public static Vector2 tV = new Vector2(4f, 1f);
 	public static float tR = 0.1f;
-	public static int NUMBER_OF_SANDPITS;
-	public static int NUMBER_OF_TREES;
 
 	// util
 	private final Vector3 v = new Vector3();
@@ -171,8 +169,8 @@ public class App extends ApplicationAdapter {
 		assets.load(this.theme.treeModel(), Model.class);
 		assets.finishLoading();
 		Model tree = assets.get(this.theme.treeModel(), Model.class);
-		Terrain.initTrees(tree, this.golfball);
-		for (int i = 0; i < NUMBER_OF_TREES; i++) {
+		Terrain.initTrees(tree);
+		for (int i = 0; i < Terrain.NUMBER_OF_TREES; i++) {
 			this.instances.add(Terrain.trees.get(i).instance);
 		}
 

@@ -4,9 +4,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.gamelogic.Sandpit;
+import com.project_1_2.group_16.gamelogic.Terrain;
 
 public class InputScreen extends JFrame {
 
@@ -23,13 +24,8 @@ public class InputScreen extends JFrame {
     JLabel labelA = new JLabel("Who will play?");
     Font large;
     public boolean status;
-
-    // Number of variables for the backEnd of the program
-    static Float x0,y0,xt,yt,vx,vy,r,muk,mus,muks,muss,sandPitXMin,sandPitXMax,sandPitYMin,sandPitYMax;
-    static int treesNum, sandPitsNum;
     static int userOrBot = 0;
-    static String heightF;
-
+    
     //Initiate text boxes for the inputs
     JTextField x0T = new JTextField();
     JTextField y0T = new JTextField();
@@ -69,7 +65,6 @@ public class InputScreen extends JFrame {
     JLabel greaterS1 = new JLabel("  < Y < ");*/
     JLabel treesNumL = new JLabel("Number of trees:");
     JLabel sandPitsNumL = new JLabel("Number of sandpits:");
-
 
     /**
      * Set up the input screen's GUI
@@ -158,21 +153,6 @@ public class InputScreen extends JFrame {
         ytL.setBounds(205, 145, 30, 25);
         ytT.setBounds(235, 145, 50, 25);
 
-
-       /* vxL.setFont(large);
-        vxL.setBackground(Color.decode("#676d88"));
-        vxL.setForeground(fontColor);
-        vxL.setBounds(70, 190, 30, 25);
-        vxT.setBounds(100, 190, 50, 25);
-        vxT.setText("0");
-
-        vyL.setFont(large);
-        vyL.setBackground(Color.decode("#676d88"));
-        vyL.setForeground(fontColor);
-        vyL.setBounds(205, 190, 30, 25);
-        vyT.setBounds(235, 190, 50, 25);
-        vyT.setText("0");*/
-
         rL.setFont(large);
         rL.setBackground(Color.decode("#676d88"));
         rL.setForeground(fontColor);
@@ -218,32 +198,6 @@ public class InputScreen extends JFrame {
         sandPitsNumL.setBounds(45, 370, 170, 25);
         sandPitsNumT.setBounds(210, 370, 40, 25);
 
-   /*     sandPitXL.setFont(large);
-        sandPitXL.setBackground(Color.decode("#676d88"));
-        sandPitXL.setForeground(fontColor);
-        sandPitXL.setBounds(45, 415, 90, 25);
-        sandPitXMinT.setBounds(135, 415, 35, 25);
-        greaterS.setFont(large);
-        greaterS.setBackground(Color.decode("#676d88"));
-        greaterS.setForeground(fontColor);
-        greaterS.setBounds(170, 415, 65, 25);
-        sandPitXMaxT.setBounds(230, 415, 35, 25);
-        sandPitXMaxT.setText("0");
-        sandPitXMinT.setText("0");
-
-        sandPitYL.setFont(large);
-        sandPitYL.setBackground(Color.decode("#676d88"));
-        sandPitYL.setForeground(fontColor);
-        sandPitYL.setBounds(45, 460, 90, 25);
-        sandPitYMinT.setBounds(135, 460, 35, 25);
-        greaterS1.setFont(large);
-        greaterS1.setBackground(Color.decode("#676d88"));
-        greaterS1.setForeground(fontColor);
-        greaterS1.setBounds(170, 460, 65, 25);
-        sandPitYMaxT.setBounds(230, 460, 35, 25);
-        sandPitYMaxT.setText("0");
-        sandPitYMinT.setText("0");*/
-
         treesNumL.setFont(large);
         treesNumL.setBackground(Color.decode("#676d88"));
         treesNumL.setForeground(fontColor);
@@ -258,8 +212,8 @@ public class InputScreen extends JFrame {
         rT.setText("0.1");
         mukT.setText("0.08");
         musT.setText("0.2");
-        muksT.setText("0");
-        mussT.setText("0");
+        muksT.setText("0.16");
+        mussT.setText("0.4");
         heightFT.setText("0.4 * (0.9 - Math.pow(Math.E, -1*((x*x + y*y) / 8)))");
         sandPitsNumT.setText("0");
         treesNumT.setText("25");
@@ -279,12 +233,8 @@ public class InputScreen extends JFrame {
         layeredPane.add(y0L , JLayeredPane.DRAG_LAYER);
         layeredPane.add(xtT, JLayeredPane.DRAG_LAYER);
         layeredPane.add(xtL , JLayeredPane.DRAG_LAYER);
-       layeredPane.add(ytT , JLayeredPane.DRAG_LAYER);
+        layeredPane.add(ytT , JLayeredPane.DRAG_LAYER);
         layeredPane.add(ytL , JLayeredPane.DRAG_LAYER);
-       /* layeredPane.add(vxT, JLayeredPane.DRAG_LAYER);
-        layeredPane.add(vxL , JLayeredPane.DRAG_LAYER);
-        layeredPane.add(vyT, JLayeredPane.DRAG_LAYER);
-        layeredPane.add(vyL , JLayeredPane.DRAG_LAYER);*/
         layeredPane.add(rT, JLayeredPane.DRAG_LAYER);
         layeredPane.add(rL , JLayeredPane.DRAG_LAYER);
         layeredPane.add(mukT, JLayeredPane.DRAG_LAYER);
@@ -297,14 +247,6 @@ public class InputScreen extends JFrame {
         layeredPane.add(mussL , JLayeredPane.DRAG_LAYER);
         layeredPane.add(heightFT, JLayeredPane.DRAG_LAYER);
         layeredPane.add(heightFL , JLayeredPane.DRAG_LAYER);
-        /*layeredPane.add(sandPitXL, JLayeredPane.DRAG_LAYER);
-        layeredPane.add(sandPitXMaxT , JLayeredPane.DRAG_LAYER);
-        layeredPane.add(sandPitXMinT, JLayeredPane.DRAG_LAYER);
-        layeredPane.add(greaterS , JLayeredPane.DRAG_LAYER);
-        layeredPane.add(sandPitYL, JLayeredPane.DRAG_LAYER);
-        layeredPane.add(sandPitYMaxT , JLayeredPane.DRAG_LAYER);
-        layeredPane.add(sandPitYMinT, JLayeredPane.DRAG_LAYER);
-        layeredPane.add(greaterS1 , JLayeredPane.DRAG_LAYER);*/
         layeredPane.add(sandPitsNumT, JLayeredPane.DRAG_LAYER);
         layeredPane.add(sandPitsNumL , JLayeredPane.DRAG_LAYER);
         layeredPane.add(treesNumT, JLayeredPane.DRAG_LAYER);
@@ -319,7 +261,6 @@ public class InputScreen extends JFrame {
         frame.add(layeredPane);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
     }
 
 
@@ -335,18 +276,13 @@ public class InputScreen extends JFrame {
 
               if (checkButton == user) {
                     userOrBot =0;
-                    System.out.println(userOrBot);
                 }
                 else if (checkButton ==basicBot ) {
-
                     userOrBot =1;
-                    System.out.println(userOrBot);
                 }
                 else if (checkButton == advancedBot )
                 {
-
                     userOrBot =2;
-                    System.out.println(userOrBot);
                 }
 
             }
@@ -365,19 +301,25 @@ public class InputScreen extends JFrame {
      * Run the game after the Play button is pressed and save the inputs for backEnd's use
      */
     public void runTheGame() {
+        // parse inputs
         App.gV = new Vector2(Float.parseFloat(x0T.getText()), Float.parseFloat(y0T.getText()));
         App.tV = new Vector2(Float.parseFloat(xtT.getText()), Float.parseFloat(ytT.getText()));
         App.tR = Float.parseFloat(rT.getText());
+        Terrain.kineticFriction = Float.parseFloat(mukT.getText());
+        Terrain.staticFriction = Float.parseFloat(musT.getText());
+        Sandpit.kineticFriction = Float.parseFloat(muksT.getText()); //TODO delete these?
+        Sandpit.staticFriction = Float.parseFloat(mussT.getText());
+        Terrain.NUMBER_OF_SANDPITS = Integer.parseInt(sandPitsNumT.getText());
+        Terrain.NUMBER_OF_TREES = Integer.parseInt(treesNumT.getText());
 
-        //TODO
-        muk = Float.parseFloat(mukT.getText());
-        mus = Float.parseFloat(musT.getText());
-        muks = Float.parseFloat(muksT.getText());
-        muss = Float.parseFloat(mussT.getText());
-        heightF = heightFT.getText();
-
-        App.NUMBER_OF_SANDPITS = Integer.parseInt(sandPitsNumT.getText());
-        App.NUMBER_OF_TREES = Integer.parseInt(treesNumT.getText());
+        // parse height function
+        String heightFunction = "";
+        for (int i = 0; i < heightFT.getText().length(); i++) {
+            if (heightFT.getText().charAt(i) != ' ') {
+                heightFunction += heightFT.getText().charAt(i);
+            }
+        }
+        Terrain.heightFunction = heightFunction;
         
         status = true;
     }

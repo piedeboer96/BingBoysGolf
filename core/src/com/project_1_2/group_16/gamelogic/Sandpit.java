@@ -2,8 +2,8 @@ package com.project_1_2.group_16.gamelogic;
 
 public class Sandpit {
 
-    public static final float kineticFriction = 10f * Terrain.kineticGrass;
-    public static final float staticFriction = 10f * Terrain.staticGrass;
+    public static float kineticFriction = 10f * Terrain.kineticFriction;
+    public static float staticFriction = 10f * Terrain.staticFriction;
     
     float minX, minY;
     float maxX, maxY;
