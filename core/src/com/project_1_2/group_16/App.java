@@ -76,6 +76,8 @@ public class App extends ApplicationAdapter {
 	private Environment environment;
 	private Theme theme;
 
+	// an integer that determines if the player is the user or the bot. If 0 then the user else if 1 then the basic bot else if 2 then the advanced bot.
+	public static int userOrBot = 0;
 	// constants
 	public static Color BACKGROUND;
 	public static final ColorAttribute AMBIENT_LIGHT = new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f);
