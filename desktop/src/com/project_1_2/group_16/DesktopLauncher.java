@@ -4,9 +4,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.project_1_2.group_16.titlescreen.TitleScreen;
 
-public class DesktopLauncher extends Thread {
-
-	public final static DesktopLauncher launch = new DesktopLauncher();
+public class DesktopLauncher {
 
 	public static void main (String[] arg) {
 		// configure os
@@ -27,20 +25,14 @@ public class DesktopLauncher extends Thread {
 		titleScreen.setUpGUI();
 		titleScreen.setUpButtonListeners();
 
+		// input screen buffer
 		while (titleScreen.inputScreen == null || !titleScreen.inputScreen.status) {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {e.printStackTrace();}
 		}
-		// launch the game
-		launch.start();
-	}
 
-	/**
-	 * Runs the application
-	 */
-	@Override
-	public void run() {
+		// launch the game
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setWindowedMode(Lwjgl3ApplicationConfiguration.getDisplayMode().width,
 				Lwjgl3ApplicationConfiguration.getDisplayMode().height);
