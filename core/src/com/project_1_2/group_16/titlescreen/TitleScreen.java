@@ -89,6 +89,7 @@ public class TitleScreen {
                 else if (checkButton == buttonQ )
                 {
                    frame.dispose();
+                   System.exit(0);
                 }
             }
         };

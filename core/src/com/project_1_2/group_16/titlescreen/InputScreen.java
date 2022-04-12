@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Sandpit;
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.misc.ANSI;
 
 public class InputScreen extends JFrame {
 
@@ -212,8 +213,8 @@ public class InputScreen extends JFrame {
         rT.setText("0.1");
         mukT.setText("0.08");
         musT.setText("0.2");
-        muksT.setText("0.16");
-        mussT.setText("0.4");
+        muksT.setText("0.32");
+        mussT.setText("0.8");
         heightFT.setText("0.4 * (0.9 - Math.pow(Math.E, -1*((x*x + y*y) / 8)))");
         sandPitsNumT.setText("0");
         treesNumT.setText("25");
@@ -301,6 +302,8 @@ public class InputScreen extends JFrame {
      * Run the game after the Play button is pressed and save the inputs for backEnd's use
      */
     public void runTheGame() {
+        System.out.println(ANSI.GREEN+"Launching game..."+ANSI.RESET+" (this may take a few seconds)");
+
         // parse inputs
         App.gV = new Vector2(Float.parseFloat(x0T.getText()), Float.parseFloat(y0T.getText()));
         App.tV = new Vector2(Float.parseFloat(xtT.getText()), Float.parseFloat(ytT.getText()));

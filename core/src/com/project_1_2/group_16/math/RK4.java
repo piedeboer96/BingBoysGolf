@@ -1,9 +1,11 @@
 package com.project_1_2.group_16.math;
 
+import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Collision;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.physics.Physics;
 
 public class RK4 implements NumericalSolver{
@@ -58,8 +60,23 @@ public class RK4 implements NumericalSolver{
             App.hitsCounter++;
         }
 
-        if(Collision.ballHitTree(sv)) {
+        Tree hittree = Collision.ballHitTree(sv);
+        if(hittree != null) {
             System.out.println("tree");
+
+            Vector2 vT = new Vector2(hittree.pos.x, hittree.pos.z);
+            Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
+
+            Vector2 rc1 = new Vector2(sv.velocity_x, sv.velocity_y).limit2(1f);
+            Vector2 rc2 = new Vector2(vT.x - vB.x, vB.y - vT.y).limit2(1f);
+        
+            float a = vB.dst(vB.x + 1f, (rc1.x / rc1.y) * vB.x + 1f);
+            float b = vB.dst(vB.x + 1f, (rc2.x / rc2.y) * vB.x + 1f);
+            float c = Vector2.dst(vB.x + 1f, (rc1.x / rc1.y) * vB.x + 1f, vB.x + 1f, (rc2.x / rc2.y) * vB.x + 1f);
+            float hitAngle = (float)Math.acos((a*a + b*b - c*c) / (2 * a * b));
+            System.out.println(hitAngle);
+            
+            //TODO
             sv.velocity_x *= -0.8f;
             sv.velocity_y *= -0.8f;
         }

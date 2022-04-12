@@ -14,9 +14,6 @@ public class DesktopLauncher extends Thread {
 			App.os_is_windows = true;
 		}
 
-		// set it false if you don't want to see the title and the input screen
-		boolean runTitleScreen = true;
-
 		/*Uncomment for floadFIll
 		long start = System.currentTimeMillis();
 		NavigationGraph.fillGraphTable();
@@ -25,18 +22,17 @@ public class DesktopLauncher extends Thread {
 		System.out.println("runtime: " + (end-start));
 		//System.out.println(Arrays.deepToString(matrixParcour));//*/
 
-		if (runTitleScreen) {
-			TitleScreen titleScreen = new TitleScreen();
-			titleScreen.setUpGUI();
-			titleScreen.setUpButtonListeners();
+		// create titlescreen
+		TitleScreen titleScreen = new TitleScreen();
+		titleScreen.setUpGUI();
+		titleScreen.setUpButtonListeners();
 
-			while (titleScreen.inputScreen == null || !titleScreen.inputScreen.status) {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {e.printStackTrace();}
-			}
+		while (titleScreen.inputScreen == null || !titleScreen.inputScreen.status) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {e.printStackTrace();}
 		}
-		// launch game
+		// launch the game
 		launch.start();
 	}
 

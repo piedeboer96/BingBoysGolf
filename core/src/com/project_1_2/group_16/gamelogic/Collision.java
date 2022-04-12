@@ -2,6 +2,7 @@ package com.project_1_2.group_16.gamelogic;
 
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.models.Flagpole;
+import com.project_1_2.group_16.models.Tree;
 
 public class Collision {
 
@@ -45,16 +46,16 @@ public class Collision {
     /**
      * Check if the ball has hit the tree
      * @param sv used to pull the position
-     * @return boolean, true if the ball inside the radius of the tree
+     * @return the tree the ball hit, if the ball didn't hit a tree it returns null
      */
-    public static boolean ballHitTree(StateVector sv) {
+    public static Tree ballHitTree(StateVector sv) {
         for (int i = 0; i < Terrain.NUMBER_OF_TREES; i++) {
             if (ballIsInTreeRadius(sv, Terrain.trees.get(i).pos.x, Terrain.trees.get(i).pos.z, Terrain.trees.get(i).r)) {
                 Terrain.trees.get(i).r *= 0.95;
-                return true;
+                return Terrain.trees.get(i);
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -90,8 +91,15 @@ public class Collision {
      * @param y y-coordinate
      */
     public static boolean isInSandPit(float x, float y) {
+        float r, dx, dy;
         for (Sandpit pit : Terrain.sandPits) {
-            if (x > pit.minX && x < pit.maxX && y > pit.minY && y < pit.maxY) {
+            r = pit.r;
+            dx = Math.abs(x - pit.x);
+            dy = Math.abs(y - pit.y);
+            if (dx + dy < r) {
+                return true;
+            } 
+            else if (((dx*dx) + (dy*dy)) < (r*r)) {
                 return true;
             }
         }

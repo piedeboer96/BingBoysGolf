@@ -30,7 +30,7 @@ public class Terrain {
     public static final Interpreter BSH = new Interpreter();
     private static String eval;
 
-    private static final float WATER_EDGE = App.FIELD_SIZE / 2 + App.TILE_SIZE;
+    public static final float WATER_EDGE = App.FIELD_SIZE / 2 + App.TILE_SIZE;
 
     /**
      * Here the height method is defined that gives the height based on x,y coordinates.
@@ -97,12 +97,14 @@ public class Terrain {
     public static void initSandPits() {
         Vector2 sV; float sX, sZ;
         for (int i = 0; i < NUMBER_OF_SANDPITS; i++) {
-            do { //TODO
+            do {
                 sX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
                 sZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
                 sV = new Vector2(sX, sZ);
-            } while (sV.dst(App.gV) < 4 || sV.dst(App.tV) < 4);
-            sandPits.add(new Sandpit(sX - 2f, sX + 2f, sZ - 2f, sZ + 2f));
+            } while (sV.dst(App.gV) < 2 || sV.dst(App.tV) < 2);
+            sandPits.add(new Sandpit(sX, sZ, 1f));
+            sandPits.add(new Sandpit(sX + (float)Math.random() * 1f - 0.5f, sZ + (float)Math.random() * 1f - 0.5f, 1f));
+            sandPits.add(new Sandpit(sX + (float)Math.random() * 1f - 0.5f, sZ + (float)Math.random() * 1f - 0.5f, 1f));
         }
     }
 
