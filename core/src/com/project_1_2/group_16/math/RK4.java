@@ -67,18 +67,18 @@ public class RK4 implements NumericalSolver{
             Vector2 vT = new Vector2(hittree.pos.x, hittree.pos.z);
             Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
 
-            Vector2 rc1 = new Vector2(sv.velocity_x, sv.velocity_y).limit2(1f);
-            Vector2 rc2 = new Vector2(vT.x - vB.x, vB.y - vT.y).limit2(1f);
-        
-            float a = vB.dst(vB.x + 1f, (rc1.x / rc1.y) * vB.x + 1f);
-            float b = vB.dst(vB.x + 1f, (rc2.x / rc2.y) * vB.x + 1f);
-            float c = Vector2.dst(vB.x + 1f, (rc1.x / rc1.y) * vB.x + 1f, vB.x + 1f, (rc2.x / rc2.y) * vB.x + 1f);
-            float hitAngle = (float)Math.acos((a*a + b*b - c*c) / (2 * a * b));
-            System.out.println(hitAngle);
-            
-            //TODO
-            sv.velocity_x *= -0.8f;
-            sv.velocity_y *= -0.8f;
+            if (vB.x > vT.x + hittree.r * 0.5) {
+                sv.velocity_x *= -.75;
+            }
+            else if (vB.x < vT.x - hittree.r * 0.5) {
+                sv.velocity_x *= -.75;
+            }
+            else if (vB.y > vT.y + hittree.r * 0.5) {
+                sv.velocity_y *= -.75;
+            }
+            else if (vB.y < vT.y - hittree.r * 0.5) {
+                sv.velocity_y *= -.75;
+            }
         }
 
         // check if the ball is still rolling
