@@ -10,28 +10,25 @@ import java.awt.event.ActionListener;
 
 public class TitleScreen {
 
-    JFrame frame;
-    JLabel picLabel;
-    JButton buttonY;
-    JButton buttonQ;
-    JLabel labelA;
-    JLayeredPane layeredPane;
-    public InputScreen inputScreen;
+    private JFrame frame;
+    private JLabel picLabel;
+    private JButton buttonY;
+    private JButton buttonQ;
+    private JLabel labelA;
+    private JLayeredPane layeredPane;
+    private InputScreen inputScreen;
 
-    static int width = 960;
-    static int height = 640;
+    private final int width = 960;
+    private final int height = 640;
 
     /**
      * Set up the main menu's GUI
      */
     public void setUpGUI() {
-
-        //defining fonts
+        //defining fonts and colors
         Font large = new Font("Serif",Font.BOLD,26);
         Font medium = new Font("Serif",Font.PLAIN,15);
-
         Color backGroundColor = new Color(59,87,72,255);
-        //Color fontColor = new Color(255,255,255,255);
 
         picLabel = new JLabel(new ImageIcon(App.os_is_windows ? "./assets/golfTheme.png" : "../assets/golfTheme.png"));
         picLabel.setBounds(0, 0, width, height);
@@ -75,19 +72,15 @@ public class TitleScreen {
 
     public void setUpButtonListeners() {
         ActionListener buttonListener = new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent ae) {
                 Object checkButton = ae.getSource();
-
                 if (checkButton == buttonY) {
                     inputScreen = new InputScreen();
                     inputScreen.setUpGUI();
                     frame.dispose();
                 }
-
-                else if (checkButton == buttonQ )
-                {
+                else if (checkButton == buttonQ) {
                    frame.dispose();
                    System.exit(0);
                 }
@@ -98,5 +91,13 @@ public class TitleScreen {
         buttonY.setFocusable(false);
         buttonQ.addActionListener(buttonListener);
         buttonQ.setFocusable(false);
+    }
+
+    /**
+     * Returns if the buffer for the input screen has ended
+     * @return
+     */
+    public boolean getBuffer() {
+        return inputScreen == null || !inputScreen.status;
     }
 }

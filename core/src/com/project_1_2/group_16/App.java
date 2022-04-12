@@ -33,6 +33,7 @@ import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.misc.ANSI;
+import com.project_1_2.group_16.misc.User;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tile;
@@ -76,8 +77,6 @@ public class App extends ApplicationAdapter {
 	private Environment environment;
 	private Theme theme;
 
-	// an integer that determines if the player is the user or the bot. If 0 then the user else if 1 then the basic bot else if 2 then the advanced bot.
-	public static int userOrBot = 0;
 	// constants
 	public static Color BACKGROUND;
 	public static final ColorAttribute AMBIENT_LIGHT = new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f);
@@ -101,9 +100,10 @@ public class App extends ApplicationAdapter {
 	public static Vector2 prevPos;
 
 	// input
-	public static Vector2 gV = new Vector2(-3f, 0f);
-	public static Vector2 tV = new Vector2(4f, 1f);
-	public static float tR = 0.1f;
+	public static Vector2 gV;
+	public static Vector2 tV;
+	public static float tR;
+	public static User user;
 
 	// util
 	private final Vector3 v = new Vector3();
@@ -155,23 +155,20 @@ public class App extends ApplicationAdapter {
 		this.ch4 = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - SCREEN_HEIGHT / 100);
 
 		// create golf ball
-		this.golfball = new Golfball(this.modelBuilder, null, this.theme);
+		this.golfball = new Golfball(this.modelBuilder, this.theme);
 		this.golfball.setPosition(gV.x, Terrain.getHeight(gV.x, gV.y), gV.y);
-		this.instances.add(this.golfball.instance);
+		this.instances.add(this.golfball.getInstance());
 
 		// create flag
 		App.flagpole = new Flagpole
 		(this.modelBuilder, new Vector3(tV.x, Terrain.getHeight(tV.x, tV.y), tV.y), tR, this.theme);
 		App.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
-		this.instances.add(App.flagpole.instance);
+		this.instances.add(App.flagpole.getInstance());
 
 		// create trees
-		assets.load(this.theme.treeModel(), Model.class);
-		assets.finishLoading();
-		Model tree = assets.get(this.theme.treeModel(), Model.class);
-		Terrain.initTrees(tree);
+		Terrain.initTrees(this.theme.treeModel(assets));
 		for (int i = 0; i < Terrain.NUMBER_OF_TREES; i++) {
-			this.instances.add(Terrain.trees.get(i).instance);
+			this.instances.add(Terrain.trees.get(i).getInstance());
 		}
 
 		// create ball camera
@@ -181,7 +178,7 @@ public class App extends ApplicationAdapter {
 		this.ballCam.far = RENDER_DISTANCE;
 		this.ballCam.lookAt(gV.x, Terrain.getHeight(gV.x, gV.y), gV.y);
 		this.ballCam.update();
-		this.golfball.cam = this.ballCam;
+		this.golfball.setCamera(this.ballCam);
 		this.ballMovement = new BallCamera(this.ballCam, this.golfball);
 		Gdx.input.setInputProcessor(this.ballMovement);
 
@@ -352,7 +349,7 @@ public class App extends ApplicationAdapter {
 			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.waterColor()));
 		}
 		else if (Collision.isInSandPit(x, z)) { // sandpit texture
-			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.sandPitColor()));
+			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.sandColor()));
 		}
 		else { // grass texture (depending on height)
 			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.grassColor(height)));

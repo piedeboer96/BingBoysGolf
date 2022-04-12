@@ -1,5 +1,6 @@
 package com.project_1_2.group_16.themes;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -9,14 +10,14 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 
 public class DefaultTheme implements Theme {
 
-    private final Material golfball = new Material(ColorAttribute.createDiffuse(Color.WHITE)); 
     private final Color sky = new Color(178f / 255, 255f / 255, 255f / 255, 1f);
     private final Color water = new Color(0.1098f, 0.6392f, 0.9254f, 1f);
     private final Color sand = new Color(0.9411f, 0.9411f, 0.4313f, 1f);
 
     @Override
-    public Material golfballMaterial() {
-        return this.golfball;
+    public Model golfballModel(ModelBuilder builder, float size) {
+        Material golfball = new Material(ColorAttribute.createDiffuse(Color.WHITE));
+        return builder.createSphere(size, size, size, 10, 10, golfball, Usage.Position + Usage.Normal);
     }
 
     @Override
@@ -39,9 +40,15 @@ public class DefaultTheme implements Theme {
     }
 
     @Override
+    public Model treeModel(AssetManager assets) {
+        assets.load("tree_model_default.g3dj", Model.class);
+        assets.finishLoading();
+        return assets.get("tree_model_default.g3dj", Model.class);
+    }
+
+    @Override
     public Color grassColor(float height) {
-        float greenValue = (100 + height * 100) / 255f;
-        return new Color(0.1568f, greenValue, 0.1568f, 1f);
+        return new Color(0.1568f, (100 + height * 100) / 255f, 0.1568f, 1f);
     }
 
     @Override
@@ -55,13 +62,7 @@ public class DefaultTheme implements Theme {
     }
 
     @Override
-    public Color sandPitColor() {
+    public Color sandColor() {
         return this.sand;
     }
-
-    @Override
-    public String treeModel() {
-        return "tree_model_default.g3dj";
-    }
-    
 }

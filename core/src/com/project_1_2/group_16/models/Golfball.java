@@ -1,8 +1,6 @@
 package com.project_1_2.group_16.models;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
@@ -13,33 +11,23 @@ import com.project_1_2.group_16.themes.Theme;
 public class Golfball {
 
     /**
-     * The model of the golfball.
-     */
-    public Model model;
-
-    /**
-     * The modelinstance of the golfball.
-     */
-    public ModelInstance instance;
-
-    /**
-     * The reference to the camera that is attached to the golfball.
-     */
-    public Camera cam;
-
-    /**
      * The radius of the golfball.
      */
     public static final float SIZE = 0.1f;
-
-    // util
-    private final Vector3 v = new Vector3();
     
-    public Golfball(ModelBuilder builder, Camera cam, Theme theme) {
-        Material golfBallMaterial = theme.golfballMaterial();
-		this.model = builder.createSphere(SIZE, SIZE, SIZE, 10, 10, golfBallMaterial, Usage.Position + Usage.Normal);
+    private Model model;
+    private ModelInstance instance;
+    private Camera cam;
+    private Vector3 util = new Vector3();
+    
+    /**
+     * Create a golfball object, used both in front- and back-end.
+     * @param builder a modelbuilder for creating the model
+     * @param theme the textures of the golfball
+     */
+    public Golfball(ModelBuilder builder, Theme theme) {
+		this.model = theme.golfballModel(builder, Golfball.SIZE);
         this.instance = new ModelInstance(model);
-        this.cam = cam;
     }
 
     /**
@@ -48,6 +36,30 @@ public class Golfball {
      */
     public Vector3 getPosition() {
         return this.instance.transform.getTranslation(new Vector3());
+    }
+
+    /**
+     * Get the model of the golfball
+     * @return a model object
+     */
+    public Model getModel() {
+        return this.model;
+    }
+
+    /**
+     * Get the instance of the model of the golfball
+     * @return a modelinstance object
+     */
+    public ModelInstance getInstance() {
+        return this.instance;
+    }
+
+    /**
+     * Set the camera to follow the golfball
+     * @param cam a camera reference
+     */
+    public void setCamera(Camera cam) {
+        this.cam = cam;
     }
 
     /**
@@ -99,9 +111,9 @@ public class Golfball {
      * @return position for chaining
      */
     public Vector3 move(float dX, float dZ) {
-        this.v.set(this.getPosition());
-		this.setPosition(this.v.x + dX, Terrain.getHeight(this.v.x + dX, this.v.z + dZ) + SIZE / 2, this.v.z + dZ);
-		this.cam.translate(this.getPosition().sub(this.v));
+        this.util.set(this.getPosition());
+		this.setPosition(this.util.x + dX, Terrain.getHeight(this.util.x + dX, this.util.z + dZ) + SIZE / 2, this.util.z + dZ);
+		this.cam.translate(this.getPosition().sub(this.util));
 		this.cam.update();
         return this.getPosition();
     }
@@ -113,7 +125,7 @@ public class Golfball {
      * @return position for chaining
      */
     public Vector3 moveTo(float x, float z) {
-        this.v.set(this.getPosition());
-        return this.move(x - this.v.x, z - this.v.z);
+        this.util.set(this.getPosition());
+        return this.move(x - this.util.x, z - this.util.z);
     }
 }

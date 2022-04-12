@@ -26,7 +26,7 @@ public class DesktopLauncher {
 		titleScreen.setUpButtonListeners();
 
 		// input screen buffer
-		while (titleScreen.inputScreen == null || !titleScreen.inputScreen.status) {
+		while (titleScreen.getBuffer()) {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {e.printStackTrace();}

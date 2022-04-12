@@ -22,9 +22,6 @@ public class RK4 implements NumericalSolver{
         App.pos_x = sv.pos_x;
         App.pos_y = sv.pos_y;
 
-        float vel_x0 = sv.velocity_x;
-        float vel_y0 = sv.velocity_y;
-
         float vel_x1, vel_y1, pos_y1, pos_x1;
 
         Derivation k1, k2, k3, k4;
@@ -64,19 +61,19 @@ public class RK4 implements NumericalSolver{
         if(hittree != null) {
             System.out.println("tree");
 
-            Vector2 vT = new Vector2(hittree.pos.x, hittree.pos.z);
+            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
             Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
 
-            if (vB.x > vT.x + hittree.r * 0.5) {
+            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
                 sv.velocity_x *= -.75;
             }
-            else if (vB.x < vT.x - hittree.r * 0.5) {
+            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
                 sv.velocity_x *= -.75;
             }
-            else if (vB.y > vT.y + hittree.r * 0.5) {
+            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
                 sv.velocity_y *= -.75;
             }
-            else if (vB.y < vT.y - hittree.r * 0.5) {
+            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
                 sv.velocity_y *= -.75;
             }
         }

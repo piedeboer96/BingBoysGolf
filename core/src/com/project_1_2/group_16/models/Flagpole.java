@@ -9,26 +9,20 @@ import com.project_1_2.group_16.themes.Theme;
 
 public class Flagpole {
 
-    /**
-     * The model.
-     */
-    public Model model;
-
-    /**
-     * The modelinstance.
-     */
-    public ModelInstance instance;
-
-    /**
-     * Radius of the hole
-     */
-    public float r;
-
-    // util
-    private final Vector3 pos = new Vector3();
+    private Model model;
+    private ModelInstance instance;
+    private float r;
+    private Vector3 pos = new Vector3();
     
+    /**
+     * Create a flagpole object, which represents the flagpole and hole visible on the course. 
+     * Has attributes used both in front- and back-end.
+     * @param builder the modelbuilder used for creating the model
+     * @param pos the position of the hole
+     * @param r the radius of the hole
+     * @param theme textures used for the flagpole model
+     */
     public Flagpole(ModelBuilder builder, Vector3 pos, float r, Theme theme) {
-        // flag
         this.model = theme.flagModel(builder, r);
         this.instance = new ModelInstance(this.model);
         this.r = r;
@@ -42,6 +36,30 @@ public class Flagpole {
      */
     public Vector3 getPosition() {
         return this.pos;
+    }
+
+    /**
+     * Get the model of the flagpole
+     * @return a model object
+     */
+    public Model getModel() {
+        return this.model;
+    }
+
+    /**
+     * Get the model instance of the model
+     * @return a modelinstance object
+     */
+    public ModelInstance getInstance() {
+        return this.instance;
+    }
+
+    /**
+     * Get the radius of the hole
+     * @return a floating point number
+     */
+    public float getRadius() {
+        return this.r;
     }
 
     /**
@@ -66,12 +84,17 @@ public class Flagpole {
 	 * @return the angle between v1 and v2 between origin
 	 */
 	private float angleBetween(Vector3 origin, Vector3 v1, Vector3 v2) {
+        // remove the y-coordinate from all vectors
 		Vector2 origin2 = new Vector2(origin.x, origin.z);
 		Vector2 v12 = new Vector2(v1.x, v1.z);
 		Vector2 v22 = new Vector2(v2.x, v2.z);
+
+        // distances between all points
 		float a = origin2.dst(v12);
 		float b = origin2.dst(v22);
 		float c = v12.dst(v22);
-		return (float)Math.acos((a*a + b*b - c*c) / (2 * a * b)); // law of cosines
+
+        // calculate the angle using the law of cosines
+		return (float)Math.acos((a*a + b*b - c*c) / (2 * a * b));
 	}
 }

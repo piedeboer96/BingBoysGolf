@@ -60,19 +60,19 @@ public class Euler implements NumericalSolver {
         if (hittree != null) {
             System.out.println("tree");
 
-            Vector2 vT = new Vector2(hittree.pos.x, hittree.pos.z);
+            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
             Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
 
-            if (vB.x > vT.x + hittree.r * 0.5) {
+            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
                 sv.velocity_x *= -.75;
             }
-            else if (vB.x < vT.x - hittree.r * 0.5) {
+            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
                 sv.velocity_x *= -.75;
             }
-            else if (vB.y > vT.y + hittree.r * 0.5) {
+            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
                 sv.velocity_y *= -.75;
             }
-            else if (vB.y < vT.y - hittree.r * 0.5) {
+            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
                 sv.velocity_y *= -.75;
             }
         }

@@ -14,7 +14,7 @@ public class Collision {
      */
     public static boolean ballIsInTargetRadius(StateVector sv, Flagpole t) {
 
-        float R = t.r;
+        float R = t.getRadius();
         float dx = Math.abs(sv.pos_x - t.getPosition().x);
         float dy = Math.abs(sv.pos_y - t.getPosition().z);
 
@@ -50,8 +50,7 @@ public class Collision {
      */
     public static Tree ballHitTree(StateVector sv) {
         for (int i = 0; i < Terrain.NUMBER_OF_TREES; i++) {
-            if (ballIsInTreeRadius(sv, Terrain.trees.get(i).pos.x, Terrain.trees.get(i).pos.z, Terrain.trees.get(i).r)) {
-                Terrain.trees.get(i).r *= 0.95;
+            if (ballIsInTreeRadius(sv, Terrain.trees.get(i))) {
                 return Terrain.trees.get(i);
             }
         }
@@ -67,10 +66,10 @@ public class Collision {
      * @param treeRadius
      * @return
      */
-    public static boolean ballIsInTreeRadius(StateVector sv, float treeCenterX, float treeCenterY, float treeRadius) {
-        float R = treeRadius;
-        float dx = Math.abs(sv.pos_x - treeCenterX);
-        float dy = Math.abs(sv.pos_y - treeCenterY);
+    public static boolean ballIsInTreeRadius(StateVector sv, Tree tree) {
+        float R = tree.getRadius();
+        float dx = Math.abs(sv.pos_x - tree.getPosition().x);
+        float dy = Math.abs(sv.pos_y - tree.getPosition().z);
 
         if (dx + dy < R) {
             return true;

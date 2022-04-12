@@ -10,11 +10,6 @@ import com.badlogic.gdx.math.Vector3;
 public class FreeCamera implements InputProcessor {
 
     /**
-     * Camera reference.
-     */
-    private Camera camera;
-
-    /**
      * The camera sensitivity.
      */
 	private final float rotateSpeed = 0.1f;
@@ -24,8 +19,8 @@ public class FreeCamera implements InputProcessor {
      */
     private final float movementSpeed = 1.5f;
 
-    // utils
-    private final Vector3 v = new Vector3();
+    private Camera camera;
+    private Vector3 util = new Vector3();
     private int dragX, dragY;
 
     public FreeCamera(Camera camera) {
@@ -64,82 +59,87 @@ public class FreeCamera implements InputProcessor {
      */
     public void move(Input input, float dT) {
         if (input.isKeyPressed(Keys.W)) { // move forward
-            this.v.set(this.camera.direction);
-            this.v.x *= movementSpeed * dT;
-            this.v.y = 0f;
-            this.v.z *= movementSpeed * dT;
-            this.camera.translate(v);
+            this.util.set(this.camera.direction);
+            this.util.x *= movementSpeed * dT;
+            this.util.y = 0f;
+            this.util.z *= movementSpeed * dT;
+            this.camera.translate(util);
             this.camera.update();
         }
-        if (input.isKeyPressed(Keys.UP)) { // move forward
-            this.v.set(this.camera.direction);
-            this.v.x *= movementSpeed * dT;
-            this.v.y = 0f;
-            this.v.z *= movementSpeed * dT;
-            this.camera.translate(v);
+        else if (input.isKeyPressed(Keys.UP)) { // move forward
+            this.util.set(this.camera.direction);
+            this.util.x *= movementSpeed * dT;
+            this.util.y = 0f;
+            this.util.z *= movementSpeed * dT;
+            this.camera.translate(util);
             this.camera.update();
         }
+
         if (input.isKeyPressed(Keys.S)) { // move backward
-            this.v.set(this.camera.direction);
-            this.v.x *= -movementSpeed * dT;
-            this.v.y = 0f;
-            this.v.z *= -movementSpeed * dT;
-            this.camera.translate(v);
+            this.util.set(this.camera.direction);
+            this.util.x *= -movementSpeed * dT;
+            this.util.y = 0f;
+            this.util.z *= -movementSpeed * dT;
+            this.camera.translate(util);
             this.camera.update();
         }
-        if (input.isKeyPressed(Keys.DOWN)) { // move backward
-            this.v.set(this.camera.direction);
-            this.v.x *= -movementSpeed * dT;
-            this.v.y = 0f;
-            this.v.z *= -movementSpeed * dT;
-            this.camera.translate(v);
+        else if (input.isKeyPressed(Keys.DOWN)) { // move backward
+            this.util.set(this.camera.direction);
+            this.util.x *= -movementSpeed * dT;
+            this.util.y = 0f;
+            this.util.z *= -movementSpeed * dT;
+            this.camera.translate(util);
             this.camera.update();
         }
+
         if (input.isKeyPressed(Keys.A)) { // move left
-            this.v.set(this.camera.direction);
-            this.v.x *= movementSpeed * dT;
-            this.v.y = 0f;
-            this.v.z *= movementSpeed * dT;
-            this.v.rotate(Vector3.Y, 90);
-            this.camera.translate(v);
+            this.util.set(this.camera.direction);
+            this.util.x *= movementSpeed * dT;
+            this.util.y = 0f;
+            this.util.z *= movementSpeed * dT;
+            this.util.rotate(Vector3.Y, 90);
+            this.camera.translate(util);
             this.camera.update();
         }
-        if (input.isKeyPressed(Keys.LEFT)) { // move left
-            this.v.set(this.camera.direction);
-            this.v.x *= movementSpeed * dT;
-            this.v.y = 0f;
-            this.v.z *= movementSpeed * dT;
-            this.v.rotate(Vector3.Y, 90);
-            this.camera.translate(v);
+        else if (input.isKeyPressed(Keys.LEFT)) { // move left
+            this.util.set(this.camera.direction);
+            this.util.x *= movementSpeed * dT;
+            this.util.y = 0f;
+            this.util.z *= movementSpeed * dT;
+            this.util.rotate(Vector3.Y, 90);
+            this.camera.translate(util);
             this.camera.update();
         }
+
         if (input.isKeyPressed(Keys.D)) { // move right
-            this.v.set(this.camera.direction);
-            this.v.x *= movementSpeed * dT;
-            this.v.y = 0f;
-            this.v.z *= movementSpeed * dT;
-            this.v.rotate(Vector3.Y, -90);
-            this.camera.translate(v);
+            this.util.set(this.camera.direction);
+            this.util.x *= movementSpeed * dT;
+            this.util.y = 0f;
+            this.util.z *= movementSpeed * dT;
+            this.util.rotate(Vector3.Y, -90);
+            this.camera.translate(util);
             this.camera.update();
         }
-        if (input.isKeyPressed(Keys.RIGHT)) { // move right
-            this.v.set(this.camera.direction);
-            this.v.x *= movementSpeed * dT;
-            this.v.y = 0f;
-            this.v.z *= movementSpeed * dT;
-            this.v.rotate(Vector3.Y, -90);
-            this.camera.translate(v);
+        else if (input.isKeyPressed(Keys.RIGHT)) { // move right
+            this.util.set(this.camera.direction);
+            this.util.x *= movementSpeed * dT;
+            this.util.y = 0f;
+            this.util.z *= movementSpeed * dT;
+            this.util.rotate(Vector3.Y, -90);
+            this.camera.translate(util);
             this.camera.update();
         }
+
         if (input.isKeyPressed(Keys.SPACE)) { // move up
             this.camera.translate(0, movementSpeed * dT, 0);
             this.camera.update();
         }
+
         if (input.isKeyPressed(Keys.SHIFT_LEFT)) { // move down
             this.camera.translate(0, -movementSpeed * dT, 0);
             this.camera.update();
         }
-        if (input.isKeyPressed(Keys.SHIFT_RIGHT)) { // move down
+        else if (input.isKeyPressed(Keys.SHIFT_RIGHT)) { // move down
             this.camera.translate(0, -movementSpeed * dT, 0);
             this.camera.update();
         }

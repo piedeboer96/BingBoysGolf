@@ -9,63 +9,53 @@ import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Sandpit;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.misc.ANSI;
+import com.project_1_2.group_16.misc.User;
 
 public class InputScreen extends JFrame {
 
-    int width = 370;
-    int height = 650;
-    JFrame frame;
-    JLayeredPane layeredPane;
-    JLabel backGround;
-    JButton buttonP;
-    JRadioButton user;
-    JRadioButton basicBot;
-    JRadioButton advancedBot;
-    ButtonGroup buttonGroup;
-    JLabel labelA = new JLabel("Who will play?");
-    Font large;
-    public boolean status;
-    static int userOrBot = 0;
+    private JFrame frame;
+    private JLayeredPane layeredPane;
+    private JLabel backGround;
+    private JButton buttonP;
+    private JRadioButton user;
+    private JRadioButton basicBot;
+    private JRadioButton advancedBot;
+    private ButtonGroup buttonGroup;
+    private JLabel labelA = new JLabel("Who will play?");
+    private Font large;
+
+    private final int width = 370;
+    private final int height = 650;
+
+    boolean status;
     
     //Initiate text boxes for the inputs
-    JTextField x0T = new JTextField();
-    JTextField y0T = new JTextField();
-    JTextField xtT = new JTextField();
-    JTextField ytT = new JTextField();
-    JTextField vxT = new JTextField();
-    JTextField vyT = new JTextField();
-    JTextField rT = new JTextField();
-    JTextField mukT = new JTextField();
-    JTextField musT = new JTextField();
-    JTextField muksT = new JTextField();
-    JTextField mussT = new JTextField();
-    JTextField heightFT = new JTextField();
-    JTextField sandPitXMinT = new JTextField();
-    JTextField sandPitXMaxT = new JTextField();
-    JTextField sandPitYMinT = new JTextField();
-    JTextField sandPitYMaxT = new JTextField();
-    JTextField treesNumT = new JTextField();
-    JTextField sandPitsNumT = new JTextField();
+    private JTextField x0T = new JTextField();
+    private JTextField y0T = new JTextField();
+    private JTextField xtT = new JTextField();
+    private JTextField ytT = new JTextField();
+    private JTextField rT = new JTextField();
+    private JTextField mukT = new JTextField();
+    private JTextField musT = new JTextField();
+    private JTextField muksT = new JTextField();
+    private JTextField mussT = new JTextField();
+    private JTextField heightFT = new JTextField();
+    private JTextField treesNumT = new JTextField();
+    private JTextField sandPitsNumT = new JTextField();
 
     //Initiate labels for the inputs
-    JLabel x0L = new JLabel("x0: ");
-    JLabel y0L = new JLabel("y0: ");
-    JLabel xtL = new JLabel("xt: ");
-    JLabel ytL = new JLabel("yt: ");
-    JLabel vxL = new JLabel("vx: ");
-    JLabel vyL = new JLabel("vy: ");
-    JLabel rL = new JLabel("r: ");
-    JLabel mukL = new JLabel("muk: ");
-    JLabel musL = new JLabel("mus: ");
-    JLabel muksL = new JLabel("muks: ");
-    JLabel mussL = new JLabel("muss: ");
-    JLabel heightFL = new JLabel("heightProfile: ");
-   /* JLabel sandPitXL = new JLabel("sandPitX : ");
-    JLabel sandPitYL = new JLabel("sandPitY: ");
-    JLabel greaterS = new JLabel(" < X < ");
-    JLabel greaterS1 = new JLabel("  < Y < ");*/
-    JLabel treesNumL = new JLabel("Number of trees:");
-    JLabel sandPitsNumL = new JLabel("Number of sandpits:");
+    private JLabel x0L = new JLabel("x0: ");
+    private JLabel y0L = new JLabel("y0: ");
+    private JLabel xtL = new JLabel("xt: ");
+    private JLabel ytL = new JLabel("yt: ");
+    private JLabel rL = new JLabel("r: ");
+    private JLabel mukL = new JLabel("muk: ");
+    private JLabel musL = new JLabel("mus: ");
+    private JLabel muksL = new JLabel("muks: ");
+    private JLabel mussL = new JLabel("muss: ");
+    private JLabel heightFL = new JLabel("heightProfile: ");
+    private JLabel treesNumL = new JLabel("Number of trees:");
+    private JLabel sandPitsNumL = new JLabel("Number of sandpits:");
 
     /**
      * Set up the input screen's GUI
@@ -83,7 +73,6 @@ public class InputScreen extends JFrame {
         advancedBot = new JRadioButton("Advanced bot");
         buttonGroup = new ButtonGroup();
 
-        // The next lines of code will set bounds, colors and other stuff for ALL the GUI's components
         labelA.setFont(large);
         labelA.setBackground(backGroundColor);
         labelA.setForeground(fontColor);
@@ -133,20 +122,17 @@ public class InputScreen extends JFrame {
         x0L.setBounds(70, 100, 30, 25);
         x0T.setBounds(100, 100, 50, 25);
 
-
         y0L.setFont(large);
         y0L.setBackground(Color.decode("#676d88"));
         y0L.setForeground(fontColor);
         y0L.setBounds(205, 100, 30, 25);
         y0T.setBounds(235, 100, 50, 25);
 
-
         xtL.setFont(large);
         xtL.setBackground(Color.decode("#676d88"));
         xtL.setForeground(fontColor);
         xtL.setBounds(70, 145, 30, 25);
         xtT.setBounds(100, 145, 50, 25);
-
 
         ytL.setFont(large);
         ytL.setBackground(Color.decode("#676d88"));
@@ -172,7 +158,6 @@ public class InputScreen extends JFrame {
         musL.setBounds(185, 235, 50, 25);
         musT.setBounds(235, 235, 50, 25);
 
-
         muksL.setFont(large);
         muksL.setBackground(Color.decode("#676d88"));
         muksL.setForeground(fontColor);
@@ -185,13 +170,11 @@ public class InputScreen extends JFrame {
         mussL.setBounds(180, 280, 55, 25);
         mussT.setBounds(235, 280, 50, 25);
 
-
         heightFL.setFont(large);
         heightFL.setBackground(Color.decode("#676d88"));
         heightFL.setForeground(fontColor);
         heightFL.setBounds(45, 325, 120, 25);
         heightFT.setBounds(153, 325, 136, 25);
-
 
         sandPitsNumL.setFont(large);
         sandPitsNumL.setBackground(Color.decode("#676d88"));
@@ -205,20 +188,8 @@ public class InputScreen extends JFrame {
         treesNumL.setBounds(45, 415, 140, 25);
         treesNumT.setBounds(185, 415, 40, 25);
 
-        // set the default values to be shown in the GUI
-        x0T.setText("-3");
-        y0T.setText("0");
-        xtT.setText("4");
-        ytT.setText("1");
-        rT.setText("0.1");
-        mukT.setText("0.08");
-        musT.setText("0.2");
-        muksT.setText("0.32");
-        mussT.setText("0.8");
-        heightFT.setText("0.4 * (0.9 - Math.pow(Math.E, -1*((x*x + y*y) / 8)))");
-        sandPitsNumT.setText("0");
-        treesNumT.setText("25");
-
+        // default values
+        this.initDefaultValues();
 
         // Adding components to the container
         layeredPane.setBounds(0, 0, width, height);
@@ -264,28 +235,23 @@ public class InputScreen extends JFrame {
         frame.setVisible(true);
     }
 
-
     /**
      * Set up action listeners for the radio buttons
      */
     public void setUpButtonListeners() {
         ActionListener buttonListener = new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent ae) {
                 Object checkButton = ae.getSource();
-
-              if (checkButton == user) {
-                    userOrBot =0;
+                if (checkButton == user) {
+                    App.user = User.USER;
                 }
-                else if (checkButton ==basicBot ) {
-                    userOrBot =1;
+                else if (checkButton == basicBot) {
+                    App.user = User.BASIC_BOT;
                 }
-                else if (checkButton == advancedBot )
-                {
-                    userOrBot =2;
+                else if (checkButton == advancedBot) {
+                    App.user = User.ADVANCED_BOT;
                 }
-
             }
         };
 
@@ -301,7 +267,7 @@ public class InputScreen extends JFrame {
     /**
      * Run the game after the Play button is pressed and save the inputs for backEnd's use
      */
-    public void runTheGame() {
+    private void runTheGame() {
         System.out.println(ANSI.GREEN+"Launching game..."+ANSI.RESET+" (this may take a few seconds)");
 
         // parse inputs
@@ -310,7 +276,7 @@ public class InputScreen extends JFrame {
         App.tR = Float.parseFloat(rT.getText());
         Terrain.kineticFriction = Float.parseFloat(mukT.getText());
         Terrain.staticFriction = Float.parseFloat(musT.getText());
-        Sandpit.kineticFriction = Float.parseFloat(muksT.getText()); //TODO delete these?
+        Sandpit.kineticFriction = Float.parseFloat(muksT.getText());
         Sandpit.staticFriction = Float.parseFloat(mussT.getText());
         Terrain.NUMBER_OF_SANDPITS = Integer.parseInt(sandPitsNumT.getText());
         Terrain.NUMBER_OF_TREES = Integer.parseInt(treesNumT.getText());
@@ -324,6 +290,24 @@ public class InputScreen extends JFrame {
         }
         Terrain.heightFunction = heightFunction;
         
-        status = true;
+        this.status = true;
+    }
+
+    /**
+     * All the default values visible on the input screen
+     */
+    private void initDefaultValues() {
+        x0T.setText("-3");
+        y0T.setText("0");
+        xtT.setText("4");
+        ytT.setText("1");
+        rT.setText("0.1");
+        mukT.setText("0.08");
+        musT.setText("0.2");
+        muksT.setText("0.32");
+        mussT.setText("0.8");
+        heightFT.setText("0.4 * (0.9 - Math.pow(Math.E, -1*((x*x + y*y) / 8)))");
+        sandPitsNumT.setText("3");
+        treesNumT.setText("15");
     }
 }
