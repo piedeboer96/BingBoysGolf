@@ -1,4 +1,4 @@
-package com.project_1_2.group_16.physics.models;
+package com.project_1_2.group_16.models;
 
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;

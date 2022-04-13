@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.physics.models.Golfball;
+import com.project_1_2.group_16.models.Golfball;
 
 public class BallCamera implements InputProcessor {
 
@@ -31,7 +31,7 @@ public class BallCamera implements InputProcessor {
     public boolean shoot;
 
     // utils
-    private final Vector3 v = new Vector3();
+    private Vector3 util = new Vector3();
     private float startX, startY;
 
     public BallCamera(Camera camera, Golfball golfBall) {
@@ -52,8 +52,8 @@ public class BallCamera implements InputProcessor {
 		final float deltaY = (this.startY - screenY) / Gdx.graphics.getHeight();
 		this.startX = screenX;
 		this.startY = screenY;
-        this.v.set(camera.direction).crs(camera.up).y = 0f;
-		this.camera.rotateAround(this.golfBall.getPosition(), this.v.nor(), deltaY * 360);
+        this.util.set(camera.direction).crs(camera.up).y = 0f;
+		this.camera.rotateAround(this.golfBall.getPosition(), this.util.nor(), deltaY * 360);
 		this.camera.rotateAround(this.golfBall.getPosition(), Vector3.Y, deltaX * -360);
         this.camera.update();
         return true;

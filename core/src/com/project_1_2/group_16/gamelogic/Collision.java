@@ -1,8 +1,8 @@
 package com.project_1_2.group_16.gamelogic;
 
 import com.project_1_2.group_16.math.StateVector;
-import com.project_1_2.group_16.physics.models.Flagpole;
-import com.project_1_2.group_16.physics.models.Tree;
+import com.project_1_2.group_16.models.Flagpole;
+import com.project_1_2.group_16.models.Tree;
 
 public class Collision {
 
@@ -92,9 +92,9 @@ public class Collision {
     public static boolean isInSandPit(float x, float y) {
         float r, dx, dy;
         for (Sandpit pit : Terrain.sandPits) {
-            r = pit.r;
-            dx = Math.abs(x - pit.x);
-            dy = Math.abs(y - pit.y);
+            r = pit.getRadius();
+            dx = Math.abs(x - pit.getPosition().x);
+            dy = Math.abs(y - pit.getPosition().y);
             if (dx + dy < r) {
                 return true;
             } 

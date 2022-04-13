@@ -5,7 +5,7 @@ import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Collision;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.physics.models.Tree;
+import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.physics.Acceleration;
 import com.project_1_2.group_16.physics.Physics;
 
