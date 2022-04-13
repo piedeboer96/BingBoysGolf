@@ -3,13 +3,17 @@ package com.project_1_2.group_16.titlescreen;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import javax.swing.*;
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.ai.FloodFill;
 import com.project_1_2.group_16.gamelogic.Sandpit;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.misc.User;
+
+import static com.project_1_2.group_16.ai.FloodFill.matrixParcour;
 
 public class InputScreen extends JFrame {
 
@@ -289,6 +293,13 @@ public class InputScreen extends JFrame {
             }
         }
         Terrain.heightFunction = heightFunction;
+
+        long start = System.currentTimeMillis();
+		FloodFill.fillGraphTable();
+		FloodFill.floodFill((int)FloodFill.flood_i,(int)FloodFill.flood_j);
+		long end = System.currentTimeMillis();
+		System.out.println("runtime: " + (end-start));
+		System.out.println(Arrays.deepToString(matrixParcour));
         
         this.status = true;
     }

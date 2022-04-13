@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.models.Golfball;
+import com.project_1_2.group_16.physics.models.Golfball;
 
 public class BallCamera implements InputProcessor {
 

@@ -1,8 +1,8 @@
 package com.project_1_2.group_16.gamelogic;
 
 import com.project_1_2.group_16.math.StateVector;
-import com.project_1_2.group_16.models.Flagpole;
-import com.project_1_2.group_16.models.Tree;
+import com.project_1_2.group_16.physics.models.Flagpole;
+import com.project_1_2.group_16.physics.models.Tree;
 
 public class Collision {
 

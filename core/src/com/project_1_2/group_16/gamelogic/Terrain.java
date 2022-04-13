@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.misc.ANSI;
-import com.project_1_2.group_16.models.Tree;
+import com.project_1_2.group_16.physics.models.Tree;
 
 import bsh.EvalError;
 import bsh.Interpreter;

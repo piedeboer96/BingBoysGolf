@@ -2,7 +2,7 @@ package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.models.Golfball;
+import com.project_1_2.group_16.physics.models.Golfball;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -33,29 +33,30 @@ public class FloodFill {
     public static void floodFill(int x, int y){
 
         // Creating queue for bfs
-        Queue<Coordinate> queu = new LinkedList<>();
+        Queue<Coordinate> queue = new LinkedList<>();
+
 
         // Pushing Coordinate of {x, y}
         Coordinate coord = new Coordinate(x,y);
-        queu.add(coord);
+        queue.add(coord);
 
         // Marking {x, y} as visited
         visitedNodes[x][y] = 1;
 
-        while (!queu.isEmpty())
+        while (!queue.isEmpty())
         {
             count++;
-            Coordinate current = queu.peek();
+            Coordinate current = queue.peek();
             x = current.getX();
             y = current.getY();
             int oldCol = matrixParcour[x][y];
-            queu.remove();
+            queue.remove();
 
             //down
             if(isValidStep(x + 1, y, oldCol, oldCol + 1)){
                 if(visitedNodes[x+1][y] == 0){
                     Coordinate down = new Coordinate(x + 1, y);
-                    queu.add(down);
+                    queue.add(down);
                     visitedNodes[x+1][y] = 1;
                     matrixParcour[x+1][y] = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;
                 }
@@ -65,7 +66,7 @@ public class FloodFill {
             if(isValidStep(x- 1, y, oldCol, oldCol + 1)){
                 if(visitedNodes[x-1][y] == 0){
                     Coordinate up = new Coordinate(x - 1, y);
-                    queu.add(up);
+                    queue.add(up);
                     visitedNodes[x-1][y] = 1;
                     matrixParcour[x-1][y] = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;
                 }
@@ -75,7 +76,7 @@ public class FloodFill {
             if(isValidStep(x, y - 1, oldCol, oldCol + 1)){
                 if(visitedNodes[x][y-1] == 0){
                     Coordinate left = new Coordinate(x, y-1);
-                    queu.add(left);
+                    queue.add(left);
                     visitedNodes[x][y-1] = 1;
                     matrixParcour[x][y-1] = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;
                 }
@@ -86,7 +87,7 @@ public class FloodFill {
             if(isValidStep(x, y + 1, oldCol, oldCol + 1)){
                 if(visitedNodes[x][y+1] == 0){
                     Coordinate right = new Coordinate(x, y+1);
-                    queu.add(right);
+                    queue.add(right);
                     visitedNodes[x][y+1] = 1;
                     matrixParcour[x][y+1] = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;
                 }

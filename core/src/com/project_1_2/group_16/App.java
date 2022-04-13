@@ -34,9 +34,9 @@ import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.misc.User;
-import com.project_1_2.group_16.models.Flagpole;
-import com.project_1_2.group_16.models.Golfball;
-import com.project_1_2.group_16.models.Tile;
+import com.project_1_2.group_16.physics.models.Flagpole;
+import com.project_1_2.group_16.physics.models.Golfball;
+import com.project_1_2.group_16.physics.models.Tile;
 import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.Theme;
 
