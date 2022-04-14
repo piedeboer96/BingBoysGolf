@@ -1,8 +1,7 @@
 ### BINGBOYSGOLF
 ***recent notes***
-
-- floodFill is launched in inputScreen, cause there the values are for the first time initialized into App 
-- input screen is not working for me (Pie)
+ 
+- GAME IS NOT WORKING FOR ME (PIE on MAC)
 
 ----------------------------------------------
 
@@ -11,8 +10,6 @@ In this repository you will find the golf game of group 16 for Project 1-2.
 The physics engine is based on Euler's method and RK4.
 To pick the specific numerical solver the game implements, please comment out the appropriate lines 251/252 in the App.java file
 The graphics library used for this game in LibGDX.
-
-
 
 ### INSTRUCTIONS
 
