@@ -24,6 +24,17 @@ public class FloodFill {
     public static int count = 0;
     public static double flood_i, flood_j;
 
+
+    /**
+     * get method which returns the floodfill value based on an x and y coordinate
+     * @param x x coordinate
+     * @param y y coordinae
+     */
+    public static int getMatrixValue(float x, float y){
+        int i = (int)((x + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
+        int j = (int)((x + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
+        return matrixParcour[i][j];
+    }
     //FloodFill
     /**
      * FloodFill algorithm to be able to create a matrix that represents the shortest distance
@@ -171,7 +182,6 @@ public class FloodFill {
                 holeSet = true;
                 flood_i = i;
                 flood_j = j;
-                System.out.println("FLOOD i: " + flood_i + " j: " + flood_j);
                 return 0;
             }else{
                 return Integer.MAX_VALUE; //if height is bigger then 0 and the coordinates are not the holse coordinate -> value = Integer.MAX_Value
