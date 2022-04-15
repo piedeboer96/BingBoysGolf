@@ -14,7 +14,18 @@ App.allowHit tells you if the ball is still moving or is at a stop
 Use Vector3 / Vector2 classes to avoid accessive memory usage
 Use multithreading if you know how to
 
-
-
-You can incease / decrease the tree count by changing App.NUMBER_OF_TREES
+You can increase / decrease the tree count by changing App.NUMBER_OF_TREES
 You can add / remove sandpits in Terrain.java (initSandpits)
+
+-----------------------------------A* Pathfinding IDEA---------------------
+1- The idea is essentially to find the shortest set of velocity pairs (Velocity X and Velocity Y)
+2- For this we will use A* Pathfinding with node objects having two fields :-
+--- Field 1 : List of velocity pairs when applied to the ball from the starting position will end up in the position stated in field 2
+--- Field 2 : Ball position
+3- Every A* Pathfinding algorithm has a g function and an h function, in our case the g function can be the size of the list of Field 1
+(basically the number of hits applied to the ball if this path is taken) and the h function can be the fitness of the ending position
+of the ball if the list of velocity pairs is applied to the ball from the starting position (fitness= results from floodfill array)
+4- To generate the neighbours of the current node we can use an optimization algorithm such as a Particle Swarm Optimization and selecting
+the fittest individuals
+5- Once we have these ideas, we can basically just apply the A* Pathfinding directly from pseudo-code and we can find the shortest
+set of velocity pairs (hits) needed to score

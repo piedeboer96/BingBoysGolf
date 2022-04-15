@@ -52,7 +52,7 @@ public class Derivation {
         float accelerationX = acc.getAccelerationX(pDerivatives[0], pDerivatives[1], tempSV);
         float accelerationY = acc.getAccelerationY(pDerivatives2[0], pDerivatives2[1], tempSV2);
         return new Derivation(tempSV.velocity_x, tempSV2.velocity_y, accelerationX, accelerationY);
-    }
+      }
 
     /**
      * For RK4 Derivation, calculate the derivation based on the K3 derivation
