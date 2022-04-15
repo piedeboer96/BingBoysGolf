@@ -6,7 +6,7 @@ import com.project_1_2.group_16.titlescreen.TitleScreen;
 
 public class DesktopLauncher {
 
-	public static void main (String[] arg) {
+	public static void main(String[] arg) {
 		// configure os
 		if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
 			App.os_is_windows = true;
@@ -21,7 +21,9 @@ public class DesktopLauncher {
 		while (titleScreen.getBuffer()) {
 			try {
 				Thread.sleep(500);
-			} catch (InterruptedException e) {e.printStackTrace();}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 
 		// launch the game
