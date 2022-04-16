@@ -14,6 +14,7 @@ public class EngineSimulator {
     float startingVelocity_y = 0;
     StateVector sv;
     RK4 rk4 = new RK4();
+    Euler euler = new Euler();
 
     public EngineSimulator(float startingPos_x, float startingPos_y, float startingVelocity_x, float startingVelocity_y){
         sv = new StateVector(startingPos_x, startingPos_y, startingVelocity_x, startingVelocity_y);
@@ -22,19 +23,26 @@ public class EngineSimulator {
     public static void main(String[] args) {
         System.out.println("here");
         EngineSimulator es = new EngineSimulator(0,0,1, 0);
-        System.out.println("hey");
         es.runRK4ai();
+        EngineSimulator sim1 = new EngineSimulator(0, 0, 1, 0);
+        sim1.runEulerai();
     }
 
     //Runs until ball stops
     public void runRK4ai(){
         System.out.println("hey");
-        int i = 0;
-        while(i<100){
-            System.out.println(sv);
+//        int i = 0;
+        while(!rk4.stop){
             sv = rk4.solveRK4oneStep(sv, rk4.stepSize);
-            i++;
+//            i++;
         }
+        System.out.println(sv);
         System.out.println("im here");
+    }
+    public void runEulerai(){
+        while(!euler.stop){
+            sv = euler.solveEulerai(sv, euler.numericalStepSize);
+        }
+        System.out.println(sv);
     }
 }

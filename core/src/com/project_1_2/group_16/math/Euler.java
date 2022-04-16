@@ -13,6 +13,11 @@ public class Euler implements NumericalSolver {
 
     Acceleration acceleration = new Acceleration();
     public float numericalStepSize = 0.05f;
+    public boolean stop;
+
+    public Euler(){
+        this.stop = false;
+    }
     /**
      * Euler ODE Solver
      * @param h step-size
@@ -86,5 +91,64 @@ public class Euler implements NumericalSolver {
                 App.staticStop = true;
             }
         }
+    }
+
+
+    public StateVector solveEulerai (StateVector sv, float h){
+        float pos_x1, pos_y1, vel_x1, vel_y1;
+        float[] partialDerivatives = Terrain.getSlope(new float[]{sv.pos_x, sv.pos_y}, h);
+        pos_x1 = sv.pos_x + (h * sv.velocity_x);
+        pos_y1 = sv.pos_y + (h * sv.velocity_y);
+
+        float acceleration_x = acceleration.getAccelerationX(partialDerivatives[0], partialDerivatives[1], sv);
+        float acceleration_y = acceleration.getAccelerationY(partialDerivatives[0], partialDerivatives[1], sv);
+
+        vel_x1 = sv.velocity_x + (h * acceleration_x);
+        vel_y1 = sv.velocity_y + (h * acceleration_y);
+
+        sv.pos_x = pos_x1;
+        sv.pos_y = pos_y1;
+
+        sv.velocity_x = vel_x1;
+        sv.velocity_y = vel_y1;
+
+//        Tree hittree = Collision.ballHitTree(sv);
+//        if (hittree != null) {
+//            System.out.println("tree");
+//
+//            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
+//            Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
+//
+//            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
+//                sv.velocity_x *= -.75;
+//            }
+//            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
+//                sv.velocity_x *= -.75;
+//            }
+//            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
+//                sv.velocity_y *= -.75;
+//            }
+//            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
+//                sv.velocity_y *= -.75;
+//            }
+//        }
+
+        if (Collision.ballIsInWater(sv)) {
+            System.out.println("water");
+
+            // reset position
+            stop = true;
+        }
+
+        if(Physics.magnitude(sv.velocity_x,sv.velocity_y) < h){
+            partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
+            if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < 0.2f)) {
+                System.out.println("ball stopped");
+                stop = true;
+                return sv;
+            }
+        }
+
+        return sv;
     }
 }

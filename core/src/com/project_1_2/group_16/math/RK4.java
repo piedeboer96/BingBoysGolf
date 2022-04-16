@@ -118,37 +118,37 @@ public class RK4 implements NumericalSolver{
         sv.velocity_x = vel_x1;
         sv.velocity_y = vel_y1;
 
-        if(Collision.ballIsInWater(sv)){
-            stop = true;
-            //Impossible stateVector, to indicate that ball hit water
-            return new StateVector(-1,-1,-1,-1);
-        }
-        Tree hittree = Collision.ballHitTree(sv);
-        if(hittree != null) {
-//            System.out.println("tree");
-            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
-            Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
-
-            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
-                sv.velocity_x *= -.75;
-            }
-            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
-                sv.velocity_x *= -.75;
-            }
-            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
-                sv.velocity_y *= -.75;
-            }
-            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
-                sv.velocity_y *= -.75;
-            }
-        }
-        if (Collision.ballIsInTargetRadius(sv)) {
-            stop = true;
-            return sv;
-        }
+//        if(Collision.ballIsInWater(sv)){
+//            stop = true;
+//            //Impossible stateVector, to indicate that ball hit water
+//            return new StateVector(-1,-1,-1,-1);
+//        }
+//        Tree hittree = Collision.ballHitTree(sv);
+//        if(hittree != null) {
+////            System.out.println("tree");
+//            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
+//            Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
+//
+//            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
+//                sv.velocity_x *= -.75;
+//            }
+//            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
+//                sv.velocity_x *= -.75;
+//            }
+//            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
+//                sv.velocity_y *= -.75;
+//            }
+//            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
+//                sv.velocity_y *= -.75;
+//            }
+//        }
+//        if (Collision.ballIsInTargetRadius(sv)) {
+//            stop = true;
+//            return sv;
+//        }
         if(Physics.magnitude(sv.velocity_x,sv.velocity_y) < h){
             float[] partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
-            if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
+            if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < 0.2f)) {
                 System.out.println("ball stopped");
                 stop = true;
                 return sv;

@@ -42,7 +42,7 @@ public class Input {
     /**
      * Height Function.
      */
-    public static String H = "0.4 * (0.9 - Math.pow(Math.E, -1*((x*x + y*y) / 8)))";
+    public static String H = "0.0";
 
     /**
      * Number of trees.
