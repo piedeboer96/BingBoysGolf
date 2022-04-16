@@ -7,19 +7,7 @@ import com.project_1_2.group_16.titlescreen.TitleScreen;
 public class DesktopLauncher {
 
 	public static void main(String[] arg) {
-		// create titlescreen
-		TitleScreen titleScreen = new TitleScreen();
-		titleScreen.setUpGUI();
-		titleScreen.setUpButtonListeners();
-
-		// input screen buffer
-		while (titleScreen.getBuffer()) {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		// configure os
 
 		// launch the game
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
