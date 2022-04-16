@@ -21,23 +21,13 @@ public class EngineSimulator {
     }
 
     public static void main(String[] args) {
-        System.out.println("here");
-        EngineSimulator es = new EngineSimulator(0,0,1, 0);
-        es.runRK4ai();
-        EngineSimulator sim1 = new EngineSimulator(0, 0, 1, 0);
-        sim1.runEulerai();
     }
 
     //Runs until ball stops
     public void runRK4ai(){
-        System.out.println("hey");
-//        int i = 0;
         while(!rk4.stop){
             sv = rk4.solveRK4oneStep(sv, rk4.stepSize);
-//            i++;
         }
-        System.out.println(sv);
-        System.out.println("im here");
     }
     public void runEulerai(){
         while(!euler.stop){
