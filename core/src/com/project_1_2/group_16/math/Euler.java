@@ -12,7 +12,7 @@ import com.project_1_2.group_16.physics.Physics;
 public class Euler implements NumericalSolver {
 
     Acceleration acceleration = new Acceleration();
-
+    public float numericalStepSize = 0.05f;
     /**
      * Euler ODE Solver
      * @param h step-size
@@ -78,7 +78,7 @@ public class Euler implements NumericalSolver {
         }
 
         //check if the ball is rolling
-        if (Physics.magnitude(sv.velocity_x, sv.velocity_y) < h/2) {
+        if (Physics.magnitude(sv.velocity_x, sv.velocity_y) < h) {
             if ((Physics.magnitude(partialDerivatives[0], partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
                 if (Collision.ballIsInTargetRadius(sv)) {
                     Game.endGame();
