@@ -80,7 +80,7 @@ public class Euler implements NumericalSolver {
         //check if the ball is rolling
         if (Physics.magnitude(sv.velocity_x, sv.velocity_y) < h/2) {
             if ((Physics.magnitude(partialDerivatives[0], partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
-                if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
+                if (Collision.ballIsInTargetRadius(sv)) {
                     Game.endGame();
                 }
                 App.staticStop = true;

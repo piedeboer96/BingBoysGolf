@@ -9,9 +9,7 @@ import com.project_1_2.group_16.gamelogic.Terrain;
 public class Tile extends ModelInstance {
 
     private final Vector3 pos = new Vector3();
-
     private final Vector3 dim = new Vector3();
-
     private static final BoundingBox bounds = new BoundingBox();
 
     public Tile(Model model, float x, float z) {

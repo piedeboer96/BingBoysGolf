@@ -30,7 +30,7 @@ public class TitleScreen {
         Font medium = new Font("Serif",Font.PLAIN,15);
         Color backGroundColor = new Color(59,87,72,255);
 
-        picLabel = new JLabel(new ImageIcon(App.os_is_windows ? "./assets/golfTheme.png" : "../assets/golfTheme.png"));
+        picLabel = new JLabel(new ImageIcon(App.OS_IS_WIN ? "./assets/golfTheme.png" : "../assets/golfTheme.png"));
         picLabel.setBounds(0, 0, width, height);
 
         buttonY = new JButton("Start");

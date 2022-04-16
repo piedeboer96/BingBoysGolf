@@ -7,11 +7,6 @@ import com.project_1_2.group_16.titlescreen.TitleScreen;
 public class DesktopLauncher {
 
 	public static void main(String[] arg) {
-		// configure os
-		if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
-			App.os_is_windows = true;
-		}
-
 		// create titlescreen
 		TitleScreen titleScreen = new TitleScreen();
 		titleScreen.setUpGUI();

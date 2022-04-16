@@ -82,7 +82,7 @@ public class RK4 implements NumericalSolver{
         if (Physics.magnitude(sv.velocity_x,sv.velocity_y) < h/2) {
             float[] partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
             if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
-                if (Collision.ballIsInTargetRadius(sv, App.flagpole)) {
+                if (Collision.ballIsInTargetRadius(sv)) {
                     Game.endGame();
                 }
                 App.staticStop = true;

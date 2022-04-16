@@ -6,10 +6,8 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import javax.swing.*;
 import com.badlogic.gdx.math.Vector2;
-import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.ai.FloodFill;
-import com.project_1_2.group_16.gamelogic.Sandpit;
-import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.misc.User;
 
@@ -193,7 +191,18 @@ public class InputScreen extends JFrame {
         treesNumT.setBounds(185, 415, 40, 25);
 
         // default values
-        this.initDefaultValues();
+        x0T.setText(""+Input.V0.x);
+        y0T.setText(""+Input.V0.y);
+        xtT.setText(""+Input.VT.x);
+        ytT.setText(""+Input.VT.y);
+        rT.setText(""+Input.R);
+        mukT.setText(""+Input.MUK);
+        musT.setText(""+Input.MUS);
+        muksT.setText(""+Input.MUKS);
+        mussT.setText(""+Input.MUSS);
+        heightFT.setText(""+Input.H);
+        sandPitsNumT.setText(""+Input.SAND);
+        treesNumT.setText(""+Input.TREES);
 
         // Adding components to the container
         layeredPane.setBounds(0, 0, width, height);
@@ -248,13 +257,13 @@ public class InputScreen extends JFrame {
             public void actionPerformed(ActionEvent ae) {
                 Object checkButton = ae.getSource();
                 if (checkButton == user) {
-                    App.user = User.USER;
+                    Input.USER = User.USER;
                 }
                 else if (checkButton == basicBot) {
-                    App.user = User.BASIC_BOT;
+                    Input.USER = User.BASIC_BOT;
                 }
                 else if (checkButton == advancedBot) {
-                    App.user = User.ADVANCED_BOT;
+                    Input.USER = User.ADVANCED_BOT;
                 }
             }
         };
@@ -275,15 +284,15 @@ public class InputScreen extends JFrame {
         System.out.println(ANSI.GREEN+"Launching game..."+ANSI.RESET+" (this may take a few seconds)");
 
         // parse inputs
-        App.gV = new Vector2(Float.parseFloat(x0T.getText()), Float.parseFloat(y0T.getText()));
-        App.tV = new Vector2(Float.parseFloat(xtT.getText()), Float.parseFloat(ytT.getText()));
-        App.tR = Float.parseFloat(rT.getText());
-        Terrain.kineticFriction = Float.parseFloat(mukT.getText());
-        Terrain.staticFriction = Float.parseFloat(musT.getText());
-        Sandpit.kineticFriction = Float.parseFloat(muksT.getText());
-        Sandpit.staticFriction = Float.parseFloat(mussT.getText());
-        Terrain.NUMBER_OF_SANDPITS = Integer.parseInt(sandPitsNumT.getText());
-        Terrain.NUMBER_OF_TREES = Integer.parseInt(treesNumT.getText());
+        Input.V0 = new Vector2(Float.parseFloat(x0T.getText()), Float.parseFloat(y0T.getText()));
+        Input.VT = new Vector2(Float.parseFloat(xtT.getText()), Float.parseFloat(ytT.getText()));
+        Input.R = Float.parseFloat(rT.getText());
+        Input.MUK = Float.parseFloat(mukT.getText());
+        Input.MUS = Float.parseFloat(musT.getText());
+        Input.MUKS = Float.parseFloat(muksT.getText());
+        Input.MUSS = Float.parseFloat(mussT.getText());
+        Input.SAND = Integer.parseInt(sandPitsNumT.getText());
+        Input.TREES = Integer.parseInt(treesNumT.getText());
 
         // parse height function
         String heightFunction = "";
@@ -292,7 +301,7 @@ public class InputScreen extends JFrame {
                 heightFunction += heightFT.getText().charAt(i);
             }
         }
-        Terrain.heightFunction = heightFunction;
+        Input.H = heightFunction;
 
         long start = System.currentTimeMillis();
 		FloodFill.fillGraphTable();
@@ -302,23 +311,5 @@ public class InputScreen extends JFrame {
 		System.out.println(Arrays.deepToString(matrixParcour));
         
         this.status = true;
-    }
-
-    /**
-     * All the default values visible on the input screen
-     */
-    private void initDefaultValues() {
-        x0T.setText("-3");
-        y0T.setText("0");
-        xtT.setText("4");
-        ytT.setText("1");
-        rT.setText("0.1");
-        mukT.setText("0.08");
-        musT.setText("0.2");
-        muksT.setText("0.32");
-        mussT.setText("0.8");
-        heightFT.setText("0.4 * (0.9 - Math.pow(Math.E, -1*((x*x + y*y) / 8)))");
-        sandPitsNumT.setText("3");
-        treesNumT.setText("15");
     }
 }

@@ -2,8 +2,8 @@ please put a paramater for an App.java object in the constructor
 
 to shoot the ball, use app.shoot(vX, vY) (where app = an instance of App.java)
 
-golfball position: app.golfball.getPosition()
-hole position: App.flagpole.getPosition()
+golfball position: app.getGolfball().getPosition()
+hole position: Input.VT
 
 sandpits: Terrain.sandpits
 trees: Terrain.trees
@@ -13,9 +13,6 @@ App.allowHit tells you if the ball is still moving or is at a stop
 
 Use Vector3 / Vector2 classes to avoid accessive memory usage
 Use multithreading if you know how to
-
-You can increase / decrease the tree count by changing App.NUMBER_OF_TREES
-You can add / remove sandpits in Terrain.java (initSandpits)
 
 -----------------------------------A* Pathfinding IDEA---------------------
 1- The idea is essentially to find the shortest set of velocity pairs (Velocity X and Velocity Y)

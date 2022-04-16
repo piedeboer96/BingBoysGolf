@@ -5,7 +5,9 @@ import com.project_1_2.group_16.math.*;
 
 public class Game {
 
-    // solvers
+    /**
+     * Solver
+     */
     public static NumericalSolver solver;
 
     /**

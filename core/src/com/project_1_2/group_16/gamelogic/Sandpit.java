@@ -4,16 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Sandpit {
 
-    /**
-     * Kinetic friction of the sandpits
-     */
-    public static float kineticFriction;
-
-    /**
-     * Static friction of the sandpits
-     */
-    public static float staticFriction;
-
     private Vector2 pos = new Vector2();
     private float r;
 

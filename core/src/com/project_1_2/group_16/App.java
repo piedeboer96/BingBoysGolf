@@ -2,7 +2,6 @@ package com.project_1_2.group_16;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
@@ -33,7 +32,7 @@ import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.misc.ANSI;
-import com.project_1_2.group_16.misc.User;
+import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tile;
@@ -42,6 +41,23 @@ import com.project_1_2.group_16.themes.Theme;
 
 public class App extends ApplicationAdapter {
 
+	// constants
+	public static final ColorAttribute AMBIENT_LIGHT = new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f);
+	public static final DirectionalLight SUN_LIGHT = new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f);
+	public static final int FIELD_SIZE = 20;
+	public static final float FIELD_DETAIL = FIELD_SIZE * 5f;
+	public static final float RENDER_DISTANCE = FIELD_SIZE * 2f;
+	public static final float TILE_SIZE = FIELD_SIZE / FIELD_DETAIL;
+	public static final boolean OS_IS_WIN = System.getProperty("os.name").toLowerCase().startsWith("win");
+	public static final float MIN_POWER = 1f;
+	public static final float MAX_POWER = 5f;
+	public static final float POWER_DELTA = 0.05f;
+	public static Color BACKGROUND; // can't init some constants due to class compilation
+	public static int SCREEN_WIDTH;
+	public static int SCREEN_HEIGHT;
+	public static Sound hitSound;
+    public static Sound dropSound;
+
 	// cameras
 	private PerspectiveCamera freeCam;
 	private PerspectiveCamera ballCam;
@@ -49,8 +65,7 @@ public class App extends ApplicationAdapter {
 	private BallCamera ballMovement;
 	private boolean useFreeCam;
 	private float xDir, zDir;
-	private float power = 1;
-	public static boolean goUp;
+	private float power = MIN_POWER;
 
 	// batches
 	private ModelBatch modelBatch;
@@ -64,10 +79,10 @@ public class App extends ApplicationAdapter {
 	private Array<Tile> tiles;
 
 	// golfball
-	public Golfball golfball;
+	private Golfball golfball;
 
 	// flagpole
-	public static Flagpole flagpole;
+	private Flagpole flagpole;
 
 	// crosshair and text font
 	private Vector2 ch1, ch2, ch3, ch4;
@@ -77,20 +92,6 @@ public class App extends ApplicationAdapter {
 	private Environment environment;
 	private Theme theme;
 
-	// constants
-	public static Color BACKGROUND;
-	public static final ColorAttribute AMBIENT_LIGHT = new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f);
-	public static final DirectionalLight SUN_LIGHT = new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f);
-	public static int SCREEN_WIDTH;
-	public static int SCREEN_HEIGHT;
-	public static final int FIELD_SIZE = 20;
-	public static final float FIELD_DETAIL = FIELD_SIZE * 5f;
-	public static final float RENDER_DISTANCE = FIELD_SIZE * 2f;
-	public static final float TILE_SIZE = FIELD_SIZE / FIELD_DETAIL;
-	public static boolean os_is_windows;
-	private Sound hitSound;
-    private Sound dropSound;
-
 	// physics
 	public static float pos_x;
 	public static float pos_y;
@@ -98,12 +99,6 @@ public class App extends ApplicationAdapter {
 	public static boolean allowHit;
 	public static int hitsCounter;
 	public static Vector2 prevPos;
-
-	// input
-	public static Vector2 gV;
-	public static Vector2 tV;
-	public static float tR;
-	public static User user;
 
 	// util
 	private final Vector3 v = new Vector3();
@@ -115,8 +110,8 @@ public class App extends ApplicationAdapter {
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		Gdx.input.setCursorCatched(true);
 
-		pos_x = gV.x;
-		pos_y = gV.y;
+		pos_x = Input.V0.x;
+		pos_y = Input.V0.y;
 
 		// init batches and other things
 		this.modelBatch = new ModelBatch();
@@ -156,27 +151,27 @@ public class App extends ApplicationAdapter {
 
 		// create golf ball
 		this.golfball = new Golfball(this.modelBuilder, this.theme);
-		this.golfball.setPosition(gV.x, Terrain.getHeight(gV.x, gV.y), gV.y);
+		this.golfball.setPosition(Input.V0.x, Terrain.getHeight(Input.V0.x, Input.V0.y), Input.V0.y);
 		this.instances.add(this.golfball.getInstance());
 
 		// create flag
-		App.flagpole = new Flagpole
-		(this.modelBuilder, new Vector3(tV.x, Terrain.getHeight(tV.x, tV.y), tV.y), tR, this.theme);
-		App.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
-		this.instances.add(App.flagpole.getInstance());
+		this.flagpole = new Flagpole
+		(this.modelBuilder, new Vector3(Input.VT.x, Terrain.getHeight(Input.VT.x, Input.VT.y), Input.VT.y), Input.R, this.theme);
+		this.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
+		this.instances.add(this.flagpole.getInstance());
 
 		// create trees
 		Terrain.initTrees(this.theme.treeModel(assets));
-		for (int i = 0; i < Terrain.NUMBER_OF_TREES; i++) {
+		for (int i = 0; i < Input.TREES; i++) {
 			this.instances.add(Terrain.trees.get(i).getInstance());
 		}
 
 		// create ball camera
 		this.ballCam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		this.ballCam.position.set(gV.x, Terrain.getHeight(gV.x, gV.y) + 0.25f, gV.y - 0.5f);
+		this.ballCam.position.set(Input.V0.x, Terrain.getHeight(Input.V0.x, Input.V0.y) + 0.25f, Input.V0.y - 0.5f);
 		this.ballCam.near = 0.1f;
 		this.ballCam.far = RENDER_DISTANCE;
-		this.ballCam.lookAt(gV.x, Terrain.getHeight(gV.x, gV.y), gV.y);
+		this.ballCam.lookAt(Input.V0.x, Terrain.getHeight(Input.V0.x, Input.V0.y), Input.V0.y);
 		this.ballCam.update();
 		this.golfball.setCamera(this.ballCam);
 		this.ballMovement = new BallCamera(this.ballCam, this.golfball);
@@ -184,15 +179,15 @@ public class App extends ApplicationAdapter {
 
 		// create free camera
 		this.freeCam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		this.freeCam.position.set(gV.x, Terrain.getHeight(gV.x, gV.y) + 0.25f, gV.y - 0.5f);
+		this.freeCam.position.set(Input.V0.x, Terrain.getHeight(Input.V0.x, Input.V0.y) + 0.25f, Input.V0.y - 0.5f);
 		this.freeCam.near = 0.1f;
 		this.freeCam.far = RENDER_DISTANCE;
 		this.freeCam.update();
 		this.freeMovement = new FreeCamera(this.freeCam);
 
 		// sounds
-		this.hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
-		this.dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
+		hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
+		dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
 
 		// allow gameplay
 		Game.runRK4();
@@ -202,7 +197,7 @@ public class App extends ApplicationAdapter {
 	@Override
 	public void render() {
 		// clear screen
-		if (App.os_is_windows) Gdx.gl.glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		if (OS_IS_WIN) Gdx.gl.glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		ScreenUtils.clear(BACKGROUND);
 		
@@ -270,21 +265,21 @@ public class App extends ApplicationAdapter {
 
 		// controls
 		if (this.useFreeCam) this.freeMovement.move(Gdx.input, Gdx.graphics.getDeltaTime());
-		this.controls(Gdx.input);
+		this.controls();
 	}
 
 	/**
 	 * The controls for the app.
 	 * @param input
 	 */
-	private void controls(Input input) {
-		if (input.isKeyJustPressed(Keys.ESCAPE)) { // close game
+	private void controls() {
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { // close game
 			long init = System.nanoTime();
 			Gdx.app.exit();
 			System.out.println("closed app in "+ANSI.RED+(System.nanoTime() - init)+ANSI.RESET+" nanoseconds.");
 			System.exit(0);
 		}
-		if (input.isKeyJustPressed(Keys.C)) { // switch camera
+		if (Gdx.input.isKeyJustPressed(Keys.C)) { // switch camera
 			if (this.useFreeCam) { // switch to ball cam
 				Gdx.input.setInputProcessor(this.ballMovement);
 				this.useFreeCam = false;
@@ -295,20 +290,23 @@ public class App extends ApplicationAdapter {
 			}
 		}
 
-		if (this.ballMovement.powerUp) { // power
-			if (App.goUp) this.power += 0.05f;
-			else this.power -= 0.05f;
-			if (this.power >= 5) {
-				App.goUp = false;
-			}
-			if (this.power < 1) {
-				App.goUp = true;
+		// shooting the ball
+		if (this.ballMovement.getPowerStatus() == PowerStatus.POWER_UP) {
+			this.power += POWER_DELTA;
+			if (this.power >= MAX_POWER) {
+				this.ballMovement.setPowerStatus(PowerStatus.POWER_DOWN);
 			}
 		}
-		if (this.ballMovement.shoot) { // shoot the ball
+		else if (this.ballMovement.getPowerStatus() == PowerStatus.POWER_DOWN) {
+			this.power -= POWER_DELTA;
+			if (this.power < MIN_POWER) {
+				this.ballMovement.setPowerStatus(PowerStatus.POWER_UP);
+			}
+		}
+		else if (this.ballMovement.getPowerStatus() == PowerStatus.SHOOT) {
 			this.shoot(this.xDir * this.power, this.zDir * this.power);
-			this.power = 1f;
-			this.ballMovement.shoot = false;
+			this.power = MIN_POWER;
+			this.ballMovement.setPowerStatus(PowerStatus.REST);
 		}
 	}
 
@@ -324,7 +322,7 @@ public class App extends ApplicationAdapter {
 			Game.sv = new StateVector(this.v.x, this.v.z, vX, vY);
 
 			// sound effect and shot counter
-			this.hitSound.play();
+			hitSound.play();
 			hitsCounter++;
 
 			// hit the ball
@@ -362,14 +360,11 @@ public class App extends ApplicationAdapter {
 		this.tiles.add(tile);
 	}
 
-	@Override
-	public void dispose() { 
-		this.modelBatch.dispose();
-		this.shapeBatch.dispose();
-		this.spriteBatch.dispose();
-		this.font.dispose();
-		this.assets.dispose();
-		this.dropSound.dispose();
-		this.hitSound.dispose();
+	/**
+	 * Get the golfball
+	 * @return
+	 */
+	public Golfball getGolfball() {
+		return this.golfball;
 	}
 }

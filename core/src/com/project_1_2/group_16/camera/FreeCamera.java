@@ -12,12 +12,12 @@ public class FreeCamera implements InputProcessor {
     /**
      * The camera sensitivity.
      */
-	private final float rotateSpeed = 0.1f;
+	public final float rotateSpeed = 0.1f;
 
     /**
      * How quick the camera moves.
      */
-    private final float movementSpeed = 1.5f;
+    public final float movementSpeed = 1.5f;
 
     private Camera camera;
     private Vector3 util = new Vector3();

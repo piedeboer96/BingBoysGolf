@@ -1,42 +1,40 @@
 package com.project_1_2.group_16.camera;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Golfball;
 
 public class BallCamera implements InputProcessor {
 
-    /**
-     * Camera reference.
-     */
     private Camera camera;
-
-    /**
-     * Golfball reference.
-     */
     private Golfball golfBall;
-
-    /**
-     * If the power is charging.
-     */
-    public boolean powerUp;
-
-    /**
-     * If the ball is ready to shoot.
-     */
-    public boolean shoot;
-
-    // utils
+    private PowerStatus powerStatus;
     private Vector3 util = new Vector3();
     private float startX, startY;
 
     public BallCamera(Camera camera, Golfball golfBall) {
         this.camera = camera;
         this.golfBall = golfBall;
+    }
+
+    /**
+     * Get the power status of shooting the ball.
+     * @return
+     */
+    public PowerStatus getPowerStatus() {
+        return this.powerStatus;
+    }
+
+    /**
+     * Set the power status of shooting the ball.
+     * @param powerStatus the new power status
+     */
+    public void setPowerStatus(PowerStatus powerStatus) {
+        this.powerStatus = powerStatus;
     }
 
     @Override
@@ -48,8 +46,8 @@ public class BallCamera implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        final float deltaX = (screenX - this.startX) / Gdx.graphics.getWidth();
-		final float deltaY = (this.startY - screenY) / Gdx.graphics.getHeight();
+        final float deltaX = (screenX - this.startX) / App.SCREEN_WIDTH;
+		final float deltaY = (this.startY - screenY) / App.SCREEN_HEIGHT;
 		this.startX = screenX;
 		this.startY = screenY;
         this.util.set(camera.direction).crs(camera.up).y = 0f;
@@ -62,18 +60,17 @@ public class BallCamera implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.SPACE) {
-            App.goUp = true;
-            this.powerUp = true;
+            this.powerStatus = PowerStatus.POWER_UP;
+            return true;
         }
-
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
         if (keycode == Input.Keys.SPACE) {
-            this.powerUp = false;
-            this.shoot = true;
+            this.powerStatus = PowerStatus.SHOOT;
+            return true;
         }
         return false;
     }

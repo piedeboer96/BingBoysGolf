@@ -1,6 +1,7 @@
 package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.models.Golfball;
 
@@ -178,7 +179,7 @@ public class FloodFill {
         if(height < 0){ //if height smaller than 0 -> value = -1;
             return -1;
         }else{
-            if(Math.abs(App.tV.x - x) < App.tR && Math.abs(App.tV.y - y) < App.tR && !holeSet){ //if the coordinates are the coordinates of the hole -> value = 0
+            if(Math.abs(Input.VT.x - x) < Input.R && Math.abs(Input.VT.y - y) < Input.R && !holeSet){ //if the coordinates are the coordinates of the hole -> value = 0
                 holeSet = true;
                 flood_i = i;
                 flood_j = j;

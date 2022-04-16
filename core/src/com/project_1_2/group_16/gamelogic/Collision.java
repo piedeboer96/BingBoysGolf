@@ -1,7 +1,8 @@
 package com.project_1_2.group_16.gamelogic;
 
+import com.badlogic.gdx.math.Vector2;
+import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.StateVector;
-import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Tree;
 
 public class Collision {
@@ -12,23 +13,8 @@ public class Collision {
      * @param sv stateVector to pull position from
      * @return boolean, whether it is in the radius...
      */
-    public static boolean ballIsInTargetRadius(StateVector sv, Flagpole t) {
-
-        float R = t.getRadius();
-        float dx = Math.abs(sv.pos_x - t.getPosition().x);
-        float dy = Math.abs(sv.pos_y - t.getPosition().z);
-
-        if (dx + dy <= R) {
-            return true;
-        } else if (dx > R) {
-            return false;
-        } else if (dy > R) {
-            return false;
-        } else if ((( dx*dx) + (dy*dy)) <= (R*R)) {
-            return true;
-        } else {
-            return false;
-        }
+    public static boolean ballIsInTargetRadius(StateVector sv) {
+        return Input.VT.dst(sv.pos_x, sv.pos_y) < Input.R;
     }
 
     /**
@@ -37,10 +23,7 @@ public class Collision {
      * @return boolean, true if the ball is in water
      */
     public static boolean ballIsInWater(StateVector sv) {
-        if (Terrain.getHeight(sv.pos_x, sv.pos_y) < 0) {
-            return true;
-        }
-        return false;
+        return Terrain.getHeight(sv.pos_x, sv.pos_y) < 0;
     }
 
     /**
@@ -49,7 +32,7 @@ public class Collision {
      * @return the tree the ball hit, if the ball didn't hit a tree it returns null
      */
     public static Tree ballHitTree(StateVector sv) {
-        for (int i = 0; i < Terrain.NUMBER_OF_TREES; i++) {
+        for (int i = 0; i < Input.TREES; i++) {
             if (ballIsInTreeRadius(sv, Terrain.trees.get(i))) {
                 return Terrain.trees.get(i);
             }
@@ -61,27 +44,11 @@ public class Collision {
      * Return whether the ball is in the radius of the tree based on the coordinates of the Statevector
      * calculated in a computationally efficient way
      * @param sv stateVector to pull the position from
-     * @param treeCenterX x coordinate of the
-     * @param treeCenterY
-     * @param treeRadius
+     * @param tree tree reference
      * @return
      */
     public static boolean ballIsInTreeRadius(StateVector sv, Tree tree) {
-        float R = tree.getRadius();
-        float dx = Math.abs(sv.pos_x - tree.getPosition().x);
-        float dy = Math.abs(sv.pos_y - tree.getPosition().z);
-
-        if (dx + dy < R) {
-            return true;
-        } else if (dx > R) {
-            return false;
-        } else if (dy > R) {
-            return false;
-        } else if (((dx*dx) + (dy*dy)) < (R*R)) {
-            return true;
-        } else {
-            return false;
-        }
+        return new Vector2(tree.getPosition().x, tree.getPosition().z).dst(sv.pos_x, sv.pos_y) < tree.getRadius();
     }
 
     /**
@@ -90,15 +57,8 @@ public class Collision {
      * @param y y-coordinate
      */
     public static boolean isInSandPit(float x, float y) {
-        float r, dx, dy;
         for (Sandpit pit : Terrain.sandPits) {
-            r = pit.getRadius();
-            dx = Math.abs(x - pit.getPosition().x);
-            dy = Math.abs(y - pit.getPosition().y);
-            if (dx + dy < r) {
-                return true;
-            } 
-            else if (((dx*dx) + (dy*dy)) < (r*r)) {
+            if (pit.getPosition().dst(x, y) < pit.getRadius()) {
                 return true;
             }
         }
