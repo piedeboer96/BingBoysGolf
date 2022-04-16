@@ -57,7 +57,6 @@ public class App extends ApplicationAdapter {
 	public static int SCREEN_HEIGHT;
 	public static Sound hitSound;
     public static Sound dropSound;
-    public static boolean os_is_windows;
 
     // cameras
 	private PerspectiveCamera freeCam;
