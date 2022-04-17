@@ -3,7 +3,7 @@
  
 - GAME IS NOT WORKING FOR ME (PIE on MAC)
 - PLEASE WORK ON YOUR BRANCH AND LET SOMEONE MERGE IT AFTER REVIEW ... ==> ai-playground RAFALI, LAURENT, TOM
-- This is a test , to see if we can merge branches with our main codebase.
+
 
 ----------------------------------------------
 
