@@ -58,7 +58,7 @@ public class App extends ApplicationAdapter {
 	public static Sound hitSound;
     public static Sound dropSound;
 
-	// cameras
+    // cameras
 	private PerspectiveCamera freeCam;
 	private PerspectiveCamera ballCam;
 	private FreeCamera freeMovement;

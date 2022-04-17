@@ -4,6 +4,7 @@
 - GAME IS NOT WORKING FOR ME (PIE on MAC)
 - PLEASE WORK ON YOUR BRANCH AND LET SOMEONE MERGE IT AFTER REVIEW ... ==> ai-playground RAFALI, LAURENT, TOM
 
+
 ----------------------------------------------
 
 In this repository you will find the golf game of group 16 for Project 1-2.
