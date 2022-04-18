@@ -1,5 +1,7 @@
 package com.project_1_2.group_16.ai;
 
+import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.RK4;
 import com.project_1_2.group_16.math.Euler;
 import com.project_1_2.group_16.math.StateVector;
@@ -21,6 +23,10 @@ public class EngineSimulator {
     }
 
     public static void main(String[] args) {
+        Input.SAND = 0;
+        Input.TREES = 0;
+        EngineSimulator es = new EngineSimulator(0,0,1,0);
+        es.runEulerai();
     }
 
     //Runs until ball stops
@@ -33,6 +39,5 @@ public class EngineSimulator {
         while(!euler.stop){
             sv = euler.solveEulerai(sv, euler.numericalStepSize);
         }
-        System.out.println(sv);
     }
 }

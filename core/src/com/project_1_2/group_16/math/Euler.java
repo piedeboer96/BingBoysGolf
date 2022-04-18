@@ -132,13 +132,13 @@ public class Euler implements NumericalSolver {
 //                sv.velocity_y *= -.75;
 //            }
 //        }
-
-        if (Collision.ballIsInWater(sv)) {
-            System.out.println("water");
-
-            // reset position
-            stop = true;
-        }
+//
+//        if (Collision.ballIsInWater(sv)) {
+//            System.out.println("water");
+//
+//            // reset position
+//            stop = true;
+//        }
 
         if(Physics.magnitude(sv.velocity_x,sv.velocity_y) < h){
             partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);

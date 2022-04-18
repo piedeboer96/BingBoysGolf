@@ -31,10 +31,10 @@ public class RK4 implements NumericalSolver{
 
         Derivation k1, k2, k3, k4;
 
-        k1 = Derivation.getK1Derivation(sv, h);
-        k2 = Derivation.getK2K3Derivation(sv, h, k1);
-        k3 = Derivation.getK2K3Derivation(sv, h, k2);
-        k4 = Derivation.getK4Derivation(sv, h, k3);
+        k1 = Derivation.getDerivation(sv, h, new Derivation(), 0);
+        k2 = Derivation.getDerivation(sv, h, k1, 0.5f);
+        k3 = Derivation.getDerivation(sv, h, k2, 0.5f);
+        k4 = Derivation.getDerivation(sv, h, k3, 1f);
 
         pos_x1 = sv.pos_x + (h/6f)*((k1.dx_dt + (2 * k2.dx_dt) + (2 * k3.dx_dt) + k4.dx_dt));
         pos_y1 = sv.pos_y + (h/6f)*((k1.dy_dt + (2 * k2.dy_dt) + (2 * k3.dy_dt) + k4.dy_dt));
@@ -96,17 +96,17 @@ public class RK4 implements NumericalSolver{
     }
 
     /**
-     * Does one iteration of RK4 ()
+     * Does one iteration of RK4 () for engine simulations
      */
     public StateVector solveRK4oneStep(StateVector sv, float h){
         float vel_x1, vel_y1, pos_y1, pos_x1;
 
         Derivation k1, k2, k3, k4;
 
-        k1 = Derivation.getK1Derivation(sv, h);
-        k2 = Derivation.getK2K3Derivation(sv, h, k1);
-        k3 = Derivation.getK2K3Derivation(sv, h, k2);
-        k4 = Derivation.getK4Derivation(sv, h, k3);
+        k1 = Derivation.getDerivation(sv, h, new Derivation(), 0);
+        k2 = Derivation.getDerivation(sv, h, k1, 0.5f);
+        k3 = Derivation.getDerivation(sv, h, k2, 0.5f);
+        k4 = Derivation.getDerivation(sv, h, k3, 1f);
 
         pos_x1 = sv.pos_x + (h/6f)*((k1.dx_dt + (2 * k2.dx_dt) + (2 * k3.dx_dt) + k4.dx_dt));
         pos_y1 = sv.pos_y + (h/6f)*((k1.dy_dt + (2 * k2.dy_dt) + (2 * k3.dy_dt) + k4.dy_dt));
@@ -118,34 +118,34 @@ public class RK4 implements NumericalSolver{
         sv.velocity_x = vel_x1;
         sv.velocity_y = vel_y1;
 
-//        if(Collision.ballIsInWater(sv)){
-//            stop = true;
-//            //Impossible stateVector, to indicate that ball hit water
-//            return new StateVector(-1,-1,-1,-1);
-//        }
-//        Tree hittree = Collision.ballHitTree(sv);
-//        if(hittree != null) {
-////            System.out.println("tree");
-//            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
-//            Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
-//
-//            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
-//                sv.velocity_x *= -.75;
-//            }
-//            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
-//                sv.velocity_x *= -.75;
-//            }
-//            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
-//                sv.velocity_y *= -.75;
-//            }
-//            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
-//                sv.velocity_y *= -.75;
-//            }
-//        }
-//        if (Collision.ballIsInTargetRadius(sv)) {
-//            stop = true;
-//            return sv;
-//        }
+        if(Collision.ballIsInWater(sv)){
+            stop = true;
+            //Impossible stateVector, to indicate that ball hit water
+            return new StateVector(-1,-1,-1,-1);
+        }
+        Tree hittree = Collision.ballHitTree(sv);
+        if(hittree != null) {
+//            System.out.println("tree");
+            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
+            Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
+
+            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
+                sv.velocity_x *= -.75;
+            }
+            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
+                sv.velocity_x *= -.75;
+            }
+            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
+                sv.velocity_y *= -.75;
+            }
+            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
+                sv.velocity_y *= -.75;
+            }
+        }
+        if (Collision.ballIsInTargetRadius(sv)) {
+            stop = true;
+            return sv;
+        }
         if(Physics.magnitude(sv.velocity_x,sv.velocity_y) < h){
             float[] partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
             if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < 0.2f)) {
