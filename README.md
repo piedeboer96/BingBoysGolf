@@ -1,8 +1,35 @@
 ### BINGBOYSGOLF
-***recent notes***
+
+***PLEASE READ***
  
-- GAME IS NOT WORKING FOR ME (PIE on MAC)
-- PLEASE WORK ON YOUR BRANCH AND LET SOMEONE MERGE IT AFTER REVIEW ... ==> ai-playground RAFALI, LAURENT, TOM
+- Title screen + input module displays, but afterwards booting the game makees it acually crash (MAC).
+- Please work on your brench, avoid chaos!
+
+***TODO***
+1. Change the logic of the hole
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ----------------------------------------------
@@ -31,6 +58,3 @@ note: after pressing 'M' once, pressing it again will not work unless you restar
 - To exit the app, press 'ESC'.
 
 4. To run the app, go back to the DesktopLauncher.java file and run the main class.
-
-
-![image text](https://i.ytimg.com/vi/0s2Jzk6yBVk/maxresdefault.jpg)
