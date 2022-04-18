@@ -1,4 +1,4 @@
-### BINGBOYSGOLF
+###BingBoysGolf###
 
 ***PLEASE READ***
  
@@ -7,22 +7,6 @@
 
 ***TODO***
 1. Change the logic of the hole
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
