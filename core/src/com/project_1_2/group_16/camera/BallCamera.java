@@ -46,8 +46,8 @@ public class BallCamera implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        final float deltaX = (screenX - this.startX) / App.SCREEN_WIDTH;
-		final float deltaY = (this.startY - screenY) / App.SCREEN_HEIGHT;
+        float deltaX = (screenX - this.startX) / App.SCREEN_WIDTH;
+		float deltaY = (this.startY - screenY) / App.SCREEN_HEIGHT;
 		this.startX = screenX;
 		this.startY = screenY;
         this.util.set(camera.direction).crs(camera.up).y = 0f;
