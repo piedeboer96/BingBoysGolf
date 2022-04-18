@@ -53,12 +53,12 @@ public class Input {
     /**
      * Number of trees.
      */
-    public static int TREES = 10;
+    public static int TREES = 0;
 
     /**
      * Number of sandpits.
      */
-    public static int SAND = 3;
+    public static int SAND = 0;
 
     /**
      * Type of user playing the game.

@@ -33,7 +33,9 @@ import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.misc.PowerStatus;
-import com.project_1_2.group_16.models.*;
+import com.project_1_2.group_16.models.Flagpole;
+import com.project_1_2.group_16.models.Golfball;
+import com.project_1_2.group_16.models.Tile;
 import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.Theme;
 
@@ -45,7 +47,7 @@ public class App extends ApplicationAdapter {
 	public static final int FIELD_SIZE = 20;
 	public static final float FIELD_DETAIL = FIELD_SIZE * 5f;
 	public static final float RENDER_DISTANCE = FIELD_SIZE * 2f;
-	public static final float TRIANGLE_BASE_SIZE = FIELD_SIZE / FIELD_DETAIL;
+	public static final float TILE_SIZE = FIELD_SIZE / FIELD_DETAIL;
 	public static final boolean OS_IS_WIN = System.getProperty("os.name").toLowerCase().startsWith("win");
 	public static final float MIN_POWER = 1f;
 	public static final float MAX_POWER = 5f;
@@ -75,7 +77,6 @@ public class App extends ApplicationAdapter {
 	private ModelBuilder modelBuilder;
 	private Array<ModelInstance> instances;
 	private Array<Tile> tiles;
-	private Array<TriangleInstance> triangles;
 
 	// golfball
 	private Golfball golfball;
@@ -118,7 +119,6 @@ public class App extends ApplicationAdapter {
 		this.spriteBatch = new SpriteBatch();
 		this.modelBuilder = new ModelBuilder();
 		this.instances = new Array<ModelInstance>();
-		this.triangles = new Array<TriangleInstance>();
 		this.tiles = new Array<Tile>();
 		this.font = new BitmapFont();
 		this.assets = new AssetManager();
@@ -132,26 +132,12 @@ public class App extends ApplicationAdapter {
 
 		// terrain generation
 		Terrain.initSandPits();
-		float a, b,c,d;
-		for(int i = 0; i < FIELD_DETAIL-1; i++) {
-			for(int j = 0; j < FIELD_DETAIL-1; j++) {
-				a = -FIELD_SIZE / 2 + TRIANGLE_BASE_SIZE / 2 + TRIANGLE_BASE_SIZE * (i );
-				b = -FIELD_SIZE / 2 + TRIANGLE_BASE_SIZE / 2 + TRIANGLE_BASE_SIZE * (j );
-				c = -FIELD_SIZE / 2 + TRIANGLE_BASE_SIZE / 2 + TRIANGLE_BASE_SIZE * (i + 1);
-				d = -FIELD_SIZE / 2 + TRIANGLE_BASE_SIZE / 2 + TRIANGLE_BASE_SIZE * (j + 1);
-				Vector3 p1 = new Vector3(a,Terrain.getHeight(a, b),b);
-				Vector3 p2 = new Vector3(a,Terrain.getHeight(a, d),d);
-				Vector3 p3 = new Vector3(c,Terrain.getHeight(c, b),b);
-				Vector3 p4 = new Vector3(c,Terrain.getHeight(c, d),d);
-
-				// This will create two triangles using four points
-				// For more info, go to the TriangleModel class
-				TriangleModel triangleModel = new TriangleModel(p1,p2,p3,p4,a,b);
-
-				TriangleInstance triangleInstance = new TriangleInstance(triangleModel.getModel());
-				//this.triangles.add(triangleInstance);
-				this.instances.add(triangleInstance);
-
+		float x, z;
+		for(int i = 0; i < FIELD_DETAIL; i++) {
+			for(int j = 0; j < FIELD_DETAIL; j++) {
+				x = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (i + 1);
+				z = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (j + 1);
+				generateTerrain(x, z);
 			}
 		}
 
@@ -226,19 +212,6 @@ public class App extends ApplicationAdapter {
 		}
 		this.modelBatch.end();
 
-		// The following code should do frustum culling with the triangles, but for some reason it does not work now
-		/*
-		this.modelBatch.begin(this.useFreeCam ? this.freeCam : this.ballCam);
-		this.modelBatch.render(this.instances, this.environment);
-		for (TriangleInstance triangleInstance : this.triangles) {
-			this.v.set(triangleInstance.transform.getTranslation(this.v));
-			if ((this.useFreeCam ? this.freeCam : this.ballCam).frustum.boundsInFrustum(this.v, triangleInstance.getDimensions())) {
-				System.out.println(triangleInstance.getDimensions());
-				this.modelBatch.render(triangleInstance, this.environment);
-			}
-		}
-		this.modelBatch.end();*/
-
 		this.xDir = this.ballCam.direction.x;
 		this.zDir = this.ballCam.direction.z;
 
@@ -297,7 +270,7 @@ public class App extends ApplicationAdapter {
 
 	/**
 	 * The controls for the app.
-	 *
+	 * @param input
 	 */
 	private void controls() {
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { // close game
@@ -361,7 +334,31 @@ public class App extends ApplicationAdapter {
 		return false;
 	}
 
+	/**
+	 * Terrain generation.
+	 * @param x x-coordinate of the tile
+	 * @param z z-coordinate of the tile
+	 */
+	public void generateTerrain(float x, float z) {
+		float height = Terrain.getHeight(x, z) - Golfball.SIZE;
 
+		Material boxMaterial;
+		if (height < 0 - TILE_SIZE / 2) { // water texture
+			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.waterColor()));
+		}
+		else if (Collision.isInSandPit(x, z)) { // sandpit texture
+			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.sandColor()));
+		}
+		else { // grass texture (depending on height)
+			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.grassColor(height)));
+		}
+
+		// create model
+		Model box = 
+		this.modelBuilder.createBox(TILE_SIZE, TILE_SIZE, TILE_SIZE, boxMaterial, Usage.Position + Usage.Normal);
+		Tile tile = new Tile(box, x, z);
+		this.tiles.add(tile);
+	}
 
 	/**
 	 * Get the golfball
