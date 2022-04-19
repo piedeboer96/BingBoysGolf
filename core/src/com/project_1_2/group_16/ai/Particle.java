@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Particle {
     private float[] vxy;
     private float[] xy;
-    private float score;
+    private float score = Integer.MAX_VALUE;
     private boolean scoreSet = false;
     private boolean xySet = false;
     private boolean bestSet = false;

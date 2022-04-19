@@ -9,12 +9,14 @@ import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.physics.Physics;
 
 public class RK4 implements NumericalSolver{
+
     public boolean stop;
     public float stepSize = 0.05f;
 
     public RK4(){
         stop = false;
     }
+
     /**
      * class needed to run the RK4 derivation algorithm which is a more improved version of Euler's implementation by 3 orders
      * of accuracy. It runs by taking a weighted average of different estimations/derivations k1, k2, k3 and k4.
@@ -55,6 +57,7 @@ public class RK4 implements NumericalSolver{
             
             // reset position
             App.pos_x = App.prevPos.x;
+
             App.pos_y = App.prevPos.y;
             App.staticStop = true;
 
@@ -121,7 +124,7 @@ public class RK4 implements NumericalSolver{
         if(Collision.ballIsInWater(sv)){
             stop = true;
             //Impossible stateVector, to indicate that ball hit water
-            return new StateVector(-1,-1,-1,-1);
+            return new StateVector(Integer.MIN_VALUE,Integer.MIN_VALUE,Integer.MIN_VALUE,Integer.MIN_VALUE);
         }
         Tree hittree = Collision.ballHitTree(sv);
         if(hittree != null) {
@@ -149,7 +152,6 @@ public class RK4 implements NumericalSolver{
         if(Physics.magnitude(sv.velocity_x,sv.velocity_y) < h){
             float[] partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
             if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < 0.2f)) {
-                System.out.println("ball stopped");
                 stop = true;
                 return sv;
             }
