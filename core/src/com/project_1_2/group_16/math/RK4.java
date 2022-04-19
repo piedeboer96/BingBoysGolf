@@ -34,7 +34,7 @@ public class RK4 implements NumericalSolver {
 
         this.partialDerivatives = Terrain.getSlope(new float[] {sv.x, sv.y}, h);
 
-        System.out.println("sv_END: " + sv.x + " " + sv.y);
+        System.out.println("sv_END: " + sv);
     }
 
     @Override

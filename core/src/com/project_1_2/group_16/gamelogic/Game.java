@@ -20,9 +20,9 @@ public class Game {
     public static final float treeFriction = -0.75f;
 
     /**
-     * Maximum velocity allowed for a hole to count.
+     * Collision handler.
      */
-    public static final float maxHoleVelocity = 2f;
+    public final Collision collision = new Collision();
 
     private NumericalSolver solver;
 
@@ -36,7 +36,7 @@ public class Game {
         this.solver.solve(h, sv);
 
         // check water collision
-        if (Collision.ballIsInWater(sv)) {
+        if (this.collision.ballIsInWater(sv)) {
             System.out.println("water");
 
             // reset position
@@ -49,7 +49,7 @@ public class Game {
         }
 
         // check tree collision
-        Tree hittree = Collision.ballHitTree(sv);
+        Tree hittree = this.collision.ballHitTree(sv);
         if (hittree != null) {
             System.out.println("tree");
 
@@ -71,7 +71,7 @@ public class Game {
         }
 
         // check hole collision
-        if (Physics.magnitude(sv.vx, sv.vy) < maxHoleVelocity && Collision.ballIsInTargetRadius(sv)) {
+        if (this.collision.ballIsInTargetRadius(sv)) {
             if (reference != null) this.endGame(reference);
             sv.stop = true;
         }

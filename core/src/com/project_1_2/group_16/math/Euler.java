@@ -33,7 +33,7 @@ public class Euler implements NumericalSolver {
         sv.vx = vel_x1;
         sv.vy = vel_y1;
 
-        System.out.println("sv_END: " + sv.x + " " + sv.y);
+        System.out.println("sv_END: " + sv);
     }
 
     @Override

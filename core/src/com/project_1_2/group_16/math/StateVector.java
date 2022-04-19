@@ -36,4 +36,9 @@ public class StateVector extends Vector2 {
         this.vx = vx;
         this.vy = vy;
     }
+
+    @Override
+    public String toString() {
+        return ("x: "+x).concat(" y: "+y).concat(" vx: "+vx).concat(" vy: "+vy).concat(" prev: "+prev);
+    }
 }

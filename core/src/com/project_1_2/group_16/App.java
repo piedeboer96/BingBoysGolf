@@ -27,7 +27,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
-import com.project_1_2.group_16.gamelogic.Collision;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.misc.ANSI;
@@ -93,8 +92,8 @@ public class App extends ApplicationAdapter {
 	private Theme theme;
 
 	// physics
-	public Game game;
-	public static boolean allowHit;
+	public Game game = new Game();
+	public boolean allowHit;
 	public int hitsCounter;
 
 	// util
@@ -186,9 +185,8 @@ public class App extends ApplicationAdapter {
 		dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
 
 		// allow gameplay
-		this.game = new Game();
 		game.setNumericalSolver(Solver.RK4);
-		App.allowHit = true;
+		this.allowHit = true;
 	}
 
 	@Override
@@ -231,7 +229,7 @@ public class App extends ApplicationAdapter {
 		this.spriteBatch.end();
 
 		// draw power gauge
-		if (this.power > 1 && App.allowHit) {
+		if (this.power > 1 && this.allowHit) {
 			this.shapeBatch.begin(ShapeType.Filled);
 			this.colorutil = 510 * (this.power - 1) / 4;
 			if (this.colorutil > 255) {
@@ -252,11 +250,11 @@ public class App extends ApplicationAdapter {
 		this.shapeBatch.end();
 
 		// update golfball
-		if (App.allowHit == false) {
+		if (this.allowHit == false) {
 			this.game.run(this.golfball.STATE, this);
 		}
 		if(this.golfball.STATE.stop) { // ball has come to a rest
-			App.allowHit = true;
+			this.allowHit = true;
 		}
 		this.golfball.updateState();
 
@@ -314,7 +312,7 @@ public class App extends ApplicationAdapter {
 	 * @return if the shot was successful
 	 */
 	public boolean shoot(float vX, float vY) {
-		if (App.allowHit) {
+		if (this.allowHit) {
 			this.v.set(this.golfball.getPosition());
 			this.golfball.STATE.vx = vX;
 			this.golfball.STATE.vy = vY;
@@ -325,7 +323,7 @@ public class App extends ApplicationAdapter {
 
 			// hit the ball
 			this.golfball.STATE.prev = new Vector2(this.v.x, this.v.z);
-			App.allowHit = false;
+			this.allowHit = false;
 			this.golfball.STATE.stop = false;
 			return true;
 		}
@@ -344,7 +342,7 @@ public class App extends ApplicationAdapter {
 		if (height < 0 - TILE_SIZE / 2) { // water texture
 			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.waterColor()));
 		}
-		else if (Collision.isInSandPit(x, z)) { // sandpit texture
+		else if (this.game.collision.isInSandPit(x, z)) { // sandpit texture
 			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.sandColor()));
 		}
 		else { // grass texture (depending on height)
