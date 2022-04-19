@@ -7,6 +7,7 @@ package com.project_1_2.group_16.ai;
 
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.StateVector;
@@ -15,11 +16,13 @@ import com.project_1_2.group_16.models.Golfball;
 import java.util.Random;
 
 public class RuleBasedBot {
+    static EngineSimulator simulator;
+
     static final int Population = 200;
     static Random rand = new Random();
-    static final float max = 10.0F; //what is the maximum force that we can apply?
-    static int score;
-    static int bestScore;
+    static final float max = 5.0F; //what is the maximum force that we can apply?
+    static float score;
+    static float bestScore;
     static boolean scoreInitialise = false;
     static float float_randomX;
     static float float_randomY;
@@ -35,10 +38,7 @@ public class RuleBasedBot {
     public RuleBasedBot() {
     }
 
-    public static StateVector BestShot() {
-
-        //v = Golfball.getPosition();
-        //this.v.set(this.golfball.getPosition());
+    public static void BestShot() {
 
         useAnimation = false;
         for(int i = 0; i < Population; ++i) {
@@ -63,6 +63,8 @@ public class RuleBasedBot {
             }
 
             score = Game.runWithAI(sv);
+            //simulator = new EngineSimulator(Game.sv.pos_x,Game.sv.pos_y,sv.velocity_x,sv.velocity_y);
+            //score = PSO.calculateEucledianDistance(simulator.endPos_X,simulator.endPos_Y, Input.VT.x,Input.VT.y);
             if ((!scoreInitialise || bestScore > score) && score!=-1) {
                 scoreInitialise = true;
                 bestScore = score;
@@ -72,7 +74,17 @@ public class RuleBasedBot {
                 System.out.println("with a force applied in the y direction of " + sv.velocity_y);
             }
         }
-        return newsv;
+        useAnimation = true;
+        Game.sv = newsv;
+        System.out.println(Game.sv);
+        Game.run();
+        System.out.println("\n");
+        scoreInitialise = false;
+        firstGen = false;
+        svForXandY = Game.sv;
+
+        //shoot(Game.sv.velocity_x,Game.sv.velocity_y);
+        //return newsv;
     }
     public static void ShotBestShot(){
         useAnimation = true;
