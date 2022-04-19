@@ -65,7 +65,7 @@ public class RuleBasedBot {
             //simulator = new EngineSimulator(Game.sv.pos_x,Game.sv.pos_y,sv.velocity_x,sv.velocity_y);
             //score = PSO.calculateEucledianDistance(simulator.endPos_X,simulator.endPos_Y, Input.VT.x,Input.VT.y);
             if (!scoreInitialise || (bestScore > score)) {
-                if(score != -1){
+                if(score != -1) {
                     scoreInitialise = true;
                     bestScore = score;
                     newsv = new StateVector(sv.pos_x, sv.pos_y, float_randomX, float_randomY);
