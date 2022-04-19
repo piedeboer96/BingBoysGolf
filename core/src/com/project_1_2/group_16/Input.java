@@ -22,7 +22,7 @@ public class Input {
     /**
      * Kinetic Friction.
      */
-    public static float MUK = 0.08f;
+    public static float MUK = 0.05f;
 
     /**
      * Static Friction.
@@ -42,17 +42,17 @@ public class Input {
     /**
      * Height Function.
      */
-    public static String H = "0.4 * (0.9 - Math.pow(Math.E, -1*((x*x + y*y) / 8)))";
+    public static String H = "0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8))";
 
     /**
      * Number of trees.
      */
-    public static int TREES = 15;
+    public static int TREES = 0;
 
     /**
      * Number of sandpits.
      */
-    public static int SAND = 3;
+    public static int SAND = 0;
 
     /**
      * Type of user playing the game.
