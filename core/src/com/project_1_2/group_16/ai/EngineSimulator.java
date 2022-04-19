@@ -36,8 +36,8 @@ public class EngineSimulator {
         while(!rk4.stop){
             sv = rk4.solveRK4oneStep(sv, rk4.stepSize);
             if(particleSimulation){
-                if(sv.pos_x!=-1.0f && sv.pos_y!=-1 && PSO.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.pos_x, sv.pos_y) < particle.getScore()){
-                    particle.setScore(PSO.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.pos_x, sv.pos_y));
+                if(sv.pos_x!=-1.0f && sv.pos_y!=-1 && Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.pos_x, sv.pos_y) < particle.getScore()){
+                    particle.setScore(Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.pos_x, sv.pos_y));
                 }
             }
         }
