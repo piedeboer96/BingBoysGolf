@@ -8,18 +8,18 @@ public class DesktopLauncher {
 
 	public static void main(String[] arg) {
 		//create titlescreen (comment out if on mac for now) TODO
-		TitleScreen titleScreen = new TitleScreen();
-		titleScreen.setUpGUI();
-		titleScreen.setUpButtonListeners();
-
-		// input screen buffer
-		while (titleScreen.getBuffer()) {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}//
+//		TitleScreen titleScreen = new TitleScreen();
+//		titleScreen.setUpGUI();
+//		titleScreen.setUpButtonListeners();
+//
+//		// input screen buffer
+//		while (titleScreen.getBuffer()) {
+//			try {
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}//
 
 		// launch the game
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();

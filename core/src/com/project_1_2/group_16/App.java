@@ -26,6 +26,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.ai.EngineSimulator;
+import com.project_1_2.group_16.ai.FloodFill;
 import com.project_1_2.group_16.ai.RuleBasedBot;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
@@ -40,6 +41,8 @@ import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tile;
 import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.Theme;
+
+import java.util.Arrays;
 
 public class App extends ApplicationAdapter {
 
@@ -194,6 +197,11 @@ public class App extends ApplicationAdapter {
 		// sounds
 		hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
 		dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
+
+		//Fill the graph
+		FloodFill.fillGraphTable();
+		FloodFill.floodFill((int)FloodFill.flood_i,(int)FloodFill.flood_j);
+		System.out.println(Arrays.deepToString(FloodFill.matrixParcour));
 
 		// allow gameplay
 		Game.runRK4();
