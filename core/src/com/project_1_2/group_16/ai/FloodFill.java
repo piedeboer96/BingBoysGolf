@@ -174,8 +174,7 @@ public class FloodFill {
     }
 
     /**
-     * This method creates the floodFillMatrix.
-     * Water means -1.
+     * Returns the a value based on what terrain type something is currently
      * @param x x coordinate
      * @param y y coordinate
      * @param i index in matrix parcour
@@ -184,9 +183,9 @@ public class FloodFill {
      */
     public static int getArrayValue(float x, float y, int i, int j){
         float height = Terrain.getHeight(x, y) - Golfball.SIZE;
-        float terrainHeight = Terrain.getHeight(x,y);
+        System.out.println("height:" + Terrain.getHeight(x,y));
 
-        if(terrainHeight<0) { //if height smaller than 0 -> value = -1;
+        if(height<0){ //if height smaller than 0 -> value = -1;
             System.out.println("water time");
             return -1;
         }else{
@@ -194,7 +193,6 @@ public class FloodFill {
                 holeSet = true;
                 flood_i = i;
                 flood_j = j;
-                System.out.println("hole: " + flood_i + " " + flood_j);
                 return 0;
             }else{
                 return Integer.MAX_VALUE; //if height is bigger then 0 and the coordinates are not the holse coordinate -> value = Integer.MAX_Value
