@@ -3,7 +3,6 @@ package com.project_1_2.group_16.gamelogic;
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.math.*;
-import com.project_1_2.group_16.misc.Solver;
 import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.physics.Physics;
 
@@ -89,11 +88,11 @@ public class Game {
      * Set the numerical solver to be used by the physics engine.
      * @param solver
      */
-    public void setNumericalSolver(Solver solver) {
+    public void setNumericalSolver(int solver) {
         switch (solver) {
-            case EULER: this.solver = new Euler(); break;
-            case RK2: this.solver = new RK2(); break;
-            case RK4: this.solver = new RK4(); break;
+            case NumericalSolver.EULER: this.solver = new Euler(); break;
+            case NumericalSolver.RK2: this.solver = new RK2(); break;
+            case NumericalSolver.RK4: this.solver = new RK4(); break;
         }
     }
 

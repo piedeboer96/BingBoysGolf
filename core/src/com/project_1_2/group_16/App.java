@@ -29,9 +29,9 @@ import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.misc.PowerStatus;
-import com.project_1_2.group_16.misc.Solver;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tile;
@@ -185,7 +185,7 @@ public class App extends ApplicationAdapter {
 		dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
 
 		// allow gameplay
-		game.setNumericalSolver(Solver.RK4);
+		game.setNumericalSolver(NumericalSolver.RK4);
 		this.allowHit = true;
 	}
 
