@@ -8,7 +8,6 @@ import com.project_1_2.group_16.math.StateVector;
 /**
  * Class for bots to simulate the engines
  */
-
 public class EngineSimulator {
     float startingPos_x = 0;
     float startingPos_y = 0;
@@ -45,7 +44,6 @@ public class EngineSimulator {
         endPos_X = sv.pos_x;
         endPos_Y = sv.pos_y;
     }
-
     public void runEulerai(){
         while(!euler.stop){
             sv = euler.solveEulerai(sv, euler.numericalStepSize);
