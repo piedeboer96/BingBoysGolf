@@ -1,28 +1,11 @@
 package com.project_1_2.group_16.math;
 
-import com.badlogic.gdx.math.Vector2;
+public class StateVector {
 
-public class StateVector extends Vector2 {
-
-    /**
-     * x-velocity
-     */
-    public float vx;
-
-    /**
-     * y-velocity
-     */
-    public float vy;
-
-    /**
-     * The previous position
-     */
-    public Vector2 prev;
-
-    /**
-     * Stopping condition
-     */
-    public boolean stop;
+    public float pos_x;
+    public float pos_y;
+    public float velocity_x;
+    public float velocity_y;
 
     /**
      * StateVector that gives information about the pos (x,y) and velocity (x,y) of the ball.
@@ -31,14 +14,15 @@ public class StateVector extends Vector2 {
      * @param velocity_x_init initial vel_x
      * @param velocity_y_init initial vel_y
      */
-    public StateVector(float x, float y, float vx, float vy) {
-        super(x, y);
-        this.vx = vx;
-        this.vy = vy;
+    public StateVector(float pos_x_init, float pos_y_init, float velocity_x_init, float velocity_y_init) {
+        this.pos_x = pos_x_init;
+        this.pos_y = pos_y_init;
+        this.velocity_x = velocity_x_init;
+        this.velocity_y = velocity_y_init;
     }
 
     @Override
     public String toString() {
-        return ("x: "+x).concat(" y: "+y).concat(" vx: "+vx).concat(" vy: "+vy).concat(" prev: "+prev);
+        return "[ x " + pos_x + " y " + pos_y + " vel_x " + velocity_x + " vel_y " + velocity_y + " ]";
     }
 }

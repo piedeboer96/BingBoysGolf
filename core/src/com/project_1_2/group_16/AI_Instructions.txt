@@ -14,18 +14,6 @@ App.allowHit tells you if the ball is still moving or is at a stop
 Use Vector3 / Vector2 classes to avoid accessive memory usage
 Use multithreading if you know how to
 
----------------------------------------------------------------------------
-                                NEW PHYSICS ENGINE:
-The new physics engine is STATE VECTOR ORIENTATED (it uses solely state vectors for its calculations)
-STATE VECTORS are objects used to represent the motion of a golfball
-To do simulations with this new physics engine:
-    - Create a Game object
-    - do game.setNumericalSolver(); with either Solver.EULER, Solver.RK2, or Solver.RK4 as paramater
-    - to simulate the shot of an imaginary golfball, do game.run(sv, null);
-        (where sv represents the state vector of the imaginary golfball)
-    - run this in a loop until sv.stop == true
-    - you can access the final coordinates using sv.x and sv.y
-
 -----------------------------------A* Pathfinding IDEA---------------------
 1- The idea is essentially to find the shortest set of velocity pairs (Velocity X and Velocity Y)
 2- For this we will use A* Pathfinding with node objects having two fields :-

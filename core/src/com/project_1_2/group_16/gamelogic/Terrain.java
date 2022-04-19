@@ -19,7 +19,6 @@ public class Terrain {
     public static final List<Tree> trees = new ArrayList<Tree>();
     public static final float WATER_EDGE = App.FIELD_SIZE / 2 + App.TILE_SIZE;
     public static final Interpreter BSH = new Interpreter();
-    public static final Collision collision = new Collision();
     private static String eval;
 
     /**
@@ -76,7 +75,7 @@ public class Terrain {
      * @return kinetic friction coefficient
      */
     public static float getKineticFriction(StateVector sv) {
-        return collision.isInSandPit(sv.x, sv.y) ? Input.MUKS : Input.MUK;
+        return Collision.isInSandPit(sv.pos_x, sv.pos_y) ? Input.MUKS : Input.MUK;
     }
     
     /**
@@ -85,7 +84,7 @@ public class Terrain {
      * @return static friction coefficient
      */
     public static float getStaticFriction(StateVector sv) {
-        return collision.isInSandPit(sv.x, sv.y) ? Input.MUSS : Input.MUS;
+        return Collision.isInSandPit(sv.pos_x, sv.pos_y) ? Input.MUSS : Input.MUS;
     }
 
     /**

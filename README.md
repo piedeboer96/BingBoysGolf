@@ -1,24 +1,4 @@
 ### BINGBOYSGOLF
-***how to git...***
-make sure you are on the local git folder (e.g. cd/users/piedb/documents/github/bingboysgolf)
-
-1. Before working !!! ---> Update code first. (OF THE DESIRED BRANCH)
-2. Make your changes ON YOUR BRANCH
-3. Commit changes
-4. push changes
-5. let pie/tom merge it with main :)
-
-***_some basic git commands_***
-
-
-git branch -a        //show branches   <br /> 
-git switch branch-name    //switch branch <br /> 
-git pull             //update , pull latest version <br /> 
-git commit           //commit your local changes <br /> 
-git push             //push your local changes <br /> 
-
-
-
 ***recent notes***
  
 - GAME IS NOT WORKING FOR ME (PIE on MAC)
