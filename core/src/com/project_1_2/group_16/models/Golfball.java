@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.themes.Theme;
 
 public class Golfball {
@@ -15,8 +14,6 @@ public class Golfball {
      * The radius of the golfball.
      */
     public static final float SIZE = 0.1f;
-
-    public final StateVector STATE = new StateVector(0, 0, 0, 0);
     
     private Model model;
     private ModelInstance instance;
@@ -130,9 +127,5 @@ public class Golfball {
     public Vector3 moveTo(float x, float z) {
         this.util.set(this.getPosition());
         return this.move(x - this.util.x, z - this.util.z);
-    }
-
-    public void updateState() {
-        this.moveTo(this.STATE.x, this.STATE.y);
     }
 }

@@ -4,14 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.models.Tree;
-import com.project_1_2.group_16.physics.Physics;
 
 public class Collision {
-
-    /**
-     * Maximum velocity allowed for a hole to count.
-     */
-    public static final float MAX_HOLE_VELOCITY = 2f;
 
     /**
      * Return whether the ball is in the target-radius based on the coordinates of the Statevector
@@ -19,8 +13,8 @@ public class Collision {
      * @param sv stateVector to pull position from
      * @return boolean, whether it is in the radius...
      */
-    public boolean ballIsInTargetRadius(StateVector sv) {
-        return Physics.magnitude(sv.vx, sv.vy) < MAX_HOLE_VELOCITY && Input.VT.dst(sv.x, sv.y) < Input.R;
+    public static boolean ballIsInTargetRadius(StateVector sv) {
+        return Input.VT.dst(sv.pos_x, sv.pos_y) < Input.R;
     }
 
     /**
@@ -28,8 +22,8 @@ public class Collision {
      * @param sv used to pull the position
      * @return boolean, true if the ball is in water
      */
-    public boolean ballIsInWater(StateVector sv) {
-        return Terrain.getHeight(sv.x, sv.y) < 0;
+    public static boolean ballIsInWater(StateVector sv) {
+        return Terrain.getHeight(sv.pos_x, sv.pos_y) < 0;
     }
 
     /**
@@ -37,7 +31,7 @@ public class Collision {
      * @param sv used to pull the position
      * @return the tree the ball hit, if the ball didn't hit a tree it returns null
      */
-    public Tree ballHitTree(StateVector sv) {
+    public static Tree ballHitTree(StateVector sv) {
         for (int i = 0; i < Input.TREES; i++) {
             if (ballIsInTreeRadius(sv, Terrain.trees.get(i))) {
                 return Terrain.trees.get(i);
@@ -53,8 +47,8 @@ public class Collision {
      * @param tree tree reference
      * @return
      */
-    public boolean ballIsInTreeRadius(StateVector sv, Tree tree) {
-        return new Vector2(tree.getPosition().x, tree.getPosition().z).dst(sv.x, sv.y) < tree.getRadius();
+    public static boolean ballIsInTreeRadius(StateVector sv, Tree tree) {
+        return new Vector2(tree.getPosition().x, tree.getPosition().z).dst(sv.pos_x, sv.pos_y) < tree.getRadius();
     }
 
     /**
@@ -62,7 +56,7 @@ public class Collision {
      * @param x x-coordinate
      * @param y y-coordinate
      */
-    public boolean isInSandPit(float x, float y) {
+    public static boolean isInSandPit(float x, float y) {
         for (Sandpit pit : Terrain.sandPits) {
             if (pit.getPosition().dst(x, y) < pit.getRadius()) {
                 return true;

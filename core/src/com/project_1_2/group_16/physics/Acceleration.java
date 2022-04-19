@@ -14,10 +14,10 @@ public class Acceleration {
      */
     public float getAccelerationX(float dh_dx, float dh_dy, StateVector sv) {
         float kinetic_friction = Terrain.getKineticFriction(sv);
-        if (Physics.magnitude(sv.vx,sv.vy) < 0.05  && Physics.magnitude(dh_dx,dh_dy) > 0) {
+        if (Physics.magnitude(sv.velocity_x,sv.velocity_y) < 0.05  && Physics.magnitude(dh_dx,dh_dy) > 0) {
             return (-Physics.GRAV_CONSTANT * kinetic_friction * dh_dx) / Physics.magnitude(dh_dx, dh_dy);
         }
-        return ((-Physics.GRAV_CONSTANT * (dh_dx)) - ((kinetic_friction * Physics.GRAV_CONSTANT) * (sv.vx / (Physics.magnitude(sv.vx,sv.vy)))));
+        return ((-Physics.GRAV_CONSTANT * (dh_dx)) - ((kinetic_friction * Physics.GRAV_CONSTANT) * (sv.velocity_x / (Physics.magnitude(sv.velocity_x,sv.velocity_y)))));
     }
 
     /**
@@ -29,9 +29,9 @@ public class Acceleration {
      */
     public float getAccelerationY(float dh_dx, float dh_dy, StateVector sv) {
         float kinetic_friction = Terrain.getKineticFriction(sv);
-        if (Physics.magnitude(sv.vx,sv.vy) < 0.05 && Physics.magnitude(dh_dx,dh_dy) > 0) {
+        if (Physics.magnitude(sv.velocity_x,sv.velocity_y) < 0.05 && Physics.magnitude(dh_dx,dh_dy) > 0) {
             return (-Physics.GRAV_CONSTANT * kinetic_friction * dh_dy) / Physics.magnitude(dh_dx, dh_dy);
         }
-        return ((-Physics.GRAV_CONSTANT * (dh_dy)) - ((kinetic_friction * Physics.GRAV_CONSTANT) * (sv.vy / (Physics.magnitude(sv.vx, sv.vy)))));
+        return ((-Physics.GRAV_CONSTANT * (dh_dy)) - ((kinetic_friction * Physics.GRAV_CONSTANT) * (sv.velocity_y / (Physics.magnitude(sv.velocity_x, sv.velocity_y)))));
     }
 }
