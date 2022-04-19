@@ -1,11 +1,9 @@
 package com.project_1_2.group_16.ai;
 
-import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.models.Golfball;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -32,8 +30,8 @@ public class FloodFill {
      * @param y y coordinae
      */
     public static int getMatrixValue(float x, float y){
-        int i = (int)((x + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
-        int j = (int)((x + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
+        int i = (int)((x + FIELD_SIZE/2 - TRIANGLE_BASE_SIZE /2)/ TRIANGLE_BASE_SIZE)-1;
+        int j = (int)((x + FIELD_SIZE/2 - TRIANGLE_BASE_SIZE /2)/ TRIANGLE_BASE_SIZE)-1;
         return matrixParcour[i][j];
     }
     //FloodFill
@@ -157,8 +155,8 @@ public class FloodFill {
         float x, y;
         for(int i = 0; i < FIELD_DETAIL; i++) {
             for(int j = 0; j < FIELD_DETAIL; j++) {
-                x = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (i + 1);
-                y = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (j + 1);
+                x = -FIELD_SIZE / 2 + TRIANGLE_BASE_SIZE / 2 + TRIANGLE_BASE_SIZE * (i + 1);
+                y = -FIELD_SIZE / 2 + TRIANGLE_BASE_SIZE / 2 + TRIANGLE_BASE_SIZE * (j + 1);
                 matrixParcour[i][j] = getArrayValue(x, y,i,j);
             }
         }

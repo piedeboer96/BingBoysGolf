@@ -17,7 +17,7 @@ public class Terrain {
 
     public static final List<Sandpit> sandPits = new ArrayList<Sandpit>();
     public static final List<Tree> trees = new ArrayList<Tree>();
-    public static final float WATER_EDGE = App.FIELD_SIZE / 2 + App.TILE_SIZE;
+    public static final float WATER_EDGE = App.FIELD_SIZE / 2 + App.TRIANGLE_BASE_SIZE;
     public static final Interpreter BSH = new Interpreter();
     private static String eval;
 
@@ -94,8 +94,8 @@ public class Terrain {
         Vector2 sV; float sX, sZ;
         for (int i = 0; i < Input.SAND; i++) {
             do {
-                sX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
-                sZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
+                sX = (float)(Math.random() * (App.FIELD_SIZE - App.TRIANGLE_BASE_SIZE) - App.FIELD_SIZE / 2);
+                sZ = (float)(Math.random() * (App.FIELD_SIZE - App.TRIANGLE_BASE_SIZE) - App.FIELD_SIZE / 2);
                 sV = new Vector2(sX, sZ);
             } while (sV.dst(Input.V0) < 2 || sV.dst(Input.VT) < 2);
             sandPits.add(new Sandpit(sX, sZ, 1f));
@@ -114,8 +114,8 @@ public class Terrain {
             j = 0;
 			do {
                 j++;
-				trX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
-				trZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
+				trX = (float)(Math.random() * (App.FIELD_SIZE - App.TRIANGLE_BASE_SIZE) - App.FIELD_SIZE / 2);
+				trZ = (float)(Math.random() * (App.FIELD_SIZE - App.TRIANGLE_BASE_SIZE) - App.FIELD_SIZE / 2);
 				trV = new Vector2(trX, trZ);
 			} while ((j < 50 && Terrain.getHeight(trX, trZ) < 0.1) || trV.dst(Input.V0) < 1 || trV.dst(Input.VT) < 1);
 			float trR = (float)(Math.random() * 0.3 + .2);
