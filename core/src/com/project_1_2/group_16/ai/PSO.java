@@ -35,7 +35,7 @@ public class PSO {
     /**
      *
      * @param args
-     */
+     *
     public static void main(String[] args) {
         //FloodFill.runFloodFill();
         //System.out.println(Arrays.deepToString(FloodFill.matrixParcour));
@@ -59,7 +59,7 @@ public class PSO {
      *This method initialisez the particles that are going to be used for the PSO
      * @param population_size the population size of the particle swarm
      * @return
-     */
+     *
     public static Particle[] initializeParticles(int population_size){
         EngineSimulator es;
         globalBest = new Particle(0, 0);
@@ -90,7 +90,7 @@ public class PSO {
      * Method which can be called to run the PSO 
      * @param maxIterations the maximum amount of generations the PSO can run
      * @param particles the intialised particles
-     */
+     *
     private static void runPSO(int maxIterations, Particle[] particles){
         int count = 0;
         EngineSimulator es;
@@ -119,7 +119,7 @@ public class PSO {
                 }
             }
         }
-    }
+    }*/
 
 
 
