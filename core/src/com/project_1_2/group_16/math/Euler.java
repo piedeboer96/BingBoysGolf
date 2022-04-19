@@ -1,23 +1,14 @@
 package com.project_1_2.group_16.math;
 
-import com.badlogic.gdx.math.Vector2;
-import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.gamelogic.Collision;
-import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.physics.Acceleration;
-import com.project_1_2.group_16.physics.Physics;
 
 public class Euler implements NumericalSolver {
 
-    Acceleration acceleration = new Acceleration();
-    public float numericalStepSize = 0.05f;
-    public boolean stop;
+    private final Acceleration acceleration = new Acceleration();
 
-    public Euler(){
-        this.stop = false;
-    }
+    private float[] partialDerivatives;
+    
     /**
      * Euler ODE Solver
      * @param h step-size
@@ -25,130 +16,28 @@ public class Euler implements NumericalSolver {
      */
     @Override
     public void solve(float h, StateVector sv) {
-
-        float pos_x1, pos_y1, vel_x1, vel_y1;
-        App.pos_x = sv.pos_x;
-        App.pos_y = sv.pos_y;
-
-        float[] partialDerivatives = Terrain.getSlope(new float[]{sv.pos_x, sv.pos_y}, h);
+        this.partialDerivatives = Terrain.getSlope(new float[] {sv.x, sv.y}, h);
         
-        pos_x1 = sv.pos_x + (h * sv.velocity_x);
-        pos_y1 = sv.pos_y + (h * sv.velocity_y);
+        float pos_x1 = sv.x + (h * sv.vx);
+        float pos_y1 = sv.y + (h * sv.vy);
 
-        float acceleration_x = acceleration.getAccelerationX(partialDerivatives[0], partialDerivatives[1], sv);
-        float acceleration_y = acceleration.getAccelerationY(partialDerivatives[0], partialDerivatives[1], sv);
+        float acceleration_x = acceleration.getAccelerationX(this.partialDerivatives[0], this.partialDerivatives[1], sv);
+        float acceleration_y = acceleration.getAccelerationY(this.partialDerivatives[0], this.partialDerivatives[1], sv);
 
-        vel_x1 = sv.velocity_x + (h * acceleration_x);
-        vel_y1 = sv.velocity_y + (h * acceleration_y);
+        float vel_x1 = sv.vx + (h * acceleration_x);
+        float vel_y1 = sv.vy + (h * acceleration_y);
 
-        sv.pos_x = pos_x1;
-        sv.pos_y = pos_y1;
+        sv.x = pos_x1;
+        sv.y = pos_y1;
 
-        sv.velocity_x = vel_x1;
-        sv.velocity_y = vel_y1;
+        sv.vx = vel_x1;
+        sv.vy = vel_y1;
 
-//        System.out.println("sv_END: " + sv);
-
-        if (Collision.ballIsInWater(sv)) {
-            System.out.println("water");
-
-            // reset position
-            App.pos_x = App.prevPos.x;
-            App.pos_y = App.prevPos.y;
-            App.staticStop = true;
-
-            // stroke penalty
-            App.hitsCounter++;
-        }
-
-        Tree hitTree = Collision.ballHitTree(sv);
-        if (hitTree != null) {
-            System.out.println("tree");
-
-            Vector2 vT = new Vector2(hitTree.getPosition().x, hitTree.getPosition().z);
-            Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
-
-            if (vB.x > vT.x + hitTree.getRadius() * 0.5) {
-                sv.velocity_x *= -.75;
-            }
-            else if (vB.x < vT.x - hitTree.getRadius() * 0.5) {
-                sv.velocity_x *= -.75;
-            }
-            else if (vB.y > vT.y + hitTree.getRadius() * 0.5) {
-                sv.velocity_y *= -.75;
-            }
-            else if (vB.y < vT.y - hitTree.getRadius() * 0.5) {
-                sv.velocity_y *= -.75;
-            }
-        }
-
-        //check if the ball is rolling
-        if (Physics.magnitude(sv.velocity_x, sv.velocity_y) < h) {
-            if ((Physics.magnitude(partialDerivatives[0], partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
-                if (Collision.ballIsInTargetRadius(sv)) {
-                    Game.endGame();
-                }
-                App.staticStop = true;
-            }
-        }
+        System.out.println("sv_END: " + sv);
     }
 
-
-    public StateVector solveEulerai (StateVector sv, float h){
-        float pos_x1, pos_y1, vel_x1, vel_y1;
-        float[] partialDerivatives = Terrain.getSlope(new float[]{sv.pos_x, sv.pos_y}, h);
-        pos_x1 = sv.pos_x + (h * sv.velocity_x);
-        pos_y1 = sv.pos_y + (h * sv.velocity_y);
-
-        float acceleration_x = acceleration.getAccelerationX(partialDerivatives[0], partialDerivatives[1], sv);
-        float acceleration_y = acceleration.getAccelerationY(partialDerivatives[0], partialDerivatives[1], sv);
-
-        vel_x1 = sv.velocity_x + (h * acceleration_x);
-        vel_y1 = sv.velocity_y + (h * acceleration_y);
-
-        sv.pos_x = pos_x1;
-        sv.pos_y = pos_y1;
-
-        sv.velocity_x = vel_x1;
-        sv.velocity_y = vel_y1;
-
-//        Tree hittree = Collision.ballHitTree(sv);
-//        if (hittree != null) {
-//            System.out.println("tree");
-//
-//            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
-//            Vector2 vB = new Vector2(sv.pos_x, sv.pos_y);
-//
-//            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
-//                sv.velocity_x *= -.75;
-//            }
-//            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
-//                sv.velocity_x *= -.75;
-//            }
-//            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
-//                sv.velocity_y *= -.75;
-//            }
-//            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
-//                sv.velocity_y *= -.75;
-//            }
-//        }
-//
-//        if (Collision.ballIsInWater(sv)) {
-//            System.out.println("water");
-//
-//            // reset position
-//            stop = true;
-//        }
-
-        if(Physics.magnitude(sv.velocity_x,sv.velocity_y) < h){
-            partialDerivatives = Terrain.getSlope(new float[] {sv.pos_x, sv.pos_y}, h);
-            if ((Physics.magnitude(partialDerivatives[0],partialDerivatives[1]) < 0.2f)) {
-                System.out.println("ball stopped");
-                stop = true;
-                return sv;
-            }
-        }
-
-        return sv;
+    @Override
+    public float[] getPartialDerivatives() {
+        return this.partialDerivatives;
     }
 }

@@ -24,7 +24,7 @@ public class PSO {
     /**
      *
      * @param args
-     */
+     *
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
         Particle[] particles = initializeParticles(population_size);
@@ -37,15 +37,13 @@ public class PSO {
         test.runRK4ai();
         System.out.println("Simulation run--> vx: " + globalBest.getVx() + " vy: " + globalBest.getVy() + " x,y: " + test.endPos_X +"," +  test.endPos_Y  + " Eucledian distance: " + globalBest.getScore());
 
-
-
     }
 
     /**
      *This method initialisez the particles that are going to be used for the PSO
      * @param population_size the population size of the particle swarm
      * @return
-     */
+     *
     public static Particle[] initializeParticles(int population_size){
         EngineSimulator es;
         globalBest = new Particle(0, 0);
@@ -59,13 +57,12 @@ public class PSO {
             es.runRK4ai();
             float[] xy = {es.endPos_X, es.endPos_Y};
             current.setXY(xy);
-//            current.setScore(calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
+            current.setScore(calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
             population[i] = current;
             current.setlocalBest(Particle.clone(current));
             if(current.getScore() < globalBest.getScore()){
                 globalBest = Particle.clone(current);
             }
-//            current.print();
         }
         return population;
     }
@@ -74,7 +71,7 @@ public class PSO {
      * Method which can be called to run the PSO 
      * @param maxIterations the maximum amount of generations the PSO can run
      * @param particles the intialised particles
-     */
+     *
     private static void runPSO(int maxIterations, Particle[] particles){
         int count = 0;
         EngineSimulator es;
@@ -85,11 +82,11 @@ public class PSO {
                 Particle current = particles[i];
                 float[] updatedVelocity = isvalidVelocity(current, updatedVelocity(current));
                 current.setVxy(updatedVelocity);
-                es = new EngineSimulator(startx, starty, current.getVx(), current.getVy(), current); // add positions
+                es = new EngineSimulator(startx, starty, current.getVx(), current.getVy()); // add positions
                 es.runRK4ai();
                 float[] xy = {es.endPos_X, es.endPos_Y};
                 current.setXY(xy);
-               //current.setScore(calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
+                current.setScore(calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
                 
                 if(current.getScore() < current.getlocalBest().getScore()){
                     current.setlocalBest(Particle.clone(current));
@@ -101,9 +98,20 @@ public class PSO {
                 }
             }
         }
+    }*/
+
+    /**
+     * Method which calculates the eucledian distance
+     * @param xt  the x position of the hole
+     * @param yt the y position of the hole
+     * @param endx the x position of the particle
+     * @param endy the y position of the particle
+     * @return the eucledian distance
+     */
+    public static float calculateEucledianDistance(float xt, float yt, float endx, float endy){
+        //will become floodfill output
+        return (float) Math.sqrt(Math.pow(xt-endx, 2) + Math.pow(yt-endy, 2));
     }
-
-
 
 
     /**
@@ -138,21 +146,6 @@ public class PSO {
     /**
      * method which updates the particle velocity based on the inertia, personal influence and social influence
      * @param particle 
-     * @return the updated velocity
-     */
-//    public static float[] updatedVelocity(Particle particle){
-//        float[] updatedvxy = new float[2];
-//        float[] inertia = inertia(particle);
-//        float[] personalInfluence = personalInfluence(particle);
-//        float[] socialInfluence = socialInfluence(particle);
-//        updatedvxy[0] = particle.getVx() + inertia[0] + personalInfluence[0] + socialInfluence[0];
-//        updatedvxy[1] = particle.getVy() + inertia[1] + personalInfluence[1] + socialInfluence[1];
-//        return updatedvxy;
-//    }
-
-    /**
-     * method which updates the particle velocity based on the inertia, personal influence and social influence
-     * @param particle
      * @return the updated velocity
      */
     public static float[] updatedVelocity(Particle particle){
