@@ -25,6 +25,17 @@ public class FloodFill {
     public static int count = 0;
     public static double flood_i, flood_j;
 
+    public static int[] findHole(){
+        for(int i = 0; i < matrixParcour.length; i++){
+            for(int j = 0; j < matrixParcour.length; j++){
+                if(matrixParcour[i][j] == 0){
+                    return new int[]{i, j};
+                }
+            }
+        }
+        return  new int[2];
+    }
+
 
     /**
      * get method which returns the floodfill value based on an x and y coordinate
@@ -33,7 +44,7 @@ public class FloodFill {
      */
     public static int getMatrixValue(float x, float y){
         int i = (int)((x + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
-        int j = (int)((x + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
+        int j = (int)((y + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
         return matrixParcour[i][j];
     }
     //FloodFill
@@ -58,8 +69,6 @@ public class FloodFill {
 
         while (!queue.isEmpty())
         {
-
-
             int matrix_value = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1; //calculates which the neighbours should get
             Coordinate current = queue.peek(); //grabs the first coordinate in the queue
             x = current.getX();
