@@ -277,7 +277,7 @@ public class App extends ApplicationAdapter {
 
 	/**
 	 * The controls for the app.
-	 * @param input
+	 * @param
 	 */
 	private void controls() {
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { // close game
@@ -303,10 +303,7 @@ public class App extends ApplicationAdapter {
 
 		// shooting the ball
 		if (this.ballMovement.getPowerStatus() == PowerStatus.POWER_UP) {
-			this.power += POWER_DELTA;
-			if (this.power >= MAX_POWER) {
-				this.ballMovement.setPowerStatus(PowerStatus.POWER_DOWN);
-			}
+			shoot(Input.V.x, Input.V.y);
 		}
 		else if (this.ballMovement.getPowerStatus() == PowerStatus.POWER_DOWN) {
 			this.power -= POWER_DELTA;
