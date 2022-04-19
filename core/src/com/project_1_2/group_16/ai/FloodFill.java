@@ -183,10 +183,9 @@ public class FloodFill {
      */
     public static int getArrayValue(float x, float y, int i, int j){
         float height = Terrain.getHeight(x, y) - Golfball.SIZE;
-        System.out.println("height:" + Terrain.getHeight(x,y));
 
-        if(height<0){ //if height smaller than 0 -> value = -1;
-            System.out.println("water time");
+
+        if(height < 0){ //if height smaller than 0 -> value = -1;
             return -1;
         }else{
             if(Math.abs(Input.VT.x - x) < Input.R && Math.abs(Input.VT.y - y) < Input.R && !holeSet){ //if the coordinates are the coordinates of the hole -> value = 0
