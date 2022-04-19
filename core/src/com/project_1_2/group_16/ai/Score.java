@@ -1,6 +1,11 @@
 package com.project_1_2.group_16.ai;
 
+/**
+ * Calculate score based on euclidean distance.
+ */
+
 public class Score {
+
     /**
      * Method which calculates the eucledian distance
      * @param xt  the x position of the hole
