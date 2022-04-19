@@ -35,10 +35,9 @@ public class EngineSimulator {
     //Runs until ball stops
     public void runRK4ai(){
         while(!rk4.stop){
-            sv = rk4.solveRK4oneStep(sv, rk4.stepSize*3);
+            sv = rk4.solveRK4oneStep(sv, rk4.stepSize);
             if(particleSimulation){
                 if(sv.pos_x!=-1.0f && sv.pos_y!=-1 && Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.pos_x, sv.pos_y) < particle.getScore()){
-                    //particle.setScore(FloodFill.getMatrixValue(sv.pos_x, sv.pos_y));
                     particle.setScore(Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.pos_x, sv.pos_y));
                 }
             }

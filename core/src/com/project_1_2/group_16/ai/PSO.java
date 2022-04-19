@@ -1,6 +1,5 @@
 package com.project_1_2.group_16.ai;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import com.project_1_2.group_16.Input;
@@ -14,19 +13,9 @@ import com.project_1_2.group_16.physics.Physics;
 public class PSO {
     static float maxVelocity = 5;
     static float minVelocity = 0;
-    static int population_size = 50;
-
-
-    static int iteration = 1;
-    static float N = population_size;
-    static float W = (float) (0.4*((iteration-N)/Math.pow(N, 2)) + 0.4f);
-    static float c1 = -3*(iteration/N)+3.5f;
-    static float c2 = 3*(iteration/N)+0.5f;
-
-//    static float W = 0.72984f;
-//    static float c1 = 1.5f;
-//    static float c2 = 2.0f;
-
+    static int population_size = 30;
+    static float c1 = 1.0f;
+    static float c2 = 2f;
     static Particle globalBest;
     static float holex = Input.VT.x;
     static float holey = Input.VT.y;
@@ -37,9 +26,6 @@ public class PSO {
      * @param args
      */
     public static void main(String[] args) {
-        //FloodFill.runFloodFill();
-        //System.out.println(Arrays.deepToString(FloodFill.matrixParcour));
-
         long start = System.currentTimeMillis();
         Particle[] particles = initializeParticles(population_size);
         runPSO(150, particles);
@@ -73,9 +59,7 @@ public class PSO {
             es.runRK4ai();
             float[] xy = {es.endPos_X, es.endPos_Y};
             current.setXY(xy);
-
 //            current.setScore(calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
-
             population[i] = current;
             current.setlocalBest(Particle.clone(current));
             if(current.getScore() < globalBest.getScore()){
@@ -98,7 +82,6 @@ public class PSO {
             count++;
             System.out.println("Generation: " + count);
             for(int i = 0; i < particles.length; i++){
-                iteration = i + 1;
                 Particle current = particles[i];
                 float[] updatedVelocity = isvalidVelocity(current, updatedVelocity(current));
                 current.setVxy(updatedVelocity);
@@ -106,8 +89,7 @@ public class PSO {
                 es.runRK4ai();
                 float[] xy = {es.endPos_X, es.endPos_Y};
                 current.setXY(xy);
-
-               //current.setScore(Score.calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
+               //current.setScore(calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
                 
                 if(current.getScore() < current.getlocalBest().getScore()){
                     current.setlocalBest(Particle.clone(current));
@@ -192,10 +174,11 @@ public class PSO {
      */
     public static float[] inertia(Particle particle){
         float[] inertia = new float[2];
+        float Wx = (float) Math.random();
+        float Wy = (float) Math.random();
 
-
-        inertia[0] = W * particle.getVx();
-        inertia[1] = W * particle.getVy();
+        inertia[0] = Wx * particle.getVx();
+        inertia[1] = Wy * particle.getVy();
         return inertia;
     }
 
