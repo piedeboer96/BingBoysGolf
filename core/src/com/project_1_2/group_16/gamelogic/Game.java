@@ -1,50 +1,110 @@
 package com.project_1_2.group_16.gamelogic;
 
+import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.math.*;
+import com.project_1_2.group_16.misc.Solver;
+import com.project_1_2.group_16.models.Tree;
+import com.project_1_2.group_16.physics.Physics;
 
 public class Game {
 
     /**
-     * Solver
+     * Step size.
      */
-    public static NumericalSolver solver;
+    public static final float h = 0.075f;
 
     /**
-     * State Vector
+     * Friction caused by hitting trees.
      */
-    public static StateVector sv = new StateVector(0, 0, 0, 0);
+    public static final float treeFriction = -0.75f;
 
     /**
-     * A Method to run our Euler based Engine.
-     * (for self, the best current value for euler 0.05 or 0.005 )
+     * Maximum velocity allowed for a hole to count.
      */
-    public static void runEuler() {
-        Game.solver = new Euler();
+    public static final float maxHoleVelocity = 2f;
+
+    private NumericalSolver solver;
+
+    /**
+     * Run the physics engine.
+     * @param sv the state vector
+     * @param reference a reference to an App object. leave null if doing simulations.
+     */
+    public void run(final StateVector sv, App reference) {
+        // update state vector with numerical solver
+        this.solver.solve(h, sv);
+
+        // check water collision
+        if (Collision.ballIsInWater(sv)) {
+            System.out.println("water");
+
+            // reset position
+            sv.x = sv.prev.x;
+            sv.y = sv.prev.y;
+            sv.stop = true;
+
+            // stroke penalty
+            if (reference != null) reference.hitsCounter++;
+        }
+
+        // check tree collision
+        Tree hittree = Collision.ballHitTree(sv);
+        if (hittree != null) {
+            System.out.println("tree");
+
+            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
+            Vector2 vB = new Vector2(sv.x, sv.y);
+
+            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
+                sv.vx *= treeFriction;
+            }
+            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
+                sv.vx *= treeFriction;
+            }
+            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
+                sv.vy *= treeFriction;
+            }
+            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
+                sv.vy *= treeFriction;
+            }
+        }
+
+        // check hole collision
+        if (Physics.magnitude(sv.vx, sv.vy) < maxHoleVelocity && Collision.ballIsInTargetRadius(sv)) {
+            if (reference != null) this.endGame(reference);
+            sv.stop = true;
+        }
+
+        // check for a stop
+        if (Physics.magnitude(sv.vx, sv.vy) < h) {
+            float[] partialDerivatives = this.solver.getPartialDerivatives();
+            if ((Physics.magnitude(partialDerivatives[0], partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
+                sv.stop = true;
+            }
+        }
     }
 
     /**
-     * Method to run our RK4 based Engine.
+     * Set the numerical solver to be used by the physics engine.
+     * @param solver
      */
-    public static void runRK4() {
-        Game.solver = new RK4();
-    }
-
-    /**
-     * Run the physics engine
-     */
-    public static void run() {
-        Game.solver.solve(0.1f, Game.sv);
+    public void setNumericalSolver(Solver solver) {
+        switch (solver) {
+            case EULER: this.solver = new Euler(); break;
+            case RK2: this.solver = new RK2(); break;
+            case RK4: this.solver = new RK4(); break;
+        }
     }
 
     /**
      * Display a message that the user has completed the course
      */
-    public static void endGame() {
+    public void endGame(App app) {
         String message = "Congratulations! ";
-        switch (App.hitsCounter) {
+        switch (app.hitsCounter) {
             case 1: message += " You got a hole-in-one! Unbelievable!"; break;
-            default: message += "You finished the hole in "+App.hitsCounter+" shots!";
+            default: message += "You finished the hole in "+app.hitsCounter+" shots!";
         }
         System.out.println(message);
     }

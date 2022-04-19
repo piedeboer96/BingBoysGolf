@@ -14,7 +14,7 @@ public class Collision {
      * @return boolean, whether it is in the radius...
      */
     public static boolean ballIsInTargetRadius(StateVector sv) {
-        return Input.VT.dst(sv.pos_x, sv.pos_y) < Input.R;
+        return Input.VT.dst(sv.x, sv.y) < Input.R;
     }
 
     /**
@@ -23,7 +23,7 @@ public class Collision {
      * @return boolean, true if the ball is in water
      */
     public static boolean ballIsInWater(StateVector sv) {
-        return Terrain.getHeight(sv.pos_x, sv.pos_y) < 0;
+        return Terrain.getHeight(sv.x, sv.y) < 0;
     }
 
     /**
@@ -48,7 +48,7 @@ public class Collision {
      * @return
      */
     public static boolean ballIsInTreeRadius(StateVector sv, Tree tree) {
-        return new Vector2(tree.getPosition().x, tree.getPosition().z).dst(sv.pos_x, sv.pos_y) < tree.getRadius();
+        return new Vector2(tree.getPosition().x, tree.getPosition().z).dst(sv.x, sv.y) < tree.getRadius();
     }
 
     /**
