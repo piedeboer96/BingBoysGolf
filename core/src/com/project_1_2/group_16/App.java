@@ -25,6 +25,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.project_1_2.group_16.ai.EngineSimulator;
 import com.project_1_2.group_16.ai.RuleBasedBot;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
@@ -44,6 +45,7 @@ public class App extends ApplicationAdapter {
 
 	//Rule Based Bot
 	RuleBasedBot bot = new RuleBasedBot();
+	EngineSimulator simulator;
 
 	// constants
 	public static final ColorAttribute AMBIENT_LIGHT = new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f);
@@ -297,8 +299,12 @@ public class App extends ApplicationAdapter {
 			}
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.P)) { // Launch the AI
-			Game.sv = RuleBasedBot.BestShot();
-			shoot(Game.sv.velocity_x,Game.sv.velocity_y);
+			//Game.sv = RuleBasedBot.BestShot();
+			RuleBasedBot.BestShot();
+			/*simulator = new EngineSimulator(Game.sv.pos_x,Game.sv.pos_y,Game.sv.velocity_x,Game.sv.velocity_y);
+			shoot(Game.sv.velocity_x,Game.sv.velocity_y);*/
+			System.out.println(Game.sv.velocity_x + "this is velocity x" + Game.sv.velocity_y + "this is velocity y");
+			System.out.println(Game.sv.pos_x + "this is x" + Game.sv.pos_y + "this is y");
 		}
 
 		// shooting the ball

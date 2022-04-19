@@ -7,7 +7,7 @@ import com.project_1_2.group_16.titlescreen.TitleScreen;
 public class DesktopLauncher {
 
 	public static void main(String[] arg) {
-		// create titlescreen (comment out if on mac for now) TODO
+		/*create titlescreen (comment out if on mac for now) TODO
 		TitleScreen titleScreen = new TitleScreen();
 		titleScreen.setUpGUI();
 		titleScreen.setUpButtonListeners();
