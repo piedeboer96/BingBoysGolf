@@ -304,10 +304,8 @@ public class InputScreen extends JFrame {
         Input.H = heightFunction;
 
         long start = System.currentTimeMillis();
-		//for instanciating floodfill :)
-        FloodFill.fillGraphTable();
+		FloodFill.fillGraphTable();
 		FloodFill.floodFill((int)FloodFill.flood_i,(int)FloodFill.flood_j);
-        System.out.println(Arrays.deepToString(matrixParcour));
 		long end = System.currentTimeMillis();
 		System.out.println("runtime: " + (end-start));
 		System.out.println(Arrays.deepToString(matrixParcour));
