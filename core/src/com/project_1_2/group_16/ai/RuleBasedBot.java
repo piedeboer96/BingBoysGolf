@@ -9,7 +9,7 @@ import java.util.Random;
  * This class contains our most basic bot.
  * It is partly based on a genetic approach.
  *
- * NOTE: I safe-deleted a lot of unused code ,
+ * NOTE: I safe-deleted a lot of unused code,
  * if you need it PLEASE check an earlier revision in git.
  */
 
