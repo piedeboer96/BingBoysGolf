@@ -204,6 +204,9 @@ public class FloodFill {
         }
         return true;
     }
+    public static int getValue(int x, int y){
+        return matrixParcour[x][y];
+    }
 
 }
 

@@ -25,6 +25,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.project_1_2.group_16.ai.RuleBasedBot;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.gamelogic.Collision;
@@ -40,6 +41,9 @@ import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.Theme;
 
 public class App extends ApplicationAdapter {
+
+	//Rule Based Bot
+	RuleBasedBot bot = new RuleBasedBot();
 
 	// constants
 	public static final ColorAttribute AMBIENT_LIGHT = new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f);
@@ -101,7 +105,7 @@ public class App extends ApplicationAdapter {
 	public static Vector2 prevPos;
 
 	// util
-	private final Vector3 v = new Vector3();
+	public final Vector3 v = new Vector3();
 	private float colorutil;
 	
 	@Override
@@ -261,7 +265,10 @@ public class App extends ApplicationAdapter {
 		if(App.staticStop) { // ball has come to a rest
 			App.allowHit = true;
 		}
-		this.golfball.moveTo(pos_x, pos_y);
+		if(RuleBasedBot.useAnimation){
+			this.golfball.moveTo(pos_x, pos_y);
+		}
+
 
 		// controls
 		if (this.useFreeCam) this.freeMovement.move(Gdx.input, Gdx.graphics.getDeltaTime());
@@ -288,6 +295,10 @@ public class App extends ApplicationAdapter {
 				Gdx.input.setInputProcessor(this.freeMovement);
 				this.useFreeCam = true;
 			}
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.P)) { // Launch the AI
+			Game.sv = RuleBasedBot.BestShot();
+			shoot(Game.sv.velocity_x,Game.sv.velocity_y);
 		}
 
 		// shooting the ball

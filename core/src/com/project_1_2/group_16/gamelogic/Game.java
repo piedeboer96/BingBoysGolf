@@ -1,6 +1,8 @@
 package com.project_1_2.group_16.gamelogic;
 
+import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.ai.FloodFill;
 import com.project_1_2.group_16.math.*;
 
 public class Game {
@@ -35,6 +37,16 @@ public class Game {
      */
     public static void run() {
         Game.solver.solve(0.1f, Game.sv);
+    }
+    /**
+     * Run the physics engine with the AI
+     */
+    public static int runWithAI(StateVector stateAI) {
+        App.prevPos = new Vector2(stateAI.pos_x, stateAI.pos_y);
+        sv = stateAI;
+        Game.solver.solve(0.1f, Game.sv);
+        System.out.println("the score " + FloodFill.getMatrixValue(sv.pos_x,sv.pos_y));
+        return FloodFill.getMatrixValue(sv.pos_x,sv.pos_y);
     }
 
     /**
