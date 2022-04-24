@@ -86,6 +86,7 @@ public class App extends ApplicationAdapter {
 	// crosshair and text font
 	private Vector2 ch1, ch2, ch3, ch4;
 	private BitmapFont font;
+	private BitmapFont shotFont;
 
 	// environment
 	private Environment environment;
@@ -121,6 +122,7 @@ public class App extends ApplicationAdapter {
 		this.tiles = new Array<Tile>();
 		this.triangles = new Array<TriangleInstance>();
 		this.font = new BitmapFont();
+		this.shotFont = new BitmapFont();
 		this.assets = new AssetManager();
 
 		// create environment
@@ -130,31 +132,13 @@ public class App extends ApplicationAdapter {
 		this.environment.add(SUN_LIGHT);
 		BACKGROUND = this.theme.skyColor();
 
-		// terrain generation
+
 		// terrain generation
 		Terrain.initSandPits();
-		float a, b,c,d;
-		for(int i = 0; i < FIELD_DETAIL-1; i++) {
-			for(int j = 0; j < FIELD_DETAIL-1; j++) {
-				a = -FIELD_SIZE / 2 + TRIANGLE_BASE_SIZE / 2 + TRIANGLE_BASE_SIZE * (i );
-				b = -FIELD_SIZE / 2 + TRIANGLE_BASE_SIZE / 2 + TRIANGLE_BASE_SIZE * (j );
-				c = -FIELD_SIZE / 2 + TRIANGLE_BASE_SIZE / 2 + TRIANGLE_BASE_SIZE * (i + 1);
-				d = -FIELD_SIZE / 2 + TRIANGLE_BASE_SIZE / 2 + TRIANGLE_BASE_SIZE * (j + 1);
-				Vector3 p1 = new Vector3(a,Terrain.getHeight(a, b),b);
-				Vector3 p2 = new Vector3(a,Terrain.getHeight(a, d),d);
-				Vector3 p3 = new Vector3(c,Terrain.getHeight(c, b),b);
-				Vector3 p4 = new Vector3(c,Terrain.getHeight(c, d),d);
-
-				// This will create two triangles using four points
-				// For more info, go to the TriangleModel class
-				TriangleModel triangleModel = new TriangleModel(p1,p2,p3,p4,a,b);
-
-				TriangleInstance triangleInstance = new TriangleInstance(triangleModel.getModel());
-				//this.triangles.add(triangleInstance);
-				this.instances.add(triangleInstance);
-
-			}
-		}
+		TerrainGenerator.generateTerrain(FIELD_SIZE, TRIANGLE_BASE_SIZE, FIELD_DETAIL);
+		TriangleInstance triangleInstance = new TriangleInstance(TerrainGenerator.terrainModel);
+		//this.triangles.add(triangleInstance);
+		this.instances.add(triangleInstance);
 
 		// create crosshair
 		SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -254,11 +238,13 @@ public class App extends ApplicationAdapter {
 		this.font.draw(this.spriteBatch, "Velocity: ", SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 75f);
 		this.font.draw(this.spriteBatch, "Vx = "+Game.sv.velocity_x, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 90f);
 		this.font.draw(this.spriteBatch, "Vy = "+Game.sv.velocity_y, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 105f);
-		this.font.draw(this.spriteBatch, "Shots: "+hitsCounter, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 130f);
-		this.font.draw(this.spriteBatch, "xDir: "+this.xDir, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 155f);
-		this.font.draw(this.spriteBatch, "yDir: "+this.zDir, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 170f);
-		this.font.draw(this.spriteBatch, "power: "+(this.power - 1) / 4, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 185f);
+		this.font.draw(this.spriteBatch, "xDir: "+this.xDir, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 135f);
+		this.font.draw(this.spriteBatch, "yDir: "+this.zDir, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 150f);
+		this.font.draw(this.spriteBatch, "power: "+(this.power - 1) / 4, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 165f);
 		this.font.draw(this.spriteBatch, "FPS: "+Gdx.graphics.getFramesPerSecond(), 5f, SCREEN_HEIGHT - 5f);
+		this.shotFont.getData().setScale(1.3f);
+		this.shotFont.setColor(Color.BLACK);
+		this.shotFont.draw(this.spriteBatch, "Shots: "+hitsCounter, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 190f);
 		this.spriteBatch.end();
 
 		// draw power gauge
