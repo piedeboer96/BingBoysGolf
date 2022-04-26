@@ -1,11 +1,7 @@
 package com.project_1_2.group_16.ai;
 
-import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.models.Golfball;
-
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -14,29 +10,18 @@ import static com.project_1_2.group_16.App.*;
 /**
  * Here we define our floodFill algorithm that helps us find the shortest distance to the target
  * from any point on the terrain. This is needed for creating some scoring system that our bot will use.
+ *
+ * NOTE: We initialize the floodFill in App.java ~line 202
  */
+
 public class FloodFill {
 
-    //Fields
     static int size_X = 100, size_Y = 100;
     static boolean holeSet = false;
     public static int[][] matrixParcour = new int[size_X][size_Y];
     static int[][] visitedNodes = new int[matrixParcour.length][matrixParcour.length];
-    public static int count = 0;
     public static double flood_i, flood_j;
 
-
-    /**
-     * get method which returns the floodfill value based on an x and y coordinate
-     * @param x x coordinate
-     * @param y y coordinae
-     */
-    public static int getMatrixValue(float x, float y){
-        int i = (int)((x + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
-        int j = (int)((x + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
-        return matrixParcour[i][j];
-    }
-    //FloodFill
     /**
      * FloodFill algorithm to be able to create a matrix that represents the shortest distance
      * from any point to some target point. It takes advanced parcours with walls, water, etc.
@@ -58,8 +43,6 @@ public class FloodFill {
 
         while (!queue.isEmpty())
         {
-
-
             int matrix_value = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1; //calculates which the neighbours should get
             Coordinate current = queue.peek(); //grabs the first coordinate in the queue
             x = current.getX();
@@ -116,40 +99,6 @@ public class FloodFill {
     }
 
     /**
-     * method which can be called to run the floodfill algorithm and fill the matrixparcour array
-     */
-    public static void runFloodFill(){
-        long start = System.currentTimeMillis();
-        fillGraphTable();
-        floodFill((int)flood_i,(int)flood_j);
-        long end = System.currentTimeMillis();
-        //System.out.println("runtime: " + (end-start));
-        //System.out.println(Arrays.deepToString(FloodFill.matrixParcour));
-    }
-
-    //Auxiliary
-    /**
-     * Represent a 2D cartesian coordinate.
-     * It is used as an auxiliary method for our floadfill implementation.
-     */
-    static class Coordinate{
-        int x, y;
-        public Coordinate(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
-        public int getX(){
-            return x;
-        }
-        public int getY(){
-            return y;
-        }
-        public String toString(){
-            return "x : " + this.x + " y: " + this.y;
-        }
-    }
-
-    /**
      * Fill graph table based on the field. All the coordinates that are not in water get the value Integer.Max_Value and
      * all coordinates in water get value -1
      */
@@ -165,7 +114,20 @@ public class FloodFill {
     }
 
     /**
-     * Returns the a value based on what terrain type something is currently
+     * Getter method which returns the floodfill value based on an x and y coordinate
+     * @param x x coordinate
+     * @param y y coordinae
+     */
+    public static int getMatrixValue(float x, float y){
+        int i = (int)((x + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
+        int j = (int)((y + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
+        return matrixParcour[i][j];
+    }
+
+    /**
+     * This method creates the floodFillMatrix.
+     * We know the distance from any point to your hole.
+     * Water means -1.
      * @param x x coordinate
      * @param y y coordinate
      * @param i index in matrix parcour
@@ -173,16 +135,17 @@ public class FloodFill {
      * @return
      */
     public static int getArrayValue(float x, float y, int i, int j){
-        float height = Terrain.getHeight(x, y) - Golfball.SIZE;
 
+        float terrainHeight = Terrain.getHeight(x,y);
 
-        if(height < 0){ //if height smaller than 0 -> value = -1;
+        if(terrainHeight<0) {                       //if height smaller than 0 -> value = -1;
             return -1;
         }else{
             if(Math.abs(Input.VT.x - x) < Input.R && Math.abs(Input.VT.y - y) < Input.R && !holeSet){ //if the coordinates are the coordinates of the hole -> value = 0
                 holeSet = true;
                 flood_i = i;
                 flood_j = j;
+                System.out.println("hole: " + flood_i + " " + flood_j);
                 return 0;
             }else{
                 return Integer.MAX_VALUE; //if height is bigger then 0 and the coordinates are not the holse coordinate -> value = Integer.MAX_Value
@@ -203,6 +166,27 @@ public class FloodFill {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Represent a 2D cartesian coordinate.
+     * It is used as an auxiliary method for our floadfill implementation.
+     */
+    static class Coordinate{
+        int x, y;
+        public Coordinate(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+        public int getX(){
+            return x;
+        }
+        public int getY(){
+            return y;
+        }
+        public String toString(){
+            return "x : " + this.x + " y: " + this.y;
+        }
     }
 
 }

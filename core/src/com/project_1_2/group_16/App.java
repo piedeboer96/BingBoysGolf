@@ -25,12 +25,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.project_1_2.group_16.ai.RuleBasedBot;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
-import com.project_1_2.group_16.gamelogic.Collision;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Flagpole;
@@ -93,12 +93,9 @@ public class App extends ApplicationAdapter {
 	private Theme theme;
 
 	// physics
-	public static float pos_x;
-	public static float pos_y;
-	public static boolean staticStop;
-	public static boolean allowHit;
-	public static int hitsCounter;
-	public static Vector2 prevPos;
+	public Game game = new Game();
+	public boolean allowHit;
+	public int hitsCounter;
 
 	// util
 	private final Vector3 v = new Vector3();
@@ -109,9 +106,6 @@ public class App extends ApplicationAdapter {
 		// set fullscreen
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		Gdx.input.setCursorCatched(true);
-
-		pos_x = Input.V0.x;
-		pos_y = Input.V0.y;
 
 		// init batches and other things
 		this.modelBatch = new ModelBatch();
@@ -153,6 +147,8 @@ public class App extends ApplicationAdapter {
 		this.golfball = new Golfball(this.modelBuilder, this.theme);
 		this.golfball.setPosition(Input.V0.x, Terrain.getHeight(Input.V0.x, Input.V0.y), Input.V0.y);
 		this.instances.add(this.golfball.getInstance());
+		this.golfball.STATE.x = Input.V0.x;
+		this.golfball.STATE.y = Input.V0.y;
 
 		// create flag
 		this.flagpole = new Flagpole
@@ -190,8 +186,8 @@ public class App extends ApplicationAdapter {
 		dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
 
 		// allow gameplay
-		Game.runRK4();
-		App.allowHit = true;
+		game.setNumericalSolver(NumericalSolver.RK4);
+		this.allowHit = true;
 	}
 
 	@Override
@@ -224,9 +220,9 @@ public class App extends ApplicationAdapter {
 		this.font.draw(this.spriteBatch, "Y = "+this.v.z, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 35f);
 		this.font.draw(this.spriteBatch, "Z = "+this.v.y, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 50f);
 		this.font.draw(this.spriteBatch, "Velocity: ", SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 75f);
-		this.font.draw(this.spriteBatch, "Vx = "+Game.sv.velocity_x, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 90f);
-		this.font.draw(this.spriteBatch, "Vy = "+Game.sv.velocity_y, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 105f);
-		this.font.draw(this.spriteBatch, "Shots: "+hitsCounter, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 130f);
+		this.font.draw(this.spriteBatch, "Vx = "+this.golfball.STATE.vx, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 90f);
+		this.font.draw(this.spriteBatch, "Vy = "+this.golfball.STATE.vy, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 105f);
+		this.font.draw(this.spriteBatch, "Shots: "+this.hitsCounter, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 130f);
 		this.font.draw(this.spriteBatch, "xDir: "+this.xDir, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 155f);
 		this.font.draw(this.spriteBatch, "yDir: "+this.zDir, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 170f);
 		this.font.draw(this.spriteBatch, "power: "+(this.power - 1) / 4, SCREEN_WIDTH - 115f, SCREEN_HEIGHT - 185f);
@@ -234,7 +230,7 @@ public class App extends ApplicationAdapter {
 		this.spriteBatch.end();
 
 		// draw power gauge
-		if (this.power > 1 && App.allowHit) {
+		if (this.power > 1 && this.allowHit) {
 			this.shapeBatch.begin(ShapeType.Filled);
 			this.colorutil = 510 * (this.power - 1) / 4;
 			if (this.colorutil > 255) {
@@ -255,13 +251,13 @@ public class App extends ApplicationAdapter {
 		this.shapeBatch.end();
 
 		// update golfball
-		if (App.allowHit == false) {
-			Game.run();
+		if (this.allowHit == false) {
+			this.game.run(this.golfball.STATE, this);
 		}
-		if(App.staticStop) { // ball has come to a rest
-			App.allowHit = true;
+		if(this.golfball.STATE.stop) { // ball has come to a rest
+			this.allowHit = true;
 		}
-		this.golfball.moveTo(pos_x, pos_y);
+		this.golfball.updateState();
 
 		// controls
 		if (this.useFreeCam) this.freeMovement.move(Gdx.input, Gdx.graphics.getDeltaTime());
@@ -288,6 +284,12 @@ public class App extends ApplicationAdapter {
 				Gdx.input.setInputProcessor(this.freeMovement);
 				this.useFreeCam = true;
 			}
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.P)) {
+			RuleBasedBot.BestShot(this);
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.V)) {
+			this.shoot(Input.VB.x, Input.VB.y);
 		}
 
 		// shooting the ball
@@ -317,18 +319,19 @@ public class App extends ApplicationAdapter {
 	 * @return if the shot was successful
 	 */
 	public boolean shoot(float vX, float vY) {
-		if (App.allowHit) {
+		if (this.allowHit) {
 			this.v.set(this.golfball.getPosition());
-			Game.sv = new StateVector(this.v.x, this.v.z, vX, vY);
+			this.golfball.STATE.vx = vX;
+			this.golfball.STATE.vy = vY;
 
 			// sound effect and shot counter
 			hitSound.play();
 			hitsCounter++;
 
 			// hit the ball
-			App.prevPos = new Vector2(this.v.x, this.v.z);
-			App.allowHit = false;
-			App.staticStop = false;
+			this.golfball.STATE.prev = new Vector2(this.v.x, this.v.z);
+			this.allowHit = false;
+			this.golfball.STATE.stop = false;
 			return true;
 		}
 		return false;
@@ -346,7 +349,7 @@ public class App extends ApplicationAdapter {
 		if (height < 0 - TILE_SIZE / 2) { // water texture
 			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.waterColor()));
 		}
-		else if (Collision.isInSandPit(x, z)) { // sandpit texture
+		else if (this.game.collision.isInSandPit(x, z)) { // sandpit texture
 			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.sandColor()));
 		}
 		else { // grass texture (depending on height)

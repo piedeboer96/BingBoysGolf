@@ -15,6 +15,11 @@ public class Input {
     public static Vector2 VT = new Vector2(4f, 1f);
 
     /**
+     * Input velocity (for testing).
+     */
+    public static Vector2 VB = new Vector2(0.52452403f, 0.6088656f);
+
+    /**
      * Radius of the hole.
      */
     public static float R = 0.1f;
