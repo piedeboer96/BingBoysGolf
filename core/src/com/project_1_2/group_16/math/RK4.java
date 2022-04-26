@@ -2,6 +2,7 @@ package com.project_1_2.group_16.math;
 
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.ai.FloodFill;
 import com.project_1_2.group_16.gamelogic.Collision;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
@@ -12,8 +13,9 @@ public class RK4 implements NumericalSolver{
 
     public boolean stop;
     public float stepSize = 0.05f;
-
+    //public int bestDistance;
     public RK4(){
+        //bestDistance = Integer.MAX_VALUE;
         stop = false;
     }
 
@@ -124,7 +126,8 @@ public class RK4 implements NumericalSolver{
         if(Collision.ballIsInWater(sv)){
             stop = true;
             //Impossible stateVector, to indicate that ball hit water
-            return new StateVector(Integer.MIN_VALUE,Integer.MIN_VALUE,Integer.MIN_VALUE,Integer.MIN_VALUE);
+
+            return new StateVector(sv.pos_x,sv.pos_y,Integer.MAX_VALUE,Integer.MAX_VALUE);
         }
         Tree hittree = Collision.ballHitTree(sv);
         if(hittree != null) {

@@ -14,8 +14,7 @@ import com.project_1_2.group_16.physics.Physics;
 public class PSO {
     static float maxVelocity = 5;
     static float minVelocity = 0;
-    static int population_size = 50;
-
+    static int population_size = 20;
 
     static int iteration = 1;
     static float N = population_size;
@@ -58,7 +57,7 @@ public class PSO {
     /**
      *This method initialisez the particles that are going to be used for the PSO
      * @param population_size the population size of the particle swarm
-     * @return
+     * @return array of particles
      */
     public static Particle[] initializeParticles(int population_size){
         EngineSimulator es;
@@ -69,19 +68,28 @@ public class PSO {
         for(int i = 0; i < population_size; i++){
             float[] vxy = validVelocity();
             Particle current = new Particle(vxy[0], vxy[1]);
-            es = new EngineSimulator(startx, starty, current.getVx(), current.getVy()); // add positions
-            es.runRK4ai();
-            float[] xy = {es.endPos_X, es.endPos_Y};
-            current.setXY(xy);
+            boolean validShot = false;
+            while(!validShot){
 
-//            current.setScore(calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
+                es = new EngineSimulator(startx, starty, current.getVx(), current.getVy()); // add positions
+                es.runRK4ai();
+                if(es.endPos_X == Integer.MAX_VALUE || es.endPos_Y == Integer.MAX_VALUE){
+                    vxy = validVelocity();
+                    current = new Particle(vxy[0], vxy[1]);
+                }
+                else{
+                    float[] xy = {es.endPos_X, es.endPos_Y};
+                    current.setXY(xy);
+                    validShot = true;
+                }
 
+            }
+//          current.setScore(calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
             population[i] = current;
             current.setlocalBest(Particle.clone(current));
             if(current.getScore() < globalBest.getScore()){
                 globalBest = Particle.clone(current);
             }
-//            current.print();
         }
         return population;
     }
