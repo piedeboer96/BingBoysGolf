@@ -25,6 +25,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.project_1_2.group_16.ai.RuleBasedBot;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.gamelogic.Game;
@@ -283,6 +284,12 @@ public class App extends ApplicationAdapter {
 				Gdx.input.setInputProcessor(this.freeMovement);
 				this.useFreeCam = true;
 			}
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.P)) {
+			RuleBasedBot.BestShot(this);
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.V)) {
+			this.shoot(Input.VB.x, Input.VB.y);
 		}
 
 		// shooting the ball
