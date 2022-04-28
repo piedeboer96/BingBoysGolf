@@ -16,13 +16,14 @@ public class Input {
 
     /**
      * Input velocity (for testing).
+     * vx: 1.6692446 vy: -0.04984162
      */
-    public static Vector2 VB = new Vector2(0.52452403f, 0.6088656f);
+    public static Vector2 VB = new Vector2(0.9908804f, -0.2551949f);
 
     /**
      * Radius of the hole.
      */
-    public static float R = 0.1f;
+    public static float R = 0.15f;
 
     /**
      * Kinetic Friction.

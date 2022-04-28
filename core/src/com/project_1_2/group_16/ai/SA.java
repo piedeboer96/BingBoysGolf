@@ -1,6 +1,8 @@
 package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.physics.Physics;
 
@@ -15,7 +17,7 @@ public class SA {
     public static float hole_y = Input.VT.y;
     private static float start_x = Input.V0.x;
     private static float start_y = Input.V0.y;
-    private static int init_velocities = 5;
+    private static int init_velocities = 10;
 
     private float neigbourStepSize;
     private double Temperature;
@@ -37,17 +39,14 @@ public class SA {
     public List<Float> runSA2(){
         for(int i = 0; i < kmax && !stop; i++){
             Neighbour randomNeigbour = getNeighbour(state);
-
-                System.out.println(i);
                 double cost = state.getFitness()-randomNeigbour.getFitness();
-
                 if(cost >= 0){
                     setState(randomNeigbour);
-//                    System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
+                    System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
                 }else {
                     if (Math.random() < getProbability(state, randomNeigbour)) {
                         setState(randomNeigbour);
-//                        System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
+                        System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
                     }
                 }
                 if(state.getFitness() <= Input.R){
@@ -62,14 +61,16 @@ public class SA {
 
     public Neighbour findInitalState(int init_vector_amount){
         float[] vxvy = validVelocity();
-        Neighbour bestFit = new Neighbour(new StateVector(start_x, start_y, vxvy[0], vxvy[1]));
+        Neighbour bestFit = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, vxvy[0], vxvy[1]));
         Neighbour current;
         for(int i = 0; i < init_vector_amount; i++){
-            current = new Neighbour(new StateVector(start_x, start_y, vxvy[0], vxvy[1]));
+            current = getRandomNeighbour();
+            System.out.println("RandomNeighbour: " + "vx: "  + current.getVx() + " vy: " + current.getVy());
             if(current.getFitness() < bestFit.getFitness()){
                 bestFit = current;
             }
         }
+        System.out.println(bestFit.getVx() + " " + bestFit.getVy());
         return  bestFit;
     }
 
@@ -129,14 +130,14 @@ public class SA {
            ArrayList<StateVector> newVectors = new ArrayList<>();
                 float vx = state.getVx();
                 float vy = state.getVy();
-                newVectors.add(new StateVector(start_x, start_y, vx + neigbourStepSize, vy));
-                newVectors.add(new StateVector(start_x, start_y, vx - neigbourStepSize, vy));
-                newVectors.add(new StateVector(start_x, start_y, vx, vy + neigbourStepSize));
-                newVectors.add(new StateVector(start_x, start_y, vx, vy - neigbourStepSize));
-                newVectors.add(new StateVector(start_x, start_y, vx - neigbourStepSize, vy - neigbourStepSize));
-                newVectors.add(new StateVector(start_x, start_y, vx + neigbourStepSize, vy - neigbourStepSize));
-                newVectors.add(new StateVector(start_x, start_y, vx - neigbourStepSize, vy + neigbourStepSize));
-                newVectors.add(new StateVector(start_x, start_y, vx + neigbourStepSize, vy + neigbourStepSize));
+                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy));
+                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy));
+                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy + neigbourStepSize));
+                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy - neigbourStepSize));
+                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy - neigbourStepSize));
+                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy - neigbourStepSize));
+                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy + neigbourStepSize));
+                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy + neigbourStepSize));
 
            ArrayList<StateVector> viableVectors = new ArrayList<>();
            for(int i = 0; i < newVectors.size(); i++){
@@ -163,7 +164,7 @@ public class SA {
     }
 
     private void setState(Neighbour updated_state){
-        this.state = updated_state;
+        this.state = new Neighbour(updated_state.getSv());
     }
     
     private float getProbability(Neighbour state, Neighbour updated) {
@@ -177,10 +178,10 @@ public class SA {
     public static void main(String[] args) {
 //        FloodFill.fillGraphTable();
 //        FloodFill.floodFill((int)FloodFill.flood_i,(int)FloodFill.flood_j);
-        //System.out.println(Arrays.deepToString(FloodFill.matrixParcour));
+//        System.out.println(Arrays.deepToString(FloodFill.matrixParcour));
         float[] initial_vxvy = Score.validVelocity(0, 5);
         long start = System.currentTimeMillis();
-        SA test = new SA(500,  0.05f);
+        SA test = new SA(500,  0.1f);
 
         System.out.println(test.runSA2());
         System.out.println(test.state.getFitness());
@@ -188,5 +189,16 @@ public class SA {
         System.out.println(test.state.getX() +" " + test.state.getY());
         System.out.println("Holex: " + hole_x + " Holey: " + hole_y);
         System.out.println("RunTime: " + (end - start) + " ms");
+
+//        StateVector testv = new StateVector(Input.V0.x, Input.V0.y, 0.029642947f, -0.23318267f);
+//        Game test = new Game();
+//        test.setNumericalSolver(NumericalSolver.RK4);
+//        test.runEngine(testv, null);
+//        System.out.println(testv.toString());
+//        System.out.println(Score.calculateEucledianDistance(testv.x, testv.y, Input.VT.x, Input.VT.y));
+//
+//        Neighbour testn = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, 0.029642947f, -0.23318267f));
+//        System.out.println(testn.getFitness());
+
     }
 }

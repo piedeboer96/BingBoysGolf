@@ -1,8 +1,13 @@
 package com.project_1_2.group_16.ai;
 
+import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.math.StateVector;
+
 import java.util.Arrays;
 
 public class Particle {
+    public static Game simulationEngine = new Game();
     private float[] vxy;
     private float[] xy;
     private float score = Integer.MAX_VALUE;
@@ -16,6 +21,10 @@ public class Particle {
         this.vxy = new float[2];
         this.vxy[0] = vx;
         this.vxy[1] = vy;
+        StateVector sv = new StateVector(Input.V0.x, Input.V0.y, vxy[0], vxy[1]);
+        simulationEngine.run(sv, null);
+        score = Score.calculateEucledianDistance(Input.VT.x, sv.x, Input.VT.y, sv.y);
+
     }
 
     public void setVxy(float[] vxy){

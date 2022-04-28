@@ -14,10 +14,13 @@ public class Neighbour {
     public Neighbour(StateVector sv){
         this.sv = sv;
         this.game = new Game();
+        this.game.AI = true;
         this.game.setNumericalSolver(NumericalSolver.RK4);
-        //this.game = new EngineSimulator(Input.V0.x, Input.V0.y, sv.vx, sv.vy);
-        this.game.run(sv, null);
-        fitness = Score.calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y);
+        this.game.runEngine(this.sv, null);
+        fitness = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
+        if(fitness < 1) {
+            System.out.println(sv.toString());
+        }
     }
 
     public StateVector getSv(){

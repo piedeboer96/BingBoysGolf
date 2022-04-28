@@ -11,7 +11,7 @@ public class Game {
     /**
      * Step size.
      */
-    public static final float h = 0.075f;
+    public static float h = 0.15f;
 
     /**
      * Friction caused by hitting trees.
@@ -22,6 +22,8 @@ public class Game {
      * Collision handler.
      */
     public final Collision collision = new Collision();
+
+    public boolean AI = true;
 
     private NumericalSolver solver;
 
@@ -36,11 +38,16 @@ public class Game {
 
         // check water collision
         if (this.collision.ballIsInWater(sv)) {
-            System.out.println("water");
 
             // reset position
-            sv.x = sv.prev.x;
-            sv.y = sv.prev.y;
+//            sv.x = Integer.MAX_VALUE;
+//            sv.y = Integer.MAX_VALUE;
+
+                if(!AI){
+                    sv.x = sv.prev.x;
+                    sv.y = sv.prev.y;
+                }
+
             sv.stop = true;
 
             // stroke penalty
@@ -73,6 +80,7 @@ public class Game {
         if (this.collision.ballIsInTargetRadius(sv)) {
             if (reference != null) this.endGame(reference);
             sv.stop = true;
+            System.out.println("HITHITHITHITHIHTIHTIHTIHTIHTIHTIHTIHTIHT");
         }
 
         // check for a stop
@@ -106,5 +114,14 @@ public class Game {
             default: message += "You finished the hole in "+app.hitsCounter+" shots!";
         }
         System.out.println(message);
+    }
+
+
+    public void runEngine(StateVector sv, App reference){
+//        System.out.println(sv);
+        while(!sv.stop){
+            run(sv, reference);
+        }
+//        System.out.println("end " + sv);
     }
 }

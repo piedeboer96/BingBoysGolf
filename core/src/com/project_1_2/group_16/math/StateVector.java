@@ -22,7 +22,7 @@ public class StateVector extends Vector2 {
     /**
      * Stopping condition
      */
-    public boolean stop;
+    public boolean stop = false;
 
     /**
      * StateVector that gives information about the pos (x,y) and velocity (x,y) of the ball.

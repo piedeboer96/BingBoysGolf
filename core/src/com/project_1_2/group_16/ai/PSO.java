@@ -1,40 +1,40 @@
 // package com.project_1_2.group_16.ai;
-
+//
 // import java.lang.reflect.Array;
 // import java.util.Arrays;
-
+//
 // import com.project_1_2.group_16.Input;
 // import com.project_1_2.group_16.gamelogic.Game;
 // import com.project_1_2.group_16.gamelogic.Terrain;
 // import com.project_1_2.group_16.math.NumericalSolver;
 // import com.project_1_2.group_16.math.StateVector;
 // import com.project_1_2.group_16.physics.Physics;
-
+//
 // /**
 //  * Class to utilize our Particle Swarm Optimization.
 //  */
-
+//
 // public class PSO {
 //     static float maxVelocity = 5;
 //     static float minVelocity = 0;
 //     static int population_size = 20;
-
+//
 //     static int iteration = 1;
 //     static float N = population_size;
 //     static float W = (float) (0.4*((iteration-N)/Math.pow(N, 2)) + 0.4f);
 //     static float c1 = -3*(iteration/N)+3.5f;
 //     static float c2 = 3*(iteration/N)+0.5f;
-
+//
 // //    static float W = 0.72984f;
 // //    static float c1 = 1.5f;
 // //    static float c2 = 2.0f;
-
+//
 //     static Particle globalBest;
 //     static float holex = Input.VT.x;
 //     static float holey = Input.VT.y;
 //     static float startx = Input.V0.x;
 //     static float starty = Input.V0.y;
-
+//
 //     /**
 //      *This method initialisez the particles that are going to be used for the PSO
 //      * @param population_size the population size of the particle swarm
@@ -52,21 +52,21 @@
 //             Particle current = new Particle(vxy[0], vxy[1]);
 //             boolean validShot = false;
 //             while(!validShot){
-
+//
 //                 //es = new EngineSimulator(startx, starty, current.getVx(), current.getVy()); // add positions
 //                 StateVector sv = new StateVector(startx, starty, current.getVx(), current.getVy());
 //                 //game.run(, null);
 //                 //es.runRK4ai();
-//                 //if(es.endPos_X == Integer.MAX_VALUE || es.endPos_Y == Integer.MAX_VALUE){
+//                 if(es.endPos_X == Integer.MAX_VALUE || es.endPos_Y == Integer.MAX_VALUE){
 //                     vxy = validVelocity();
 //                     current = new Particle(vxy[0], vxy[1]);
-//                 //}
-//                 //else{
+//                 }
+//                 else{
 //                     float[] xy = {es.endPos_X, es.endPos_Y};
 //                     current.setXY(xy);
 //                     validShot = true;
-//                 //}
-
+//                 }
+//
 //             }
 // //          current.setScore(calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
 //             population[i] = current;
@@ -77,9 +77,9 @@
 //         }
 //         return population;
 //     }
-
+//
 //     /**
-//      * Method which can be called to run the PSO 
+//      * Method which can be called to run the PSO
 //      * @param maxIterations the maximum amount of generations the PSO can run
 //      * @param particles the intialised particles
 //      */
@@ -98,9 +98,9 @@
 //                 es.runRK4ai();
 //                 float[] xy = {es.endPos_X, es.endPos_Y};
 //                 current.setXY(xy);
-
+//
 //                //current.setScore(Score.calculateEucledianDistance(xy[0], xy[1], holex, holey));//floodfill
-                
+//
 //                 if(current.getScore() < current.getlocalBest().getScore()){
 //                     current.setlocalBest(Particle.clone(current));
 //                     if(current.getlocalBest().getScore() < globalBest.getScore()){
@@ -112,10 +112,10 @@
 //             }
 //         }
 //     }
-
-
-
-
+//
+//
+//
+//
 //     /**
 //      * Calculates a random valid velocity
 //      * @return a velocity
@@ -130,10 +130,10 @@
 //         }
 //         return vxy;
 //     }
-
+//
 //     /**
 //      * method which checks if the velocity is valid
-//      * @param particle 
+//      * @param particle
 //      * @param vxy a velocity x and y
 //      * @return a valid velocity
 //      */
@@ -144,10 +144,10 @@
 //         }
 //         return vxy;
 //     }
-
+//
 //     /**
 //      * method which updates the particle velocity based on the inertia, personal influence and social influence
-//      * @param particle 
+//      * @param particle
 //      * @return the updated velocity
 //      */
 // //    public static float[] updatedVelocity(Particle particle){
@@ -159,7 +159,7 @@
 // //        updatedvxy[1] = particle.getVy() + inertia[1] + personalInfluence[1] + socialInfluence[1];
 // //        return updatedvxy;
 // //    }
-
+//
 //     /**
 //      * method which updates the particle velocity based on the inertia, personal influence and social influence
 //      * @param particle
@@ -174,9 +174,9 @@
 //         updatedvxy[1] = particle.getVy() + inertia[1] + personalInfluence[1] + socialInfluence[1];
 //         return updatedvxy;
 //     }
-
+//
 //     //makes the particle move in the same direction with the same velocity
-
+//
 //     /**
 //      * method which calculates the inertia
 //      * @param particle
@@ -184,13 +184,13 @@
 //      */
 //     public static float[] inertia(Particle particle){
 //         float[] inertia = new float[2];
-
-
+//
+//
 //         inertia[0] = W * particle.getVx();
 //         inertia[1] = W * particle.getVy();
 //         return inertia;
 //     }
-
+//
 //     /**
 //      * method which calculates the personal influence
 //      * @param particle
@@ -204,7 +204,7 @@
 //         personalInfluenceXY[1] = c1*U1y*(particle.getlocalBest().getVy()-particle.getVy());
 //         return personalInfluenceXY;
 //     }
-
+//
 //     /**
 //      * method which calculates the social influence
 //      * @param particle
@@ -218,7 +218,7 @@
 //         socialInfluence[1] = c2*U2y*(globalBest.getVy()-particle.getVy());
 //         return socialInfluence;
 //     }
-
+//
 //     public static Particle[] findBestParticles(int amount, Particle[] particles){
 //         Particle[] fittestParticles = new Particle[amount];
 //         Particle currentBest = Particle.clone(particles[0]);
@@ -230,7 +230,7 @@
 //                         }
 //                 }else{
 //                     if(particles[i].getScore() <= fittestParticles[j-1].getScore()){
-                        
+//
 //                     }
 //                     else{
 //                         currentBest = Particle.clone(particles[i]);
@@ -238,13 +238,13 @@
 //                             currentBest = Particle.clone(particles[i]);
 //                         }
 //                     }
-                    
-//                 }   
+//
+//                 }
 //             }
 //             fittestParticles[j] = Particle.clone(currentBest);
 //         }
-//         return fittestParticles; 
+//         return fittestParticles;
 //     }
-    
+//
 // }
-
+//
