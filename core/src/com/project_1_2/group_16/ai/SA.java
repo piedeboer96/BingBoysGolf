@@ -51,11 +51,11 @@ public class SA {
                 double cost = state.getFitness()-randomNeigbour.getFitness();
                 if(cost >= 0){
                     setState(randomNeigbour);
-                    System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
+                    //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
                 }else {
                     if (Math.random() < getProbability(state, randomNeigbour)) {
                         setState(randomNeigbour);
-                        System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
+                        //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
                     }
                 }
                 if(state.getFitness() <= Input.R){
@@ -201,34 +201,11 @@ public class SA {
 
     public static void main(String[] args) {
 
-        StateVector sv = new StateVector(-3f, 0f,  2.062566f, -1.5743078f);
-        Neighbour testN = new Neighbour(sv);
-        testN.print();
-
-
-//        FloodFill.fillGraphTable();
-//        FloodFill.floodFill((int)FloodFill.flood_i,(int)FloodFill.flood_j);
-        System.out.println(Arrays.deepToString(FloodFill.matrixParcour));
-        float[] initial_vxvy = Score.validVelocity(0, 5);
         long start = System.currentTimeMillis();
-        SA test = new SA(500,  0.1f);
-
+        SA test = new SA(500,  0.2f);
         System.out.println(test.runSA());
         System.out.println(test.state.getFitness());
         long end = System.currentTimeMillis();
-        System.out.println(test.state.getX() +" " + test.state.getY());
-        System.out.println("Holex: " + hole_x + " Holey: " + hole_y);
-        System.out.println("RunTime: " + (end - start) + " ms");
-
-//        StateVector testv = new StateVector(Input.V0.x, Input.V0.y, 0.029642947f, -0.23318267f);
-//        Game test = new Game();
-//        test.setNumericalSolver(NumericalSolver.RK4);
-//        test.runEngine(testv, null);
-//        System.out.println(testv.toString());
-//        System.out.println(Score.calculateEucledianDistance(testv.x, testv.y, Input.VT.x, Input.VT.y));
-
-//        Neighbour testn = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, 0.029642947f, -0.23318267f));
-//        System.out.println(testn.getFitness());
-
+        System.out.println("Runtime: " + (end - start) + " ms");
     }
 }

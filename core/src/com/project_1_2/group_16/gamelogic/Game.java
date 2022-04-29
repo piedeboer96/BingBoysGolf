@@ -38,13 +38,14 @@ public class Game {
         if (this.collision.ballIsInWater(sv)) {
 
             // reset position
-                    sv.x = sv.prev.x;
-                    sv.y = sv.prev.y;
-
                 if(reference == null){
-                        sv.x = Integer.MAX_VALUE;
-                        sv.y = Integer.MAX_VALUE;
+                    sv.x = Integer.MAX_VALUE;
+                    sv.y = Integer.MAX_VALUE;
+                }else{
+                    sv.x = sv.prev.x;
+                   sv.y = sv.prev.y;
                 }
+
 
             sv.stop = true;
 
