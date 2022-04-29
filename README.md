@@ -1,31 +1,17 @@
-### BINGBOYSGOLF
-***how to git...***
-make sure you are on the local git folder (e.g. cd/users/piedb/documents/github/bingboysgolf)
+# BingBoysGolf
 
-1. Before working !!! ---> Update code first. (OF THE DESIRED BRANCH)
-2. Make your changes ON YOUR BRANCH
-3. Commit changes
-4. push changes
-5. let pie/tom merge it with main :)
+### Bugs 
+1. Input Screen on MAC is broken
+2. Game logic (spawn ball when out of range
 
-***_some basic git commands_***
-
-
-git branch -a        //show branches   <br /> 
-git switch branch-name    //switch branch <br /> 
-git pull             //update , pull latest version <br /> 
-git commit           //commit your local changes <br /> 
-git push             //push your local changes <br /> 
-
-
-
-***recent notes***
- 
-- GAME IS NOT WORKING FOR ME (PIE on MAC)
-- PLEASE WORK ON YOUR BRANCH AND LET SOMEONE MERGE IT AFTER REVIEW ... ==> ai-playground RAFALI, LAURENT, TOM
+### ToDo
+1. RuleBasedBot
+2. Fix advancedbot
+3. Start working on report
 
 
 ----------------------------------------------
+OLD README
 
 In this repository you will find the golf game of group 16 for Project 1-2.
 
