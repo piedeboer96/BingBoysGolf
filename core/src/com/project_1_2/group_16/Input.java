@@ -18,7 +18,7 @@ public class Input {
      * Input velocity (for testing).
      * vx: 1.6692446 vy: -0.04984162
      */
-    public static Vector2 VB = new Vector2(0.9908804f, -0.2551949f);
+    public static Vector2 VB = new Vector2(-1.2f, 0.2f);
 
     /**
      * Radius of the hole.

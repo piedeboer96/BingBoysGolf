@@ -1,6 +1,12 @@
 package com.project_1_2.group_16.ai;
 
+import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.physics.Physics;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Calculate score based on euclidean distance.
@@ -36,5 +42,39 @@ public class Score {
             vxy[1] = (float) (vxy[1]/Math.sqrt(50));
         }
         return vxy;
+    }
+//    public static float [] calcHillDeriv (float velX, float velY, float stepSize){
+//        float[] toReturn = new float[2];
+//        float denom = 2 * stepSize;
+//        Game g0 = new Game();
+//        Game g1 = new Game();
+//        Game g2 = new Game();
+//        Game g3 = new Game();
+//        g0.setNumericalSolver(NumericalSolver.RK4);
+//        g0.runEngine(new StateVector(Input.V0.x, Input.V0.y, velX));
+//
+//        float dF_dVelX =
+//    }
+    public static ArrayList<float[]> availableVelocities () {
+        float minVel = -5.0f;
+        float maxVel = 5.0f;
+        float h = 10f/7f;
+        ArrayList<float[]>toReturn = new ArrayList<float[]>();
+        for(float velX = minVel; velX<=maxVel; velX+=h){
+            for(float velY = minVel; velY<=maxVel; velY+=h){
+                if(Physics.magnitude(velX, velY) < 5.0f){
+                    toReturn.add(new float [] {velX, velY});
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    public static void main(String[] args) {
+        ArrayList<float[]> toPrint = availableVelocities();
+        for(float[] f : toPrint){
+            System.out.println(Arrays.toString(f));
+        }
+        System.out.println(toPrint.size());
     }
 }
