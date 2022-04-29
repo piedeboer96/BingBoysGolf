@@ -7,24 +7,23 @@ import com.project_1_2.group_16.math.StateVector;
 
 public class Neighbour {
     public static final float STEP_SIZE = SA.SOLVER_STEP_SIZE;
-    private StateVector sv;
+    private StateVector sv, init_sv;
+    private float vx, vy;
     private Game game;
     private double fitness;
 
     public Neighbour(StateVector sv){
         this.sv = sv;
+        this.init_sv = new StateVector(sv.x, sv.y, sv.vx, sv.vy);
         this.game = new Game();
-        this.game.AI = true;
         this.game.setNumericalSolver(NumericalSolver.RK4);
         this.game.runEngine(this.sv, null);
         fitness = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
-        if(fitness < 1) {
-            System.out.println(sv.toString());
-        }
+
     }
 
     public StateVector getSv(){
-        return this.sv;
+        return this.init_sv;
     }
 
     public double getFitness(){
@@ -32,11 +31,11 @@ public class Neighbour {
     }
 
     public float getVx(){
-        return this.sv.vx;
+        return this.init_sv.vx;
     }
 
     public float getVy(){
-        return this.sv.vy;
+        return this.init_sv.vy;
     }
 
     public float getX(){

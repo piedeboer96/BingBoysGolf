@@ -27,6 +27,11 @@ public class SA {
     private ArrayList<Neighbour> current_neighbours;
     private boolean stop;
 
+    /**
+     * Constructor for SA object
+     * @param kmax max iterations
+     * @param neigbourStepSize step size for generating neighbours
+     */
     public SA(int kmax, float neigbourStepSize){
         this.kmax = kmax;
         this.Temperature = getTemperature(kmax);
@@ -36,7 +41,11 @@ public class SA {
         stop = false;
     }
 
-    public List<Float> runSA2(){
+    /**
+     * Method used for runing the SA
+     * @return array of x and y velocities
+     */
+    public List<Float> runSA(){
         for(int i = 0; i < kmax && !stop; i++){
             Neighbour randomNeigbour = getNeighbour(state);
                 double cost = state.getFitness()-randomNeigbour.getFitness();
@@ -59,13 +68,19 @@ public class SA {
         return vxvy;
     }
 
+
+    /**
+     * Method which generates random vectors and picks the best vector which is used at the start of SA
+     * @param init_vector_amount initial amount of vector
+     * @return the vector with highest fitness
+     */
     public Neighbour findInitalState(int init_vector_amount){
         float[] vxvy = validVelocity();
         Neighbour bestFit = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, vxvy[0], vxvy[1]));
         Neighbour current;
         for(int i = 0; i < init_vector_amount; i++){
             current = getRandomNeighbour();
-            System.out.println("RandomNeighbour: " + "vx: "  + current.getVx() + " vy: " + current.getVy());
+            System.out.println("RandomNeighbour: " + "vx: "  + current.getVx() + " vy: " + current.getVy() + " Fitness: " + current.getFitness());
             if(current.getFitness() < bestFit.getFitness()){
                 bestFit = current;
             }
@@ -74,32 +89,11 @@ public class SA {
         return  bestFit;
     }
 
-    
-    public List<Float> runSA() {
-        int testvar = 0;
-       for(int i = 0; i < kmax; i++) {
-            Temperature = getTemperature(i);
-            Neighbour currentNeighbour = Neighbour.clone(getNeighbour(getState()));
-            float rand = (float)Math.random();
-
-            if(getProbability(currentNeighbour, getState()) >= rand){
-                System.out.println(" fitness: " + currentNeighbour.getFitness() +" vx: " + currentNeighbour.getVx() + " vy: " + currentNeighbour.getVy());
-                setState(currentNeighbour);
-                testvar++;
-                this.recalculate = true;
-            }else{
-                this.recalculate = false;
-            }
-           System.out.println(state.getVx() + " " + state.getVy());
-
-        }
-        System.out.println("Amount of hits: " +  testvar);
-        ArrayList<Float> vxvy = new ArrayList<>();
-        vxvy.add(getState().getVx());
-        vxvy.add(getState().getVy());
-       return vxvy;
-    }
-
+    /**
+     * Method which checks if the resulting vector is viable
+     * @param sv a statevector
+     * @return
+     */
     private static boolean viableVector(StateVector sv){
         if((float)Math.sqrt(sv.vx*sv.vx+sv.vy+sv.vy) <= MAXVEL){
             return true;
@@ -107,6 +101,10 @@ public class SA {
         return  false;
     }
 
+    /**
+     * Method which creates a valid velocity
+     * @return a valid velocity
+     */
     public static float[] validVelocity(){
         float[] vxy = new float[2];
         vxy[0] = (float)(0 + Math.random()*(MAXVEL));
@@ -118,12 +116,20 @@ public class SA {
         return vxy;
     }
 
+    /**
+     * Method which creates a random neighbour
+     * @return random neighbour
+     */
     private Neighbour getRandomNeighbour(){
         float[] vxvy = validVelocity();
         return new Neighbour(new StateVector(Input.V0.x, Input.V0.y, vxvy[0], vxvy[1]));
     }
 
-    
+    /**
+     * Method used to create neighbours from the current state based on a neigbourStepSize
+     * @param state the current state
+     * @return a random neigbour
+     */
     private Neighbour getNeighbour(Neighbour state) {
        if(this.recalculate){
            current_neighbours = new ArrayList<>();
@@ -159,31 +165,55 @@ public class SA {
     }
 
 
+    /**
+     *
+     * @return
+     */
     public Neighbour getState() {
         return state;
     }
 
+    /**
+     *
+     * @param updated_state
+     */
     private void setState(Neighbour updated_state){
         this.state = new Neighbour(updated_state.getSv());
     }
-    
+
+    /**
+     *
+     * @param state
+     * @param updated
+     * @return
+     */
     private float getProbability(Neighbour state, Neighbour updated) {
        return (float)Math.exp(-1*(state.getFitness() - updated.getFitness()) / Temperature);
     }
 
+    /**
+     * @param k
+     * @return
+     */
     public double getTemperature(int k) {
         return 1 - (k+1)/kmax;
     }
 
     public static void main(String[] args) {
+
+        StateVector sv = new StateVector(-3f, 0f,  2.062566f, -1.5743078f);
+        Neighbour testN = new Neighbour(sv);
+        testN.print();
+
+
 //        FloodFill.fillGraphTable();
 //        FloodFill.floodFill((int)FloodFill.flood_i,(int)FloodFill.flood_j);
-//        System.out.println(Arrays.deepToString(FloodFill.matrixParcour));
+        System.out.println(Arrays.deepToString(FloodFill.matrixParcour));
         float[] initial_vxvy = Score.validVelocity(0, 5);
         long start = System.currentTimeMillis();
         SA test = new SA(500,  0.1f);
 
-        System.out.println(test.runSA2());
+        System.out.println(test.runSA());
         System.out.println(test.state.getFitness());
         long end = System.currentTimeMillis();
         System.out.println(test.state.getX() +" " + test.state.getY());
@@ -196,7 +226,7 @@ public class SA {
 //        test.runEngine(testv, null);
 //        System.out.println(testv.toString());
 //        System.out.println(Score.calculateEucledianDistance(testv.x, testv.y, Input.VT.x, Input.VT.y));
-//
+
 //        Neighbour testn = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, 0.029642947f, -0.23318267f));
 //        System.out.println(testn.getFitness());
 
