@@ -23,8 +23,6 @@ public class Game {
      */
     public final Collision collision = new Collision();
 
-    public boolean AI = true;
-
     private NumericalSolver solver;
 
     /**
@@ -40,12 +38,12 @@ public class Game {
         if (this.collision.ballIsInWater(sv)) {
 
             // reset position
-//            sv.x = Integer.MAX_VALUE;
-//            sv.y = Integer.MAX_VALUE;
-
-                if(!AI){
                     sv.x = sv.prev.x;
                     sv.y = sv.prev.y;
+
+                if(reference == null){
+                        sv.x = Integer.MAX_VALUE;
+                        sv.y = Integer.MAX_VALUE;
                 }
 
             sv.stop = true;
