@@ -32,7 +32,11 @@ public class Game {
      */
     public void run(final StateVector sv, App reference) {
         // update state vector with numerical solver
-        this.solver.solve(h, sv);
+        if(reference != null) {
+            this.solver.solve(h, sv);
+        }else {
+            this.solver.solve(h * 2, sv);
+        }
 
         // check water collision
         if (this.collision.ballIsInWater(sv)) {

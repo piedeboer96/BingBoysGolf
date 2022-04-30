@@ -58,7 +58,7 @@ public class SA {
                         //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
                     }
                 }
-                if(state.getFitness() <= Input.R){
+                if(state.getFitness() < Input.R/1.2f){
                     stop = true;
                 }
         }
@@ -202,7 +202,7 @@ public class SA {
     public static void main(String[] args) {
 
         long start = System.currentTimeMillis();
-        SA test = new SA(500,  0.2f);
+        SA test = new SA(500,  0.34f);
         System.out.println(test.runSA());
         System.out.println(test.state.getFitness());
         long end = System.currentTimeMillis();
