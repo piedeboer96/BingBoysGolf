@@ -323,32 +323,6 @@ public class App extends ApplicationAdapter {
 	}
 
 	/**
-	 * Terrain generation.
-	 * @param x x-coordinate of the tile
-	 * @param z z-coordinate of the tile
-	 *
-	public void generateTerrain(float x, float z) {
-		float height = Terrain.getHeight(x, z) - Golfball.SIZE;
-
-		Material boxMaterial;
-		if (height < 0 - TILE_SIZE / 2) { // water texture
-			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.waterColor()));
-		}
-		else if (this.game.collision.isInSandPit(x, z)) { // sandpit texture
-			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.sandColor()));
-		}
-		else { // grass texture (depending on height)
-			boxMaterial = new Material(ColorAttribute.createDiffuse(this.theme.grassColor(height)));
-		}
-
-		// create model
-		Model box = 
-		this.modelBuilder.createBox(TILE_SIZE, TILE_SIZE, TILE_SIZE, boxMaterial, Usage.Position + Usage.Normal);
-		Tile tile = new Tile(box, x, z);
-		this.tiles.add(tile);
-	}//*/
-
-	/**
 	 * Get the golfball
 	 * @return
 	 */
