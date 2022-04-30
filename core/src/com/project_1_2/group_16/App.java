@@ -8,17 +8,13 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
@@ -35,7 +31,7 @@ import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
-import com.project_1_2.group_16.models.Tile;
+import com.project_1_2.group_16.models.TerrainGeneration;
 import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.Theme;
 
@@ -51,9 +47,9 @@ public class App extends ApplicationAdapter {
 	public static final boolean OS_IS_WIN = System.getProperty("os.name").toLowerCase().startsWith("win");
 	public static final float MIN_POWER = 1f;
 	public static final float MAX_POWER = 5f;
-	public static final float POWER_DELTA = 0.05f;
-	public static Color BACKGROUND; // can't init some constants due to class compilation
-	public static int SCREEN_WIDTH;
+	public static final float POWER_DELTA = 0.05f; 
+	public static final Theme THEME = new DefaultTheme();
+	public static int SCREEN_WIDTH; // can't init some constants due to class compilation
 	public static int SCREEN_HEIGHT;
 	public static Sound hitSound;
     public static Sound dropSound;
@@ -74,9 +70,8 @@ public class App extends ApplicationAdapter {
 
 	// models
 	private AssetManager assets;
-	private ModelBuilder modelBuilder;
+	private TerrainGeneration terrainGeneration;
 	private Array<ModelInstance> instances;
-	private Array<Tile> tiles;
 
 	// golfball
 	private Golfball golfball;
@@ -90,7 +85,6 @@ public class App extends ApplicationAdapter {
 
 	// environment
 	private Environment environment;
-	private Theme theme;
 
 	// physics
 	public Game game = new Game();
@@ -111,29 +105,19 @@ public class App extends ApplicationAdapter {
 		this.modelBatch = new ModelBatch();
 		this.shapeBatch = new ShapeRenderer();
 		this.spriteBatch = new SpriteBatch();
-		this.modelBuilder = new ModelBuilder();
 		this.instances = new Array<ModelInstance>();
-		this.tiles = new Array<Tile>();
 		this.font = new BitmapFont();
 		this.assets = new AssetManager();
 
 		// create environment
-		this.theme = new DefaultTheme();
 		this.environment = new Environment();
 		this.environment.set(AMBIENT_LIGHT);
 		this.environment.add(SUN_LIGHT);
-		BACKGROUND = this.theme.skyColor();
 
 		// terrain generation
 		Terrain.initSandPits();
-		float x, z;
-		for(int i = 0; i < FIELD_DETAIL; i++) {
-			for(int j = 0; j < FIELD_DETAIL; j++) {
-				x = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (i + 1);
-				z = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (j + 1);
-				generateTerrain(x, z);
-			}
-		}
+		this.terrainGeneration = new TerrainGeneration(this.game.collision);
+		this.terrainGeneration.begin();
 
 		// create crosshair
 		SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -144,20 +128,19 @@ public class App extends ApplicationAdapter {
 		this.ch4 = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - SCREEN_HEIGHT / 100);
 
 		// create golf ball
-		this.golfball = new Golfball(this.modelBuilder, this.theme);
+		this.golfball = new Golfball();
 		this.golfball.setPosition(Input.V0.x, Terrain.getHeight(Input.V0.x, Input.V0.y), Input.V0.y);
 		this.instances.add(this.golfball.getInstance());
 		this.golfball.STATE.x = Input.V0.x;
 		this.golfball.STATE.y = Input.V0.y;
 
 		// create flag
-		this.flagpole = new Flagpole
-		(this.modelBuilder, new Vector3(Input.VT.x, Terrain.getHeight(Input.VT.x, Input.VT.y), Input.VT.y), Input.R, this.theme);
+		this.flagpole = new Flagpole(new Vector3(Input.VT.x, Terrain.getHeight(Input.VT.x, Input.VT.y), Input.VT.y), Input.R);
 		this.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
 		this.instances.add(this.flagpole.getInstance());
 
 		// create trees
-		Terrain.initTrees(this.theme.treeModel(assets));
+		Terrain.initTrees(THEME.treeModel(assets));
 		for (int i = 0; i < Input.TREES; i++) {
 			this.instances.add(Terrain.trees.get(i).getInstance());
 		}
@@ -185,6 +168,14 @@ public class App extends ApplicationAdapter {
 		hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
 		dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
 
+		// wait for terrain generation to finish
+		try {
+			this.terrainGeneration.thread.join();
+			instances.add(new ModelInstance(this.terrainGeneration.end()));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		// allow gameplay
 		game.setNumericalSolver(NumericalSolver.RK4);
 		this.allowHit = true;
@@ -195,17 +186,11 @@ public class App extends ApplicationAdapter {
 		// clear screen
 		if (OS_IS_WIN) Gdx.gl.glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		ScreenUtils.clear(BACKGROUND);
+		ScreenUtils.clear(THEME.skyColor());
 		
 		// update models
 		this.modelBatch.begin(this.useFreeCam ? this.freeCam : this.ballCam);
 		this.modelBatch.render(this.instances, this.environment);
-		for (Tile tile : this.tiles) {
-			this.v.set(tile.transform.getTranslation(this.v));
-			if ((this.useFreeCam ? this.freeCam : this.ballCam).frustum.boundsInFrustum(this.v, tile.getDimensions())) {
-				this.modelBatch.render(tile, this.environment);
-			}
-		}
 		this.modelBatch.end();
 
 		this.xDir = this.ballCam.direction.x;
@@ -341,7 +326,7 @@ public class App extends ApplicationAdapter {
 	 * Terrain generation.
 	 * @param x x-coordinate of the tile
 	 * @param z z-coordinate of the tile
-	 */
+	 *
 	public void generateTerrain(float x, float z) {
 		float height = Terrain.getHeight(x, z) - Golfball.SIZE;
 
@@ -361,7 +346,7 @@ public class App extends ApplicationAdapter {
 		this.modelBuilder.createBox(TILE_SIZE, TILE_SIZE, TILE_SIZE, boxMaterial, Usage.Position + Usage.Normal);
 		Tile tile = new Tile(box, x, z);
 		this.tiles.add(tile);
-	}
+	}//*/
 
 	/**
 	 * Get the golfball

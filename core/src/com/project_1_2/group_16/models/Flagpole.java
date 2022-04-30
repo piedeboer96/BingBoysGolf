@@ -2,10 +2,9 @@ package com.project_1_2.group_16.models;
 
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.project_1_2.group_16.themes.Theme;
+import com.project_1_2.group_16.App;
 
 public class Flagpole {
 
@@ -22,8 +21,8 @@ public class Flagpole {
      * @param r the radius of the hole
      * @param theme textures used for the flagpole model
      */
-    public Flagpole(ModelBuilder builder, Vector3 pos, float r, Theme theme) {
-        this.model = theme.flagModel(builder, r);
+    public Flagpole(Vector3 pos, float r) {
+        this.model = App.THEME.flagModel(r);
         this.instance = new ModelInstance(this.model);
         this.r = r;
         this.pos.set(pos);

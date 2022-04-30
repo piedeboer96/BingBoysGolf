@@ -3,11 +3,10 @@ package com.project_1_2.group_16.models;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
-import com.project_1_2.group_16.themes.Theme;
 
 public class Golfball {
 
@@ -28,8 +27,8 @@ public class Golfball {
      * @param builder a modelbuilder for creating the model
      * @param theme the textures of the golfball
      */
-    public Golfball(ModelBuilder builder, Theme theme) {
-		this.model = theme.golfballModel(builder, Golfball.SIZE);
+    public Golfball() {
+		this.model = App.THEME.golfballModel(Golfball.SIZE);
         this.instance = new ModelInstance(model);
     }
 

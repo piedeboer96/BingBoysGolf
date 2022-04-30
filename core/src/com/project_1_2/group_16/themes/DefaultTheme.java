@@ -15,13 +15,16 @@ public class DefaultTheme implements Theme {
     private final Color sand = new Color(0.9411f, 0.9411f, 0.4313f, 1f);
 
     @Override
-    public Model golfballModel(ModelBuilder builder, float size) {
+    public Model golfballModel(float size) {
+        ModelBuilder builder = new ModelBuilder();
         Material golfball = new Material(ColorAttribute.createDiffuse(Color.WHITE));
         return builder.createSphere(size, size, size, 10, 10, golfball, Usage.Position + Usage.Normal);
     }
 
     @Override
-    public Model flagModel(ModelBuilder builder, float r) {
+    public Model flagModel(float r) {
+        ModelBuilder builder = new ModelBuilder();
+        
         Material poleMaterial = new Material(ColorAttribute.createDiffuse(Color.LIGHT_GRAY));
         Material flagMaterial = new Material(ColorAttribute.createDiffuse(Color.RED));
         Material holeMaterial = new Material(ColorAttribute.createDiffuse(Color.RED));
@@ -47,7 +50,12 @@ public class DefaultTheme implements Theme {
     }
 
     @Override
-    public Color grassColor(float height) {
+    public Color grassColorLight(float height) { // TODO
+        return new Color(0.1568f, (200 + height * 100) / 255f, 0.1568f, 1f);
+    }
+
+    @Override
+    public Color grassColorDark(float height) { // TODO
         return new Color(0.1568f, (100 + height * 100) / 255f, 0.1568f, 1f);
     }
 
