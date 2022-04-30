@@ -9,6 +9,8 @@ import com.project_1_2.group_16.math.StateVector;
 public class Soldier {
     public float velX;
     public float velY;
+    public float endPosX;
+    public float endPosY;
     Game game = new Game();
     public float fitness;
     public int damageCounter;
@@ -21,9 +23,11 @@ public class Soldier {
     public void calcFitness(){
         StateVector sv = new StateVector(Input.V0.x, Input.V0.y, velX, velY);
         game.runEngine(sv,null);
+        this.endPosX = sv.x;
+        this.endPosY = sv.y;
         fitness = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
     }
     public String toString(){
-        return "velX " + velX + " velY " + velY + " fitness " + fitness;
+        return "velX " + velX + " velY " + velY + " fitness " + fitness + " endPosX : " + endPosX + " endPosY : " + endPosY;
     }
 }

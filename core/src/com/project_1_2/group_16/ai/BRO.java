@@ -12,7 +12,6 @@ public class BRO {
     boolean stop = false;
     int threshold;
     ArrayList<Soldier> population = new ArrayList<Soldier>();
-    //popSize = 30, maxIter = 100 for now, threshold =3
     public BRO(int popSize, int maxIter, int threshold){
         this.popSize = popSize;
         this.maxIter = maxIter;
@@ -35,8 +34,11 @@ public class BRO {
         float shrink = (float) (Math.ceil(Math.log10(maxIter)));
         float delta = (Math.round(maxIter/shrink));
         int iter = 0;
-        while(!stop && iter<maxIter){
-            iter++;
+        outerloop:
+        while(iter<maxIter){
+            System.out.println(iter++);
+            bestSoldier = findBestSoldierInPop();
+            System.out.println(bestSoldier.toString());
             for(int i=0; i<population.size(); i++){
                 Soldier s = population.get(i);
                 Soldier nearest = findNearestSoldier(s);
@@ -61,13 +63,11 @@ public class BRO {
                 }
                 dam.calcFitness();
                 if(dam.fitness < Input.R){
-                    stop = true;
+                    break outerloop;
                 }
             }
 
             if(iter>=delta){
-                bestSoldier = findBestSoldierInPop();
-                System.out.println("best soldier now " + bestSoldier.toString());
                 sdX = calcSDVelX();
                 sdY = calcSDVelY();
                 upperBoundX = bestSoldier.velX + sdX;
@@ -87,7 +87,7 @@ public class BRO {
             }
         }
         bestSoldier = findBestSoldierInPop();
-        System.out.println("velX " + bestSoldier.velX + " |||| vel Y " + bestSoldier.velY);
+        System.out.println(bestSoldier.toString());
     }
 
     /**
@@ -95,14 +95,13 @@ public class BRO {
      */
     public void initializePopulation(){
         ArrayList<float[]> temp = Score.availableVelocities();
-//        for(float[] f : temp){
-//            population.add(new Soldier(f[0], f[1]));
-//        }
-
-        for(int i=0; i<popSize; i++){
-            float[] f = Score.validVelocity(-5, 5);
+        for(float[] f : temp){
             population.add(new Soldier(f[0], f[1]));
         }
+//        for(int i=0; i<popSize; i++){
+//            float[] f = Score.validVelocity(-5f, 5f);
+//            population.add(new Soldier(f[0], f[1]));
+//        }
     }
 
     /**
@@ -138,6 +137,11 @@ public class BRO {
         }
         return toReturn;
     }
+
+    /**
+     * Calculates the Standard Deviation of all x velocities
+     * @return the SD of all x velocities
+     */
     public float calcSDVelX (){
         float [] xVels = new float[population.size()];
         //put all x velocities in an array
@@ -159,6 +163,11 @@ public class BRO {
         sd = sd/xVels.length-1;
         return (float) (Math.sqrt(sd));
     }
+
+    /**
+      Calculates the Standard Deviation of all y velocities
+     * @return the SD of all y velocities
+     */
     public float calcSDVelY (){
         float [] yVels = new float[population.size()];
         //put all x velocities in an array
@@ -181,7 +190,8 @@ public class BRO {
         return (float) (Math.sqrt(sd));
     }
     public static void main (String[] args){
-        BRO bro = new BRO(45, 100, 3);
+        System.out.println("starting...");
+        BRO bro = new BRO(55, 100, 4);
         bro.runBRO();
     }
 

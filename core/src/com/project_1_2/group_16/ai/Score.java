@@ -56,16 +56,42 @@ public class Score {
 //        float dF_dVelX =
 //    }
     public static ArrayList<float[]> availableVelocities () {
-        float minVel = -5.0f;
-        float maxVel = 5.0f;
-        float h = 10f/7f;
+        float [] minMaxValues = determineMinMax();
+        float minVelX = minMaxValues[0];
+        float maxVelX = minMaxValues[1];
+        float minVelY = minMaxValues[2];
+        float maxVelY = minMaxValues[3];
+        float xH, yH;
+        xH = (maxVelX - minVelX)/7f;
+        yH = (maxVelY - minVelY)/7f;
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
-        for(float velX = minVel; velX<=maxVel; velX+=h){
-            for(float velY = minVel; velY<=maxVel; velY+=h){
+        for(float velX = minVelX; velX<=maxVelX; velX+=xH){
+            for(float velY = minVelY; velY<=maxVelY; velY+=yH){
                 if(Physics.magnitude(velX, velY) < 5.0f){
                     toReturn.add(new float [] {velX, velY});
                 }
             }
+        }
+        return toReturn;
+    }
+    // idx 0 : minX, idx 1 : maxX, idx 2 : minY, idx 3 : maxY
+    public static float[] determineMinMax (){
+        float[] toReturn = new float[4];
+        float xDifference = Input.VT.x - Input.V0.x;
+        float yDifference = Input.VT.y - Input.V0.y;
+        if(xDifference<0){
+            toReturn[0] = -5;
+            toReturn[1] = 0;
+        }else {
+            toReturn[0] = 0;
+            toReturn[1] = 5;
+        }
+        if(yDifference<0){
+            toReturn[2] = -5;
+            toReturn[3] = 0;
+        }else {
+            toReturn[2] = 0;
+            toReturn[3] = 5;
         }
         return toReturn;
     }

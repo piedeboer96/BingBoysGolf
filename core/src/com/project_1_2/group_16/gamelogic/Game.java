@@ -11,7 +11,7 @@ public class Game {
     /**
      * Step size.
      */
-    public static float h = 0.15f;
+    public static float h = 0.05f;
 
     /**
      * Friction caused by hitting trees.
@@ -35,7 +35,7 @@ public class Game {
         if(reference != null) {
             this.solver.solve(h, sv);
         }else {
-            this.solver.solve(h * 2, sv);
+            this.solver.solve(h*3f, sv);
         }
 
         // check water collision
@@ -82,9 +82,10 @@ public class Game {
         // check hole collision
         if (this.collision.ballIsInTargetRadius(sv)) {
             if (reference != null) this.endGame(reference);
-            sv.stop = true;
+            sv.stop=true;
             System.out.println("HITHITHITHITHIHTIHTIHTIHTIHTIHTIHTIHTIHT");
         }
+
 
         // check for a stop
         if (Physics.magnitude(sv.vx, sv.vy) < h) {
