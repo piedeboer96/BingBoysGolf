@@ -202,7 +202,7 @@ public class SA {
     public static void main(String[] args) {
 
         long start = System.currentTimeMillis();
-        SA test = new SA(500,  0.36f);
+        SA test = new SA(500,  0.34f);
         System.out.println(test.runSA());
         System.out.println(test.state.getFitness());
         long end = System.currentTimeMillis();
