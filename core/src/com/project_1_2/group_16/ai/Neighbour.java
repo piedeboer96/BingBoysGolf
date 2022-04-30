@@ -10,15 +10,15 @@ public class Neighbour {
     private StateVector sv, init_sv;
     private float vx, vy;
     private Game game;
-    private double fitness;
+    public double fitness = Integer.MAX_VALUE;
 
     public Neighbour(StateVector sv){
         this.sv = sv;
         this.init_sv = new StateVector(sv.x, sv.y, sv.vx, sv.vy);
         this.game = new Game();
         this.game.setNumericalSolver(NumericalSolver.RK4);
-        this.game.runEngine(this.sv, null);
-        fitness = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
+        this.game.runEngine(this.sv, null, null, this, null);
+//        fitness = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
     }
 
     public StateVector getSv(){

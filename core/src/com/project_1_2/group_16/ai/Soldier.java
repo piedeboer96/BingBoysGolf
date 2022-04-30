@@ -12,7 +12,7 @@ public class Soldier {
     public float endPosX;
     public float endPosY;
     Game game = new Game();
-    public float fitness;
+    public float fitness = Integer.MAX_VALUE;
     public int damageCounter;
     public Soldier(float velX, float velY){
         this.velX = velX;
@@ -22,10 +22,10 @@ public class Soldier {
     }
     public void calcFitness(){
         StateVector sv = new StateVector(Input.V0.x, Input.V0.y, velX, velY);
-        game.runEngine(sv,null);
+        game.runEngine(sv,null, null, null, this);
         this.endPosX = sv.x;
         this.endPosY = sv.y;
-        fitness = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
+//        fitness = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
     }
     public String toString(){
         return "velX " + velX + " velY " + velY + " fitness " + fitness + " endPosX : " + endPosX + " endPosY : " + endPosY;

@@ -9,7 +9,7 @@ public class Particle {
 
     private StateVector sv, init_sv;
     private Game game;
-    private double fitness;
+    public double fitness = Integer.MAX_VALUE;
 
     private Particle localBest;
 
@@ -18,8 +18,8 @@ public class Particle {
         this.init_sv =  new StateVector(sv.x, sv.y, sv.vx, sv.vy);
         this.game = new Game();
         this.game.setNumericalSolver(NumericalSolver.RK4);
-        this.game.runEngine(this.sv, null);
-        fitness = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
+        this.game.runEngine(this.sv, null, this, null, null);
+//        fitness = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
     }
 
     public Particle(StateVector init, StateVector sv, double fitness){

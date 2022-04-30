@@ -94,14 +94,14 @@ public class BRO {
      * Method to initialize population for BRO algorithm
      */
     public void initializePopulation(){
-        ArrayList<float[]> temp = Score.availableVelocities();
-        for(float[] f : temp){
-            population.add(new Soldier(f[0], f[1]));
-        }
-//        for(int i=0; i<popSize; i++){
-//            float[] f = Score.validVelocity(-5f, 5f);
+//        ArrayList<float[]> temp = Score.availableVelocities();
+//        for(float[] f : temp){
 //            population.add(new Soldier(f[0], f[1]));
 //        }
+        for(int i=0; i<popSize; i++){
+            float[] f = Score.validVelocity(-5f, 5f);
+            population.add(new Soldier(f[0], f[1]));
+        }
     }
 
     /**

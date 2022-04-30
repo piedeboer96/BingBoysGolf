@@ -2,6 +2,11 @@ package com.project_1_2.group_16.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.ai.Neighbour;
+import com.project_1_2.group_16.ai.Particle;
+import com.project_1_2.group_16.ai.Score;
+import com.project_1_2.group_16.ai.Soldier;
 import com.project_1_2.group_16.math.*;
 import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.physics.Physics;
@@ -11,7 +16,7 @@ public class Game {
     /**
      * Step size.
      */
-    public static float h = 0.05f;
+    public static float h = 0.08f;
 
     /**
      * Friction caused by hitting trees.
@@ -35,7 +40,7 @@ public class Game {
         if(reference != null) {
             this.solver.solve(h, sv);
         }else {
-            this.solver.solve(h*3f, sv);
+            this.solver.solve(h*1.5f, sv);
         }
 
         // check water collision
@@ -121,10 +126,24 @@ public class Game {
     }
 
 
-    public void runEngine(StateVector sv, App reference){
+    public void runEngine(StateVector sv, App reference, Particle p, Neighbour n, Soldier s){
 //        System.out.println(sv);
         while(!sv.stop){
             run(sv, reference);
+            float temp = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
+            if(p!=null) {
+                if (temp < p.getFitness()){
+                    p.fitness = temp;
+                }
+            } else if(n!=null){
+                if (temp < n.getFitness()){
+                    n.fitness = temp;
+                }
+            } else if(s!=null){
+                if(temp < s.fitness){
+                    s.fitness = temp;
+                }
+            }
         }
 //        System.out.println("end " + sv);
     }

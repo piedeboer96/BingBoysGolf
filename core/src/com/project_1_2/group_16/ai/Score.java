@@ -3,6 +3,7 @@ package com.project_1_2.group_16.ai;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
+import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.physics.Physics;
 
 import java.util.ArrayList;
@@ -37,9 +38,8 @@ public class Score {
         float[] vxy = new float[2];
         vxy[0] = (float)(minVelocity + Math.random()*(maxVelocity-minVelocity));
         vxy[1] = (float)(minVelocity + Math.random()*(maxVelocity-minVelocity));
-        if(Physics.magnitude(vxy[0], vxy[1]) > 5){
-            vxy[0] = (float) (vxy[0]/Math.sqrt(50));
-            vxy[1] = (float) (vxy[1]/Math.sqrt(50));
+        if(Physics.magnitude(vxy[0], vxy[1]) > 5 || !checkIfBetter(vxy[0], vxy[1])){
+            return validVelocity(minVelocity, maxVelocity);
         }
         return vxy;
     }
@@ -55,12 +55,23 @@ public class Score {
 //
 //        float dF_dVelX =
 //    }
+    public static boolean checkIfBetter(float velX, float velY){
+        Game runner = new Game();
+        runner.setNumericalSolver(NumericalSolver.RK4);
+        StateVector sv = new StateVector(Input.V0.x, Input.V0.y, velX, velY);
+        runner.run(sv, null);
+        if(calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y) < calculateEucledianDistance(Input.V0.x, Input.V0.y, Input.VT.x, Input.VT.y)){
+            return true;
+        }
+        return false;
+    }
     public static ArrayList<float[]> availableVelocities () {
         float [] minMaxValues = determineMinMax();
-        float minVelX = minMaxValues[0];
-        float maxVelX = minMaxValues[1];
-        float minVelY = minMaxValues[2];
-        float maxVelY = minMaxValues[3];
+        System.out.println("array here : " + Arrays.toString(minMaxValues));
+        float minVelX = -5.0f;
+        float maxVelX = 5.0f;
+        float minVelY = -5.0f;
+        float maxVelY = 5.0f;
         float xH, yH;
         xH = (maxVelX - minVelX)/7f;
         yH = (maxVelY - minVelY)/7f;

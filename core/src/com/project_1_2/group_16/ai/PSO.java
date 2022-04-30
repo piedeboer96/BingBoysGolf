@@ -143,6 +143,7 @@ public class PSO {
 
 
     public static void main(String[] args) {
+        System.out.println("starting...");
         runPSO(100, initializeParticles());
         globalBest.print();
     }

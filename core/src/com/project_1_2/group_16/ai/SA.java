@@ -58,7 +58,7 @@ public class SA {
                         //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
                     }
                 }
-                if(state.getFitness() < Input.R/1.2f){
+                if(state.getFitness() < Input.R){
                     stop = true;
                 }
         }
@@ -121,7 +121,7 @@ public class SA {
      * @return random neighbour
      */
     private Neighbour getRandomNeighbour(){
-        float[] vxvy = validVelocity();
+        float[] vxvy = Score.validVelocity(-5.0f, 5.0f);
         return new Neighbour(new StateVector(Input.V0.x, Input.V0.y, vxvy[0], vxvy[1]));
     }
 
@@ -203,7 +203,7 @@ public class SA {
 
         long start = System.currentTimeMillis();
         SA test = new SA(500,  0.34f);
-        System.out.println(test.runSA());
+        System.out.println("best is " + test.runSA());
         System.out.println(test.state.getFitness());
         long end = System.currentTimeMillis();
         System.out.println("Runtime: " + (end - start) + " ms");
