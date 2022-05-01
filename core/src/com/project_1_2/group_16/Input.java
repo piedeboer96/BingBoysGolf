@@ -1,9 +1,13 @@
 package com.project_1_2.group_16;
 
 import com.badlogic.gdx.math.Vector2;
-import com.project_1_2.group_16.misc.User;
 
+/**
+ * Handles all user input for the game. 
+ * Default values in here are shown as the default values on the GUI.
+ */
 public class Input {
+
     /**
      * Starting position of the golfball.
      */
@@ -60,9 +64,4 @@ public class Input {
      * Number of sandpits.
      */
     public static int SAND = 0;
-
-    /**
-     * Type of user playing the game.
-     */
-    public static User USER = User.USER;
 }

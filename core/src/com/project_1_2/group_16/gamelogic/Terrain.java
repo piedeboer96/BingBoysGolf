@@ -101,7 +101,7 @@ public class Terrain {
                 sX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
                 sZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
                 sV = new Vector2(sX, sZ);
-            } while (sV.dst(Input.V0) < 2 || sV.dst(Input.VT) < 2);
+            } while (getHeight(sX, sZ) < 0 || sV.dst(Input.V0) < 2 || sV.dst(Input.VT) < 2);
             sandPits.add(new Sandpit(sX, sZ, 1f));
             sandPits.add(new Sandpit(sX + (float)Math.random() * 1f - 0.5f, sZ + (float)Math.random() * 1f - 0.5f, 1f));
             sandPits.add(new Sandpit(sX + (float)Math.random() * 1f - 0.5f, sZ + (float)Math.random() * 1f - 0.5f, 1f));

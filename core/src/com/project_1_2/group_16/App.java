@@ -87,9 +87,9 @@ public class App extends ApplicationAdapter {
 	private Environment environment;
 
 	// physics
-	public Game game = new Game();
-	public boolean allowHit;
-	public int hitsCounter;
+	private Game game = new Game();
+	private boolean allowHit;
+	private int hitsCounter;
 
 	// util
 	private final Vector3 v = new Vector3();
@@ -321,5 +321,15 @@ public class App extends ApplicationAdapter {
 	 */
 	public Golfball getGolfball() {
 		return this.golfball;
+	}
+
+	/**
+	 * Increase the hit-counter by n.
+	 * @param n increase the counter by this number
+	 * @return the new value
+	 */
+	public int increaseHitCounter(int n) {
+		this.hitsCounter += n;
+		return this.hitsCounter;
 	}
 }

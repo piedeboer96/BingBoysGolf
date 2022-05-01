@@ -4,6 +4,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Model;
 
+/**
+ * The theme provides all textures used in the game.
+ */
 public interface Theme {
 
     public Model golfballModel(float size);

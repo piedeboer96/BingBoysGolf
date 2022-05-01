@@ -12,6 +12,9 @@ import com.project_1_2.group_16.gamelogic.Terrain;
 
 public class TerrainBuilder extends ModelBuilder {
 
+    /**
+     * Begin building the terrain.
+     */
     @Override
     public void begin() {
         super.begin();
@@ -25,18 +28,22 @@ public class TerrainBuilder extends ModelBuilder {
         Material texture;
         for(int i = 0; i < App.FIELD_DETAIL - 1; i++) {
             for (int j = 0; j < App.FIELD_DETAIL - 1; j++) {
+                // coordinates of the corners
                 a = -App.FIELD_SIZE / 2 + App.TILE_SIZE / 2 + App.TILE_SIZE * i;
                 b = -App.FIELD_SIZE / 2 + App.TILE_SIZE / 2 + App.TILE_SIZE * j;
                 c = -App.FIELD_SIZE / 2 + App.TILE_SIZE / 2 + App.TILE_SIZE * (i + 1);
                 d = -App.FIELD_SIZE / 2 + App.TILE_SIZE / 2 + App.TILE_SIZE * (j + 1);
 
+                // corner points
                 p1 = new Vector3(a, Terrain.getHeight(a, b), b);
                 p2 = new Vector3(a, Terrain.getHeight(a, d), d);
                 p3 = new Vector3(c, Terrain.getHeight(c, b), b);
                 p4 = new Vector3(c, Terrain.getHeight(c, d), d);
 
+                // apply a checker-style pattern 
                 checkerPattern = (i + j) % 2 == 0;
 
+                // apply the correct texture
                 avg = averageVector(p1, p2, p3, p4);
                 if (avg.y < 0) { // water texture
                     texture = new Material(ColorAttribute.createDiffuse(Math.random() < 0.5 ? App.THEME.waterColorLight() : App.THEME.waterColorDark()));
@@ -48,6 +55,7 @@ public class TerrainBuilder extends ModelBuilder {
                     texture = new Material(ColorAttribute.createDiffuse(checkerPattern ? App.THEME.grassColorLight(avg.y) : App.THEME.grassColorDark(avg.y)));
                 }
 
+                // build the tile out of 2 triangle meshes
                 MeshPartBuilder meshBuilder = super.part("triangle", GL20.GL_TRIANGLES, Usage.Position, texture);
                 meshBuilder.triangle(p1, p2, p3);
                 meshBuilder.triangle(p3, p2, p4);

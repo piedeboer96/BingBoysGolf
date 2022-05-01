@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.ai.FloodFill;
 import com.project_1_2.group_16.misc.ANSI;
-import com.project_1_2.group_16.misc.User;
 
 import static com.project_1_2.group_16.ai.FloodFill.matrixParcour;
 
@@ -257,13 +256,13 @@ public class InputScreen extends JFrame {
             public void actionPerformed(ActionEvent ae) {
                 Object checkButton = ae.getSource();
                 if (checkButton == user) {
-                    Input.USER = User.USER;
+                    //Input.USER = User.USER;
                 }
                 else if (checkButton == basicBot) {
-                    Input.USER = User.BASIC_BOT;
+                    //Input.USER = User.BASIC_BOT;
                 }
                 else if (checkButton == advancedBot) {
-                    Input.USER = User.ADVANCED_BOT;
+                    //Input.USER = User.ADVANCED_BOT;
                 }
             }
         };

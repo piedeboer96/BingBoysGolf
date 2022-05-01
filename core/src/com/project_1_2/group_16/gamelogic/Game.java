@@ -25,11 +25,6 @@ public class Game {
      */
     public static final float treeFriction = -0.75f;
 
-    /**
-     * Collision handler.
-     */
-    public final Collision collision = new Collision();
-
     private NumericalSolver solver;
 
     /**
@@ -39,33 +34,26 @@ public class Game {
      */
     public void run(final StateVector sv, App reference) {
         // update state vector with numerical solver
-        if(reference != null) {
+        if (reference != null) {
             this.solver.solve(h, sv);
-        }else {
+        }
+        else {
             this.solver.solve(h*1.5f, sv);
         }
 
         // check water collision
-        if (this.collision.ballIsInWater(sv)) {
-
+        if (Terrain.collision.ballIsInWater(sv)) {
             // reset position
-                if(reference == null){
-                    sv.x = Integer.MAX_VALUE;
-                    sv.y = Integer.MAX_VALUE;
-                }else{
-                    sv.x = sv.prev.x;
-                   sv.y = sv.prev.y;
-                }
-
-
+            sv.x = reference == null ? Integer.MAX_VALUE : sv.prev.x;
+            sv.y = reference == null ? Integer.MAX_VALUE : sv.prev.y;
             sv.stop = true;
 
             // stroke penalty
-            if (reference != null) reference.hitsCounter++;
+            if (reference != null) reference.increaseHitCounter(1);
         }
 
         // check tree collision
-        Tree hittree = this.collision.ballHitTree(sv);
+        Tree hittree = Terrain.collision.ballHitTree(sv);
         if (hittree != null) {
             System.out.println("tree");
 
@@ -87,19 +75,16 @@ public class Game {
         }
 
         // check hole collision
-        if (this.collision.ballIsInTargetRadius(sv)) {
+        if (Terrain.collision.ballIsInTargetRadius(sv)) {
             if (reference != null) this.endGame(reference);
             sv.stop=true;
             System.out.println("HITHITHITHITHIHTIHTIHTIHTIHTIHTIHTIHTIHT");
         }
 
-
         // check for a stop
         if (Physics.magnitude(sv.vx, sv.vy) < h) {
             float[] partialDerivatives = this.solver.getPartialDerivatives();
-            if ((Physics.magnitude(partialDerivatives[0], partialDerivatives[1]) < Terrain.getStaticFriction(sv))) {
-                sv.stop = true;
-            }
+            sv.stop = Physics.magnitude(partialDerivatives[0], partialDerivatives[1]) < Terrain.getStaticFriction(sv);
         }
     }
 
@@ -120,9 +105,9 @@ public class Game {
      */
     public void endGame(App app) {
         String message = "Congratulations! ";
-        switch (app.hitsCounter) {
+        switch (app.increaseHitCounter(0)) {
             case 1: message += " You got a hole-in-one! Unbelievable!"; break;
-            default: message += "You finished the hole in "+app.hitsCounter+" shots!";
+            default: message += "You finished the hole in "+app.increaseHitCounter(0)+" shots!";
         }
         System.out.println(message);
     }
