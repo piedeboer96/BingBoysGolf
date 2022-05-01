@@ -2,8 +2,10 @@ package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 //
 public class BRO {
@@ -26,6 +28,10 @@ public class BRO {
         float upperBoundX, upperBoundY, lowerBoundX, lowerBoundY, ogUBx, ogLBx, ogUBy, ogLBy;
         initializePopulation();
         bestSoldier = findBestSoldierInPop();
+        if(bestSoldier.fitness < Input.R){
+            System.out.println(bestSoldier.toString());
+            return;
+        }
         float sdX = calcSDVelX();
         float sdY = calcSDVelY();
         upperBoundX = bestSoldier.velX + sdX; ogUBx = upperBoundX;
@@ -35,12 +41,21 @@ public class BRO {
         float shrink = (float) (Math.ceil(Math.log10(maxIter)));
         float delta = (Math.round(maxIter/shrink));
         int iter = 0;
+        int localSearchCounter = 0;
         outerloop:
         while(iter<maxIter){
             System.out.println(iter++);
             bestSoldier = findBestSoldierInPop();
+            Soldier temp = doLocalSearch(bestSoldier);
+            if(temp.fitness < bestSoldier.fitness){
+                System.out.println("Local search helped " + ++localSearchCounter);
+                bestSoldier = new Soldier(temp);
+            }
+            if(bestSoldier.fitness<Input.R){
+                System.out.println("solution found!");
+                break outerloop;
+            }
             System.out.println(bestSoldier.toString());
-
             for(int i=0; i<population.size(); i++){
                 Soldier s = population.get(i);
                 Soldier nearest = findNearestSoldier(s);
@@ -69,27 +84,52 @@ public class BRO {
                 }
             }
 
-            if(iter>=delta){
+            if(iter>=delta) {
                 sdX = calcSDVelX();
                 sdY = calcSDVelY();
                 upperBoundX = bestSoldier.velX + sdX;
                 upperBoundY = bestSoldier.velY + sdY;
                 lowerBoundX = bestSoldier.velX - sdX;
                 lowerBoundY = bestSoldier.velY - sdY;
-                delta += Math.round(delta/2);
-            }
-            if(upperBoundX>ogUBx){
-                upperBoundX = ogUBx;
-            }else if (upperBoundY>ogUBy){
-                upperBoundY = ogUBy;
-            }else if (lowerBoundX>ogLBx){
-                lowerBoundX = ogLBx;
-            }else if(lowerBoundY>ogLBy){
-                lowerBoundY = ogLBy;
+                delta += Math.round(delta / 2);
+
+                if (upperBoundX > ogUBx) {
+                    upperBoundX = ogUBx;
+                } else if (upperBoundY > ogUBy) {
+                    upperBoundY = ogUBy;
+                } else if (lowerBoundX > ogLBx) {
+                    lowerBoundX = ogLBx;
+                } else if (lowerBoundY > ogLBy) {
+                    lowerBoundY = ogLBy;
+                }
             }
         }
         bestSoldier = findBestSoldierInPop();
         System.out.println(bestSoldier.toString());
+    }
+
+    /**
+     * Method to initiate a type of local search for the best soldier in the population
+     * @param s The best Soldier in the population
+     * @return
+     */
+    public Soldier doLocalSearch(Soldier s){
+        ArrayList<float[]> neighbourHood = new ArrayList<float[]>();
+        float stepSize = 0.2f;
+        float vx = s.velX;
+        float vy = s.velY;
+        neighbourHood.add(new float[] {vx+stepSize, vy});
+        neighbourHood.add(new float[] {vx-stepSize, vy});
+        neighbourHood.add(new float[] {vx, vy+stepSize});
+        neighbourHood.add(new float[] {vx, vy-stepSize});
+        neighbourHood.add(new float[] {vx+stepSize, vy+stepSize});
+        neighbourHood.add(new float[] {vx+stepSize, vy-stepSize});
+        neighbourHood.add(new float[] {vx-stepSize, vy+stepSize});
+        neighbourHood.add(new float[] {vx-stepSize, vy-stepSize});
+
+        Random rand = new Random();
+        int r = rand.nextInt(neighbourHood.size());
+        return new Soldier(neighbourHood.get(r)[0], neighbourHood.get(r)[1]);
     }
 
     /**
@@ -193,7 +233,7 @@ public class BRO {
     }
     public static void main (String[] args){
         System.out.println("starting...");
-        BRO bro = new BRO(55, 100, 4);
+        BRO bro = new BRO(15, 100, 4);
         bro.runBRO();
         System.out.println("amount of simulations taken " + Game.simulCounter);
     }

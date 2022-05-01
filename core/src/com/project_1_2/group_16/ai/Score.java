@@ -2,6 +2,7 @@ package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.physics.Physics;
@@ -55,6 +56,14 @@ public class Score {
 //
 //        float dF_dVelX =
 //    }
+
+    /**
+     * Simulates one step of the Numerical solver using the given velocities and checks if it moves in a direction closer to
+     * the hole
+     * @param velX given x velocity
+     * @param velY given y velocity
+     * @return true if moves in a closer direction, else false
+     */
     public static boolean checkIfBetter(float velX, float velY){
         Game runner = new Game();
         runner.setNumericalSolver(NumericalSolver.RK4);
@@ -65,16 +74,30 @@ public class Score {
         }
         return false;
     }
+
+    public static boolean checkWater(float velX, float velY){
+        float denom = Physics.magnitude(velX, velY);
+        velX /= denom;
+        velY /= denom;
+        velX *= 2f;
+        velX *= 2f;
+        for(float x = Input.V0.x; x<=10; x+=velX){
+            for(float y = Input.V0.y; y<=10; y+=velY){
+                if(Terrain.getHeight(x, y) < 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public static ArrayList<float[]> availableVelocities () {
-        float [] minMaxValues = determineMinMax();
-        System.out.println("array here : " + Arrays.toString(minMaxValues));
         float minVelX = -5.0f;
         float maxVelX = 5.0f;
         float minVelY = -5.0f;
         float maxVelY = 5.0f;
         float xH, yH;
-        xH = (Math.abs(maxVelX - minVelX))/9.15f;
-        yH = (Math.abs(maxVelY - minVelY))/9.15f;
+        xH = (Math.abs(maxVelX - minVelX))/6.15f;
+        yH = (Math.abs(maxVelY - minVelY))/6.15f;
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
@@ -87,32 +110,32 @@ public class Score {
         return toReturn;
     }
     // idx 0 : minX, idx 1 : maxX, idx 2 : minY, idx 3 : maxY
-    public static float[] determineMinMax (){
-        float[] toReturn = new float[4];
-        float xDifference = Input.VT.x - Input.V0.x;
-        float yDifference = Input.VT.y - Input.V0.y;
-        if(xDifference<0){
-            toReturn[0] = -5;
-            toReturn[1] = 0;
-        }else {
-            toReturn[0] = 0;
-            toReturn[1] = 5;
-        }
-        if(yDifference<0){
-            toReturn[2] = -5;
-            toReturn[3] = 0;
-        }else {
-            toReturn[2] = 0;
-            toReturn[3] = 5;
-        }
-        return toReturn;
-    }
+//    public static float[] determineMinMax (){
+//        float[] toReturn = new float[4];
+//        float xDifference = Input.VT.x - Input.V0.x;
+//        float yDifference = Input.VT.y - Input.V0.y;
+//        if(xDifference<0){
+//            toReturn[0] = -5;
+//            toReturn[1] = 0;
+//        }else {
+//            toReturn[0] = 0;
+//            toReturn[1] = 5;
+//        }
+//        if(yDifference<0){
+//            toReturn[2] = -5;
+//            toReturn[3] = 0;
+//        }else {
+//            toReturn[2] = 0;
+//            toReturn[3] = 5;
+//        }
+//        return toReturn;
+//    }
 
     public static void main(String[] args) {
         ArrayList<float[]> toPrint = availableVelocities();
         for(float[] f : toPrint){
             System.out.println(Arrays.toString(f));
         }
-        System.out.println(toPrint.size());
+//        System.out.println(toPrint.size());
     }
 }

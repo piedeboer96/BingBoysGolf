@@ -25,6 +25,11 @@ public class Game {
      */
     public static final float treeFriction = -0.75f;
 
+    /**
+     * Collision handler.
+     */
+    public final Collision collision = new Collision();
+
     private NumericalSolver solver;
 
     /**
@@ -46,6 +51,14 @@ public class Game {
             // reset position
             sv.x = reference == null ? Integer.MAX_VALUE : sv.prev.x;
             sv.y = reference == null ? Integer.MAX_VALUE : sv.prev.y;
+                if(reference == null){
+                    sv.x = Integer.MAX_VALUE;
+                    sv.y = Integer.MAX_VALUE;
+                }else{
+                    sv.x = sv.prev.x;
+                    sv.y = sv.prev.y;
+                }
+
             sv.stop = true;
 
             // stroke penalty
@@ -80,6 +93,7 @@ public class Game {
             sv.stop=true;
             System.out.println("HITHITHITHITHIHTIHTIHTIHTIHTIHTIHTIHTIHT");
         }
+
 
         // check for a stop
         if (Physics.magnitude(sv.vx, sv.vy) < h) {

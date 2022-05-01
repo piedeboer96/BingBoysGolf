@@ -46,20 +46,25 @@ public class SA {
      * @return array of x and y velocities
      */
     public List<Float> runSA(){
-        for(int i = 0; i < kmax && !stop; i++){
-            Neighbour randomNeigbour = getNeighbour(state);
-                double cost = state.getFitness()-randomNeigbour.getFitness();
+        outerloop:
+        for(int i = 0; i < kmax; i++){
+            Neighbour randomNeighbour = getNeighbour(state);
+            if(randomNeighbour.getFitness() < Input.R){
+                setState(randomNeighbour);
+                break outerloop;
+            }
+                double cost = state.getFitness()-randomNeighbour.getFitness();
                 if(cost >= 0){
-                    setState(randomNeigbour);
+                    setState(randomNeighbour);
                     //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
                 }else {
-                    if (Math.random() < getProbability(state, randomNeigbour)) {
-                        setState(randomNeigbour);
+                    if (Math.random() < getProbability(state, randomNeighbour)) {
+                        setState(randomNeighbour);
                         //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
                     }
                 }
                 if(state.getFitness() < Input.R){
-                    stop = true;
+                    break outerloop;
                 }
         }
         ArrayList<Float> vxvy = new ArrayList<>();
@@ -109,7 +114,7 @@ public class SA {
         float[] vxy = new float[2];
         vxy[0] = (float)(0 + Math.random()*(MAXVEL));
         vxy[1] = (float)(0 + Math.random()*(MAXVEL));
-        if(Physics.magnitude(vxy[0], vxy[1]) > 5){
+        if(Physics.magnitude(vxy[0], vxy[1]) > 5 ){
             vxy[0] = (float) (vxy[0]/Math.sqrt(50));
             vxy[1] = (float) (vxy[1]/Math.sqrt(50));
         }

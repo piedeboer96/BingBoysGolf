@@ -14,11 +14,21 @@ public class Soldier {
     Game game = new Game();
     public float fitness = Integer.MAX_VALUE;
     public int damageCounter;
+
     public Soldier(float velX, float velY){
         this.velX = velX;
         this.velY = velY;
         game.setNumericalSolver(NumericalSolver.RK4);
         calcFitness();
+    }
+
+    public Soldier(Soldier s){
+        this.velX = s.velX;
+        this.velY = s.velY;
+        this.fitness = s.fitness;
+        this.damageCounter = s.damageCounter;
+        this.endPosX = s.endPosX;
+        this.endPosY = s.endPosY;
     }
     public void calcFitness(){
         StateVector sv = new StateVector(Input.V0.x, Input.V0.y, velX, velY);
