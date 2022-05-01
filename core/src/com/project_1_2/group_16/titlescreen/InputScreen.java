@@ -274,7 +274,12 @@ public class InputScreen extends JFrame {
         user.addActionListener(buttonListener);
         advancedBot.addActionListener(buttonListener);
         advancedBot.setFocusable(false);
+    }
 
+    @Override
+    public void dispose() {
+        this.frame.dispose();
+        super.dispose();
     }
 
     /**
@@ -311,5 +316,6 @@ public class InputScreen extends JFrame {
 		System.out.println(Arrays.deepToString(matrixParcour));
         
         this.status = true;
+        this.dispose();
     }
 }
