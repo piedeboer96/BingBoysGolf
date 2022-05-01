@@ -18,6 +18,8 @@ public class Game {
      */
     public static float h = 0.08f;
 
+    public static int simulCounter = 0;
+
     /**
      * Friction caused by hitting trees.
      */
@@ -128,6 +130,7 @@ public class Game {
 
     public void runEngine(StateVector sv, App reference, Particle p, Neighbour n, Soldier s){
 //        System.out.println(sv);
+        simulCounter++;
         while(!sv.stop){
             run(sv, reference);
             float temp = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);

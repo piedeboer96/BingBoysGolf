@@ -1,6 +1,7 @@
 package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.physics.Physics;
 
@@ -146,5 +147,6 @@ public class PSO {
         System.out.println("starting...");
         runPSO(100, initializeParticles());
         globalBest.print();
+        System.out.println("amount of simulations taken " + Game.simulCounter);
     }
 }

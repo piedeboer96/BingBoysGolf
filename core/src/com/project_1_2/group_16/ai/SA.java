@@ -207,5 +207,7 @@ public class SA {
         System.out.println(test.state.getFitness());
         long end = System.currentTimeMillis();
         System.out.println("Runtime: " + (end - start) + " ms");
+        System.out.println("amount of simulations taken " + Game.simulCounter);
+
     }
 }

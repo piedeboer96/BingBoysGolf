@@ -73,16 +73,17 @@ public class Score {
         float minVelY = -5.0f;
         float maxVelY = 5.0f;
         float xH, yH;
-        xH = (maxVelX - minVelX)/7f;
-        yH = (maxVelY - minVelY)/7f;
+        xH = (Math.abs(maxVelX - minVelX))/9.15f;
+        yH = (Math.abs(maxVelY - minVelY))/9.15f;
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
-                if(Physics.magnitude(velX, velY) < 5.0f){
+                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY)){
                     toReturn.add(new float [] {velX, velY});
                 }
             }
         }
+        System.out.println(toReturn.size());
         return toReturn;
     }
     // idx 0 : minX, idx 1 : maxX, idx 2 : minY, idx 3 : maxY

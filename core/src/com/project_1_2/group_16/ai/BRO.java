@@ -1,6 +1,7 @@
 package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.gamelogic.Game;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class BRO {
             System.out.println(iter++);
             bestSoldier = findBestSoldierInPop();
             System.out.println(bestSoldier.toString());
+
             for(int i=0; i<population.size(); i++){
                 Soldier s = population.get(i);
                 Soldier nearest = findNearestSoldier(s);
@@ -193,6 +195,7 @@ public class BRO {
         System.out.println("starting...");
         BRO bro = new BRO(55, 100, 4);
         bro.runBRO();
+        System.out.println("amount of simulations taken " + Game.simulCounter);
     }
 
 }
