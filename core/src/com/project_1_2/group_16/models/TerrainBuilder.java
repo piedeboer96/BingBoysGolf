@@ -8,31 +8,17 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.gamelogic.Collision;
 import com.project_1_2.group_16.gamelogic.Terrain;
 
-public class TerrainGeneration extends ModelBuilder implements Runnable {
-
-    /**
-     * Thread used to create the terrain model
-     */
-    public Thread thread;
-
-    private Collision collision;
-    
-    public TerrainGeneration(Collision collision) {
-        this.collision = collision;
-        this.thread = new Thread(this);
-    }
+public class TerrainBuilder extends ModelBuilder {
 
     @Override
     public void begin() {
         super.begin();
-        this.thread.start();
+        this.run();
     }
 
-    @Override
-    public void run() {
+    private void run() {
         float a, b, c, d;
         Vector3 p1, p2, p3, p4, avg;
         boolean checkerPattern;
@@ -55,7 +41,7 @@ public class TerrainGeneration extends ModelBuilder implements Runnable {
                 if (avg.y < 0) { // water texture
                     texture = new Material(ColorAttribute.createDiffuse(App.THEME.waterColor()));
                 }
-                else if (this.collision.isInSandPit(avg.x, avg.z)) { // sandpit texture
+                else if (Terrain.collision.isInSandPit(avg.x, avg.z)) { // sandpit texture
                     texture = new Material(ColorAttribute.createDiffuse(App.THEME.sandColor()));
                 }
                 else { // grass texture (depending on height)
@@ -69,7 +55,7 @@ public class TerrainGeneration extends ModelBuilder implements Runnable {
         }
     }
 
-    public Vector3 averageVector(Vector3... p) {
+    private Vector3 averageVector(Vector3... p) {
         float sumX = 0, sumY = 0, sumZ = 0;
         for (Vector3 v : p) {
             sumX += v.x;

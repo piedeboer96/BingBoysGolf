@@ -31,7 +31,7 @@ import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
-import com.project_1_2.group_16.models.TerrainGeneration;
+import com.project_1_2.group_16.models.TerrainBuilder;
 import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.Theme;
 
@@ -70,7 +70,7 @@ public class App extends ApplicationAdapter {
 
 	// models
 	private AssetManager assets;
-	private TerrainGeneration terrainGeneration;
+	private TerrainBuilder terrainGeneration;
 	private Array<ModelInstance> instances;
 
 	// golfball
@@ -116,8 +116,9 @@ public class App extends ApplicationAdapter {
 
 		// terrain generation
 		Terrain.initSandPits();
-		this.terrainGeneration = new TerrainGeneration(this.game.collision);
+		this.terrainGeneration = new TerrainBuilder();
 		this.terrainGeneration.begin();
+		instances.add(new ModelInstance(this.terrainGeneration.end()));
 
 		// create crosshair
 		SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -167,14 +168,6 @@ public class App extends ApplicationAdapter {
 		// sounds
 		hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
 		dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
-
-		// wait for terrain generation to finish
-		try {
-			this.terrainGeneration.thread.join();
-			instances.add(new ModelInstance(this.terrainGeneration.end()));
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 
 		// allow gameplay
 		game.setNumericalSolver(NumericalSolver.RK4);
