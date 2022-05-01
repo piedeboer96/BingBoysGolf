@@ -11,8 +11,12 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 public class DefaultTheme implements Theme {
 
     private final Color sky = new Color(178f / 255, 255f / 255, 255f / 255, 1f);
-    private final Color water = new Color(0.1098f, 0.6392f, 0.9254f, 1f);
-    private final Color sand = new Color(0.9411f, 0.9411f, 0.4313f, 1f);
+
+    private final Color light_water = new Color(0.1098f, 0.6275f, 0.9254f, 1f);
+    private final Color dark_water = new Color(0.1098f, 0.6392f, 0.9254f, 1f);
+
+    private final Color light_sand = new Color(0.9411f, 0.9411f, 0.6667f, 1f);
+    private final Color dark_sand = new Color(0.9020f, 0.9020f, 0.6667f, 1f);
 
     @Override
     public Model golfballModel(float size) {
@@ -50,27 +54,37 @@ public class DefaultTheme implements Theme {
     }
 
     @Override
-    public Color grassColorLight(float height) { // TODO
+    public Color grassColorLight(float height) {
         return new Color(0.1568f, (200 + height * 100) / 255f, 0.1568f, 1f);
     }
 
     @Override
-    public Color grassColorDark(float height) { // TODO
+    public Color grassColorDark(float height) {
         return new Color(0.1568f, (100 + height * 100) / 255f, 0.1568f, 1f);
+    }
+
+    @Override
+    public Color waterColorLight() {
+        return this.light_water;
+    }
+
+    @Override
+    public Color waterColorDark() {
+        return this.dark_water;
+    }
+
+    @Override
+    public Color sandColorLight() {
+        return this.light_sand;
+    }
+
+    @Override
+    public Color sandColorDark() {
+        return this.dark_sand;
     }
 
     @Override
     public Color skyColor() {
         return this.sky;
-    }
-
-    @Override
-    public Color waterColor() {
-        return this.water;
-    }
-
-    @Override
-    public Color sandColor() {
-        return this.sand;
     }
 }

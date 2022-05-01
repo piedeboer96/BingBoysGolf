@@ -16,9 +16,13 @@ public interface Theme {
 
     public Color grassColorDark(float height);
 
-    public Color skyColor();
+    public Color waterColorLight();
 
-    public Color waterColor(); 
-    
-    public Color sandColor();
+    public Color waterColorDark();
+
+    public Color sandColorLight();
+
+    public Color sandColorDark();
+
+    public Color skyColor();
 }

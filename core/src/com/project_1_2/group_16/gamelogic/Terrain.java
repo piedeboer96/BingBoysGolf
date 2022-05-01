@@ -23,10 +23,13 @@ public class Terrain {
     private static String eval;
 
     /**
-     * Here the height method is defined that gives the height based on x,y coordinates.
+     * Evaluates the height-formula for a set of coordinates. 
      * @param x x coordinate
      * @param y y coordinate
-     * @return height
+     * @returns max(z-coordinate, -0.01)
+     * 
+     * @throws EvalError if the height function can't be evaluated
+     * @throws ClassCastException if the height function doesn't return a {@code double} value
      */
     public static float getHeight(float x, float y) {
         // make everything outside of the rendered area water
@@ -37,7 +40,7 @@ public class Terrain {
         // evaluate height function
         eval = ((("float x = "+x).concat("; float y = ")+y).concat("; ")+Input.H).concat(";");
         try {
-            return (float)(double)(BSH.eval(eval));
+            return Math.max((float)(double)(BSH.eval(eval)), -0.01f);
         } catch (EvalError e) {
             System.out.println(ANSI.RED+"eval error"+ANSI.RESET+", interpreted: "+eval); 
             System.exit(0);

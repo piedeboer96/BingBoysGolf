@@ -39,10 +39,10 @@ public class TerrainBuilder extends ModelBuilder {
 
                 avg = averageVector(p1, p2, p3, p4);
                 if (avg.y < 0) { // water texture
-                    texture = new Material(ColorAttribute.createDiffuse(App.THEME.waterColor()));
+                    texture = new Material(ColorAttribute.createDiffuse(Math.random() < 0.5 ? App.THEME.waterColorLight() : App.THEME.waterColorDark()));
                 }
                 else if (Terrain.collision.isInSandPit(avg.x, avg.z)) { // sandpit texture
-                    texture = new Material(ColorAttribute.createDiffuse(App.THEME.sandColor()));
+                    texture = new Material(ColorAttribute.createDiffuse(Math.random() < 0.8 ? App.THEME.sandColorLight() : App.THEME.sandColorDark()));
                 }
                 else { // grass texture (depending on height)
                     texture = new Material(ColorAttribute.createDiffuse(checkerPattern ? App.THEME.grassColorLight(avg.y) : App.THEME.grassColorDark(avg.y)));
