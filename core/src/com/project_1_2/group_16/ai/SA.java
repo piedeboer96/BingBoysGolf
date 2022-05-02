@@ -167,6 +167,7 @@ public class SA {
            for(int i = 0; i < viableVectors.size(); i++){
               Neighbour neighbour = new Neighbour(viableVectors.get(i));
               if(neighbour.getFitness() < state.getFitness()){
+
                   current_neighbours.add(neighbour);
               }
            }
@@ -212,14 +213,12 @@ public class SA {
     }
 
     public static void main(String[] args) {
-
         long start = System.currentTimeMillis();
-        SA test = new SA(500,  0.34f);
+        SA test = new SA(500,  0.3f);
         System.out.println("best is " + test.runSA());
         System.out.println(test.state.getFitness());
         long end = System.currentTimeMillis();
         System.out.println("Runtime: " + (end - start) + " ms");
         System.out.println("amount of simulations taken " + Game.simulCounter);
-
     }
 }
