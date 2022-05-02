@@ -38,6 +38,7 @@ public class SA {
         this.neigbourStepSize = neigbourStepSize;
         this.recalculate = true;
         setState(findInitalState(init_velocities));
+
         stop = false;
     }
 
@@ -46,26 +47,30 @@ public class SA {
      * @return array of x and y velocities
      */
     public List<Float> runSA(){
-        outerloop:
-        for(int i = 0; i < kmax; i++){
-            Neighbour randomNeighbour = getNeighbour(state);
-            if(randomNeighbour.getFitness() < Input.R){
-                setState(randomNeighbour);
-                break outerloop;
-            }
-                double cost = state.getFitness()-randomNeighbour.getFitness();
-                if(cost >= 0){
+        if(state.getFitness() > Input.R) {
+            outerloop:
+            for (int i = 0; i < kmax; i++) {
+                Neighbour randomNeighbour = getNeighbour(state);
+                if (randomNeighbour.getFitness() < Input.R) {
+                    setState(randomNeighbour);
+                    break outerloop;
+                }
+                double cost = state.getFitness() - randomNeighbour.getFitness();
+                if (cost >= 0) {
                     setState(randomNeighbour);
                     //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
-                }else {
+                } else {
                     if (Math.random() < getProbability(state, randomNeighbour)) {
                         setState(randomNeighbour);
                         //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
                     }
                 }
-                if(state.getFitness() < Input.R){
+                if (state.getFitness() < Input.R) {
                     break outerloop;
                 }
+            }
+        }else {
+            System.out.println("found on first hit!");
         }
         ArrayList<Float> vxvy = new ArrayList<>();
         vxvy.add(getState().getVx());
@@ -80,18 +85,20 @@ public class SA {
      * @return the vector with highest fitness
      */
     public Neighbour findInitalState(int init_vector_amount){
-        float[] vxvy = validVelocity();
-        Neighbour bestFit = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, vxvy[0], vxvy[1]));
-        Neighbour current;
-        for(int i = 0; i < init_vector_amount; i++){
-            current = getRandomNeighbour();
-            System.out.println("RandomNeighbour: " + "vx: "  + current.getVx() + " vy: " + current.getVy() + " Fitness: " + current.getFitness());
-            if(current.getFitness() < bestFit.getFitness()){
-                bestFit = current;
+        ArrayList<float[]> initialCandidates = Score.availableVelocities();
+        Neighbour bestNeighbour = null;
+        double bestFitness = Integer.MAX_VALUE;
+        for(int i=0; i<initialCandidates.size(); i++){
+            Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
+            if(temp.getFitness() < bestFitness){
+                if(temp.getFitness() < Input.R){
+                    return temp;
+                }
+                bestFitness = temp.getFitness();
+                bestNeighbour = temp;
             }
         }
-        System.out.println(bestFit.getVx() + " " + bestFit.getVy());
-        return  bestFit;
+        return bestNeighbour;
     }
 
     /**

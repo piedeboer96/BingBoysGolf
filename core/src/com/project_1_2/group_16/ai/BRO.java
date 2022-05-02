@@ -46,7 +46,7 @@ public class BRO {
         while(iter<maxIter){
             System.out.println(iter++);
             bestSoldier = findBestSoldierInPop();
-            Soldier temp = doLocalSearch(bestSoldier);
+            Soldier temp = doLocalSearch(bestSoldier, iter);
             if(temp.fitness < bestSoldier.fitness){
                 System.out.println("Local search helped " + ++localSearchCounter);
                 bestSoldier = new Soldier(temp);
@@ -105,7 +105,7 @@ public class BRO {
             }
         }
         bestSoldier = findBestSoldierInPop();
-        System.out.println(bestSoldier.toString());
+        System.out.println("best soldier returned : "+bestSoldier.toString());
     }
 
     /**
@@ -113,9 +113,9 @@ public class BRO {
      * @param s The best Soldier in the population
      * @return
      */
-    public Soldier doLocalSearch(Soldier s){
+    public Soldier doLocalSearch(Soldier s, int iter){
         ArrayList<float[]> neighbourHood = new ArrayList<float[]>();
-        float stepSize = 0.2f;
+        float stepSize = 0.1f * 0.02f * iter;
         float vx = s.velX;
         float vy = s.velY;
         neighbourHood.add(new float[] {vx+stepSize, vy});
@@ -136,14 +136,14 @@ public class BRO {
      * Method to initialize population for BRO algorithm
      */
     public void initializePopulation(){
-//        ArrayList<float[]> temp = Score.availableVelocities();
-//        for(float[] f : temp){
-//            population.add(new Soldier(f[0], f[1]));
-//        }
-        for(int i=0; i<popSize; i++){
-            float[] f = Score.validVelocity(-5f, 5f);
+        ArrayList<float[]> temp = Score.availableVelocities();
+        for(float[] f : temp){
             population.add(new Soldier(f[0], f[1]));
         }
+//        for(int i=0; i<popSize; i++){
+//            float[] f = Score.validVelocity(-5f, 5f);
+//            population.add(new Soldier(f[0], f[1]));
+//        }
     }
 
     /**
@@ -233,7 +233,7 @@ public class BRO {
     }
     public static void main (String[] args){
         System.out.println("starting...");
-        BRO bro = new BRO(15, 100, 4);
+        BRO bro = new BRO(12, 100, 4);
         bro.runBRO();
         System.out.println("amount of simulations taken " + Game.simulCounter);
     }

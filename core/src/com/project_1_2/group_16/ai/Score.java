@@ -37,8 +37,8 @@ public class Score {
      */
     public static float[] validVelocity(float minVelocity, float maxVelocity){
         float[] vxy = new float[2];
-        vxy[0] = (float)(minVelocity + Math.random()*(maxVelocity-minVelocity));
-        vxy[1] = (float)(minVelocity + Math.random()*(maxVelocity-minVelocity));
+        vxy[0] = (float)(minVelocity + Math.random()*(Math.abs(maxVelocity-minVelocity)));
+        vxy[1] = (float)(minVelocity + Math.random()*(Math.abs(maxVelocity-minVelocity)));
         if(Physics.magnitude(vxy[0], vxy[1]) > 5 || !checkIfBetter(vxy[0], vxy[1])){
             return validVelocity(minVelocity, maxVelocity);
         }
