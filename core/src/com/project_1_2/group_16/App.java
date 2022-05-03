@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.project_1_2.group_16.models.TerrainBuilder;
 import com.project_1_2.group_16.screens.GameScreen;
 import com.project_1_2.group_16.screens.TitleScreen;
@@ -43,9 +42,6 @@ public class App extends com.badlogic.gdx.Game {
 	// environment
 	public Environment environment;
 
-	// skins
-	public Skin skin;
-
 	// screens
 	public final TitleScreen TITLE_SCREEN = new TitleScreen(this);
 	public final GameScreen GAME_SCREEN = new GameScreen(this);
@@ -70,9 +66,6 @@ public class App extends com.badlogic.gdx.Game {
 		this.environment = new Environment();
 		this.environment.set(AMBIENT_LIGHT);
 		this.environment.add(SUN_LIGHT);
-
-		// create skins
-		this.skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
 		// open title screen
 		this.TITLE_SCREEN.create();
