@@ -3,8 +3,11 @@ package com.project_1_2.group_16.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -40,6 +43,12 @@ public class MainStage extends InputScreen {
 
     @Override
     protected void init() {
+        // background
+        Pixmap p1 = new Pixmap(Gdx.files.internal("background.png"));
+        Pixmap p2 = new Pixmap(App.SCREEN_WIDTH, App.SCREEN_HEIGHT, p1.getFormat());
+        p2.drawPixmap(p1, 0, 0, p1.getWidth(), p1.getHeight(), 0, 0, p2.getWidth(), p2.getHeight());
+        this.addActor(new Image(new Texture(p2))); p1.dispose(); p2.dispose();
+
         // play button
         this.play = new TextButton("Play", this.screen.skin);
         this.play.setHeight(50);
@@ -82,7 +91,7 @@ public class MainStage extends InputScreen {
         // input for the starting position (x)
         this.v0xField = new TextField(Float.toString(Input.V0.x), this.screen.skin);
         this.v0xField.setPosition(0.1f*App.SCREEN_WIDTH, 600, Align.center);
-        this.v0xLabel = new Label("V0X", this.screen.skin);
+        this.v0xLabel = new Label("Initial x position", this.screen.skin);
         this.v0xLabel.setColor(Color.BLACK);
         this.v0xLabel.setPosition(this.v0xField.getX(Align.center), this.v0xField.getY(Align.center) + this.v0xField.getHeight(), Align.center);
         this.addActor(this.v0xField); this.addActor(this.v0xLabel);
@@ -90,7 +99,7 @@ public class MainStage extends InputScreen {
         // input for the starting position (y)
         this.v0yField = new TextField(Float.toString(Input.V0.y), this.screen.skin);
         this.v0yField.setPosition(0.2f*App.SCREEN_WIDTH, 600, Align.center);
-        this.v0yLabel = new Label("V0Y", this.screen.skin);
+        this.v0yLabel = new Label("Initial y position", this.screen.skin);
         this.v0yLabel.setColor(Color.BLACK);
         this.v0yLabel.setPosition(this.v0yField.getX(Align.center), this.v0yField.getY(Align.center) + this.v0yField.getHeight(), Align.center);
         this.addActor(this.v0yField); this.addActor(this.v0yLabel);
@@ -98,7 +107,7 @@ public class MainStage extends InputScreen {
         // input for the hole position (x)
         this.vtxField = new TextField(Float.toString(Input.VT.x), this.screen.skin);
         this.vtxField.setPosition(0.1f*App.SCREEN_WIDTH, 400, Align.center);
-        this.vtxLabel = new Label("VTX", this.screen.skin);
+        this.vtxLabel = new Label("Hole x position", this.screen.skin);
         this.vtxLabel.setColor(Color.BLACK);
         this.vtxLabel.setPosition(this.vtxField.getX(Align.center), this.vtxField.getY(Align.center) + this.vtxField.getHeight(), Align.center);
         this.addActor(this.vtxField); this.addActor(this.vtxLabel);
@@ -106,7 +115,7 @@ public class MainStage extends InputScreen {
         // input for the hole position (y)
         this.vtyField = new TextField(Float.toString(Input.VT.y), this.screen.skin);
         this.vtyField.setPosition(0.2f*App.SCREEN_WIDTH, 400, Align.center);
-        this.vtyLabel = new Label("VTY", this.screen.skin);
+        this.vtyLabel = new Label("Hole y position", this.screen.skin);
         this.vtyLabel.setColor(Color.BLACK);
         this.vtyLabel.setPosition(this.vtyField.getX(Align.center), this.vtyField.getY(Align.center) + this.vtyField.getHeight(), Align.center);
         this.addActor(this.vtyField); this.addActor(this.vtyLabel);
@@ -114,7 +123,7 @@ public class MainStage extends InputScreen {
         // input for the hole radius
         this.rField = new TextField(Float.toString(Input.R), this.screen.skin);
         this.rField.setPosition((this.vtxField.getX(Align.center)+this.vtyField.getX(Align.center))/2, 200, Align.center);
-        this.rLabel = new Label("R", this.screen.skin);
+        this.rLabel = new Label("Hole radius", this.screen.skin);
         this.rLabel.setColor(Color.BLACK);
         this.rLabel.setPosition(this.rField.getX(Align.center), this.rField.getY(Align.center) + this.rField.getHeight(), Align.center);
         this.addActor(this.rField); this.addActor(this.rLabel);

@@ -1,6 +1,5 @@
 package com.project_1_2.group_16.screens;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public abstract class InputScreen extends Stage {
@@ -33,7 +32,10 @@ public abstract class InputScreen extends Stage {
     /**
      * Init all components that this stage uses.
      */
-    protected void init() {}
+    protected void init() {
+        // all backgrounds are created using this code:
+        // https://stackoverflow.com/questions/16886228/java-libgdx-how-do-i-resize-my-textures-in-libgdx
+    }
 
     /**
      * Parse all inputs from the user to the input file.
@@ -45,14 +47,6 @@ public abstract class InputScreen extends Stage {
      * @param keyCode the code of the key pressed
      */
     protected void keyInput(int keyCode) {}
-
-    /**
-     * Get the background color of this stage
-     * @return a Color reference
-     */
-    protected Color getBackground() {
-        return Color.WHITE;
-    }
 
     @Override
     public boolean keyDown(int keyCode) {

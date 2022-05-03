@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -30,6 +31,8 @@ public class TitleScreen extends ScreenAdapter {
      */
     public Skin skin;
 
+    private final Color CLEAR = new Color(59f/255f,87f/255f,72f/255f,1);
+
     public TitleScreen(App app) {
         this.app = app;
     }
@@ -44,6 +47,10 @@ public class TitleScreen extends ScreenAdapter {
         this.screens.add(new MainStage(this));
         this.screens.add(new AdvancedStage(this));
         this.screens.add(new TerrainStage(this));
+    }
+
+    @Override
+    public void show() {
         this.setActiveScreen(InputScreen.MAIN);
     }
 
@@ -52,11 +59,10 @@ public class TitleScreen extends ScreenAdapter {
         // clear screen
         if (App.OS_IS_WIN) Gdx.gl.glViewport(0, 0, App.SCREEN_WIDTH, App.SCREEN_HEIGHT);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		ScreenUtils.clear(this.activeScreen.getBackground());
+		ScreenUtils.clear(this.CLEAR);
 
         // draw the active inputscreen
         this.app.spriteBatch.begin();
-        Gdx.input.setInputProcessor(this.activeScreen);
         this.activeScreen.draw();
         this.app.spriteBatch.end();
 
@@ -90,5 +96,6 @@ public class TitleScreen extends ScreenAdapter {
      */
     public void setActiveScreen(int screen) {
         this.activeScreen = this.screens.get(screen);
+        Gdx.input.setInputProcessor(this.activeScreen);
     }
 }
