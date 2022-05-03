@@ -12,6 +12,7 @@ public class DumbBot {
     private final float maxV = 5f;
     private float c1;
     private float c2;
+    final boolean DEBUG = false;
 
     public DumbBot(StateVector sv){
         this.sv = sv;
@@ -24,12 +25,15 @@ public class DumbBot {
     public void ScaleC(){
         c1 = target.x - sv.x;
         c2 = target.y - sv.y;
-
-        c1 = c1 / (Math.abs(c1)+Math.abs(c2));
-        c2 = c2 / (Math.abs(c1)+Math.abs(c2));
-
+        if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
+        float total = Math.abs(c1)+Math.abs(c2);
+        c1 = c1 / total;
+        c2 = c2 / total;
+        if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
         c1 = c1*maxV;
         c2 = c2*maxV;
+
+        if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
     }
 
     public StateVector Play(){
