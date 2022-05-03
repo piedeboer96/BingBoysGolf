@@ -47,6 +47,7 @@ public class SA {
      * @return array of x and y velocities
      */
     public List<Float> runSA(){
+        System.out.println(state.getFitness());
         if(state.getFitness() > Input.R) {
             outerloop:
             for (int i = 0; i < kmax; i++) {
@@ -58,11 +59,11 @@ public class SA {
                 double cost = state.getFitness() - randomNeighbour.getFitness();
                 if (cost >= 0) {
                     setState(randomNeighbour);
-                    //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
+                    System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
                 } else {
                     if (Math.random() < getProbability(state, randomNeighbour)) {
                         setState(randomNeighbour);
-                        //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
+                        System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
                     }
                 }
                 if (state.getFitness() < Input.R) {
@@ -98,6 +99,7 @@ public class SA {
                 bestNeighbour = temp;
             }
         }
+        System.out.println("yooo " + bestNeighbour.getFitness());
         return bestNeighbour;
     }
 
@@ -143,38 +145,49 @@ public class SA {
      * @return a random neigbour
      */
     private Neighbour getNeighbour(Neighbour state) {
-       if(this.recalculate){
-           current_neighbours = new ArrayList<>();
-           ArrayList<StateVector> newVectors = new ArrayList<>();
-                float vx = state.getVx();
-                float vy = state.getVy();
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy + neigbourStepSize));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy - neigbourStepSize));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy - neigbourStepSize));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy - neigbourStepSize));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy + neigbourStepSize));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy + neigbourStepSize));
+        Neighbour toReturn = null;
+        if(this.recalculate){
+            current_neighbours = new ArrayList<>();
+            ArrayList<StateVector> newVectors = new ArrayList<>();
+            float vx = state.getVx();
+            float vy = state.getVy();
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy + neigbourStepSize));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy - neigbourStepSize));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy - neigbourStepSize));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy - neigbourStepSize));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy + neigbourStepSize));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy + neigbourStepSize));
 
-           ArrayList<StateVector> viableVectors = new ArrayList<>();
-           for(int i = 0; i < newVectors.size(); i++){
-               if(newVectors.get(i).vx >= 0.01f && newVectors.get(i).vy >= 0.01f && viableVector(newVectors.get(i))){
-                   viableVectors.add(newVectors.get(i));
-               }
-           }
+            ArrayList<StateVector> viableVectors = new ArrayList<>();
+            for(int i = 0; i < newVectors.size(); i++){
+                if(newVectors.get(i).vx >= 0.01f && newVectors.get(i).vy >= 0.01f && viableVector(newVectors.get(i))){
+                    viableVectors.add(newVectors.get(i));
+                }
+            }
 
-           for(int i = 0; i < viableVectors.size(); i++){
-              Neighbour neighbour = new Neighbour(viableVectors.get(i));
-              if(neighbour.getFitness() < state.getFitness()){
+            for(int i = 0; i < viableVectors.size(); i++){
+                Neighbour neighbour = new Neighbour(viableVectors.get(i));
+                if(neighbour.getFitness() < state.getFitness()){
+                    if(neighbour.getFitness() <= Input.R){
+                        System.out.println("yeahhh");
+                        return neighbour;
+                    }
+                    current_neighbours.add(neighbour);
+                }
+            }
+            Collections.shuffle(current_neighbours);
+        }
+        double bestFitness = Integer.MAX_VALUE;
 
-                  current_neighbours.add(neighbour);
-              }
-           }
-           Collections.shuffle(current_neighbours);
-       }
-        int random = (int)Math.random()*current_neighbours.size();
-       return  ((current_neighbours.size() <= 0) ? getRandomNeighbour() :  current_neighbours.get(random));
+        for(Neighbour n : current_neighbours){
+            if(n.fitness < bestFitness){
+                toReturn = n;
+                bestFitness = n.fitness;
+            }
+        }
+        return toReturn;
     }
 
 
@@ -191,7 +204,7 @@ public class SA {
      * @param updated_state
      */
     private void setState(Neighbour updated_state){
-        this.state = new Neighbour(updated_state.getSv());
+        this.state = new Neighbour(updated_state);
     }
 
     /**
@@ -201,7 +214,7 @@ public class SA {
      * @return
      */
     private float getProbability(Neighbour state, Neighbour updated) {
-       return (float)Math.exp(-1*(state.getFitness() - updated.getFitness()) / Temperature);
+        return (float)Math.exp(-1*(state.getFitness() - updated.getFitness()) / Temperature);
     }
 
     /**
@@ -213,12 +226,14 @@ public class SA {
     }
 
     public static void main(String[] args) {
+
         long start = System.currentTimeMillis();
-        SA test = new SA(500,  0.3f);
+        SA test = new SA(500,  0.06f);
         System.out.println("best is " + test.runSA());
         System.out.println(test.state.getFitness());
         long end = System.currentTimeMillis();
         System.out.println("Runtime: " + (end - start) + " ms");
         System.out.println("amount of simulations taken " + Game.simulCounter);
+
     }
 }

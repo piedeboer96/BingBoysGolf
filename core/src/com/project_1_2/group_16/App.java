@@ -244,7 +244,6 @@ public class App extends ApplicationAdapter {
 
 	/**
 	 * The controls for the app.
-	 * @param input
 	 */
 	private void controls() {
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { // close game

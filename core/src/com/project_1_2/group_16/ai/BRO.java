@@ -2,6 +2,7 @@ package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class BRO {
         int localSearchCounter = 0;
         outerloop:
         while(iter<maxIter){
-            System.out.println(iter++);
+            System.out.println("iter ---------------" + iter++ + " -------------------------");
             bestSoldier = findBestSoldierInPop();
             Soldier temp = doLocalSearch(bestSoldier, iter);
             if(temp.fitness < bestSoldier.fitness){
@@ -58,6 +59,12 @@ public class BRO {
             System.out.println(bestSoldier.toString());
             for(int i=0; i<population.size(); i++){
                 Soldier s = population.get(i);
+                if(s==bestSoldier){
+                    continue;
+                }
+                if(s==bestSoldier){
+                    System.out.println("heyyyyy");
+                }
                 Soldier nearest = findNearestSoldier(s);
                 Soldier vic, dam;
                 if(s.fitness < nearest.fitness){
@@ -80,6 +87,7 @@ public class BRO {
                 }
                 dam.calcFitness();
                 if(dam.fitness < Input.R){
+                    bestSoldier = new Soldier(dam);
                     break outerloop;
                 }
             }
@@ -104,7 +112,6 @@ public class BRO {
                 }
             }
         }
-        bestSoldier = findBestSoldierInPop();
         System.out.println("best soldier returned : "+bestSoldier.toString());
     }
 
@@ -115,21 +122,35 @@ public class BRO {
      */
     public Soldier doLocalSearch(Soldier s, int iter){
         ArrayList<float[]> neighbourHood = new ArrayList<float[]>();
+        Soldier toReturn = s;
         float stepSize = 0.1f * 0.02f * iter;
         float vx = s.velX;
         float vy = s.velY;
-        neighbourHood.add(new float[] {vx+stepSize, vy});
-        neighbourHood.add(new float[] {vx-stepSize, vy});
-        neighbourHood.add(new float[] {vx, vy+stepSize});
-        neighbourHood.add(new float[] {vx, vy-stepSize});
+//        neighbourHood.add(new float[] {vx+stepSize, vy});
+//        neighbourHood.add(new float[] {vx-stepSize, vy});
+//        neighbourHood.add(new float[] {vx, vy+stepSize});
+//        neighbourHood.add(new float[] {vx, vy-stepSize});
         neighbourHood.add(new float[] {vx+stepSize, vy+stepSize});
         neighbourHood.add(new float[] {vx+stepSize, vy-stepSize});
         neighbourHood.add(new float[] {vx-stepSize, vy+stepSize});
         neighbourHood.add(new float[] {vx-stepSize, vy-stepSize});
 
-        Random rand = new Random();
-        int r = rand.nextInt(neighbourHood.size());
-        return new Soldier(neighbourHood.get(r)[0], neighbourHood.get(r)[1]);
+        float bestFitness = Integer.MAX_VALUE;
+        for(float[] f : neighbourHood){
+            Game g = new Game();
+            g.setNumericalSolver(NumericalSolver.RK4);
+            StateVector sv = new StateVector(Input.V0.x, Input.V0.y, f[0], f[1]);
+            Soldier sold = new Soldier(f[0], f[1]);
+            g.runEngine(sv, null, null, null, sold);
+            if(sold.fitness < Input.R){
+                return sold;
+            }
+            if(sold.fitness < bestFitness){
+                bestFitness = sold.fitness;
+                toReturn = new Soldier(sold);
+            }
+        }
+        return toReturn;
     }
 
     /**
@@ -140,6 +161,7 @@ public class BRO {
         for(float[] f : temp){
             population.add(new Soldier(f[0], f[1]));
         }
+        System.out.println("here");
 //        for(int i=0; i<popSize; i++){
 //            float[] f = Score.validVelocity(-5f, 5f);
 //            population.add(new Soldier(f[0], f[1]));
@@ -169,7 +191,7 @@ public class BRO {
      * @return best soldier
      */
     public Soldier findBestSoldierInPop(){
-        Soldier toReturn = new Soldier(0, 0);
+        Soldier toReturn = null;
         float bestFitness = Integer.MAX_VALUE;
         for(Soldier s : population){
             if(s.fitness < bestFitness){

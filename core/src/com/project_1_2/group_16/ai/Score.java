@@ -109,6 +109,36 @@ public class Score {
         System.out.println(toReturn.size());
         return toReturn;
     }
+
+    public static float[] bestVelocity(){
+        float minVelX = -5.0f;
+        float maxVelX = 5.0f;
+        float minVelY = -5.0f;
+        float maxVelY = 5.0f;
+        float xH, yH;
+        Game g = new Game();
+        xH = (Math.abs(maxVelX - minVelX))/7.15f;
+        yH = (Math.abs(maxVelY - minVelY))/7.15f;
+        float[] toReturn = new float[2];
+        float bestFitness = Integer.MAX_VALUE;
+        for(float velX = minVelX; velX<=maxVelX; velX+=xH){
+            for(float velY = minVelY; velY<=maxVelY; velY+=yH){
+                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY)){
+                    StateVector sv = new StateVector(Input.V0.x, Input.V0.y, velX, velY);
+                    Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, velX, velY));
+                    if(temp.fitness < bestFitness){
+                        bestFitness = (float) temp.fitness;
+                        toReturn[0] = velX;
+                        toReturn[1] = velY;
+                        if(temp.fitness < Input.R){
+                            return toReturn;
+                        }
+                    }
+                }
+            }
+        }
+        return toReturn;
+    }
     // idx 0 : minX, idx 1 : maxX, idx 2 : minY, idx 3 : maxY
 //    public static float[] determineMinMax (){
 //        float[] toReturn = new float[4];
