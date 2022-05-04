@@ -16,12 +16,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
-import com.project_1_2.group_16.ai.RuleBasedBot;
+import com.project_1_2.group_16.ai.DumbBot;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.NumericalSolver;
+import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Flagpole;
@@ -234,7 +235,10 @@ public class GameScreen extends ScreenAdapter {
 			}
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.P)) {
-			RuleBasedBot.BestShot(this.app);
+			//RuleBasedBot.BestShot(this.app);
+			DumbBot db = new DumbBot(this.golfball.STATE);
+			StateVector dbState = db.Play();
+			this.shoot(dbState.vx, dbState.vy);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.V)) {
 			this.shoot(Input.VB.x, Input.VB.y);

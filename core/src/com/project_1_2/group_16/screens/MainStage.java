@@ -3,19 +3,20 @@ package com.project_1_2.group_16.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 
-public class MainStage extends Stage {
-
-    private TitleScreen screen;
+public class MainStage extends InputScreen {
 
     private TextButton play;
     private TextButton advancedSettings;
@@ -35,18 +36,24 @@ public class MainStage extends Stage {
     private TextField rField;
 
     private Label loading;
-    
+
     public MainStage(TitleScreen screen) {
-        this.screen = screen;
-        this.init();
+        super(screen);
     }
 
-    private void init() {
+    @Override
+    protected void init() {
+        // background
+        Pixmap p1 = new Pixmap(Gdx.files.internal("background.png"));
+        Pixmap p2 = new Pixmap(App.SCREEN_WIDTH, App.SCREEN_HEIGHT, p1.getFormat());
+        p2.drawPixmap(p1, 0, 0, p1.getWidth(), p1.getHeight(), 0, 0, p2.getWidth(), p2.getHeight());
+        this.addActor(new Image(new Texture(p2))); p1.dispose(); p2.dispose();
+
         // play button
-        this.play = new TextButton("Play", this.screen.app.skin);
+        this.play = new TextButton("Play", this.screen.skin);
         this.play.setHeight(50);
         this.play.setWidth(500);
-        this.play.moveBy(App.SCREEN_WIDTH / 2 - this.play.getWidth() / 2, 50);
+        this.play.setPosition(App.SCREEN_WIDTH / 2, 75, Align.center);
         this.play.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -56,92 +63,88 @@ public class MainStage extends Stage {
         this.addActor(this.play);
 
         // button for accessing terrain settings
-        this.terrainSettings = new TextButton("Terrain Settings", this.screen.app.skin);
+        this.terrainSettings = new TextButton("Terrain Settings", this.screen.skin);
         this.terrainSettings.setHeight(50);
         this.terrainSettings.setWidth(250);
-        this.terrainSettings.moveBy(0.9f*App.SCREEN_WIDTH - this.terrainSettings.getWidth()/2, 500);
+        this.terrainSettings.setPosition(0.9f*App.SCREEN_WIDTH, 500, Align.center);
         this.terrainSettings.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screen.activeScreen = screen.terrain.getClass();
+                screen.setActiveScreen(InputScreen.TERRAIN_SETTINGS);
             }
         });
         this.addActor(this.terrainSettings);
 
         // button for accessing advanced settings
-        this.advancedSettings = new TextButton("Advanced Settings", this.screen.app.skin);
+        this.advancedSettings = new TextButton("Advanced Settings", this.screen.skin);
         this.advancedSettings.setHeight(50);
         this.advancedSettings.setWidth(250);
-        this.advancedSettings.moveBy(0.9f*App.SCREEN_WIDTH - this.advancedSettings.getWidth()/2, 300);
+        this.advancedSettings.setPosition(0.9f*App.SCREEN_WIDTH, 300, Align.center);
         this.advancedSettings.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screen.activeScreen = screen.advanced.getClass();
+                screen.setActiveScreen(InputScreen.ADVANCED_SETTINGS);
             }
         });
         this.addActor(this.advancedSettings);
 
         // input for the starting position (x)
-        this.v0xField = new TextField(Float.toString(Input.V0.x), this.screen.app.skin);
-        this.v0xField.moveBy(0.1f*App.SCREEN_WIDTH - this.v0xField.getWidth()/2, 600);
-        this.v0xLabel = new Label("V0X", this.screen.app.skin);
+        this.v0xField = new TextField(Float.toString(Input.V0.x), this.screen.skin);
+        this.v0xField.setPosition(0.1f*App.SCREEN_WIDTH, 600, Align.center);
+        this.v0xLabel = new Label("Initial x position", this.screen.skin);
         this.v0xLabel.setColor(Color.BLACK);
-        this.v0xLabel.moveBy(this.v0xField.getX() + this.v0xField.getWidth()/2 - this.v0xLabel.getWidth()/2, this.v0xField.getY() + this.v0xField.getHeight());
+        this.v0xLabel.setPosition(this.v0xField.getX(Align.center), this.v0xField.getY(Align.center) + this.v0xField.getHeight(), Align.center);
         this.addActor(this.v0xField); this.addActor(this.v0xLabel);
 
         // input for the starting position (y)
-        this.v0yField = new TextField(Float.toString(Input.V0.y), this.screen.app.skin);
-        this.v0yField.moveBy(0.1f*App.SCREEN_WIDTH + this.v0yField.getWidth()/2 + 0.05f*App.SCREEN_WIDTH, 600);
-        this.v0yLabel = new Label("V0Y", this.screen.app.skin);
+        this.v0yField = new TextField(Float.toString(Input.V0.y), this.screen.skin);
+        this.v0yField.setPosition(0.2f*App.SCREEN_WIDTH, 600, Align.center);
+        this.v0yLabel = new Label("Initial y position", this.screen.skin);
         this.v0yLabel.setColor(Color.BLACK);
-        this.v0yLabel.moveBy(this.v0yField.getX() + this.v0yField.getWidth()/2 - this.v0yLabel.getWidth()/2, this.v0yField.getY() + this.v0yField.getHeight());
+        this.v0yLabel.setPosition(this.v0yField.getX(Align.center), this.v0yField.getY(Align.center) + this.v0yField.getHeight(), Align.center);
         this.addActor(this.v0yField); this.addActor(this.v0yLabel);
 
         // input for the hole position (x)
-        this.vtxField = new TextField(Float.toString(Input.VT.x), this.screen.app.skin);
-        this.vtxField.moveBy(0.1f*App.SCREEN_WIDTH - this.vtxField.getWidth()/2, 400);
-        this.vtxLabel = new Label("VTX", this.screen.app.skin);
+        this.vtxField = new TextField(Float.toString(Input.VT.x), this.screen.skin);
+        this.vtxField.setPosition(0.1f*App.SCREEN_WIDTH, 400, Align.center);
+        this.vtxLabel = new Label("Hole x position", this.screen.skin);
         this.vtxLabel.setColor(Color.BLACK);
-        this.vtxLabel.moveBy(this.vtxField.getX() + this.vtxField.getWidth()/2 - this.vtxLabel.getWidth()/2, this.vtxField.getY() + this.vtxField.getHeight());
+        this.vtxLabel.setPosition(this.vtxField.getX(Align.center), this.vtxField.getY(Align.center) + this.vtxField.getHeight(), Align.center);
         this.addActor(this.vtxField); this.addActor(this.vtxLabel);
 
         // input for the hole position (y)
-        this.vtyField = new TextField(Float.toString(Input.VT.y), this.screen.app.skin);
-        this.vtyField.moveBy(0.1f*App.SCREEN_WIDTH + this.vtyField.getWidth()/2 + 0.05f*App.SCREEN_WIDTH, 400);
-        this.vtyLabel = new Label("VTY", this.screen.app.skin);
+        this.vtyField = new TextField(Float.toString(Input.VT.y), this.screen.skin);
+        this.vtyField.setPosition(0.2f*App.SCREEN_WIDTH, 400, Align.center);
+        this.vtyLabel = new Label("Hole y position", this.screen.skin);
         this.vtyLabel.setColor(Color.BLACK);
-        this.vtyLabel.moveBy(this.vtyField.getX() + this.vtyField.getWidth()/2 - this.vtyLabel.getWidth()/2, this.vtyField.getY() + this.vtyField.getHeight());
+        this.vtyLabel.setPosition(this.vtyField.getX(Align.center), this.vtyField.getY(Align.center) + this.vtyField.getHeight(), Align.center);
         this.addActor(this.vtyField); this.addActor(this.vtyLabel);
 
         // input for the hole radius
-        this.rField = new TextField(Float.toString(Input.R), this.screen.app.skin);
-        this.rField.moveBy((this.vtxField.getX()+this.vtxField.getWidth()/2+this.vtyField.getX()+this.vtyField.getWidth()/2)/2-this.rField.getWidth()/2, 200);
-        this.rLabel = new Label("R", this.screen.app.skin);
+        this.rField = new TextField(Float.toString(Input.R), this.screen.skin);
+        this.rField.setPosition((this.vtxField.getX(Align.center)+this.vtyField.getX(Align.center))/2, 200, Align.center);
+        this.rLabel = new Label("Hole radius", this.screen.skin);
         this.rLabel.setColor(Color.BLACK);
-        this.rLabel.moveBy(this.rField.getX() + this.rField.getWidth()/2 - this.rLabel.getWidth()/2, this.rField.getY() + this.rField.getHeight());
+        this.rLabel.setPosition(this.rField.getX(Align.center), this.rField.getY(Align.center) + this.rField.getHeight(), Align.center);
         this.addActor(this.rField); this.addActor(this.rLabel);
 
         // ...
 
         // label to notify the user that the game is loading
-        this.loading = new Label("Loading game...", this.screen.app.skin);
+        this.loading = new Label("Loading game...", this.screen.skin);
         this.loading.setColor(Color.BLACK);
-        this.loading.moveBy(App.SCREEN_WIDTH - this.loading.getWidth() - 10, 0);
+        this.loading.setPosition(App.SCREEN_WIDTH - 10, 0, Align.bottomRight);
     }
 
-    public void parseInputs() {
+    @Override
+    protected void parseInputs() {
         Input.V0 = new Vector2(Float.parseFloat(this.v0xField.getText()), Float.parseFloat(this.v0yField.getText()));
         Input.VT = new Vector2(Float.parseFloat(this.vtxField.getText()), Float.parseFloat(this.vtyField.getText()));
         Input.R = Float.parseFloat(this.rField.getText());
     }
 
-    private void startGame() {
-        this.addActor(this.loading);
-        this.screen.startGame = true;
-    }
-
     @Override
-    public boolean keyDown(int keyCode) {
+    protected void keyInput(int keyCode) {
         if (keyCode == Keys.ESCAPE) {
             Gdx.app.exit();
             System.exit(0);
@@ -149,6 +152,13 @@ public class MainStage extends Stage {
         if (keyCode == Keys.ENTER) {
             this.startGame();
         }
-        return true;
+    }
+
+    /**
+     * Start the game.
+     */
+    private void startGame() {
+        this.addActor(this.loading);
+        this.screen.startGame();
     }
 }
