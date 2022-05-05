@@ -122,10 +122,8 @@ public class MainStage extends InputScreen {
         this.rLabel.setPosition(this.rField.getX(Align.center), this.rField.getY(Align.center) + this.rField.getHeight(), Align.center);
         this.addActor(this.rField); this.addActor(this.rLabel);
 
-        // ...
-
         // label to notify the user that the game is loading
-        this.loading = new Label("Loading game...", this.screen.skin);
+        this.loading = new Label("Loading game... (this may take a few seconds)", this.screen.skin);
         this.loading.setColor(Color.BLACK);
         this.loading.setPosition(App.SCREEN_WIDTH - 10, 0, Align.bottomRight);
     }

@@ -20,6 +20,7 @@ public class Terrain {
     public static final float WATER_EDGE = App.FIELD_SIZE / 2 + App.TILE_SIZE;
     public static final Interpreter BSH = new Interpreter();
     public static final Collision collision = new Collision();
+    public static final Spline spline = new Spline();
     private static String eval;
 
     /**
@@ -32,6 +33,9 @@ public class Terrain {
      * @throws ClassCastException if the height function doesn't return a {@code double} value
      */
     public static float getHeight(float x, float y) {
+        // use splines if specified
+        if (Input.USE_SPLINES) return spline.getHeight(x, y);
+
         // make everything outside of the rendered area water
         if (Math.abs(x) >  WATER_EDGE || Math.abs(y) > WATER_EDGE) {
             return -1;

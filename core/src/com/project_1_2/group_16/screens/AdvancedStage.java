@@ -80,8 +80,6 @@ public class AdvancedStage extends InputScreen {
         this.mussLabel.setColor(Color.BLACK);
         this.mussLabel.setPosition(this.mussField.getX(Align.center), this.mussField.getY(Align.center) + this.mussField.getHeight(), Align.center);
         this.addActor(this.mussField); this.addActor(this.mussLabel);
-
-        // ...
     }
 
     @Override
