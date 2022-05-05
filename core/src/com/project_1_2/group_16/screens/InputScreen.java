@@ -32,10 +32,7 @@ public abstract class InputScreen extends Stage {
     /**
      * Init all components that this stage uses.
      */
-    protected void init() {
-        // all backgrounds are created using this code:
-        // https://stackoverflow.com/questions/16886228/java-libgdx-how-do-i-resize-my-textures-in-libgdx
-    }
+    protected void init() {}
 
     /**
      * Parse all inputs from the user to the input file.
