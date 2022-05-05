@@ -5,6 +5,7 @@ import java.io.File;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.utils.Align;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.misc.FileChooser;
 
 public class TerrainStage extends InputScreen {
 
@@ -39,9 +41,13 @@ public class TerrainStage extends InputScreen {
 
     private String tempFunction = Input.H;
     private String tempSpline = Input.SPLINE;
+
+    private FileChooser chooser;
+    private Stage stage;
     
     public TerrainStage(TitleScreen screen) {
         super(screen);
+        this.stage = this;
     }
 
     @Override
@@ -91,6 +97,13 @@ public class TerrainStage extends InputScreen {
         // browse button
         this.browse = new TextButton("Browse", this.screen.skin);
         this.browse.setPosition(this.functionField.getX(Align.right)+10, this.functionField.getY(Align.bottom), Align.bottomLeft);
+        this.browse.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                chooser = new FileChooser("spline", screen.skin, functionField);
+                chooser.show(stage);
+            }
+        });
 
         // function button
         this.useFunction = new CheckBox("Use function", this.screen.skin);
@@ -146,6 +159,8 @@ public class TerrainStage extends InputScreen {
             functionLabel.setText("Height function");
             this.activeBox = this.useFunction;
         }
+
+        
     }
 
     @Override
