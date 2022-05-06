@@ -3,11 +3,8 @@ package com.project_1_2.group_16.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -44,10 +41,7 @@ public class MainStage extends InputScreen {
     @Override
     protected void init() {
         // background
-        Pixmap p1 = new Pixmap(Gdx.files.internal("background.png"));
-        Pixmap p2 = new Pixmap(App.SCREEN_WIDTH, App.SCREEN_HEIGHT, p1.getFormat());
-        p2.drawPixmap(p1, 0, 0, p1.getWidth(), p1.getHeight(), 0, 0, p2.getWidth(), p2.getHeight());
-        this.addActor(new Image(new Texture(p2))); p1.dispose(); p2.dispose();
+        this.addActor(App.THEME.getMainBackground());
 
         // play button
         this.play = new TextButton("Play", this.screen.skin);
@@ -128,10 +122,8 @@ public class MainStage extends InputScreen {
         this.rLabel.setPosition(this.rField.getX(Align.center), this.rField.getY(Align.center) + this.rField.getHeight(), Align.center);
         this.addActor(this.rField); this.addActor(this.rLabel);
 
-        // ...
-
         // label to notify the user that the game is loading
-        this.loading = new Label("Loading game...", this.screen.skin);
+        this.loading = new Label("Loading game... (this may take a few seconds)", this.screen.skin);
         this.loading.setColor(Color.BLACK);
         this.loading.setPosition(App.SCREEN_WIDTH - 10, 0, Align.bottomRight);
     }

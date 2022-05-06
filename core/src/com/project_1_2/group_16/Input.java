@@ -64,4 +64,14 @@ public class Input {
      * Number of sandpits.
      */
     public static int SAND = 0;
+
+    /**
+     * If the terrain uses a spline or a heightfunction.
+     */
+    public static boolean USE_SPLINES = false;
+
+    /**
+     * File path for the spline file.
+     */
+    public static String SPLINE = "WIP...";
 }
