@@ -3,6 +3,9 @@ package com.project_1_2.group_16.math;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.physics.Acceleration;
 
+/**
+ * Here the derivates are calculated using the physics 'acceleration' class.
+ */
 public class Derivation {
     float dx_dt;
     float dy_dt;

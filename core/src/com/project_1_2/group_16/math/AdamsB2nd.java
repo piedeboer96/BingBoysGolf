@@ -3,13 +3,24 @@ package com.project_1_2.group_16.math;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.physics.Physics;
 
+/**
+ * 2-stage Adams-Bashforth method using RK2 bootstrap.
+ */
 public class AdamsB2nd implements NumericalSolver{
+
     RK2 rk2Bootstrap = new RK2();
     private float[] partialDerivatives;
     public int count = 0;
     StateVector sv1;
     StateVector sv2;
 
+    /**
+     * Here the actually 2-stage Adams-Bashforth method is run.
+     * Bootsrap is done using RK2.
+     * It updates the statevector.
+     * @param h step-size
+     * @param sv statevector
+     */
     public void solve(float h, StateVector sv){
         if(count<2){
             if(count==0) {
@@ -51,7 +62,10 @@ public class AdamsB2nd implements NumericalSolver{
         }
     }
 
-
+    /**
+     * Getter for the partial derivatives
+     * @return array of partial derivatives
+     */
     public float[] getPartialDerivatives() {
         return this.partialDerivatives;
     }

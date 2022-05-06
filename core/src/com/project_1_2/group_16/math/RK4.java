@@ -2,6 +2,9 @@ package com.project_1_2.group_16.math;
 
 import com.project_1_2.group_16.gamelogic.Terrain;
 
+/**
+ * Classical 4th-order Runge-Kutta method
+ */
 public class RK4 implements NumericalSolver {
 
     private float[] partialDerivatives;

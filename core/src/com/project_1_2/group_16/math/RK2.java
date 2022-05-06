@@ -2,6 +2,9 @@ package com.project_1_2.group_16.math;
 
 import com.project_1_2.group_16.gamelogic.Terrain;
 
+/**
+ * TODO: Is this Ralston??
+ */
 public class RK2 implements NumericalSolver{
 
     private float[] partialDerivatives;
