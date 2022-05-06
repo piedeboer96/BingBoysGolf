@@ -3,10 +3,12 @@ package com.project_1_2.group_16.math;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.physics.Acceleration;
 
+/**
+ * Euler’s method.
+ */
 public class Euler implements NumericalSolver {
 
     private final Acceleration acceleration = new Acceleration();
-
     private float[] partialDerivatives;
     
     /**

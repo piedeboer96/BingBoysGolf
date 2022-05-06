@@ -28,7 +28,7 @@ public class FileChooser extends Dialog {
      * The file type the file chooser should be looking for.
      * Only files of this type and directories will show up.
      */
-    public static final String FILE_TYPE = ".txt";
+    public static final String FILE_TYPE = ".json";
 
     /**
      * The starting directory of the file chooser.
