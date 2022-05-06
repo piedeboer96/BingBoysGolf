@@ -1,8 +1,13 @@
 package com.project_1_2.group_16.gamelogic;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.project_1_2.group_16.App;
 
 public class Spline {
@@ -51,7 +56,7 @@ public class Spline {
     /**
      * All quadrants that you can create using the data points.
      */
-    private Quadrant[] quadrants;
+    private CubicQuadrant[] quadrants;
     
     /**
      * Evaluates the height of a pair of coordinates.
@@ -71,33 +76,103 @@ public class Spline {
     /**
      * Create the terrain-spline.
      * @param splineFile the spline file
-     * 
-     * @throws ...
      */
     public void createSpline(File splineFile) {
-        // read the spline file and calculate the derivatives
-        this.data = getData(splineFile);
+        // read the spline file, create the basis and calculate the derivatives
+        this.data = this.createBasis(this.readSplineFile(splineFile));
         this.assignDerivatives(this.data);
 
         // create all quadrants
-        this.quadrants = new Quadrant[(SPLINE_SIZE - 1) * (SPLINE_SIZE - 1)];
+        this.quadrants = new CubicQuadrant[(SPLINE_SIZE - 1) * (SPLINE_SIZE - 1)];
         for (int x, y, i = 0; i < this.quadrants.length; i++) {
-            y = i / 3;
-            x = i % 3;
-            this.quadrants[i] = new Quadrant(this.data[y][x], this.data[y+1][x], this.data[y+1][x+1], this.data[y][x+1]);
+            y = i / (SPLINE_SIZE - 1);
+            x = i % (SPLINE_SIZE - 1);
+            this.quadrants[i] = new CubicQuadrant(this.data[y][x], this.data[y+1][x], this.data[y][x+1], this.data[y+1][x+1]);
             this.quadrants[i].A = multiplyMatrix(C1, multiplyMatrix(this.quadrants[i].getInitialValues(), C2));
         }
     }
 
     /**
-     * Reads the spline file. TODO
+     * Read the spline file.
      * @param splineFile
-     * @return an array containing all data from the spline file
+     * @return an array of all points from the spline file.
+     * first 4 points are the corners, the rest is additional points.
      */
-    private DataPoint[][] getData(File splineFile) {
-        float size = App.FIELD_SIZE;
-        DataPoint[][] data = new DataPoint[SPLINE_SIZE][SPLINE_SIZE]; 
+    private Vector3[] readSplineFile(File splineFile) {
+        JsonReader reader = new JsonReader();
+        List<Vector3> out = new ArrayList<Vector3>();
 
+        // corners
+        JsonValue corners = reader.parse(new FileHandle(splineFile)).child();
+        for (JsonValue corner : corners.get("points")) {
+            switch (corner.getString("name")) {
+                case "negative-negative": {
+                    out.add(new Vector3(-App.FIELD_SIZE/2, -App.FIELD_SIZE/2, corner.getFloat("height")));
+                } break;
+                case "negative-positive": {
+                    out.add(new Vector3(-App.FIELD_SIZE/2, App.FIELD_SIZE/2, corner.getFloat("height")));
+                } break;
+                case "positive-negative": {
+                    out.add(new Vector3(App.FIELD_SIZE/2, -App.FIELD_SIZE/2, corner.getFloat("height")));
+                } break;
+                case "positive-positive": {
+                    out.add(new Vector3(App.FIELD_SIZE/2, App.FIELD_SIZE/2, corner.getFloat("height")));
+                } break;
+            }
+        }
+
+        // additional points
+        JsonValue points = corners.next(); float x, y, z, i;
+        for (JsonValue point : points.get("points")) {
+            x = 0; y = 0; z = 0; i = 0;
+            for (JsonValue coordinate : point.get("coordinates")) {
+                switch ((int)i) {
+                    case 0: {
+                        x = Float.parseFloat(coordinate.toString());
+                        i++;
+                    } break;
+                    case 1: {
+                        y = Float.parseFloat(coordinate.toString());
+                        i++;
+                    } break;
+                    case 2: {
+                        z = Float.parseFloat(coordinate.toString());
+                        i++;
+                    } break;
+                }
+            }
+            out.add(new Vector3(x, y, z));
+        }
+        System.out.println("spline: "+out); // debug
+        return out.toArray(new Vector3[out.size()]);
+    }
+
+    /**
+     * Create the basis of the spline.
+     * @param input all input points (spline file)
+     * @return the data matrix
+     */
+    private DataPoint[][] createBasis(Vector3[] input) {
+        float size = App.FIELD_SIZE;
+        DataPoint[][] data = new DataPoint[SPLINE_SIZE][SPLINE_SIZE];
+
+        // configure corner points
+        Vector3 corner_nn = new Vector3(), corner_np = new Vector3();
+        Vector3 corner_pn = new Vector3(), corner_pp = new Vector3();
+        for (int i = 0; i < 4; i++) {
+            if (input[i].x < 0 && input[i].y < 0) corner_nn.set(input[i]);
+            else if (input[i].x < 0 && input[i].y > 0) corner_np.set(input[i]);
+            else if (input[i].x > 0 && input[i].y < 0) corner_pn.set(input[i]);
+            else if (input[i].x > 0 && input[i].y > 0) corner_pp.set(input[i]);
+        }
+
+        // configure additional points
+        Vector3[] points = new Vector3[input.length-4];
+        for (int i = 4; i < input.length; i++) {
+            points[i-4] = input[i];
+        }
+
+        // TODO temporary
         data[0][0] = new DataPoint(-size / 2, -size / 2, 0.5f);
         data[0][1] = new DataPoint(-size / 2 + size / 3, -size / 2, 0.1f);
         data[0][2] = new DataPoint(size / 2 - size / 3, -size / 2, 0.1f);
@@ -117,7 +192,7 @@ public class Spline {
         data[3][1] = new DataPoint(-size / 2 + size / 3, size / 2, 0.1f);
         data[3][2] = new DataPoint(size / 2 - size / 3, size / 2, 0.1f);
         data[3][3] = new DataPoint(size / 2, size / 2, 0.5f);
-
+        
         return data;
     }
 
@@ -231,6 +306,14 @@ public class Spline {
 
 
 
+
+
+
+
+
+
+
+
     
 
     /**
@@ -266,36 +349,18 @@ public class Spline {
     /**
      * Represents a quadrant of the terrain (square bound by 4 data points).
      */
-    static class Quadrant {
+    static abstract class Quadrant {
 
         /**
-         * Corner of the quadrant.
+         * Corners of the quadrant.
          */
-        public DataPoint nn, np, pn, pp;
+        public Vector3 nn, np, pn, pp;
 
-        /**
-         * Quadrant-coefficients.
-         */
-        public float[][] A;
-
-        public Quadrant(DataPoint c1, DataPoint c2, DataPoint c3, DataPoint c4) {
+        public Quadrant(Vector3 c1, Vector3 c2, Vector3 c3, Vector3 c4) {
             this.nn = c1;
             this.np = c2;
-            this.pp = c3;
-            this.pn = c4;
-        }
-
-        /**
-         * Get the initial values from the quadrant.
-         * @return a 4x4 matrix made from the corner points
-         */
-        public float[][] getInitialValues() {
-            return new float[][] {
-                {nn.z, np.z, nn.dY, np.dY},
-                {pn.z, pp.z, pn.dY, pp.dY},
-                {nn.dX, np.dX, nn.dXY, np.dXY},
-                {pn.dX, pp.dX, pn.dXY, pp.dXY}
-            };
+            this.pn = c3;
+            this.pp = c4;
         }
 
         /**
@@ -318,6 +383,42 @@ public class Spline {
          * @param y y-coordinate
          * @return z-coordinate
          */
+        public float getHeight(float x, float y) {
+            return 0;
+        }
+    }
+
+    static class CubicQuadrant extends Quadrant {
+
+        /**
+         * Quadrant-coefficients.
+         */
+        public float[][] A;
+
+        /**
+         * Initial values.
+         */
+        public float[][] I;
+
+        public CubicQuadrant(DataPoint c1, DataPoint c2, DataPoint c3, DataPoint c4) {
+            super(c1, c2, c3, c4);
+            this.I = new float[][] {
+                {c1.z, c2.z, c1.dY, c2.dY},
+                {c3.z, c4.z, c3.dY, c4.dY},
+                {c1.dX, c2.dX, c1.dXY, c2.dXY},
+                {c3.dX, c4.dX, c3.dXY, c4.dXY}
+            };
+        }
+
+        /**
+         * Get the initial values from the quadrant.
+         * @return a 4x4 matrix made from the corner points
+         */
+        public float[][] getInitialValues() {
+            return this.I;
+        }
+        
+        @Override
         public float getHeight(float x, float y) {
             x = (x - nn.x) / (pp.x - nn.x);
             y = (y - nn.y) / (pp.y - nn.y);
