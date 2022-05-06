@@ -2,7 +2,7 @@ package com.project_1_2.group_16.math;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class StateVector extends Vector2 {
+public class StateVector extends Vector2 implements Cloneable {
 
     /**
      * x-velocity

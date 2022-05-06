@@ -179,7 +179,7 @@ public class SA {
                     current_neighbours.add(neighbour);
                 }
             }
-            Collections.shuffle(current_neighbours);
+//            Collections.shuffle(current_neighbours);
         }
 //        double bestFitness = Integer.MAX_VALUE;
 //        for(Neighbour n : current_neighbours){
