@@ -20,7 +20,6 @@ public class Game {
 
     public static int simulCounter = 0;
 
-    public static boolean multiStep = false;
 
     /**
      * Friction caused by hitting trees.
@@ -102,7 +101,8 @@ public class Game {
             case NumericalSolver.EULER: this.solver = new Euler(); break;
             case NumericalSolver.RK2: this.solver = new RK2(); break;
             case NumericalSolver.RK4: this.solver = new RK4(); break;
-            case NumericalSolver.ADAMSB2: this.solver = new AdamsB2nd(); multiStep = true; break;
+            case NumericalSolver.ADAMSB2: this.solver = new AdamsB2nd(); break;
+            case NumericalSolver.ADAMSM4: this.solver = new AdamsM4th(); break;
         }
     }
 
