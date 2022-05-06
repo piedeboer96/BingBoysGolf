@@ -3,7 +3,7 @@ package com.project_1_2.group_16.math;
 import com.project_1_2.group_16.gamelogic.Terrain;
 
 /**
- * TODO: Is this Ralston??
+ * Classical 2nd order Runge-Kutta Method
  */
 public class RK2 implements NumericalSolver{
 
