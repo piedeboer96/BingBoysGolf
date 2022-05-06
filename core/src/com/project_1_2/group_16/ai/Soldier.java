@@ -31,6 +31,7 @@ public class Soldier {
         this.endPosY = s.endPosY;
     }
     public void calcFitness(){
+        game.setNumericalSolver(NumericalSolver.RK4);
         StateVector sv = new StateVector(Input.V0.x, Input.V0.y, velX, velY);
         game.runEngine(sv,null, null, null, this);
         this.endPosX = sv.x;

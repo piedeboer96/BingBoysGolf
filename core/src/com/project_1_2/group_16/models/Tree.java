@@ -29,6 +29,13 @@ public class Tree {
     }
 
     /**
+     * Create tree object without interfering with graphics
+     */
+    public Tree(Vector3 pos, float r){
+        this.pos.set(pos);
+        this.r = r;
+    }
+    /**
      * Get the model of the tree
      * @return a model object
      */

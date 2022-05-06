@@ -22,7 +22,7 @@ public class Input {
      * Input velocity (for testing).
      * vx: 1.6692446 vy: -0.04984162
      */
-    public static Vector2 VB = new Vector2(1 , 0);
+    public static Vector2 VB = new Vector2(3.1300812f, 1.5040649f);
 
     /**
      * Radius of the hole.
@@ -51,6 +51,8 @@ public class Input {
 
     /**
      * Height Function.
+     * Math.pow(Math.E, (-(x*x + y*y))/40)
+     * 0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8))
      */
     public static String H = "0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8))";
     /**

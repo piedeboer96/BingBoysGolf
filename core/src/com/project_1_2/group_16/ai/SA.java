@@ -10,6 +10,8 @@ import javax.swing.plaf.nimbus.State;
 import java.lang.reflect.Array;
 import java.util.*;
 
+import static com.project_1_2.group_16.gamelogic.Terrain.initTreesForTesting;
+
 public class SA {
     public static final float SOLVER_STEP_SIZE = 0.1f;
     public static final float MAXVEL = 5f;
@@ -47,7 +49,6 @@ public class SA {
      * @return array of x and y velocities
      */
     public List<Float> runSA(){
-        System.out.println(state.getFitness());
         if(state.getFitness() > Input.R) {
             outerloop:
             for (int i = 0; i < kmax; i++) {
@@ -86,20 +87,22 @@ public class SA {
      * @return the vector with highest fitness
      */
     public Neighbour findInitalState(int init_vector_amount){
-        ArrayList<float[]> initialCandidates = Score.availableVelocities();
+//        ArrayList<float[]> initialCandidates = Score.availableVelocities();
         Neighbour bestNeighbour = null;
-        double bestFitness = Integer.MAX_VALUE;
-        for(int i=0; i<initialCandidates.size(); i++){
-            Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
-            if(temp.getFitness() < bestFitness){
-                if(temp.getFitness() < Input.R){
-                    return temp;
-                }
-                bestFitness = temp.getFitness();
-                bestNeighbour = temp;
-            }
-        }
-        System.out.println("yooo " + bestNeighbour.getFitness());
+//        double bestFitness = Integer.MAX_VALUE;
+//        for(int i=0; i<initialCandidates.size(); i++){
+//            Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
+//            if(temp.getFitness() < bestFitness){
+//                if(temp.getFitness() < Input.R){
+//                    return temp;
+//                }
+//                bestFitness = temp.getFitness();
+//                bestNeighbour = temp;
+//            }
+//        }
+//        System.out.println("here is " + bestNeighbour.getVx() + " " + bestNeighbour.getVy());
+        float[] velocities = Score.bestVelocity();
+        bestNeighbour = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, velocities[0], velocities[1]));
         return bestNeighbour;
     }
 
@@ -170,8 +173,7 @@ public class SA {
             for(int i = 0; i < viableVectors.size(); i++){
                 Neighbour neighbour = new Neighbour(viableVectors.get(i));
                 if(neighbour.getFitness() < state.getFitness()){
-                    if(neighbour.getFitness() <= Input.R){
-                        System.out.println("yeahhh");
+                    if(neighbour.getFitness() < Input.R){
                         return neighbour;
                     }
                     current_neighbours.add(neighbour);
@@ -179,15 +181,14 @@ public class SA {
             }
             Collections.shuffle(current_neighbours);
         }
-        double bestFitness = Integer.MAX_VALUE;
-
-        for(Neighbour n : current_neighbours){
-            if(n.fitness < bestFitness){
-                toReturn = n;
-                bestFitness = n.fitness;
-            }
-        }
-        return toReturn;
+//        double bestFitness = Integer.MAX_VALUE;
+//        for(Neighbour n : current_neighbours){
+//            if(n.fitness < bestFitness){
+//                bestFitness =  n.fitness;
+//                toReturn = n;
+//            }
+//        }
+        return  ((current_neighbours.size() <= 0) ? getRandomNeighbour() :  current_neighbours.get((int) Math.random() * current_neighbours.size()));
     }
 
 
@@ -226,7 +227,7 @@ public class SA {
     }
 
     public static void main(String[] args) {
-
+        initTreesForTesting();
         long start = System.currentTimeMillis();
         SA test = new SA(500,  0.06f);
         System.out.println("best is " + test.runSA());
@@ -234,6 +235,5 @@ public class SA {
         long end = System.currentTimeMillis();
         System.out.println("Runtime: " + (end - start) + " ms");
         System.out.println("amount of simulations taken " + Game.simulCounter);
-
     }
 }

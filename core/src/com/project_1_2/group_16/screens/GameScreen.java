@@ -71,7 +71,7 @@ public class GameScreen extends ScreenAdapter {
         this.assets = new AssetManager();
         this.instances = new Array<ModelInstance>();
         this.game = new Game();
-        game.setNumericalSolver(NumericalSolver.RK4);
+        game.setNumericalSolver(NumericalSolver.ADAMSB2);
 
         // init skins
         this.font = new BitmapFont();

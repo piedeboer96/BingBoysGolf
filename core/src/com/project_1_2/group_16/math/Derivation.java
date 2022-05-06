@@ -34,13 +34,11 @@ public class Derivation {
      */
     public static Derivation getDerivation(StateVector sv, float h, Derivation d, float multiplier){
         float multipliedH = h*multiplier;
-        StateVector tempSV = new StateVector(sv.x + (multipliedH * d.dx_dt), sv.y, sv.vx + (multipliedH * d.dvx_dt), sv.vy);
-        StateVector tempSV2 = new StateVector(sv.x, sv.y + (multipliedH * d.dy_dt), sv.vx, sv.vy + (multipliedH * d.dvy_dt));
+        StateVector tempSV = new StateVector(sv.x + (multipliedH * d.dx_dt), sv.y+ (multipliedH * d.dy_dt), sv.vx + (multipliedH * d.dvx_dt), sv.vy + (multipliedH * d.dvy_dt));
         float [] pDerivatives = Terrain.getSlope(new float[]{tempSV.x, tempSV.y}, h);
-        float [] pDerivatives2 = Terrain.getSlope(new float[]{tempSV2.x, tempSV2.y}, h);
         float accelerationX = acc.getAccelerationX(pDerivatives[0], pDerivatives[1], tempSV);
-        float accelerationY = acc.getAccelerationY(pDerivatives2[0], pDerivatives2[1], tempSV2);
-        return new Derivation(tempSV.vx, tempSV2.vy, accelerationX, accelerationY);
+        float accelerationY = acc.getAccelerationY(pDerivatives[0], pDerivatives[1], tempSV);
+        return new Derivation(tempSV.vx, tempSV.vy, accelerationX, accelerationY);
     }
 
     /**
