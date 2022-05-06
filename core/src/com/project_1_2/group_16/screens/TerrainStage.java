@@ -100,7 +100,7 @@ public class TerrainStage extends InputScreen {
         this.browse.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                chooser = new FileChooser("spline", screen.skin, functionField);
+                chooser = new FileChooser("choose spline file", screen.skin, functionField);
                 chooser.show(stage);
             }
         });
