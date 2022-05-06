@@ -1,6 +1,5 @@
 package com.project_1_2.group_16.ai;
 
-import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
@@ -17,20 +16,27 @@ import java.util.Random;
 
 public class RuleBasedBot {
 
-    static final int Population = 200;
+    static final int Population = 100;
     static Random rand = new Random();
     static final float max = 5.0F;          //what is the maximum force that we can apply?
     static float score;
     static float bestScore;
     static boolean scoreInitialise = false;
+
     static float float_randomX;
     static float float_randomY;
     static int random_int;
-    public static StateVector svForXandY;
-    public static StateVector sv;
-    public static StateVector newsv;
-    public static boolean useAnimation = true;
-    public static boolean firstGen = true;
+    public StateVector svForXandY;
+    public StateVector sv;
+    public StateVector newsv;
+    private Game game;
+
+    public RuleBasedBot(StateVector sv){
+        this.sv = sv;
+        this.game = new Game();
+        this.svForXandY = sv;
+        BestShot(sv,game);
+    }
 
     /**
      * Method that finds the best shot.
@@ -39,12 +45,9 @@ public class RuleBasedBot {
      * Lowest value means closest 'floodFill' based distance to
      * the target. This will update the best shot.
      */
-    public static void BestShot(App app) {
-        Game game = new Game();
-        game.setNumericalSolver(NumericalSolver.RK4);
-
-
-        useAnimation = false;
+    public void BestShot(StateVector sv,Game game) {
+        this.sv = sv;
+        this.game = game;
 
         for(int i = 0; i < Population; ++i) {
 
@@ -63,14 +66,14 @@ public class RuleBasedBot {
             else{
                 float_randomY = -(rand.nextFloat() * max);
             }
-            if(firstGen){
-                sv = new StateVector(0, 0, float_randomX, float_randomY);
-            }else{
-                sv = new StateVector(svForXandY.x, svForXandY.y, float_randomX, float_randomY);
-            }
 
-            game.run(sv, null);
-            score = FloodFill.getMatrixValue(sv.x, sv.y);
+            sv = new StateVector(svForXandY.x, svForXandY.y, float_randomX, float_randomY);
+
+            //game.run(sv, null);
+            this.game.setNumericalSolver(NumericalSolver.RK4);
+            this.game.runEngine(sv, null, null, null, null);
+            //score = FloodFill.getMatrixValue(sv.x, sv.y,);
+            score = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
 
             if ((!scoreInitialise || bestScore > score) && score!=-1) {
                 scoreInitialise = true;
@@ -82,15 +85,14 @@ public class RuleBasedBot {
             }
         }
 
-        useAnimation = true;
-        
-        app.shoot(newsv.vx, newsv.vy);
         System.out.println(newsv);
         System.out.println("\n");
-        scoreInitialise = false;
-        firstGen = false;
-        svForXandY = newsv;
 
+    }
+    public StateVector Play(){
+        sv.vx = newsv.vx;
+        sv.vy = newsv.vy;
+        return sv;
     }
 
 }
