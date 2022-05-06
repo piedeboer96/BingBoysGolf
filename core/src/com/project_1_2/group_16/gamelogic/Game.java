@@ -20,6 +20,7 @@ public class Game {
 
     public static int simulCounter = 0;
 
+
     /**
      * Friction caused by hitting trees.
      */
@@ -39,25 +40,14 @@ public class Game {
      */
     public void run(final StateVector sv, App reference) {
         // update state vector with numerical solver
-        if (reference != null) {
-            this.solver.solve(h, sv);
-        }
-        else {
-            this.solver.solve(h*1.5f, sv);
-        }
+
+        this.solver.solve(h, sv);
 
         // check water collision
         if (Terrain.collision.ballIsInWater(sv)) {
             // reset position
             sv.x = reference == null ? Integer.MAX_VALUE : sv.prev.x;
             sv.y = reference == null ? Integer.MAX_VALUE : sv.prev.y;
-                if(reference == null){
-                    sv.x = Integer.MAX_VALUE;
-                    sv.y = Integer.MAX_VALUE;
-                }else{
-                    sv.x = sv.prev.x;
-                    sv.y = sv.prev.y;
-                }
 
             sv.stop = true;
 
@@ -111,6 +101,8 @@ public class Game {
             case NumericalSolver.EULER: this.solver = new Euler(); break;
             case NumericalSolver.RK2: this.solver = new RK2(); break;
             case NumericalSolver.RK4: this.solver = new RK4(); break;
+            case NumericalSolver.ADAMSB2: this.solver = new AdamsB2nd(); break;
+            case NumericalSolver.ADAMSM4: this.solver = new AdamsM4th(); break;
         }
     }
 

@@ -6,7 +6,6 @@ import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 
 public class Neighbour {
-    public static final float STEP_SIZE = SA.SOLVER_STEP_SIZE;
     private StateVector sv, init_sv;
     private float vx, vy;
     private Game game;
@@ -18,7 +17,14 @@ public class Neighbour {
         this.game = new Game();
         this.game.setNumericalSolver(NumericalSolver.RK4);
         this.game.runEngine(this.sv, null, null, this, null);
-//        fitness = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
+        fitness = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
+    }
+    public Neighbour (Neighbour n){
+        this.vx = n.vx;
+        this.vy = n.vy;
+        this.init_sv = n.init_sv;
+        this.sv = n.sv;
+        this.fitness = n.fitness;
     }
 
     public StateVector getSv(){

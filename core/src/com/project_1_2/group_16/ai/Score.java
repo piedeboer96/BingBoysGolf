@@ -76,16 +76,18 @@ public class Score {
     }
 
     public static boolean checkWater(float velX, float velY){
-        float denom = Physics.magnitude(velX, velY);
-        velX /= denom;
-        velY /= denom;
-        velX *= 2f;
-        velX *= 2f;
-        for(float x = Input.V0.x; x<=10; x+=velX){
-            for(float y = Input.V0.y; y<=10; y+=velY){
-                if(Terrain.getHeight(x, y) < 0){
-                    return true;
-                }
+//        float denom = Physics.magnitude(velX, velY);
+//        velX /= denom;
+//        velY /= denom;
+//        velX *= 2f;
+//        velX *= 2f;
+        float x = Input.V0.x, y = Input.V0.y;
+        while(x<=10 && y<=10){
+            x+=velX;
+            y+=velY;
+            if(Terrain.getHeight(x, y) < 0){
+                System.out.println(x + " " + y);
+                return true;
             }
         }
         return false;
@@ -99,6 +101,7 @@ public class Score {
         xH = (Math.abs(maxVelX - minVelX))/6.15f;
         yH = (Math.abs(maxVelY - minVelY))/6.15f;
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
+        toReturn.add(new float[] {((Input.VT.x - Input.V0.x)/(Input.VT.x - Input.V0.x + Input.VT.y-Input.V0.y))*5.0f, ((Input.VT.y-Input.V0.y)/(Input.VT.x - Input.V0.x + Input.VT.y-Input.V0.y))*5.0f});
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
                 if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY)){
@@ -107,6 +110,36 @@ public class Score {
             }
         }
         System.out.println(toReturn.size());
+        return toReturn;
+    }
+
+    public static float[] bestVelocity(){
+        float minVelX = -5.0f;
+        float maxVelX = 5.0f;
+        float minVelY = -5.0f;
+        float maxVelY = 5.0f;
+        float xH, yH;
+        Game g = new Game();
+        xH = (Math.abs(maxVelX - minVelX))/6.15f;
+        yH = (Math.abs(maxVelY - minVelY))/6.15f;
+        float[] toReturn = new float[2];
+        float bestFitness = Integer.MAX_VALUE;
+        for(float velX = minVelX; velX<=maxVelX; velX+=xH){
+            for(float velY = minVelY; velY<=maxVelY; velY+=yH){
+                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY)){
+                    StateVector sv = new StateVector(Input.V0.x, Input.V0.y, velX, velY);
+                    Neighbour temp = new Neighbour(sv);
+                    if(temp.fitness < bestFitness){
+                        bestFitness = (float) temp.fitness;
+                        toReturn[0] = velX;
+                        toReturn[1] = velY;
+                        if(temp.fitness < Input.R){
+                            return toReturn;
+                        }
+                    }
+                }
+            }
+        }
         return toReturn;
     }
     // idx 0 : minX, idx 1 : maxX, idx 2 : minY, idx 3 : maxY
@@ -132,10 +165,6 @@ public class Score {
 //    }
 
     public static void main(String[] args) {
-        ArrayList<float[]> toPrint = availableVelocities();
-        for(float[] f : toPrint){
-            System.out.println(Arrays.toString(f));
-        }
-//        System.out.println(toPrint.size());
+        System.out.println(checkWater(3.1300812f, 1.5040649f));
     }
 }

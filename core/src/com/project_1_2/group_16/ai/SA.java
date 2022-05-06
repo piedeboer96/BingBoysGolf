@@ -10,6 +10,8 @@ import javax.swing.plaf.nimbus.State;
 import java.lang.reflect.Array;
 import java.util.*;
 
+import static com.project_1_2.group_16.gamelogic.Terrain.initTreesForTesting;
+
 public class SA {
     public static final float SOLVER_STEP_SIZE = 0.1f;
     public static final float MAXVEL = 5f;
@@ -58,11 +60,11 @@ public class SA {
                 double cost = state.getFitness() - randomNeighbour.getFitness();
                 if (cost >= 0) {
                     setState(randomNeighbour);
-                    //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
+                    System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
                 } else {
                     if (Math.random() < getProbability(state, randomNeighbour)) {
                         setState(randomNeighbour);
-                        //System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
+                        System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
                     }
                 }
                 if (state.getFitness() < Input.R) {
@@ -85,19 +87,22 @@ public class SA {
      * @return the vector with highest fitness
      */
     public Neighbour findInitalState(int init_vector_amount){
-        ArrayList<float[]> initialCandidates = Score.availableVelocities();
+//        ArrayList<float[]> initialCandidates = Score.availableVelocities();
         Neighbour bestNeighbour = null;
-        double bestFitness = Integer.MAX_VALUE;
-        for(int i=0; i<initialCandidates.size(); i++){
-            Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
-            if(temp.getFitness() < bestFitness){
-                if(temp.getFitness() < Input.R){
-                    return temp;
-                }
-                bestFitness = temp.getFitness();
-                bestNeighbour = temp;
-            }
-        }
+//        double bestFitness = Integer.MAX_VALUE;
+//        for(int i=0; i<initialCandidates.size(); i++){
+//            Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
+//            if(temp.getFitness() < bestFitness){
+//                if(temp.getFitness() < Input.R){
+//                    return temp;
+//                }
+//                bestFitness = temp.getFitness();
+//                bestNeighbour = temp;
+//            }
+//        }
+//        System.out.println("here is " + bestNeighbour.getVx() + " " + bestNeighbour.getVy());
+        float[] velocities = Score.bestVelocity();
+        bestNeighbour = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, velocities[0], velocities[1]));
         return bestNeighbour;
     }
 
@@ -143,38 +148,47 @@ public class SA {
      * @return a random neigbour
      */
     private Neighbour getNeighbour(Neighbour state) {
-       if(this.recalculate){
-           current_neighbours = new ArrayList<>();
-           ArrayList<StateVector> newVectors = new ArrayList<>();
-                float vx = state.getVx();
-                float vy = state.getVy();
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy + neigbourStepSize));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy - neigbourStepSize));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy - neigbourStepSize));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy - neigbourStepSize));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy + neigbourStepSize));
-                newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy + neigbourStepSize));
+        Neighbour toReturn = null;
+        if(this.recalculate){
+            current_neighbours = new ArrayList<>();
+            ArrayList<StateVector> newVectors = new ArrayList<>();
+            float vx = state.getVx();
+            float vy = state.getVy();
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy + neigbourStepSize));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy - neigbourStepSize));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy - neigbourStepSize));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy - neigbourStepSize));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy + neigbourStepSize));
+            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy + neigbourStepSize));
 
-           ArrayList<StateVector> viableVectors = new ArrayList<>();
-           for(int i = 0; i < newVectors.size(); i++){
-               if(newVectors.get(i).vx >= 0.01f && newVectors.get(i).vy >= 0.01f && viableVector(newVectors.get(i))){
-                   viableVectors.add(newVectors.get(i));
-               }
-           }
+            ArrayList<StateVector> viableVectors = new ArrayList<>();
+            for(int i = 0; i < newVectors.size(); i++){
+                if(newVectors.get(i).vx >= 0.01f && newVectors.get(i).vy >= 0.01f && viableVector(newVectors.get(i))){
+                    viableVectors.add(newVectors.get(i));
+                }
+            }
 
-           for(int i = 0; i < viableVectors.size(); i++){
-              Neighbour neighbour = new Neighbour(viableVectors.get(i));
-              if(neighbour.getFitness() < state.getFitness()){
-
-                  current_neighbours.add(neighbour);
-              }
-           }
-           Collections.shuffle(current_neighbours);
-       }
-        int random = (int)Math.random()*current_neighbours.size();
-       return  ((current_neighbours.size() <= 0) ? getRandomNeighbour() :  current_neighbours.get(random));
+            for(int i = 0; i < viableVectors.size(); i++){
+                Neighbour neighbour = new Neighbour(viableVectors.get(i));
+                if(neighbour.getFitness() < state.getFitness()){
+                    if(neighbour.getFitness() < Input.R){
+                        return neighbour;
+                    }
+                    current_neighbours.add(neighbour);
+                }
+            }
+            Collections.shuffle(current_neighbours);
+        }
+//        double bestFitness = Integer.MAX_VALUE;
+//        for(Neighbour n : current_neighbours){
+//            if(n.fitness < bestFitness){
+//                bestFitness =  n.fitness;
+//                toReturn = n;
+//            }
+//        }
+        return  ((current_neighbours.size() <= 0) ? getRandomNeighbour() :  current_neighbours.get((int) Math.random() * current_neighbours.size()));
     }
 
 
@@ -191,7 +205,7 @@ public class SA {
      * @param updated_state
      */
     private void setState(Neighbour updated_state){
-        this.state = new Neighbour(updated_state.getSv());
+        this.state = new Neighbour(updated_state);
     }
 
     /**
@@ -201,7 +215,7 @@ public class SA {
      * @return
      */
     private float getProbability(Neighbour state, Neighbour updated) {
-       return (float)Math.exp(-1*(state.getFitness() - updated.getFitness()) / Temperature);
+        return (float)Math.exp(-1*(state.getFitness() - updated.getFitness()) / Temperature);
     }
 
     /**
@@ -213,8 +227,9 @@ public class SA {
     }
 
     public static void main(String[] args) {
+        initTreesForTesting();
         long start = System.currentTimeMillis();
-        SA test = new SA(500,  0.3f);
+        SA test = new SA(500,  0.06f);
         System.out.println("best is " + test.runSA());
         System.out.println(test.state.getFitness());
         long end = System.currentTimeMillis();

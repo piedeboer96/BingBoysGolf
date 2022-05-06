@@ -20,7 +20,7 @@ public class Collision {
      * @return boolean, whether it is in the radius...
      */
     public boolean ballIsInTargetRadius(StateVector sv) {
-        return Physics.magnitude(sv.vx, sv.vy) < MAX_HOLE_VELOCITY && Input.VT.dst(sv.x, sv.y) < Input.R;
+        return Input.VT.dst(sv.x, sv.y) < Input.R;
     }
 
     /**
