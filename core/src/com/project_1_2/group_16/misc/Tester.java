@@ -2,6 +2,7 @@ package com.project_1_2.group_16.misc;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.*;
+import com.project_1_2.group_16.physics.Physics;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class Tester {
     }
 
     public static float[] analyticalAnswer(float velocity, float time){
-        float acceleration = 0;
+        float acceleration = -Input.MUK * Physics.GRAV_CONSTANT;
         float distance = (float)(velocity*time + 0.5*acceleration*(time*time));
         float endVelocity = velocity + acceleration*time;
         return new float[]{distance, endVelocity};
@@ -58,9 +59,9 @@ public class Tester {
 
 
     public static void main(String[] args) {
-        StateVector sv = new StateVector(Input.V0.x, Input.V0.y, 1, 0);
-        float stepSize = 0.0001f;
-        int nmbr_steps = 50;
+        StateVector sv = new StateVector(0, 0, 2, 0);
+        float stepSize = 0.02f;
+        int nmbr_steps = 10;
         NumericalSolver RK4 = new RK4();
         NumericalSolver adam = new AdamsM4th();
 
