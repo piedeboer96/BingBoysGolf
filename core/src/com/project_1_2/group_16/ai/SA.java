@@ -7,8 +7,6 @@ import com.project_1_2.group_16.physics.Physics;
 
 import java.util.*;
 
-import static com.project_1_2.group_16.gamelogic.Terrain.initTreesForTesting;
-
 public class SA {
     public static final float SOLVER_STEP_SIZE = 0.1f;
     public static final float MAXVEL = 5f;
@@ -90,7 +88,7 @@ public class SA {
         for(int i=0; i<initialCandidates.size(); i++){
             Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
             if(temp.getFitness() < bestFitness){
-                if(temp.getFitness() < Input.R){
+                if(temp.getFitness() < Input.R * 3.15f){
                     return temp;
                 }
                 bestFitness = temp.getFitness();
