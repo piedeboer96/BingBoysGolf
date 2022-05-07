@@ -47,6 +47,7 @@ public class DumbBot {
         //multiply every Scaled velocity by the maximum velocity
         c1 = c1*maxV;
         c2 = c2*maxV;
+        System.out.println("total C " + c1 +" " + c2);
 
         if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
     }

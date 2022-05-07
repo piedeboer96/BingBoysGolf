@@ -4,8 +4,11 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.physics.Physics;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 //
@@ -45,8 +48,12 @@ public class BRO {
         int localSearchCounter = 0;
         outerloop:
         while(iter<maxIter){
+            sortPopulation();
+//            if(iter==0){
+//
+//            }
             System.out.println("iter ---------------" + iter++ + " -------------------------");
-            Soldier possibleBest = findBestSoldierInPop();
+            Soldier possibleBest = population.get(0);
             System.out.println("possible best " + possibleBest.toString());
             if(possibleBest.fitness < bestSoldier.fitness){
                 bestSoldier = possibleBest;
@@ -65,7 +72,30 @@ public class BRO {
                 System.out.println("solution found!");
                 break outerloop;
             }
-            System.out.println(bestSoldier.toString());
+            for(int i=0; i<(int)(0.2*population.size()); i++){
+                Soldier s = population.get(i);
+                float initialVelX = s.velX;
+                float initialVelY = s.velY;
+                if(Math.random() >= 0.5){
+                    while(Physics.magnitude(s.velX, s.velY) > 5) {
+                        s.velX = (float) (initialVelX + (1 + Math.random() * calcSDVelX()));
+                        s.velY = (float) (initialVelY + (1 + Math.random() * calcSDVelY()));
+                    }
+                }else {
+                    while(Physics.magnitude(s.velX, s.velY) > 5) {
+                        s.velX = (float) (initialVelX + calcSDVelX() * Math.random() * (bestSoldier.velX - s.velX));
+                        s.velY = (float) (initialVelY + calcSDVelY() * Math.random() * (bestSoldier.velY - s.velY));
+                    }
+                }
+                s.calcFitness();
+                if(s.fitness < bestSoldier.fitness){
+                    bestSoldier = new Soldier(s);
+                }
+                if(s.fitness < Input.R){
+                    bestSoldier = new Soldier(s);
+                    break outerloop;
+                }
+            }
             for(int i=0; i<population.size(); i++){
                 Soldier s = population.get(i);
                 if(s==bestSoldier){
@@ -129,7 +159,7 @@ public class BRO {
     public Soldier doLocalSearch(Soldier s, int iter){
         ArrayList<float[]> neighbourHood = new ArrayList<float[]>();
         Soldier toReturn = s;
-        float stepSize = 0.1f + 0.02f * iter;
+        float stepSize = 0.06f;
         float vx = s.velX;
         float vy = s.velY;
         neighbourHood.add(new float[] {vx+stepSize, vy});
@@ -172,6 +202,15 @@ public class BRO {
 //            float[] f = Score.validVelocity(-5f, 5f);
 //            population.add(new Soldier(f[0], f[1]));
 //        }
+    }
+
+    public void sortPopulation(){
+        Collections.sort(population, new Comparator<Soldier>(){
+            @Override
+            public int compare(Soldier o1, Soldier o2) {
+                return (int) (o1.fitness - o2.fitness);
+            }
+        });
     }
 
     /**

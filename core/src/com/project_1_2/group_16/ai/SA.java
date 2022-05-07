@@ -2,12 +2,9 @@ package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
-import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.physics.Physics;
 
-import javax.swing.plaf.nimbus.State;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static com.project_1_2.group_16.gamelogic.Terrain.initTreesForTesting;
@@ -87,22 +84,23 @@ public class SA {
      * @return the vector with highest fitness
      */
     public Neighbour findInitalState(int init_vector_amount){
-//        ArrayList<float[]> initialCandidates = Score.availableVelocities();
+        ArrayList<float[]> initialCandidates = Score.availableVelocities();
         Neighbour bestNeighbour = null;
-//        double bestFitness = Integer.MAX_VALUE;
-//        for(int i=0; i<initialCandidates.size(); i++){
-//            Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
-//            if(temp.getFitness() < bestFitness){
-//                if(temp.getFitness() < Input.R){
-//                    return temp;
-//                }
-//                bestFitness = temp.getFitness();
-//                bestNeighbour = temp;
-//            }
-//        }
-//        System.out.println("here is " + bestNeighbour.getVx() + " " + bestNeighbour.getVy());
-        float[] velocities = Score.bestVelocity();
-        bestNeighbour = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, velocities[0], velocities[1]));
+        double bestFitness = Integer.MAX_VALUE;
+        for(int i=0; i<initialCandidates.size(); i++){
+            Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
+            if(temp.getFitness() < bestFitness){
+                if(temp.getFitness() < Input.R){
+                    return temp;
+                }
+                bestFitness = temp.getFitness();
+                bestNeighbour = temp;
+            }
+        }
+        System.out.println("here is " + bestNeighbour.getVx() + " " + bestNeighbour.getVy());
+//        float[] velocities = Score.bestVelocity();
+//        bestNeighbour = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, velocities[0], velocities[1]));
+//        System.out.println(Arrays.toString(velocities));
         return bestNeighbour;
     }
 
@@ -149,9 +147,10 @@ public class SA {
      */
     private Neighbour getNeighbour(Neighbour state) {
         Neighbour toReturn = null;
-        if(this.recalculate){
+        ArrayList<StateVector> newVectors = null;
+        if (this.recalculate) {
             current_neighbours = new ArrayList<>();
-            ArrayList<StateVector> newVectors = new ArrayList<>();
+            newVectors = new ArrayList<>();
             float vx = state.getVx();
             float vy = state.getVy();
             newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy));
@@ -164,31 +163,23 @@ public class SA {
             newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy + neigbourStepSize));
 
             ArrayList<StateVector> viableVectors = new ArrayList<>();
-            for(int i = 0; i < newVectors.size(); i++){
-                if(newVectors.get(i).vx >= 0.01f && newVectors.get(i).vy >= 0.01f && viableVector(newVectors.get(i))){
+            for (int i = 0; i < newVectors.size(); i++) {
+                if (newVectors.get(i).vx >= 0.01f && newVectors.get(i).vy >= 0.01f && viableVector(newVectors.get(i))) {
                     viableVectors.add(newVectors.get(i));
                 }
             }
 
-            for(int i = 0; i < viableVectors.size(); i++){
+            for (int i = 0; i < viableVectors.size(); i++) {
                 Neighbour neighbour = new Neighbour(viableVectors.get(i));
-                if(neighbour.getFitness() < state.getFitness()){
-                    if(neighbour.getFitness() < Input.R){
+                if (neighbour.getFitness() < state.getFitness()) {
+                    if (neighbour.getFitness() < Input.R) {
                         return neighbour;
                     }
                     current_neighbours.add(neighbour);
                 }
             }
-//            Collections.shuffle(current_neighbours);
         }
-//        double bestFitness = Integer.MAX_VALUE;
-//        for(Neighbour n : current_neighbours){
-//            if(n.fitness < bestFitness){
-//                bestFitness =  n.fitness;
-//                toReturn = n;
-//            }
-//        }
-        return  ((current_neighbours.size() <= 0) ? getRandomNeighbour() :  current_neighbours.get((int) Math.random() * current_neighbours.size()));
+        return ((current_neighbours.size() <= 0) ? new Neighbour(newVectors.get((int) Math.random() * newVectors.size())) : current_neighbours.get((int) Math.random() * current_neighbours.size()));
     }
 
 
@@ -227,9 +218,9 @@ public class SA {
     }
 
     public static void main(String[] args) {
-        initTreesForTesting();
+//        initTreesForTesting();
         long start = System.currentTimeMillis();
-        SA test = new SA(500,  0.06f);
+        SA test = new SA(500,  0.2f);
         System.out.println("best is " + test.runSA());
         System.out.println(test.state.getFitness());
         long end = System.currentTimeMillis();
