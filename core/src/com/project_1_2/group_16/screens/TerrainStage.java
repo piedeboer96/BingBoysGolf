@@ -221,3 +221,8 @@ public class TerrainStage extends InputScreen {
         }
     }
 }
+
+// TODO
+// normalise screen_height positions to ratios
+// know which square got dragged
+// UI for drawing on render
