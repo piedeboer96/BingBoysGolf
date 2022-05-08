@@ -2,7 +2,6 @@ package com.project_1_2.group_16.gamelogic;
  
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.misc.ANSI;
 
 import bsh.EvalError;
@@ -103,14 +102,14 @@ public class Spline {
      * @param y y-coordinate
      * @return max(z-coordinate, -0.01)
      */
-    public static float getHeightFunction(float x, float y) {
+    public float getHeightFunction(float x, float y) {
         // make everything outside of the rendered area water
         if (Math.abs(x) > Terrain.WATER_EDGE || Math.abs(y) > Terrain.WATER_EDGE) {
             return -1;
         }
 
         // evaluate height function
-        String eval = ((("float x = "+x).concat("; float y = ")+y).concat("; ")+ Input.H).concat(";");
+        String eval = ((("float x = "+x).concat("; float y = ")+y).concat("; ")+this.heightFunction).concat(";");
         try {
             return Math.max((float)(double)(BSH.eval(eval)), -0.01f);
         } catch (EvalError e) {

@@ -156,6 +156,7 @@ public class TerrainStage extends InputScreen {
         this.brushLabel = new Label("Brush", this.screen.skin);
         this.brushLabel.setColor(Color.BLACK);
         this.brushLabel.setPosition(this.brushField.getX(), this.brushField.getY() + this.brushField.getHeight());
+        this.input = new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE];
     }
 
     @Override
@@ -205,8 +206,6 @@ public class TerrainStage extends InputScreen {
     private void preRenderFunction(boolean firstTime) {
         // render buttons
         if (firstTime) {
-            this.input = new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE];
-
             this.addActor(this.reset);
             this.addActor(this.brushField);
             this.addActor(this.brushLabel);
