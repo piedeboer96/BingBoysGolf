@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.models.Tree;
-import com.project_1_2.group_16.physics.Physics;
 
 public class Collision {
 
