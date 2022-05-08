@@ -45,7 +45,7 @@ public class SA {
      * @return array of x and y velocities
      */
     public List<Float> runSA(){
-        if(state.getFitness() > Input.R) {
+        if(bestState.getFitness() > Input.R) {
             outerloop:
             for (int i = 0; i < kmax; i++) {
                 Temperature = getTemperature(i);
@@ -96,12 +96,14 @@ public class SA {
             Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
             if(temp.getFitness() < bestFitness){
                 if(temp.getFitness() < Input.R * 3.15f){
+                    this.bestState = new Neighbour(temp);
                     return temp;
                 }
                 bestFitness = temp.getFitness();
                 bestNeighbour = temp;
             }
         }
+        System.out.println("yeahyeahyeah");
         System.out.println("here is " + bestNeighbour.getVx() + " " + bestNeighbour.getVy());
 //        float[] velocities = Score.bestVelocity();
 //        bestNeighbour = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, velocities[0], velocities[1]));
@@ -217,7 +219,7 @@ public class SA {
     public static void main(String[] args) {
 //        initTreesForTesting();
         long start = System.currentTimeMillis();
-        SA test = new SA(100, 0.2f);
+        SA test = new SA(1000, 0.2f);
         System.out.println("best is " + test.runSA());
         System.out.println(test.bestState.getFitness());
         long end = System.currentTimeMillis();

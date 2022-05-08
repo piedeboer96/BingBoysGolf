@@ -2,14 +2,18 @@ package com.project_1_2.group_16.gamelogic;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import bsh.Interpreter;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.models.Tree;
 import bsh.EvalError;
+
 
 public class Terrain {
 
@@ -29,7 +33,36 @@ public class Terrain {
      * @throws ClassCastException if the height function doesn't return a {@code double} value
      */
     public static float getHeight(float x, float y) {
-        return Input.USE_SPLINES ? spline.getHeight(x, y) : spline.getHeightFunction(x, y);
+        return Input.USE_SPLINES ? spline.getHeight(x, y) : getHeightUsingFunc(x, y);
+    }
+
+    public static float getHeightUsingFunc(float x, float y){
+        if (Math.abs(x) > Terrain.WATER_EDGE || Math.abs(y) > Terrain.WATER_EDGE) {
+        return -1;
+        }
+        return (float) (0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8)));
+//        final Interpreter BSH = new Interpreter();
+//
+////        // evaluate height function
+//        String eval = ((("float x = "+x).concat("; float y = ")+y).concat("; ")+Input.H).concat(";");
+//        try {
+//            return Math.max((float)(double)(BSH.eval(eval)), -0.01f);
+//        } catch (EvalError e) {
+//            System.out.println(ANSI.RED+"eval error"+ANSI.RESET+", interpreted: "+eval);
+//            System.exit(0);
+//        } catch (NullPointerException e) {
+//            System.out.println(ANSI.RED+"return error"+ANSI.RESET+", height function doesn't return anything");
+//            System.exit(0);
+//        } catch (ClassCastException e) {
+//            System.out.println(ANSI.RED+"cast exception"+ANSI.RESET+", please use double values for height function");
+//            System.exit(0);
+//        } catch (RuntimeException e) {
+//            System.out.println(ANSI.RED+"unexpected error"+ANSI.RESET+", please re-evaluate the height function");
+//            System.out.print(ANSI.RED+"error stack: "+ANSI.RESET);
+//            e.printStackTrace();
+//            System.exit(0);
+//        }
+//        return 0;
     }
 
     /**
@@ -50,6 +83,7 @@ public class Terrain {
      * @return array with dh/dx and dh/dy
      */
     public static float[] getSlope(float[] coordinates, float h) {
+//        h = 0.2f;
         float[] slopes = {
             (getHeight(coordinates[0] + h, coordinates[1]) - getHeight(coordinates[0] - h, coordinates[1]))/(2*h),
             (getHeight(coordinates[0], coordinates[1]+h) - getHeight(coordinates[0], coordinates[1] - h))/(2*h)

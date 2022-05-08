@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class RuleBasedBot {
 
-    static final int Population = 100;
+    static final int Population = 20;
     static Random rand = new Random();
     static final float max = 5.0F;          //what is the maximum force that we can apply?
     static float score;
