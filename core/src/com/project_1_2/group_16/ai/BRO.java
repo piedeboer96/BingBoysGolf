@@ -4,14 +4,11 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
-import com.project_1_2.group_16.physics.Physics;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Random;
 
-//
 public class BRO {
     public int popSize;
     public int maxIter;
@@ -19,6 +16,14 @@ public class BRO {
     boolean stop = false;
     int threshold;
     ArrayList<Soldier> population = new ArrayList<Soldier>();
+
+    /**
+     * Constructor for the improved BRO AI (BRO-HC)
+     * TODO: NEED TO WORK ON IT SO IT TAKES ITS STARTING POSITIONS AS A PARAMETER
+     * @param popSize Its chosen population size
+     * @param maxIter The max iterations it will run
+     * @param threshold The preferred threshold for which a player is damaged then it respawns
+     */
     public BRO(int popSize, int maxIter, int threshold){
         this.popSize = popSize;
         this.maxIter = maxIter;
@@ -29,6 +34,7 @@ public class BRO {
      * Driver method for BRO algorithm
      */
     public void runBRO(){
+        //Initialize variables and the population
         float upperBoundX, upperBoundY, lowerBoundX, lowerBoundY, ogUBx, ogLBx, ogUBy, ogLBy;
         initializePopulation();
         bestSoldier = findBestSoldierInPop();
@@ -46,56 +52,32 @@ public class BRO {
         float delta = (Math.round(maxIter/shrink));
         int iter = 0;
         int localSearchCounter = 0;
+        //Main loop to find the solution
         outerloop:
         while(iter<maxIter){
             sortPopulation();
-//            if(iter==0){
-//
-//            }
             System.out.println("iter ---------------" + iter++ + " -------------------------");
             Soldier possibleBest = population.get(0);
             System.out.println("possible best " + possibleBest.toString());
+            //Do local search of the current best soldier
             if(possibleBest.fitness < bestSoldier.fitness){
                 bestSoldier = possibleBest;
                 if(possibleBest.fitness < Input.R){
                     break outerloop;
                 }
             }
-            Soldier temp = doLocalSearch(bestSoldier, iter);
+            Soldier temp = doLocalSearch(bestSoldier);
             if(temp.fitness < bestSoldier.fitness){
                 System.out.println("Local search helped " + ++localSearchCounter);
                 bestSoldier = new Soldier(temp);
-//                population.add(bestSoldier);
-//                population.remove(findWorstSoldierInPop());
+                population.add(bestSoldier);
+                population.remove(findWorstSoldierInPop());
             }
             if(bestSoldier.fitness<Input.R){
                 System.out.println("solution found!");
                 break outerloop;
             }
-            for(int i=0; i<(int)(0.2*population.size()); i++){
-                Soldier s = population.get(i);
-                float initialVelX = s.velX;
-                float initialVelY = s.velY;
-                if(Math.random() >= 0.5){
-                    while(Physics.magnitude(s.velX, s.velY) > 5) {
-                        s.velX = (float) (initialVelX + (1 + Math.random() * calcSDVelX()));
-                        s.velY = (float) (initialVelY + (1 + Math.random() * calcSDVelY()));
-                    }
-                }else {
-                    while(Physics.magnitude(s.velX, s.velY) > 5) {
-                        s.velX = (float) (initialVelX + calcSDVelX() * Math.random() * (bestSoldier.velX - s.velX));
-                        s.velY = (float) (initialVelY + calcSDVelY() * Math.random() * (bestSoldier.velY - s.velY));
-                    }
-                }
-                s.calcFitness();
-                if(s.fitness < bestSoldier.fitness){
-                    bestSoldier = new Soldier(s);
-                }
-                if(s.fitness < Input.R){
-                    bestSoldier = new Soldier(s);
-                    break outerloop;
-                }
-            }
+            //If solution not found in the local search, update all player's positions using BRO algorithm
             for(int i=0; i<population.size(); i++){
                 Soldier s = population.get(i);
                 if(s==bestSoldier){
@@ -156,10 +138,10 @@ public class BRO {
      * @param s The best Soldier in the population
      * @return
      */
-    public Soldier doLocalSearch(Soldier s, int iter){
+    public Soldier doLocalSearch(Soldier s){
         ArrayList<float[]> neighbourHood = new ArrayList<float[]>();
         Soldier toReturn = s;
-        float stepSize = 0.06f;
+        float stepSize = 0.2f;
         float vx = s.velX;
         float vy = s.velY;
         neighbourHood.add(new float[] {vx+stepSize, vy});
@@ -197,13 +179,16 @@ public class BRO {
         for(float[] f : temp){
             population.add(new Soldier(f[0], f[1]));
         }
-//        System.out.println("here");
-//        for(int i=0; i<popSize; i++){
-//            float[] f = Score.validVelocity(-5f, 5f);
-//            population.add(new Soldier(f[0], f[1]));
-//        }
+        System.out.println("here");
+        for(int i=population.size(); i<popSize; i++){
+            float[] f = Score.validVelocity(-5f, 5f);
+            population.add(new Soldier(f[0], f[1]));
+        }
     }
 
+    /**
+     * Sort the population of soldiers based on its fitness value
+     */
     public void sortPopulation(){
         Collections.sort(population, new Comparator<Soldier>(){
             @Override
@@ -246,7 +231,10 @@ public class BRO {
         }
         return toReturn;
     }
-
+    /**
+     * Finds worst soldier in population based on the fitness of all the soldiers in the population
+     * @return worse soldier
+     */
     public Soldier findWorstSoldierInPop(){
         Soldier toReturn = null;
         float bestFitness = Integer.MIN_VALUE;
@@ -312,7 +300,7 @@ public class BRO {
     }
     public static void main (String[] args){
         System.out.println("starting...");
-        BRO bro = new BRO(16, 100, 2);
+        BRO bro = new BRO(20, 100, 2);
         bro.runBRO();
         System.out.println("amount of simulations taken " + Game.simulCounter);
     }

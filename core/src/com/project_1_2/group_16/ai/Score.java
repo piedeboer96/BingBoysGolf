@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Calculate score based on euclidean distance.
+ * Helper methods used for the AI
  */
 
 public class Score {
@@ -44,22 +44,10 @@ public class Score {
         }
         return vxy;
     }
-//    public static float [] calcHillDeriv (float velX, float velY, float stepSize){
-//        float[] toReturn = new float[2];
-//        float denom = 2 * stepSize;
-//        Game g0 = new Game();
-//        Game g1 = new Game();
-//        Game g2 = new Game();
-//        Game g3 = new Game();
-//        g0.setNumericalSolver(NumericalSolver.RK4);
-//        g0.runEngine(new StateVector(Input.V0.x, Input.V0.y, velX));
-//
-//        float dF_dVelX =
-//    }
-
     /**
      * Simulates one step of the Numerical solver using the given velocities and checks if it moves in a direction closer to
      * the hole
+     * TODO: NEED TO WORK ON IT SO IT TAKES ITS STARTING POSITIONS AS A PARAMETER
      * @param velX given x velocity
      * @param velY given y velocity
      * @return true if moves in a closer direction, else false
@@ -75,23 +63,34 @@ public class Score {
         return false;
     }
 
+    /**
+     * Method which takes the velocity vector of the ball and makes a prediction whether
+     * the ball will hit water or not
+     * TODO: NEED TO WORK ON IT SO IT TAKES ITS STARTING POSITIONS AS A PARAMETER
+     * @param velX velocity in the x direction
+     * @param velY velocity in the y direction
+     * @return true if the ball is likely to hit water, else false
+     */
     public static boolean checkWater(float velX, float velY){
-//        float denom = Physics.magnitude(velX, velY);
-//        velX /= denom;
-//        velY /= denom;
-//        velX *= 2f;
-//        velX *= 2f;
+        float denom = Physics.magnitude(velX, velY);
+        velX /= denom;
+        velY /= denom;
         float x = Input.V0.x, y = Input.V0.y;
-        while(x<=10 && y<=10){
+        while(x<=10 && y<=10 && x>=-10 && y>=-10){
             x+=velX;
             y+=velY;
-            if(Terrain.getHeight(x, y) < 0){
-                System.out.println(x + " " + y);
+            if(Terrain.getHeight(x, y) < 0 && (x<=10 && y<=10 && x>=-10 && y>=-10)){
                 return true;
             }
         }
         return false;
     }
+
+    /**
+     * Static method to develop a list of candidates of possible solutions
+     * TODO: NEED TO WORK ON IT SO IT TAKES ITS STARTING POSITIONS AS A PARAMETER
+     * @return the list of possible solutions
+     */
     public static ArrayList<float[]> availableVelocities () {
         float minVelX = -5.0f;
         float maxVelX = 5.0f;
@@ -104,7 +103,7 @@ public class Score {
         toReturn.add(new float[] {((Input.VT.x - Input.V0.x)/(Input.VT.x - Input.V0.x + Input.VT.y-Input.V0.y))*5.0f, ((Input.VT.y-Input.V0.y)/(Input.VT.x - Input.V0.x + Input.VT.y-Input.V0.y))*5.0f});
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
-                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY)){
+                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY) && !checkWater(velX, velY)){
                     toReturn.add(new float [] {velX, velY});
                 }
             }
@@ -112,57 +111,6 @@ public class Score {
         System.out.println(toReturn.size());
         return toReturn;
     }
-
-    public static float[] bestVelocity(){
-        float minVelX = -5.0f;
-        float maxVelX = 5.0f;
-        float minVelY = -5.0f;
-        float maxVelY = 5.0f;
-        float xH, yH;
-        Game g = new Game();
-        xH = (Math.abs(maxVelX - minVelX))/6.15f;
-        yH = (Math.abs(maxVelY - minVelY))/6.15f;
-        float[] toReturn = new float[2];
-        float bestFitness = Integer.MAX_VALUE;
-        for(float velX = minVelX; velX<=maxVelX; velX+=xH){
-            for(float velY = minVelY; velY<=maxVelY; velY+=yH){
-                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY)){
-                    StateVector sv = new StateVector(Input.V0.x, Input.V0.y, velX, velY);
-                    Neighbour temp = new Neighbour(sv);
-                    if(temp.fitness < bestFitness){
-                        bestFitness = (float) temp.fitness;
-                        toReturn[0] = velX;
-                        toReturn[1] = velY;
-                        if(temp.fitness < Input.R){
-                            return toReturn;
-                        }
-                    }
-                }
-            }
-        }
-        return toReturn;
-    }
-    // idx 0 : minX, idx 1 : maxX, idx 2 : minY, idx 3 : maxY
-//    public static float[] determineMinMax (){
-//        float[] toReturn = new float[4];
-//        float xDifference = Input.VT.x - Input.V0.x;
-//        float yDifference = Input.VT.y - Input.V0.y;
-//        if(xDifference<0){
-//            toReturn[0] = -5;
-//            toReturn[1] = 0;
-//        }else {
-//            toReturn[0] = 0;
-//            toReturn[1] = 5;
-//        }
-//        if(yDifference<0){
-//            toReturn[2] = -5;
-//            toReturn[3] = 0;
-//        }else {
-//            toReturn[2] = 0;
-//            toReturn[3] = 5;
-//        }
-//        return toReturn;
-//    }
 
     public static void main(String[] args) {
         System.out.println(checkWater(3.1300812f, 1.5040649f));
