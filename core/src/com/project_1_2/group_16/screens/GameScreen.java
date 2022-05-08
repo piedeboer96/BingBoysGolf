@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
-import com.project_1_2.group_16.ai.DumbBot;
 import com.project_1_2.group_16.ai.RuleBasedBot;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;

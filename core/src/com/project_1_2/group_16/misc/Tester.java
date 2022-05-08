@@ -3,8 +3,6 @@ package com.project_1_2.group_16.misc;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.*;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Tester {

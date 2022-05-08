@@ -300,6 +300,3 @@ public class TerrainStage extends InputScreen {
         }
     }
 }
-
-// TODO
-// normalise screen_height positions to ratios
