@@ -247,7 +247,7 @@ public class Spline {
 
     /**
      * Multiply 2 matrices together.
-     * https://www.baeldung.com/java-matrix-multiplication (adapted)
+     * Adapted from: https://www.baeldung.com/java-matrix-multiplication
      * @param A first matrix
      * @param B second matrix
      * @return resulting matrix
@@ -268,16 +268,6 @@ public class Spline {
     }
 
 
-
-
-
-
-
-
-
-
-
-    
 
     /**
      * Represents a data point used in the base of a spline.

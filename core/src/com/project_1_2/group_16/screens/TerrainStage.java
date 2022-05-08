@@ -42,6 +42,10 @@ public class TerrainStage extends InputScreen {
 
     private float[][] input;
 
+    private TextButton reset;
+    private Label brushLabel;
+    private TextField brushField;
+
     public TerrainStage(TitleScreen screen) {
         super(screen);
     }
@@ -134,8 +138,24 @@ public class TerrainStage extends InputScreen {
             }
         }
 
-        // input spline
-        this.input = new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE];
+        // reset button
+        this.reset = new TextButton("Reset spline", this.screen.skin);
+        this.reset.setPosition(0.7f*App.SCREEN_WIDTH + 10, 135, Align.bottomLeft);
+        this.reset.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                input = new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE];
+                preRenderFunction(false);
+            }
+        });
+        
+        // brush input
+        this.brushField = new TextField("0", this.screen.skin);
+        this.brushField.setWidth(this.reset.getWidth());
+        this.brushField.setPosition(this.reset.getX(Align.center), this.reset.getY(Align.center) + this.reset.getHeight() + 10, Align.center);
+        this.brushLabel = new Label("Brush", this.screen.skin);
+        this.brushLabel.setColor(Color.BLACK);
+        this.brushLabel.setPosition(this.brushField.getX(), this.brushField.getY() + this.brushField.getHeight());
     }
 
     @Override
@@ -161,8 +181,21 @@ public class TerrainStage extends InputScreen {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        System.out.println(screenX + " " + screenY);
-        return true;
+        if (!this.useSpline.isChecked() || this.firstTime) return false;
+        screenY = App.SCREEN_HEIGHT - screenY;
+        for (int i = 0; i < this.renderGrid.length; i++) {
+            for (int j = 0; j < this.renderGrid.length; j++) {
+                if (this.renderGrid[i][j].contains(screenX, screenY)) {
+                    this.renderGrid[i][j].setColor(Color.GRAY);
+                    if (i < this.renderGrid.length - 1) this.renderGrid[i+1][j].setColor(Color.GRAY);
+                    if (i > 0) this.renderGrid[i-1][j].setColor(Color.GRAY);
+                    if (j < this.renderGrid.length - 1) this.renderGrid[i][j+1].setColor(Color.GRAY);
+                    if (j > 0) this.renderGrid[i][j-1].setColor(Color.GRAY);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -170,14 +203,29 @@ public class TerrainStage extends InputScreen {
      * @param firstTime
      */
     private void preRenderFunction(boolean firstTime) {
+        // render buttons
+        if (firstTime) {
+            this.input = new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE];
+
+            this.addActor(this.reset);
+            this.addActor(this.brushField);
+            this.addActor(this.brushLabel);
+        }
+
+        // render / update tiles
+        float brush = Float.parseFloat(this.brushField.getText());
         for (int i = 0; i < this.renderGrid.length; i++) {
             for (int j = 0; j < this.renderGrid.length; j++) {
+                if (!firstTime) this.renderGrid[i][j].updateInput(this.input, brush);
                 this.renderGrid[i][j].configure(this.input);
                 if (firstTime) this.addActor(this.renderGrid[i][j]);
             }
         }
     }
 
+    /**
+     * Helper class for drawing a pre-render of the terrain to the screen.
+     */
     static class RenderTile extends Actor {
 
         private int i, j;
@@ -198,6 +246,20 @@ public class TerrainStage extends InputScreen {
         }
 
         /**
+         * Checks if this tile contains a pair of coordinates
+         * @param x x-coordinate
+         * @param y y-coordinate
+         * @return
+         */
+        public boolean contains(float x , float y) {
+            if (x < this.x) return false;
+            if (y < this.y) return false;
+            if (x > this.x + this.size) return false;
+            if (y > this.y + this.size) return false;
+            return true;
+        }
+
+        /**
          * Configure the tile to the current height function.
          * @param input the input matrix
          */
@@ -205,6 +267,23 @@ public class TerrainStage extends InputScreen {
             this.z = Terrain.spline.getHeightFunction(this.px, this.py) + input[this.i/4][this.j/4];
             if (this.z < 0) this.color = App.THEME.waterColorLight();
             else this.color = App.THEME.grassColorLight(this.z);
+        }
+
+        /**
+         * Update the user input with the state of this tile.
+         * @param input the input matrix
+         * @param brush the brush value
+         */
+        public void updateInput(float[][] input, float brush) {
+            if (this.color.equals(Color.GRAY)) input[this.i/4][this.j/4] += brush / 5f;
+        }
+
+        /**
+         * Set the color of this tile.
+         * @param color
+         */
+        public void setColor(Color color) {
+            this.color = color;
         }
 
         @Override
@@ -224,5 +303,3 @@ public class TerrainStage extends InputScreen {
 
 // TODO
 // normalise screen_height positions to ratios
-// know which square got dragged
-// UI for drawing on render
