@@ -68,6 +68,11 @@ public class GameScreen extends ScreenAdapter {
     private final Vector3 v = new Vector3();
     private float colorutil;
 
+	// bots
+	private RuleBasedBot ruleBasedBot;
+	private SA sa;
+	private BRO bro;
+
     public GameScreen(App app) {
         this.app = app;
     }
@@ -229,22 +234,16 @@ public class GameScreen extends ScreenAdapter {
 			System.out.println("closed app in "+ANSI.RED+(System.nanoTime() - init)+ANSI.RESET+" nanoseconds.");
 			System.exit(0);
 		}
-		//Do SimAnnealingBot
-		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) {
-			SA sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
-			List<Float> sol = sa.runSA();
-			this.shoot(sol.get(0), sol.get(1));
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // Sim. annealing bot
+			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
+			Float[] sol = this.sa.runSA().toArray(new Float[2]);
+			this.shoot(sol[0], sol[1]);
 		}
 		//Do BRO bot
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){
+			System.out.println("hereee");
 			BRO bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y);
 			List<Float> sol = bro.runBRO();
-			this.shoot(sol.get(0), sol.get(1));
-		}
-		//Do PSO Bot
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){
-			PSO pso = new PSO(1000, 20, this.golfball.STATE.x, this.golfball.STATE.y);
-			List<Float> sol = pso.runPSO();
 			this.shoot(sol.get(0), sol.get(1));
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.C)) { // switch camera
@@ -258,9 +257,8 @@ public class GameScreen extends ScreenAdapter {
 			}
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.P)) {
-			RuleBasedBot db = new RuleBasedBot(this.golfball.STATE);
-			//DumbBot db = new DumbBot(this.golfball.STATE);
-			StateVector dbState = db.Play();
+			this.ruleBasedBot = new RuleBasedBot(this.golfball.STATE);
+			StateVector dbState = this.ruleBasedBot.Play();
 			this.shoot(dbState.vx, dbState.vy);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.V)) {
