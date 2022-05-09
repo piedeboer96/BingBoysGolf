@@ -31,7 +31,7 @@ public class Terrain {
      * @throws ClassCastException if the height function doesn't return a {@code double} value
      */
     public static float getHeight(float x, float y) {
-        return Input.USE_SPLINES ? spline.getHeight(x, y) : getHeightUsingFunc(x, y);
+        return Input.USE_SPLINES ? spline.getHeight(x, y) : spline.getHeightFunction(x, y);
     }
 
     public static float getHeightUsingFunc(float x, float y){

@@ -2,6 +2,8 @@ package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.gamelogic.Spline;
+import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.physics.Physics;
 
@@ -127,7 +129,7 @@ public class PSO {
     }
 
     public static Particle[] initializeParticles(){
-        ArrayList<float[]> init_vel = Score.availableVelocities();
+        ArrayList<float[]> init_vel = Score.availableVelocities(Input.V0.x, Input.V0.y);
         population_size = init_vel.size();
         globalBest = new Particle(new StateVector(Input.V0.x, Input.V0.y, 0.1f, 0.1f));
         Particle[] particles  = new Particle[init_vel.size()];
@@ -144,8 +146,10 @@ public class PSO {
 
 
     public static void main(String[] args) {
+        Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
+        Terrain.spline.createSpline();
         System.out.println("starting...");
-        runPSO(100, initializeParticles());
+        runPSO(10000, initializeParticles());
         globalBest.print();
         System.out.println("amount of simulations taken " + Game.simulCounter);
     }

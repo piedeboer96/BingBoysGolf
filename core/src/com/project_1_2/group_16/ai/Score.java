@@ -35,27 +35,26 @@ public class Score {
      * @param maxVelocity the maximum velocity
      * @return a velocity
      */
-    public static float[] validVelocity(float minVelocity, float maxVelocity){
+    public static float[] validVelocity(float minVelocity, float maxVelocity, float startX, float startY){
         float[] vxy = new float[2];
         vxy[0] = (float)(minVelocity + Math.random()*(Math.abs(maxVelocity-minVelocity)));
         vxy[1] = (float)(minVelocity + Math.random()*(Math.abs(maxVelocity-minVelocity)));
-        if(Physics.magnitude(vxy[0], vxy[1]) > 5 || !checkIfBetter(vxy[0], vxy[1])){
-            return validVelocity(minVelocity, maxVelocity);
+        if(Physics.magnitude(vxy[0], vxy[1]) > 5 || !checkIfBetter(vxy[0], vxy[1], startX, startY)){
+            return validVelocity(minVelocity, maxVelocity, startX, startY);
         }
         return vxy;
     }
     /**
      * Simulates one step of the Numerical solver using the given velocities and checks if it moves in a direction closer to
      * the hole
-     * TODO: NEED TO WORK ON IT SO IT TAKES ITS STARTING POSITIONS AS A PARAMETER
      * @param velX given x velocity
      * @param velY given y velocity
      * @return true if moves in a closer direction, else false
      */
-    public static boolean checkIfBetter(float velX, float velY){
+    public static boolean checkIfBetter(float velX, float velY, float startX, float startY){
         Game runner = new Game();
         runner.setNumericalSolver(NumericalSolver.RK4);
-        StateVector sv = new StateVector(Input.V0.x, Input.V0.y, velX, velY);
+        StateVector sv = new StateVector(startX, startY, velX, velY);
         runner.run(sv, null);
         if(calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y) < calculateEucledianDistance(Input.V0.x, Input.V0.y, Input.VT.x, Input.VT.y)){
             return true;
@@ -66,7 +65,6 @@ public class Score {
     /**
      * Method which takes the velocity vector of the ball and makes a prediction whether
      * the ball will hit water or not
-     * TODO: NEED TO WORK ON IT SO IT TAKES ITS STARTING POSITIONS AS A PARAMETER
      * @param velX velocity in the x direction
      * @param velY velocity in the y direction
      * @return true if the ball is likely to hit water, else false
@@ -91,7 +89,7 @@ public class Score {
      * TODO: NEED TO WORK ON IT SO IT TAKES ITS STARTING POSITIONS AS A PARAMETER
      * @return the list of possible solutions
      */
-    public static ArrayList<float[]> availableVelocities () {
+    public static ArrayList<float[]> availableVelocities (float startX, float startY) {
         float minVelX = -5.0f;
         float maxVelX = 5.0f;
         float minVelY = -5.0f;
@@ -100,15 +98,15 @@ public class Score {
         xH = (Math.abs(maxVelX - minVelX))/6.15f;
         yH = (Math.abs(maxVelY - minVelY))/6.15f;
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
-        toReturn.add(new float[] {((Input.VT.x - Input.V0.x)/(Input.VT.x - Input.V0.x + Input.VT.y-Input.V0.y))*5.0f, ((Input.VT.y-Input.V0.y)/(Input.VT.x - Input.V0.x + Input.VT.y-Input.V0.y))*5.0f});
+        toReturn.add(new float[] {((Input.VT.x - startX)/(Input.VT.x - startX + Input.VT.y-startY))*5.0f, ((Input.VT.y-startY)/(Input.VT.x - startX + Input.VT.y-startY))*5.0f});
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
-                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY) && !checkWater(velX, velY)){
+                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY, startX, startY) && !checkWater(velX, velY)){
                     toReturn.add(new float [] {velX, velY});
                 }
             }
         }
-        System.out.println(toReturn.size());
+        System.out.println("this is " + toReturn.size());
         return toReturn;
     }
 

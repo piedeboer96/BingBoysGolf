@@ -2,19 +2,18 @@ package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.gamelogic.Spline;
+import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.physics.Physics;
 
 import java.util.*;
 
+
 public class SA {
-    public static final float SOLVER_STEP_SIZE = 0.1f;
     public static final float MAXVEL = 5f;
-    public static float hole_x = Input.VT.x;
-    public static float hole_y = Input.VT.y;
-    private static float start_x = Input.V0.x;
-    private static float start_y = Input.V0.y;
-    private static int init_velocities = 10;
+    private static float start_x = 0;
+    private static float start_y = 0;
 
     private float neigbourStepSize;
     private double Temperature;
@@ -22,22 +21,21 @@ public class SA {
     private boolean recalculate;
     private Neighbour state;
     private ArrayList<Neighbour> current_neighbours;
-    private boolean stop;
     private Neighbour bestState;
 
     /**
      * Constructor for SA object
-     * TODO: NEED TO WORK ON IT SO IT TAKES ITS STARTING POSITIONS AS A PARAMETER
      * @param kmax max iterations
      * @param neigbourStepSize step size for generating neighbours
      */
-    public SA(int kmax, float neigbourStepSize){
+    public SA(int kmax, float neigbourStepSize, float startX, float startY){
         this.kmax = kmax;
         this.neigbourStepSize = neigbourStepSize;
         this.recalculate = true;
-        setState(findInitalState(init_velocities));
+        this.start_x = startX;
+        this.start_y = startY;
+        setState(findInitalState());
 
-        stop = false;
     }
 
     /**
@@ -58,11 +56,9 @@ public class SA {
                 double cost = state.getFitness() - randomNeighbour.getFitness();
                 if (cost >= 0) {
                     setState(randomNeighbour);
-                    System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: "+ state.getVy());
                 } else {
                     if (Math.random() < getProbability(state, randomNeighbour)) {
                         setState(randomNeighbour);
-                        System.out.println("Fitness: " + state.getFitness() + " vx: " + state.getVx() + " vy: " + state.getVy());
                     }
                 }
                 if (state.getFitness() < Input.R) {
@@ -85,29 +81,28 @@ public class SA {
 
     /**
      * Method which generates random vectors and picks the best vector which is used at the start of SA
-     * @param init_vector_amount initial amount of vector
      * @return the vector with highest fitness
      */
-    public Neighbour findInitalState(int init_vector_amount){
-        ArrayList<float[]> initialCandidates = Score.availableVelocities();
+    public Neighbour findInitalState(){
+        ArrayList<float[]> initialCandidates = Score.availableVelocities(start_x, start_y);
         Neighbour bestNeighbour = null;
         double bestFitness = Integer.MAX_VALUE;
         for(int i=0; i<initialCandidates.size(); i++){
-            Neighbour temp = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
+            Neighbour temp = new Neighbour(new StateVector(start_x, start_y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
             if(temp.getFitness() < bestFitness){
                 if(temp.getFitness() < Input.R * 3.15f){
                     this.bestState = new Neighbour(temp);
+                    System.out.println(temp.getVx() + " " + temp.getVy());
+
                     return temp;
                 }
                 bestFitness = temp.getFitness();
                 bestNeighbour = temp;
             }
         }
-        System.out.println("yeahyeahyeah");
-        System.out.println("here is " + bestNeighbour.getVx() + " " + bestNeighbour.getVy());
 //        float[] velocities = Score.bestVelocity();
-//        bestNeighbour = new Neighbour(new StateVector(Input.V0.x, Input.V0.y, velocities[0], velocities[1]));
-//        System.out.println(Arrays.toString(velocities));
+//        bestNeighbour = new Neighbour(new StateVector(hole_x, hole_y, velocities[0], velocities[1]));
+        System.out.println(bestNeighbour.getVx() + " " + bestNeighbour.getVy());
         this.bestState = new Neighbour(bestNeighbour);
         return bestNeighbour;
     }
@@ -147,38 +142,35 @@ public class SA {
     private Neighbour getNeighbour(Neighbour state) {
         Neighbour toReturn = null;
         ArrayList<StateVector> newVectors = null;
-//        neigbourStepSize = (float) Math.random();
+        ArrayList<StateVector> viableVectors = null;
         if (this.recalculate) {
             current_neighbours = new ArrayList<>();
             newVectors = new ArrayList<>();
             float vx = state.getVx();
             float vy = state.getVy();
-            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy));
-            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy));
-            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy + neigbourStepSize));
-            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx, vy - neigbourStepSize));
-            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy - neigbourStepSize));
-            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx + neigbourStepSize, vy - neigbourStepSize));
-            newVectors.add(new StateVector(Input.V0.x, Input.V0.y, vx - neigbourStepSize, vy + neigbourStepSize));
+            newVectors.add(new StateVector(start_x, start_y, vx + neigbourStepSize, vy));
+            newVectors.add(new StateVector(start_x, start_y, vx - neigbourStepSize, vy));
+            newVectors.add(new StateVector(start_x, start_y, vx, vy + neigbourStepSize));
+            newVectors.add(new StateVector(start_x, start_y, vx, vy - neigbourStepSize));
+            newVectors.add(new StateVector(start_x, start_y, vx - neigbourStepSize, vy - neigbourStepSize));
+            newVectors.add(new StateVector(start_x, start_y, vx + neigbourStepSize, vy - neigbourStepSize));
+            newVectors.add(new StateVector(start_x, start_y, vx - neigbourStepSize, vy + neigbourStepSize));
 
-            ArrayList<StateVector> viableVectors = new ArrayList<>();
+            viableVectors = new ArrayList<>();
             for (int i = 0; i < newVectors.size(); i++) {
-                if (newVectors.get(i).vx >= 0.01f && newVectors.get(i).vy >= 0.01f && viableVector(newVectors.get(i))) {
+                if (viableVector(newVectors.get(i))) {
                     viableVectors.add(newVectors.get(i));
                 }
             }
-
             for (int i = 0; i < viableVectors.size(); i++) {
                 Neighbour neighbour = new Neighbour(viableVectors.get(i));
-                if (neighbour.getFitness() < state.getFitness()) {
-                    if (neighbour.getFitness() < Input.R) {
-                        return neighbour;
-                    }
-                    current_neighbours.add(neighbour);
+                if (neighbour.getFitness() < Input.R){
+                    return neighbour;
                 }
+                current_neighbours.add(neighbour);
             }
         }
-        return ((current_neighbours.size() <= 0) ? new Neighbour(newVectors.get((int) Math.random() * newVectors.size())) : current_neighbours.get((int) Math.random() * current_neighbours.size()));
+        return ((current_neighbours.size() <= 0) ? new Neighbour(viableVectors.get((int) Math.random() * newVectors.size())) : current_neighbours.get((int) Math.random() * current_neighbours.size()));
     }
 
 
@@ -217,12 +209,14 @@ public class SA {
     }
 
     public static void main(String[] args) {
+        Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
+        Terrain.spline.createSpline();
 //        initTreesForTesting();
         long start = System.currentTimeMillis();
-        SA test = new SA(1000, 0.2f);
+        SA test = new SA(1000, 0.2f, Input.V0.x, Input.V0.y);
         System.out.println("best is " + test.runSA());
-        System.out.println(test.bestState.getFitness());
         long end = System.currentTimeMillis();
+        System.out.println(test.bestState.getFitness());
         System.out.println("Runtime: " + (end - start) + " ms");
         System.out.println("amount of simulations taken " + Game.simulCounter);
     }

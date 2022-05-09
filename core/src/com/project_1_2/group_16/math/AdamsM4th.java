@@ -56,10 +56,7 @@ public class AdamsM4th implements NumericalSolver{
             vel_x1Corr = sv.vx + (h / 24f) * ((9 * derivCorr.dvx_dt) + (19 * deriv4.dvx_dt) - (5 * deriv3.dvx_dt) + (deriv2.dvx_dt));
             vel_y1Corr = sv.vy + (h / 24f) * ((9 * derivCorr.dvy_dt) + (19 * deriv4.dvy_dt) - (5 * deriv3.dvy_dt) + (deriv2.dvy_dt));
 
-            System.out.println(pos_x1Corr);
-            System.out.println(pos_y1Corr);
-            System.out.println(vel_x1Corr);
-            System.out.println(vel_y1Corr);
+
 
 //          update ball position
             sv.x = pos_x1Corr;
@@ -98,10 +95,10 @@ public class AdamsM4th implements NumericalSolver{
         int counter = 0;
         float t = 0;
         float t2 = 0;
-        float h = 0.2f;
+        float h = 1f;
         StateVector sv = new StateVector(0,0,0, 2);
         StateVector sv2 = new StateVector(0,0,0,2);
-        while(counter++ < 2){
+        while(counter++ < 1){
             am4.solve(h, sv2);
             t = t+h;
             System.out.println(counter + " " +sv2);
@@ -109,7 +106,7 @@ public class AdamsM4th implements NumericalSolver{
         System.out.println(t);
         System.out.println("BORDERLINE INSANITY");
         counter = 0;
-        while(counter++ < 2){
+        while(counter++ < 1){
             rk4.solve(h, sv);
             t2= t2+h;
             System.out.println(counter + " " + sv);

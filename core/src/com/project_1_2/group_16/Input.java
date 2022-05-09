@@ -58,7 +58,7 @@ public class Input {
     /**
      * Number of trees.
      */
-    public static int TREES = 0;
+    public static int TREES = 20;
 
     /**
      * Number of sandpits.
@@ -68,5 +68,5 @@ public class Input {
     /**
      * If the terrain uses a spline or a heightfunction.
      */
-    public static boolean USE_SPLINES = false;
+    public static boolean USE_SPLINES = true;
 }

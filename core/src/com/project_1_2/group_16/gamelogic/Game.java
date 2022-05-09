@@ -16,7 +16,7 @@ public class Game {
     /**
      * Step size.
      */
-    public static float h = 0.08f;
+    public static float h = 0.05f;
 
     public static int simulCounter = 0;
 
@@ -76,15 +76,15 @@ public class Game {
                 sv.vy *= treeFriction;
             }
         }
-
+        if (Terrain.collision.ballIsInTargetRadius(sv)) {
+            if (reference != null) this.endGame(reference);
+            sv.stop = true;
+            System.out.println("HITHITHITHITHIHTIHTIHTIHTIHTIHTIHTIHTIHT");
+        }
         // check for a stop
         if (Physics.magnitude(sv.vx, sv.vy) < h) {
             float[] partialDerivatives = this.solver.getPartialDerivatives();
             sv.stop = Physics.magnitude(partialDerivatives[0], partialDerivatives[1]) < Terrain.getStaticFriction(sv);
-            if (Terrain.collision.ballIsInTargetRadius(sv) && sv.stop) {
-                if (reference != null) this.endGame(reference);
-                System.out.println("HITHITHITHITHIHTIHTIHTIHTIHTIHTIHTIHTIHT");
-            }
         }
     }
 

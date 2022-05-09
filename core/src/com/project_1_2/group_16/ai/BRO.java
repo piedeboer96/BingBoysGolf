@@ -2,45 +2,52 @@ package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.gamelogic.Spline;
+import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class BRO {
     public int popSize;
+    public float startY;
+    public float startX;
     public int maxIter;
     public Soldier bestSoldier;
-    boolean stop = false;
     int threshold;
     ArrayList<Soldier> population = new ArrayList<Soldier>();
 
     /**
      * Constructor for the improved BRO AI (BRO-HC)
-     * TODO: NEED TO WORK ON IT SO IT TAKES ITS STARTING POSITIONS AS A PARAMETER
      * @param popSize Its chosen population size
      * @param maxIter The max iterations it will run
      * @param threshold The preferred threshold for which a player is damaged then it respawns
      */
-    public BRO(int popSize, int maxIter, int threshold){
+    public BRO(int popSize, int maxIter, int threshold, float startX, float startY){
         this.popSize = popSize;
         this.maxIter = maxIter;
         this.threshold = threshold;
+        this.startX = startX;
+        this.startY = startY;
     }
 
     /**
      * Driver method for BRO algorithm
      */
-    public void runBRO(){
+    public List<Float> runBRO(){
         //Initialize variables and the population
         float upperBoundX, upperBoundY, lowerBoundX, lowerBoundY, ogUBx, ogLBx, ogUBy, ogLBy;
         initializePopulation();
         bestSoldier = findBestSoldierInPop();
         if(bestSoldier.fitness < Input.R){
             System.out.println(bestSoldier.toString());
-            return;
+            ArrayList<Float> toReturn = new ArrayList<>();
+            toReturn.add(bestSoldier.velX); toReturn.add(bestSoldier.velY);
+            return toReturn;
         }
         float sdX = calcSDVelX();
         float sdY = calcSDVelY();
@@ -130,7 +137,10 @@ public class BRO {
                 }
             }
         }
-        System.out.println("best soldier returned : "+bestSoldier.toString());
+        System.out.println("best is " + bestSoldier.toString());
+        ArrayList<Float> toReturn = new ArrayList<>();
+        toReturn.add(bestSoldier.velX); toReturn.add(bestSoldier.velY);
+        return toReturn;
     }
 
     /**
@@ -158,7 +168,7 @@ public class BRO {
             Game g = new Game();
             g.setNumericalSolver(NumericalSolver.RK4);
             StateVector sv = new StateVector(Input.V0.x, Input.V0.y, f[0], f[1]);
-            Soldier sold = new Soldier(f[0], f[1]);
+            Soldier sold = new Soldier(f[0], f[1], startX, startY);
             g.runEngine(sv, null, null, null, sold);
             if(sold.fitness < Input.R){
                 return sold;
@@ -175,14 +185,14 @@ public class BRO {
      * Method to initialize population for BRO algorithm
      */
     public void initializePopulation(){
-        ArrayList<float[]> temp = Score.availableVelocities();
+        ArrayList<float[]> temp = Score.availableVelocities(startX, startY);
         for(float[] f : temp){
-            population.add(new Soldier(f[0], f[1]));
+            population.add(new Soldier(f[0], f[1], startX, startY));
         }
         System.out.println("here");
         for(int i=population.size(); i<popSize; i++){
-            float[] f = Score.validVelocity(-5f, 5f);
-            population.add(new Soldier(f[0], f[1]));
+            float[] f = Score.validVelocity(-5f, 5f, startX, startY);
+            population.add(new Soldier(f[0], f[1], startX, startY));
         }
     }
 
@@ -205,7 +215,7 @@ public class BRO {
      */
     public Soldier findNearestSoldier(Soldier soldier){
         float distance = Integer.MAX_VALUE;
-        Soldier nearestSoldier = new Soldier(0,0);
+        Soldier nearestSoldier = new Soldier(0,0, 0, 0);
         for(Soldier s : population){
             float curDistance = Score.calculateEucledianDistance(soldier.velX, soldier.velY, s.velX, s.velY);
             if(curDistance < distance){
@@ -299,8 +309,10 @@ public class BRO {
         return (float) (Math.sqrt(sd));
     }
     public static void main (String[] args){
+        Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
+        Terrain.spline.createSpline();
         System.out.println("starting...");
-        BRO bro = new BRO(20, 100, 2);
+        BRO bro = new BRO(20, 100, 2, Input.V0.x, Input.V0.y);
         bro.runBRO();
         System.out.println("amount of simulations taken " + Game.simulCounter);
     }

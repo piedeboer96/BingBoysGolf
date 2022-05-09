@@ -2,6 +2,7 @@ package com.project_1_2.group_16.misc;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.*;
+import com.project_1_2.group_16.physics.Physics;
 
 import java.util.Arrays;
 
@@ -48,7 +49,7 @@ public class Tester {
     }
 
     public static float[] analyticalAnswer(float velocity, float time){
-        float acceleration = 0;
+        float acceleration = -Input.MUK * Physics.GRAV_CONSTANT;
         float distance = (float)(velocity*time + 0.5*acceleration*(time*time));
         float endVelocity = velocity + acceleration*time;
         return new float[]{distance, endVelocity};

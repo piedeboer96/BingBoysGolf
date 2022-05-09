@@ -16,7 +16,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.ai.BRO;
 import com.project_1_2.group_16.ai.RuleBasedBot;
+import com.project_1_2.group_16.ai.SA;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.gamelogic.Game;
@@ -28,6 +30,9 @@ import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.TerrainBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameScreen extends ScreenAdapter {
     
@@ -215,7 +220,6 @@ public class GameScreen extends ScreenAdapter {
 
     /**
 	 * The controls for the app.
-	 * @param input
 	 */
 	private void controls() {
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) { // close game
@@ -223,6 +227,19 @@ public class GameScreen extends ScreenAdapter {
 			Gdx.app.exit();
 			System.out.println("closed app in "+ANSI.RED+(System.nanoTime() - init)+ANSI.RESET+" nanoseconds.");
 			System.exit(0);
+		}
+		//Do SimAnnealingBot
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) {
+			SA sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
+			List<Float> sol = sa.runSA();
+			this.shoot(sol.get(0), sol.get(1));
+		}
+		//Do BRO bot
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){
+			System.out.println("hereee");
+			BRO bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y);
+			List<Float> sol = bro.runBRO();
+			this.shoot(sol.get(0), sol.get(1));
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.C)) { // switch camera
 			if (this.useFreeCam) { // switch to ball cam

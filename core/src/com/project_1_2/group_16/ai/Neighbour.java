@@ -1,7 +1,7 @@
 package com.project_1_2.group_16.ai;
 
-import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 
@@ -12,7 +12,9 @@ public class Neighbour {
     public double fitness = Integer.MAX_VALUE;
 
     public Neighbour(StateVector sv){
+        //Changing stateVector
         this.sv = sv;
+        //Starting StateVector
         this.init_sv = new StateVector(sv.x, sv.y, sv.vx, sv.vy);
         this.game = new Game();
         this.game.setNumericalSolver(NumericalSolver.RK4);
@@ -49,6 +51,14 @@ public class Neighbour {
 
     public float getY(){
         return this.sv.y;
+    }
+
+    public float calculateManhattanX (){
+        return sv.x - Input.VT.x;
+    }
+
+    public float calculateManhattanY (){
+        return sv.y - Input.VT.y;
     }
 
     public void print(){
