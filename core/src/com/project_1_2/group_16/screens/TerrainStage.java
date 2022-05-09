@@ -156,7 +156,7 @@ public class TerrainStage extends InputScreen {
         this.brushLabel = new Label("Brush", this.screen.skin);
         this.brushLabel.setColor(Color.BLACK);
         this.brushLabel.setPosition(this.brushField.getX(), this.brushField.getY() + this.brushField.getHeight());
-        this.input = new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE];
+        this.input = Input.SPLINE;
     }
 
     @Override
