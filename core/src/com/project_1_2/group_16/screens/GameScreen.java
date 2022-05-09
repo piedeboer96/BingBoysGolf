@@ -72,6 +72,7 @@ public class GameScreen extends ScreenAdapter {
 	private RuleBasedBot ruleBasedBot;
 	private SA sa;
 	private BRO bro;
+	private PSO pso;
 
     public GameScreen(App app) {
         this.app = app;
@@ -239,12 +240,15 @@ public class GameScreen extends ScreenAdapter {
 			Float[] sol = this.sa.runSA().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
-		//Do BRO bot
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){
-			System.out.println("hereee");
-			BRO bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y);
-			List<Float> sol = bro.runBRO();
-			this.shoot(sol.get(0), sol.get(1));
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){ //Battle Royale Optimization bot
+			this.bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y);
+			Float[] sol = this.bro.runBRO().toArray(new Float[2]);
+			this.shoot(sol[0], sol[1]);
+		}
+		if(Gdx.input.isButtonJustPressed(Keys.NUM_3)){ //Particle Swarm Optimization bot
+			this.pso = new PSO(1000, 20, this.golfball.STATE.x, this.golfball.STATE.y);
+			Float[] sol = this.pso.runPSO().toArray(new Float[2]);
+			this.shoot(sol[0], sol[1]);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.C)) { // switch camera
 			if (this.useFreeCam) { // switch to ball cam
