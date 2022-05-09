@@ -170,7 +170,7 @@ public class BRO {
             StateVector sv = new StateVector(Input.V0.x, Input.V0.y, f[0], f[1]);
             Soldier sold = new Soldier(f[0], f[1], startX, startY);
             g.runEngine(sv, null, null, null, sold);
-            if(sold.fitness < Input.R){
+            if(sold.fitness < Input.R * 3.15f){
                 return sold;
             }
             if(sold.fitness < bestFitness){

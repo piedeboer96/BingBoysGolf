@@ -7,8 +7,8 @@ import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.physics.Physics;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class SA {
     public static final float MAXVEL = 5f;
@@ -120,21 +120,6 @@ public class SA {
     }
 
     /**
-     * Method which creates a valid velocity
-     * @return a valid velocity
-     */
-    public static float[] validVelocity(){
-        float[] vxy = new float[2];
-        vxy[0] = (float)(0 + Math.random()*(MAXVEL));
-        vxy[1] = (float)(0 + Math.random()*(MAXVEL));
-        if(Physics.magnitude(vxy[0], vxy[1]) > 5 ){
-            vxy[0] = (float) (vxy[0]/Math.sqrt(50));
-            vxy[1] = (float) (vxy[1]/Math.sqrt(50));
-        }
-        return vxy;
-    }
-
-    /**
      * Method used to create neighbours from the current state based on a neigbourStepSize
      * @param state the current state
      * @return a random neigbour
@@ -211,12 +196,11 @@ public class SA {
     public static void main(String[] args) {
         Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
         Terrain.spline.createSpline();
-//        initTreesForTesting();
         long start = System.currentTimeMillis();
         SA test = new SA(1000, 0.2f, Input.V0.x, Input.V0.y);
         System.out.println("best is " + test.runSA());
         long end = System.currentTimeMillis();
-        System.out.println(test.bestState.getFitness());
+        System.out.println("yeah " + test.bestState.getFitness());
         System.out.println("Runtime: " + (end - start) + " ms");
         System.out.println("amount of simulations taken " + Game.simulCounter);
     }

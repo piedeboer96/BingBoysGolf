@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.ai.BRO;
+import com.project_1_2.group_16.ai.PSO;
 import com.project_1_2.group_16.ai.RuleBasedBot;
 import com.project_1_2.group_16.ai.SA;
 import com.project_1_2.group_16.camera.BallCamera;
@@ -236,9 +237,14 @@ public class GameScreen extends ScreenAdapter {
 		}
 		//Do BRO bot
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){
-			System.out.println("hereee");
 			BRO bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y);
 			List<Float> sol = bro.runBRO();
+			this.shoot(sol.get(0), sol.get(1));
+		}
+		//Do PSO Bot
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){
+			PSO pso = new PSO(1000, 20, this.golfball.STATE.x, this.golfball.STATE.y);
+			List<Float> sol = pso.runPSO();
 			this.shoot(sol.get(0), sol.get(1));
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.C)) { // switch camera

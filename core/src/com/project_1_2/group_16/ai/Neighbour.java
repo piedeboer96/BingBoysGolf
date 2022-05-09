@@ -19,7 +19,6 @@ public class Neighbour {
         this.game = new Game();
         this.game.setNumericalSolver(NumericalSolver.RK4);
         this.game.runEngine(this.sv, null, null, this, null);
-//        fitness = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
     }
     public Neighbour (Neighbour n){
         this.vx = n.vx;

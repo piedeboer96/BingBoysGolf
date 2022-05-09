@@ -98,7 +98,9 @@ public class Score {
         xH = (Math.abs(maxVelX - minVelX))/6.15f;
         yH = (Math.abs(maxVelY - minVelY))/6.15f;
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
-        toReturn.add(new float[] {((Input.VT.x - startX)/(Input.VT.x - startX + Input.VT.y-startY))*5.0f, ((Input.VT.y-startY)/(Input.VT.x - startX + Input.VT.y-startY))*5.0f});
+        System.out.println(Input.VT.x + " " + startX + " " + Input.VT.y + " " + startY);
+        toReturn.add(new float[] {((Input.VT.x - startX)/(Math.abs(Input.VT.x - startX) + Math.abs(Input.VT.y-startY)))*5.0f, ((Input.VT.y-startY)/(Math.abs(Input.VT.x - startX) + Math.abs(Input.VT.y-startY)))*5.0f});
+        System.out.println("here " + toReturn.get(0)[0] + " " + toReturn.get(0)[1]);
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
                 if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY, startX, startY) && !checkWater(velX, velY)){

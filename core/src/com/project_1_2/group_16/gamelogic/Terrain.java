@@ -53,13 +53,13 @@ public class Terrain {
     }
     
     /**
-     * Return the slope in dh/dx and dh/dy.
+     * Return the slope in dh/dx and dh/dy using two-point centered point difference formula
      * @param coordinates array of coordinates
      * @param h step-size
      * @return array with dh/dx and dh/dy
      */
     public static float[] getSlope(float[] coordinates, float h) {
-//        h = 0.2f;
+        h = 1f/1000000f;
         float[] slopes = {
             (getHeight(coordinates[0] + h, coordinates[1]) - getHeight(coordinates[0] - h, coordinates[1]))/(2*h),
             (getHeight(coordinates[0], coordinates[1]+h) - getHeight(coordinates[0], coordinates[1] - h))/(2*h)

@@ -19,7 +19,6 @@ public class Particle {
         this.game = new Game();
         this.game.setNumericalSolver(NumericalSolver.RK4);
         this.game.runEngine(this.sv, null, this, null, null);
-        fitness = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
     }
 
     public Particle(StateVector init, StateVector sv, double fitness){
