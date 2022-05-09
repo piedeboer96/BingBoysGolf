@@ -62,6 +62,7 @@ public class BRO {
         //Main loop to find the solution
         outerloop:
         while(iter<maxIter){
+            System.out.println(iter++);
             sortPopulation();
             System.out.println("iter ---------------" + iter++ + " -------------------------");
             Soldier possibleBest = population.get(0);
@@ -215,8 +216,11 @@ public class BRO {
      */
     public Soldier findNearestSoldier(Soldier soldier){
         float distance = Integer.MAX_VALUE;
-        Soldier nearestSoldier = new Soldier(0,0, 0, 0);
+        Soldier nearestSoldier = soldier;
         for(Soldier s : population){
+            if(s==soldier){
+                continue;
+            }
             float curDistance = Score.calculateEucledianDistance(soldier.velX, soldier.velY, s.velX, s.velY);
             if(curDistance < distance){
                 nearestSoldier = s;
