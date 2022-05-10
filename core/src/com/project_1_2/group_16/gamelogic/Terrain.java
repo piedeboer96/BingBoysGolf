@@ -34,13 +34,6 @@ public class Terrain {
         return Input.USE_SPLINES ? spline.getHeight(x, y) : spline.getHeightFunction(x, y);
     }
 
-    public static float getHeightUsingFunc(float x, float y){
-        if (Math.abs(x) > Terrain.WATER_EDGE || Math.abs(y) > Terrain.WATER_EDGE) {
-        return -1;
-        }
-        return (float) (0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8)));
-    }
-
     /**
      * Set the spline to be used as terrain.
      * @param heightFunction the height function of the terrain
@@ -117,21 +110,8 @@ public class Terrain {
 				trV = new Vector2(trX, trZ);
 			} while ((j < 50 && Terrain.getHeight(trX, trZ) < 0.1) || trV.dst(Input.V0) < 1 || trV.dst(Input.VT) < 1);
 			float trR = (float)(Math.random() * 0.3 + .2);
-			trees.add(new Tree(model, new Vector3(trV.x, Terrain.getHeight(trV.x, trV.y) - 0.1f, trV.y), trR));
+			if (model!=null) trees.add(new Tree(model, new Vector3(trV.x, Terrain.getHeight(trV.x, trV.y) - 0.1f, trV.y), trR));
+            else trees.add(new Tree(new Vector3(trV.x, Terrain.getHeight(trV.x, trV.y) - 0.1f, trV.y), trR));
 		}
-    }
-    public static void initTreesForTesting() {
-        Vector2 trV; float trX, trZ; int j = 0;
-        for (int i = 0; i < Input.TREES; i++) {
-            j = 0;
-            do {
-                j++;
-                trX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
-                trZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
-                trV = new Vector2(trX, trZ);
-            } while ((j < 50 && Terrain.getHeight(trX, trZ) < 0.1) || trV.dst(Input.V0) < 1 || trV.dst(Input.VT) < 1);
-            float trR = (float)(Math.random() * 0.3 + .2);
-            trees.add(new Tree(new Vector3(trV.x, Terrain.getHeight(trV.x, trV.y) - 0.1f, trV.y), trR));
-        }
     }
 }

@@ -37,14 +37,17 @@ public class StateVector extends Vector2 implements Cloneable {
         this.vy = vy;
     }
 
-    public void setState(StateVector sv){
-
-            this.x = sv.x;
-            this.y = sv.y;
-            this.vx = sv.vx;
-            this.vy = sv.vy;
-
+    /**
+     * Set the statevector to a new statevector (only oopies position and velocity).
+     * @param sv the new statevector
+     */
+    public void set(StateVector sv) {
+        this.x = sv.x;
+        this.y = sv.y;
+        this.vx = sv.vx;
+        this.vy = sv.vy;
     }
+
     @Override
     public String toString() {
         return ("x: "+x).concat(" y: "+y).concat(" vx: "+vx).concat(" vy: "+vy).concat(" prev: "+prev);

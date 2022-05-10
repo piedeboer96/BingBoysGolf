@@ -18,7 +18,7 @@ public class Neighbour {
         this.init_sv = new StateVector(sv.x, sv.y, sv.vx, sv.vy);
         this.game = new Game();
         this.game.setNumericalSolver(NumericalSolver.RK4);
-        this.game.runEngine(this.sv, null, null, this, null);
+        this.game.runEngine(this.sv, null, this, null);
     }
     public Neighbour (Neighbour n){
         this.vx = n.vx;

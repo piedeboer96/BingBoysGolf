@@ -85,7 +85,8 @@ public class GameScreen extends ScreenAdapter {
         game.setNumericalSolver(NumericalSolver.RK4);
 
         // init skins
-        this.font = new BitmapFont();
+        //this.font = App.THEME.getUISkin().getFont("default-font");
+		this.font = new BitmapFont();
 
         // create crosshair
         this.ch1 = new Vector2(App.SCREEN_WIDTH / 2 + App.SCREEN_WIDTH / 150, App.SCREEN_HEIGHT / 2);
@@ -230,17 +231,17 @@ public class GameScreen extends ScreenAdapter {
 			System.exit(0);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // sim. annealing bot
-			this.sa = new SA(100, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
+			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.sa.runSA().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){ // battle royale optimization bot
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){ // battle royale optimization
 			this.bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.bro.runBRO().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ // particle swarm optimization bot
-			this.pso = new PSO(100, 20, this.golfball.STATE.x, this.golfball.STATE.y);
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ // particle swarm optimization
+			this.pso = new PSO(1000, 20, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.pso.runPSO().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}

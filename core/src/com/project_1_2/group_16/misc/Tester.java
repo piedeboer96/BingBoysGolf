@@ -36,10 +36,10 @@ public class Tester {
      * @return
      */
     public static float[] testSolver(StateVector sv, int nmbr_steps, float stepSize, NumericalSolver solver){
-        float t = 0;
+        //float t = 0;
         for(int i = 1; i <= nmbr_steps; i++){
             solver.solve(stepSize, sv);
-            t += stepSize;
+            //t += stepSize;
         }
         return new float[]{sv.x, sv.y, sv.vx, sv.vy};
     }
@@ -61,7 +61,7 @@ public class Tester {
         float stepSize = 0.0001f;
         int nmbr_steps = 50;
         NumericalSolver RK4 = new RK4();
-        NumericalSolver adam = new AdamsM4th();
+        //NumericalSolver adam = new AdamsM4th();
 
         float[] result = analyticalAnswer(sv.vx, stepSize*nmbr_steps);
         System.out.print(Arrays.toString(result) + " ?= ");

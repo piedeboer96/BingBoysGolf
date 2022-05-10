@@ -76,11 +76,14 @@ public class Game {
                 sv.vy *= treeFriction;
             }
         }
-        if (Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY && Terrain.collision.ballIsInTargetRadius(sv)) {
+
+        // check for hole collision
+        if (Terrain.collision.ballIsInTargetRadius(sv)) {
             if (reference != null) this.endGame(reference);
             sv.stop = true;
             System.out.println("HITHITHITHITHIHTIHTIHTIHTIHTIHTIHTIHTIHT");
         }
+
         // check for a stop
         if (Physics.magnitude(sv.vx, sv.vy) < h) {
             float[] partialDerivatives = this.solver.getPartialDerivatives();
@@ -115,21 +118,20 @@ public class Game {
     }
 
 
-    public void runEngine(StateVector sv, App reference, Particle p, Neighbour n, Soldier s){
-//        System.out.println(sv);
+    public void runEngine(StateVector sv, Particle p, Neighbour n, Soldier s) {
         simulCounter++;
         while(!sv.stop){
-            run(sv, reference);
+            run(sv, null);
             float temp = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
             if(p!=null) {
                 if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
                     p.fitness = temp;
                 }
-            } else if(n!=null){
+            } else if(n!=null) {
                 if (temp < n.getFitness()){
                     n.fitness = temp;
                 }
-            } else if(s!=null){
+            } else if(s!=null) {
                 if(temp < s.fitness && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
                     s.fitness = temp;
                 }

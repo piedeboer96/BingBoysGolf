@@ -131,6 +131,9 @@ public class Golfball {
         return this.move(x - this.util.x, z - this.util.z);
     }
 
+    /**
+     * Update the golfball to the statevector.
+     */
     public void updateState() {
         this.moveTo(this.STATE.x, this.STATE.y);
     }

@@ -3,6 +3,7 @@ package com.project_1_2.group_16.models;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
@@ -18,10 +19,8 @@ public class TerrainBuilder extends ModelBuilder {
     @Override
     public void begin() {
         super.begin();
-        this.run();
-    }
 
-    private void run() {
+        // create terrain
         float a, b, c, d;
         Vector3 p1, p2, p3, p4, avg;
         boolean checkerPattern;
@@ -63,6 +62,16 @@ public class TerrainBuilder extends ModelBuilder {
         }
     }
 
+    @Override
+    public Model end() {
+        return super.end();
+    } 
+    
+    /**
+     * Calculates the average vector from an array of vectors.
+     * @param p input vectors
+     * @return
+     */
     private Vector3 averageVector(Vector3... p) {
         float sumX = 0, sumY = 0, sumZ = 0;
         for (Vector3 v : p) {

@@ -41,7 +41,7 @@ public class DefaultTheme implements Theme {
 
         Model pole = builder.createCylinder(.01f, 1.5f, .01f, 20, poleMaterial, Usage.Position + Usage.Normal);
         Model flag = builder.createBox(.25f, .125f, .005f, flagMaterial, Usage.Position + Usage.Normal);
-        Model hole = builder.createCylinder(r, 0.1f, r, 20, holeMaterial, Usage.Position);
+        Model hole = builder.createCylinder(2*r, 0.1f, 2*r, 20, holeMaterial, Usage.Position);
 
         flag.nodes.get(0).translation.x = .125f;
         flag.nodes.get(0).translation.y = .6875f;

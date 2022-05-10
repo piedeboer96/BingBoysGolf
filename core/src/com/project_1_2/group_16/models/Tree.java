@@ -35,6 +35,7 @@ public class Tree {
         this.pos.set(pos);
         this.r = r;
     }
+    
     /**
      * Get the model of the tree
      * @return a model object
