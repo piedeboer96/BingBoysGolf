@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.ai.BRO;
+import com.project_1_2.group_16.ai.DumbBot;
 import com.project_1_2.group_16.ai.PSO;
 import com.project_1_2.group_16.ai.RuleBasedBot;
 import com.project_1_2.group_16.ai.SA;
@@ -31,9 +32,6 @@ import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.TerrainBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameScreen extends ScreenAdapter {
     
@@ -69,6 +67,7 @@ public class GameScreen extends ScreenAdapter {
     private float colorutil;
 
 	// bots
+	private DumbBot dumbBot;
 	private RuleBasedBot ruleBasedBot;
 	private SA sa;
 	private BRO bro;
@@ -235,20 +234,30 @@ public class GameScreen extends ScreenAdapter {
 			System.out.println("closed app in "+ANSI.RED+(System.nanoTime() - init)+ANSI.RESET+" nanoseconds.");
 			System.exit(0);
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // Sim. annealing bot
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // sim. annealing bot
 			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.sa.runSA().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){ //Battle Royale Optimization bot
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){ // battle royale optimization bot
 			this.bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.bro.runBRO().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ //Particle Swarm Optimization bot
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ // particle swarm optimization bot
 			this.pso = new PSO(1000, 20, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.pso.runPSO().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_4)) { // dumb bot
+			this.dumbBot = new DumbBot(this.golfball.STATE);
+			StateVector dbState = this.dumbBot.Play();
+			this.shoot(dbState.vx, dbState.vy);
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_5)) { // rule based bot
+			this.ruleBasedBot = new RuleBasedBot(this.golfball.STATE);
+			StateVector dbState = this.ruleBasedBot.Play();
+			this.shoot(dbState.vx, dbState.vy);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.C)) { // switch camera
 			if (this.useFreeCam) { // switch to ball cam
@@ -259,12 +268,7 @@ public class GameScreen extends ScreenAdapter {
 				Gdx.input.setInputProcessor(this.freeMovement);
 				this.useFreeCam = true;
 			}
-		}
-		if (Gdx.input.isKeyJustPressed(Keys.P)) {
-			this.ruleBasedBot = new RuleBasedBot(this.golfball.STATE);
-			StateVector dbState = this.ruleBasedBot.Play();
-			this.shoot(dbState.vx, dbState.vy);
-		}
+		}	
 		if (Gdx.input.isKeyJustPressed(Keys.V)) {
 			this.shoot(Input.VB.x, Input.VB.y);
 		}
