@@ -11,7 +11,7 @@ public class Input {
     /**
      * Starting position of the golfball.
      */
-    public static Vector2 V0 = new Vector2(-5f, 0f);
+    public static Vector2 V0 = new Vector2(-3f, 0f);
 
     /**
      * Position of the hole.
@@ -22,7 +22,7 @@ public class Input {
      * Input velocity (for testing).
      * vx: 1.6692446 vy: -0.04984162
      */
-    public static Vector2 VB = new Vector2(-5f,  0f);
+    public static Vector2 VB = new Vector2(0f,  0f);
 
     /**
      * Radius of the hole.

@@ -6,6 +6,7 @@ import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.physics.Physics;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +21,7 @@ public class BRO {
     public Soldier bestSoldier;
     int threshold;
     ArrayList<Soldier> population = new ArrayList<Soldier>();
+    ArrayList<Soldier> initialPop = new ArrayList<>();
 
     /**
      * Constructor for the improved BRO AI (BRO-HC)
@@ -63,6 +65,9 @@ public class BRO {
         outerloop:
         while(iter<maxIter){
             System.out.println(iter++);
+            if(iter==51){
+                break outerloop;
+            }
             sortPopulation();
             System.out.println("iter ---------------" + iter++ + " -------------------------");
             Soldier possibleBest = population.get(0);
@@ -107,8 +112,11 @@ public class BRO {
                     vic.damageCounter = 0;
                 }
                 else {
-                    dam.velX = (float) (Math.random() * (upperBoundX - lowerBoundX) + lowerBoundX);
-                    dam.velY = (float) (Math.random() * (upperBoundY - lowerBoundY) + lowerBoundY);
+                    dam.velX = 6;
+                    while(Physics.magnitude(dam.velX, dam.velY) > 5) {
+                        dam.velX = (float) (Math.random() * (upperBoundX - lowerBoundX) + lowerBoundX);
+                        dam.velY = (float) (Math.random() * (upperBoundY - lowerBoundY) + lowerBoundY);
+                    }
                     dam.damageCounter = 0;
                 }
                 dam.calcFitness();
@@ -194,6 +202,9 @@ public class BRO {
         for(int i=population.size(); i<popSize; i++){
             float[] f = Score.validVelocity(-5f, 5f, startX, startY);
             population.add(new Soldier(f[0], f[1], startX, startY));
+        }
+        for(Soldier s : population){
+            initialPop.add(s);
         }
     }
 

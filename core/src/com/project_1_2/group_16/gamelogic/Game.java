@@ -122,7 +122,7 @@ public class Game {
             run(sv, reference);
             float temp = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
             if(p!=null) {
-                if (temp < p.getFitness()){
+                if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
                     p.fitness = temp;
                 }
             } else if(n!=null){
@@ -130,7 +130,7 @@ public class Game {
                     n.fitness = temp;
                 }
             } else if(s!=null){
-                if(temp < s.fitness){
+                if(temp < s.fitness && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
                     s.fitness = temp;
                 }
             }
