@@ -39,7 +39,7 @@ public class Score {
         float[] vxy = new float[2];
         vxy[0] = (float)(minVelocity + Math.random()*(Math.abs(maxVelocity-minVelocity)));
         vxy[1] = (float)(minVelocity + Math.random()*(Math.abs(maxVelocity-minVelocity)));
-        if(Physics.magnitude(vxy[0], vxy[1]) > 5 || !checkIfBetter(vxy[0], vxy[1], startX, startY)){
+        if(Physics.magnitude(vxy[0], vxy[1]) > 5 || !checkIfBetter(vxy[0], vxy[1], startX, startY) || checkWater(vxy[0], vxy[1])){
             return validVelocity(minVelocity, maxVelocity, startX, startY);
         }
         return vxy;
@@ -56,7 +56,7 @@ public class Score {
         runner.setNumericalSolver(NumericalSolver.RK4);
         StateVector sv = new StateVector(startX, startY, velX, velY);
         runner.run(sv, null);
-        if(calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y) < calculateEucledianDistance(Input.V0.x, Input.V0.y, Input.VT.x, Input.VT.y)){
+        if(calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y) < calculateEucledianDistance(startX, startY, Input.VT.x, Input.VT.y)){
             return true;
         }
         return false;
