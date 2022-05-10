@@ -21,6 +21,7 @@ public class PSO {
 
     int maxIterations;
     ArrayList<Particle> particles;
+    int m;
 
     int iteration = 1;
     float N = population_size;
