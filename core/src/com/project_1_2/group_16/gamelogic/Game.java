@@ -16,7 +16,7 @@ public class Game {
     /**
      * Step size.
      */
-    public static float h = 0.08f;
+    public static float h = 0.05f;
 
     public static int simulCounter = 0;
 
@@ -76,15 +76,11 @@ public class Game {
                 sv.vy *= treeFriction;
             }
         }
-
-        // check hole collision
-        if (Terrain.collision.ballIsInTargetRadius(sv)) {
+        if (Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY && Terrain.collision.ballIsInTargetRadius(sv)) {
             if (reference != null) this.endGame(reference);
-            sv.stop=true;
+            sv.stop = true;
             System.out.println("HITHITHITHITHIHTIHTIHTIHTIHTIHTIHTIHTIHT");
         }
-
-
         // check for a stop
         if (Physics.magnitude(sv.vx, sv.vy) < h) {
             float[] partialDerivatives = this.solver.getPartialDerivatives();
@@ -126,7 +122,7 @@ public class Game {
             run(sv, reference);
             float temp = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
             if(p!=null) {
-                if (temp < p.getFitness()){
+                if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
                     p.fitness = temp;
                 }
             } else if(n!=null){
@@ -134,11 +130,10 @@ public class Game {
                     n.fitness = temp;
                 }
             } else if(s!=null){
-                if(temp < s.fitness){
+                if(temp < s.fitness && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
                     s.fitness = temp;
                 }
             }
         }
-//        System.out.println("end " + sv);
     }
 }

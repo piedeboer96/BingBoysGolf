@@ -7,6 +7,8 @@ import com.project_1_2.group_16.math.StateVector;
 
 //Individual class for BRO algorithm
 public class Soldier {
+    public float startX = 0;
+    public float startY = 0;
     public float velX;
     public float velY;
     public float endPosX;
@@ -15,7 +17,9 @@ public class Soldier {
     public float fitness = Integer.MAX_VALUE;
     public int damageCounter;
 
-    public Soldier(float velX, float velY){
+    public Soldier(float velX, float velY, float startX, float startY){
+        this.startX = startX;
+        this.startY = startY;
         this.velX = velX;
         this.velY = velY;
         game.setNumericalSolver(NumericalSolver.RK4);
@@ -32,7 +36,7 @@ public class Soldier {
     }
     public void calcFitness(){
         game.setNumericalSolver(NumericalSolver.RK4);
-        StateVector sv = new StateVector(Input.V0.x, Input.V0.y, velX, velY);
+        StateVector sv = new StateVector(startX, startY, velX, velY);
         game.runEngine(sv,null, null, null, this);
         this.endPosX = sv.x;
         this.endPosY = sv.y;

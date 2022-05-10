@@ -74,16 +74,6 @@ public class App extends Game {
 	}
 
 	/**
-	 * Shoot the ball
-	 * @param vX velocity in the x direction
-	 * @param vY velocity in the y direction
-	 * @return if the shot was successful
-	 */
-	public boolean shoot(float vX, float vY) {
-		return this.GAME_SCREEN.shoot(vX, vY);
-	}
-
-	/**
 	 * Increase the hit-counter by n.
 	 * @param n increase the counter by this number
 	 * @return the new value

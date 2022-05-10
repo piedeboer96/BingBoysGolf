@@ -1,14 +1,11 @@
 package com.project_1_2.group_16.gamelogic;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.badlogic.gdx.files.FileHandle;
+ 
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.misc.ANSI;
+
+import bsh.EvalError;
+import bsh.Interpreter;
 
 public class Spline {
 
@@ -26,7 +23,7 @@ public class Spline {
      * Size of the grid that makes up the spline.
      * Must be a minimum of 4.
      */
-    public static final int SPLINE_SIZE = 4;
+    public static final int SPLINE_SIZE = 16;
 
     /**
      * First matrix of coefficients used for the spline creation.
@@ -49,14 +46,34 @@ public class Spline {
     };
 
     /**
-     * All data points that make up the base of the spline.
+     * String interpreter.
      */
-    private DataPoint[][] data;
+    private static final Interpreter BSH = new Interpreter();
 
     /**
-     * All quadrants that you can create using the data points.
+     * All knot points that make up the base of the spline.
      */
-    private CubicQuadrant[] quadrants;
+    private KnotPoint[][] knots;
+
+    /**
+     * All quadrants that you can create using the knot points.
+     */
+    private Quadrant[] quadrants;
+
+    /**
+     * The height function used for the terrain.
+     */
+    private String heightFunction;
+
+    /**
+     * All input points that describe any custom elements of the terrain.
+     */
+    private float[][] input;
+
+    public Spline(String heightFunction, float[][] input) {
+        this.heightFunction = heightFunction;
+        this.input = input;
+    }
     
     /**
      * Evaluates the height of a pair of coordinates.
@@ -65,6 +82,12 @@ public class Spline {
      * @return max(z-coordinate, -0.01)
      */
     public float getHeight(float x, float y) {
+        // make everything outside of the rendered area water
+        if (Math.abs(x) > Terrain.WATER_EDGE || Math.abs(y) > Terrain.WATER_EDGE) {
+            return -1;
+        }
+
+        // calculate the height within the relevant quadrant
         for (Quadrant q : this.quadrants) {
             if (q.contains(x, y)) {
                 return q.getHeight(x, y);
@@ -74,134 +97,74 @@ public class Spline {
     }
 
     /**
-     * Create the terrain-spline.
-     * @param splineFile the spline file
+     * Evaluates the height of a pair of coordinates using the height function.
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return max(z-coordinate, -0.01)
      */
-    public void createSpline(File splineFile) {
-        // read the spline file, create the basis and calculate the derivatives
-        this.data = this.createBasis(this.readSplineFile(splineFile));
-        this.assignDerivatives(this.data);
+    public float getHeightFunction(float x, float y) {
+        // make everything outside of the rendered area water
+        if (Math.abs(x) > Terrain.WATER_EDGE || Math.abs(y) > Terrain.WATER_EDGE) {
+            return -1;
+        }
+
+        // evaluate height function
+        String eval = ((("float x = "+x).concat("; float y = ")+y).concat("; ")+this.heightFunction).concat(";");
+        try {
+            return Math.max((float)(double)(BSH.eval(eval)), -0.01f);
+        } catch (EvalError e) {
+            System.out.println(ANSI.RED+"eval error"+ANSI.RESET+", interpreted: "+eval); 
+            System.exit(0);
+        } catch (NullPointerException e) {
+            System.out.println(ANSI.RED+"return error"+ANSI.RESET+", height function doesn't return anything");
+            System.exit(0);
+        } catch (ClassCastException e) {
+            System.out.println(ANSI.RED+"cast exception"+ANSI.RESET+", please use double values for height function"); 
+            System.exit(0);
+        } catch (RuntimeException e) {
+            System.out.println(ANSI.RED+"unexpected error"+ANSI.RESET+", please re-evaluate the height function");
+            System.out.print(ANSI.RED+"error stack: "+ANSI.RESET);
+            e.printStackTrace();
+            System.exit(0);
+        }
+        return 0;
+    }
+
+    /**
+     * Create the terrain-spline using the current function and input array.
+     */
+    public void createSpline() {
+        // compute knot points
+        this.knots = new KnotPoint[SPLINE_SIZE][SPLINE_SIZE];
+        float x, y, z;
+        for (int i = 0; i < SPLINE_SIZE; i++) {
+            for (int j = 0; j < SPLINE_SIZE; j++) {
+                x = -App.FIELD_SIZE/2 + j*(App.FIELD_SIZE*1f/(SPLINE_SIZE-1));
+                y = -App.FIELD_SIZE/2 + i*(App.FIELD_SIZE*1f/(SPLINE_SIZE-1));
+                z = this.getHeightFunction(x, y) + this.input[i][j];
+                this.knots[i][j] = new KnotPoint(x, y, z);
+            }
+        }
+        
+        // calculate derivatives of the knot points
+        this.assignDerivatives(this.knots);
 
         // create all quadrants
-        this.quadrants = new CubicQuadrant[(SPLINE_SIZE - 1) * (SPLINE_SIZE - 1)];
-        for (int x, y, i = 0; i < this.quadrants.length; i++) {
-            y = i / (SPLINE_SIZE - 1);
-            x = i % (SPLINE_SIZE - 1);
-            this.quadrants[i] = new CubicQuadrant(this.data[y][x], this.data[y+1][x], this.data[y][x+1], this.data[y+1][x+1]);
-            this.quadrants[i].A = multiplyMatrix(C1, multiplyMatrix(this.quadrants[i].getInitialValues(), C2));
+        this.quadrants = new Quadrant[(SPLINE_SIZE - 1) * (SPLINE_SIZE - 1)];
+        for (int i = 0, a, b; i < this.quadrants.length; i++) {
+            a = i / (SPLINE_SIZE - 1);
+            b = i % (SPLINE_SIZE - 1);
+            this.quadrants[i] = new Quadrant(this.knots[a][b], this.knots[a+1][b], this.knots[a][b+1], this.knots[a+1][b+1]);
+            this.quadrants[i].A = multiplyMatrix(C1, multiplyMatrix(this.quadrants[i].I, C2));
         }
     }
 
     /**
-     * Read the spline file.
-     * @param splineFile
-     * @return an array of all points from the spline file.
-     * first 4 points are the corners, the rest is additional points.
-     */
-    private Vector3[] readSplineFile(File splineFile) {
-        JsonReader reader = new JsonReader();
-        List<Vector3> out = new ArrayList<Vector3>();
-
-        // corners
-        JsonValue corners = reader.parse(new FileHandle(splineFile)).child();
-        for (JsonValue corner : corners.get("points")) {
-            switch (corner.getString("name")) {
-                case "negative-negative": {
-                    out.add(new Vector3(-App.FIELD_SIZE/2, -App.FIELD_SIZE/2, corner.getFloat("height")));
-                } break;
-                case "negative-positive": {
-                    out.add(new Vector3(-App.FIELD_SIZE/2, App.FIELD_SIZE/2, corner.getFloat("height")));
-                } break;
-                case "positive-negative": {
-                    out.add(new Vector3(App.FIELD_SIZE/2, -App.FIELD_SIZE/2, corner.getFloat("height")));
-                } break;
-                case "positive-positive": {
-                    out.add(new Vector3(App.FIELD_SIZE/2, App.FIELD_SIZE/2, corner.getFloat("height")));
-                } break;
-            }
-        }
-
-        // additional points
-        JsonValue points = corners.next(); float x, y, z, i;
-        for (JsonValue point : points.get("points")) {
-            x = 0; y = 0; z = 0; i = 0;
-            for (JsonValue coordinate : point.get("coordinates")) {
-                switch ((int)i) {
-                    case 0: {
-                        x = Float.parseFloat(coordinate.toString());
-                        i++;
-                    } break;
-                    case 1: {
-                        y = Float.parseFloat(coordinate.toString());
-                        i++;
-                    } break;
-                    case 2: {
-                        z = Float.parseFloat(coordinate.toString());
-                        i++;
-                    } break;
-                }
-            }
-            out.add(new Vector3(x, y, z));
-        }
-        System.out.println("spline: "+out); // debug
-        return out.toArray(new Vector3[out.size()]);
-    }
-
-    /**
-     * Create the basis of the spline.
-     * @param input all input points (spline file)
-     * @return the data matrix
-     */
-    private DataPoint[][] createBasis(Vector3[] input) {
-        float size = App.FIELD_SIZE;
-        DataPoint[][] data = new DataPoint[SPLINE_SIZE][SPLINE_SIZE];
-
-        // configure corner points
-        Vector3 corner_nn = new Vector3(), corner_np = new Vector3();
-        Vector3 corner_pn = new Vector3(), corner_pp = new Vector3();
-        for (int i = 0; i < 4; i++) {
-            if (input[i].x < 0 && input[i].y < 0) corner_nn.set(input[i]);
-            else if (input[i].x < 0 && input[i].y > 0) corner_np.set(input[i]);
-            else if (input[i].x > 0 && input[i].y < 0) corner_pn.set(input[i]);
-            else if (input[i].x > 0 && input[i].y > 0) corner_pp.set(input[i]);
-        }
-
-        // configure additional points
-        Vector3[] points = new Vector3[input.length-4];
-        for (int i = 4; i < input.length; i++) {
-            points[i-4] = input[i];
-        }
-
-        // TODO temporary
-        data[0][0] = new DataPoint(-size / 2, -size / 2, 0.5f);
-        data[0][1] = new DataPoint(-size / 2 + size / 3, -size / 2, 0.1f);
-        data[0][2] = new DataPoint(size / 2 - size / 3, -size / 2, 0.1f);
-        data[0][3] = new DataPoint(size / 2, -size / 2, 0.5f);
-
-        data[1][0] = new DataPoint(-size / 2, -size / 2 + size / 3, 0.1f);
-        data[1][1] = new DataPoint(-size / 2 + size / 3, -size / 2 + size / 3, 0.1f);
-        data[1][2] = new DataPoint(size / 2 - size / 3, -size / 2 + size / 3, 0.1f);
-        data[1][3] = new DataPoint(size / 2, -size / 2 + size / 3, 0.1f);
-
-        data[2][0] = new DataPoint(-size / 2, size / 2 - size / 3, 0.1f);
-        data[2][1] = new DataPoint(-size / 2 + size / 3, size / 2 - size / 3, 0.1f);
-        data[2][2] = new DataPoint(size / 2 - size / 3, size / 2 - size / 3, 0.1f);
-        data[2][3] = new DataPoint(size / 2, size / 2 - size / 3, 0.1f);
-
-        data[3][0] = new DataPoint(-size / 2, size / 2, 0.5f);
-        data[3][1] = new DataPoint(-size / 2 + size / 3, size / 2, 0.1f);
-        data[3][2] = new DataPoint(size / 2 - size / 3, size / 2, 0.1f);
-        data[3][3] = new DataPoint(size / 2, size / 2, 0.5f);
-        
-        return data;
-    }
-
-    /**
-     * Calculate the dX, dY and dXY for all data points.
+     * Calculate the dX, dY and dXY for all knot points.
      * Calculates derivatives using the forward-, backward-, and center-difference formulas.
-     * @param data the data points
+     * @param data the knot points
      */
-    private void assignDerivatives(DataPoint[][] data) {
+    private void assignDerivatives(KnotPoint[][] data) {
         // x-derivative
         for (int y = 0; y < data.length; y++) {
             for (int x = 0; x < data.length; x++) {
@@ -256,7 +219,7 @@ public class Spline {
      * @param p3 the next point after p2
      * @return the derivative at p1
      */
-    private float forwardDifference(DataPoint p1, DataPoint p2, DataPoint p3, int wrt) {
+    private float forwardDifference(Vector3 p1, Vector3 p2, Vector3 p3, int wrt) {
         return (-p3.z + 4 * p2.z - 3 * p1.z) / (wrt == X ? (p3.x - p1.x) : (p3.y - p1.y));
     }
 
@@ -267,7 +230,7 @@ public class Spline {
      * @param p3 the previous point of p2
      * @return the derivative at p1
      */
-    private float backwardDifference(DataPoint p1, DataPoint p2, DataPoint p3, int wrt) {
+    private float backwardDifference(Vector3 p1, Vector3 p2, Vector3 p3, int wrt) {
         return (p3.z - 4 * p2.z + 3 * p1.z) / (wrt == X ? (p1.x - p3.x) : (p1.y - p3.y));
     }
 
@@ -278,13 +241,13 @@ public class Spline {
      * @param p3 the next point after p1
      * @return the derivative at p1
      */
-    private float centerDifference(DataPoint p1, DataPoint p2, DataPoint p3, int wrt) {
+    private float centerDifference(Vector3 p1, Vector3 p2, Vector3 p3, int wrt) {
         return (p3.z - p2.z) / (wrt == X ? (p3.x - p2.x) : (p3.y - p2.y));
     }
 
     /**
      * Multiply 2 matrices together.
-     * https://www.baeldung.com/java-matrix-multiplication (adapted)
+     * Adapted from: https://www.baeldung.com/java-matrix-multiplication
      * @param A first matrix
      * @param B second matrix
      * @return resulting matrix
@@ -306,20 +269,10 @@ public class Spline {
 
 
 
-
-
-
-
-
-
-
-
-    
-
     /**
      * Represents a data point used in the base of a spline.
      */
-    static class DataPoint extends Vector3 {
+    static class KnotPoint extends Vector3 {
 
         /**
          * Derivative wrt x.
@@ -336,7 +289,7 @@ public class Spline {
          */
         public float dXY;
 
-        public DataPoint(float x, float y, float z) {
+        public KnotPoint(float x, float y, float z) {
             super(x, y, z);
         }
 
@@ -349,18 +302,34 @@ public class Spline {
     /**
      * Represents a quadrant of the terrain (square bound by 4 data points).
      */
-    static abstract class Quadrant {
+    static class Quadrant {
 
         /**
          * Corners of the quadrant.
          */
-        public Vector3 nn, np, pn, pp;
+        public KnotPoint nn, np, pn, pp;
 
-        public Quadrant(Vector3 c1, Vector3 c2, Vector3 c3, Vector3 c4) {
+        /**
+         * Quadrant-coefficients.
+         */
+        public float[][] A;
+
+        /**
+         * Initial values.
+         */
+        public float[][] I;
+
+        public Quadrant(KnotPoint c1, KnotPoint c2, KnotPoint c3, KnotPoint c4) {
             this.nn = c1;
             this.np = c2;
             this.pn = c3;
             this.pp = c4;
+            this.I = new float[][] {
+                {c1.z, c2.z, c1.dY, c2.dY},
+                {c3.z, c4.z, c3.dY, c4.dY},
+                {c1.dX, c2.dX, c1.dXY, c2.dXY},
+                {c3.dX, c4.dX, c3.dXY, c4.dXY}
+            };
         }
 
         /**
@@ -383,42 +352,6 @@ public class Spline {
          * @param y y-coordinate
          * @return z-coordinate
          */
-        public float getHeight(float x, float y) {
-            return 0;
-        }
-    }
-
-    static class CubicQuadrant extends Quadrant {
-
-        /**
-         * Quadrant-coefficients.
-         */
-        public float[][] A;
-
-        /**
-         * Initial values.
-         */
-        public float[][] I;
-
-        public CubicQuadrant(DataPoint c1, DataPoint c2, DataPoint c3, DataPoint c4) {
-            super(c1, c2, c3, c4);
-            this.I = new float[][] {
-                {c1.z, c2.z, c1.dY, c2.dY},
-                {c3.z, c4.z, c3.dY, c4.dY},
-                {c1.dX, c2.dX, c1.dXY, c2.dXY},
-                {c3.dX, c4.dX, c3.dXY, c4.dXY}
-            };
-        }
-
-        /**
-         * Get the initial values from the quadrant.
-         * @return a 4x4 matrix made from the corner points
-         */
-        public float[][] getInitialValues() {
-            return this.I;
-        }
-        
-        @Override
         public float getHeight(float x, float y) {
             x = (x - nn.x) / (pp.x - nn.x);
             y = (y - nn.y) / (pp.y - nn.y);

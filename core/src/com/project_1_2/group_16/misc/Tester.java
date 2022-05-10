@@ -4,8 +4,6 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.*;
 import com.project_1_2.group_16.physics.Physics;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Tester {
