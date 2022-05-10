@@ -76,7 +76,7 @@ public class Game {
                 sv.vy *= treeFriction;
             }
         }
-        if (Terrain.collision.ballIsInTargetRadius(sv)) {
+        if (Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY && Terrain.collision.ballIsInTargetRadius(sv)) {
             if (reference != null) this.endGame(reference);
             sv.stop = true;
             System.out.println("HITHITHITHITHIHTIHTIHTIHTIHTIHTIHTIHTIHT");
