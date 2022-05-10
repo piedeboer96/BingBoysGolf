@@ -178,7 +178,7 @@ public class BRO {
             g.setNumericalSolver(NumericalSolver.RK4);
             StateVector sv = new StateVector(Input.V0.x, Input.V0.y, f[0], f[1]);
             Soldier sold = new Soldier(f[0], f[1], startX, startY);
-            g.runEngine(sv, null, null, null, sold);
+            g.runEngine(sv, null, null, sold);
             if(sold.fitness < Input.R * 3.15f){
                 return sold;
             }

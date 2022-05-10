@@ -9,12 +9,6 @@ public class RK4 implements NumericalSolver {
 
     private float[] partialDerivatives;
 
-    /**
-     * class needed to run the RK4 derivation algorithm which is a more improved version of Euler's implementation by 3 orders
-     * of accuracy. It runs by taking a weighted average of different estimations/derivations k1, k2, k3 and k4.
-     * @param h step-size
-     * @param sv StateVector
-     */
     @Override
     public void solve(float h, StateVector sv) {
         Derivation k1, k2, k3, k4;
