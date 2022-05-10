@@ -33,6 +33,8 @@ public class RuleBasedBot {
     public static StateVector newsv;
     private Game game;
 
+    final boolean DEBUG = false;
+
     public RuleBasedBot(StateVector sv){
         this.sv = sv;
         this.game = new Game();
@@ -57,8 +59,8 @@ public class RuleBasedBot {
             sv = new StateVector(svForXandY.x, svForXandY.y, float_randomX, float_randomY);
             this.game.setNumericalSolver(NumericalSolver.RK4);
             this.game.runEngine(sv, null, null, null, null);
-            System.out.println("this is the new x "+sv.x);
-            System.out.println("this is the new y "+sv.y);
+            if(DEBUG)System.out.println("this is the new x "+sv.x);
+            if(DEBUG)System.out.println("this is the new y "+sv.y);
             //score = FloodFill.getMatrixValue(sv.x, sv.y);
             score = Score.calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y);
             //System.out.println("this is the score " + score);
@@ -66,9 +68,9 @@ public class RuleBasedBot {
                 scoreInitialise = true;
                 bestScore = score;
                 newsv = new StateVector(sv.x, sv.y, float_randomX, float_randomY);
-                System.out.println("the best score at the moment is " + bestScore);
-                System.out.println("with a force applied in the x direction of " + sv.vx);
-                System.out.println("with a force applied in the y direction of " + sv.vy);
+                if(DEBUG)System.out.println("the best score at the moment is " + bestScore);
+                if(DEBUG)System.out.println("with a force applied in the x direction of " + sv.vx);
+                if(DEBUG)System.out.println("with a force applied in the y direction of " + sv.vy);
             }
         }
 
@@ -78,6 +80,11 @@ public class RuleBasedBot {
 
 
     }
+
+    /**
+     * Give a random x & y value, that is positive or negative, and between 0 & 5
+     *
+     */
     public void Randomise(){
         random_int = rand.nextInt(2);
         if(random_int == 0){
@@ -96,8 +103,15 @@ public class RuleBasedBot {
         }
         getValidVelocity(float_randomX,float_randomY);
     }
+
+    /**
+     *
+     * @param float_randomX takes the random x value
+     * @param float_randomY takes the random y value
+     * Randomise again if the magnitude is above the max
+     */
     public void getValidVelocity(float float_randomX,float float_randomY){
-        if(Physics.magnitude(float_randomX, float_randomY) > 5f){
+        if(Physics.magnitude(float_randomX, float_randomY) > max){
             Randomise();
         }
     }
