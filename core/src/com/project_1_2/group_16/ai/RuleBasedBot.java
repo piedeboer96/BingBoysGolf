@@ -4,6 +4,8 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.physics.Physics;
+
 import java.util.Random;
 
 /**
@@ -18,17 +20,17 @@ public class RuleBasedBot {
 
     static final int Population = 20;
     static Random rand = new Random();
-    static final float max = 5.0F;          //what is the maximum force that we can apply?
+    static final float max = 5.0F;
     static float score;
     static float bestScore;
     static boolean scoreInitialise = false;
 
-    static float float_randomX;
-    static float float_randomY;
+    public float float_randomX;
+    public float float_randomY;
     static int random_int;
     public StateVector svForXandY;
     public StateVector sv;
-    public StateVector newsv;
+    public static StateVector newsv;
     private Game game;
 
     public RuleBasedBot(StateVector sv){
@@ -51,30 +53,15 @@ public class RuleBasedBot {
 
         for(int i = 0; i < Population; ++i) {
 
-            random_int = rand.nextInt(2);
-            if(random_int == 0){
-                float_randomX = rand.nextFloat() * max;
-            }
-            else{
-                float_randomX = -(rand.nextFloat() * max);
-            }
-            random_int = rand.nextInt(2);
-
-            if(random_int == 0){
-                float_randomY = rand.nextFloat() * max;
-            }
-            else{
-                float_randomY = -(rand.nextFloat() * max);
-            }
-
+            Randomise();
             sv = new StateVector(svForXandY.x, svForXandY.y, float_randomX, float_randomY);
-
-            //game.run(sv, null);
             this.game.setNumericalSolver(NumericalSolver.RK4);
             this.game.runEngine(sv, null, null, null, null);
-            //score = FloodFill.getMatrixValue(sv.x, sv.y,);
-            score = Score.calculateEucledianDistance(this.sv.x, this.sv.y, Input.VT.x, Input.VT.y);
-
+            System.out.println("this is the new x "+sv.x);
+            System.out.println("this is the new y "+sv.y);
+            //score = FloodFill.getMatrixValue(sv.x, sv.y);
+            score = Score.calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y);
+            //System.out.println("this is the score " + score);
             if ((!scoreInitialise || bestScore > score) && score!=-1) {
                 scoreInitialise = true;
                 bestScore = score;
@@ -87,8 +74,34 @@ public class RuleBasedBot {
 
         System.out.println(newsv);
         System.out.println("\n");
+        scoreInitialise = false;
+
 
     }
+    public void Randomise(){
+        random_int = rand.nextInt(2);
+        if(random_int == 0){
+            float_randomX = rand.nextFloat() * max;
+        }
+        else{
+            float_randomX = -(rand.nextFloat() * max);
+        }
+        random_int = rand.nextInt(2);
+
+        if(random_int == 0){
+            float_randomY = rand.nextFloat() * max;
+        }
+        else{
+            float_randomY = -(rand.nextFloat() * max);
+        }
+        getValidVelocity(float_randomX,float_randomY);
+    }
+    public void getValidVelocity(float float_randomX,float float_randomY){
+        if(Physics.magnitude(float_randomX, float_randomY) > 5f){
+            Randomise();
+        }
+    }
+
     public StateVector Play(){
         sv.vx = newsv.vx;
         sv.vy = newsv.vy;

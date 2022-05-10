@@ -54,7 +54,8 @@ public class Input {
      * Math.pow(Math.E, (-(x*x + y*y))/40)
      * 0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8))
      */
-    public static String H = "0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8))";
+    //public static String H = "0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8))";
+    public static String H = "1.0";
 
     /**
      * Number of trees.
