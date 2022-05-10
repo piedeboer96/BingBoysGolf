@@ -32,7 +32,7 @@ public class Input {
     /**
      * Kinetic Friction.
      */
-    public static float MUK =  0.08f;
+    public static float MUK =  0.05f;
 
     /**
      * Static Friction.

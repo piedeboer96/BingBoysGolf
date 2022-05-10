@@ -141,11 +141,6 @@ public class GameScreen extends ScreenAdapter {
         // hide the mouse
         Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(this.ballMovement);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         this.allowHit = true;
     }
 
@@ -269,8 +264,12 @@ public class GameScreen extends ScreenAdapter {
 				this.useFreeCam = true;
 			}
 		}	
-		if (Gdx.input.isKeyJustPressed(Keys.V)) {
+		if (Gdx.input.isKeyJustPressed(Keys.V)) { // shoot testing velocity
 			this.shoot(Input.VB.x, Input.VB.y);
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.R)) { // reset ball to the start
+			this.golfball.STATE.x = Input.V0.x; 
+			this.golfball.STATE.y = Input.V0.y;
 		}
 
 		// shooting the ball
