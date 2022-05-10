@@ -56,7 +56,7 @@ public class Score {
         runner.setNumericalSolver(NumericalSolver.RK4);
         StateVector sv = new StateVector(startX, startY, velX, velY);
         runner.run(sv, null);
-        if(calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y) < calculateEucledianDistance(Input.V0.x, Input.V0.y, Input.VT.x, Input.VT.y)){
+        if(calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y) < calculateEucledianDistance(startX, startY, Input.VT.x, Input.VT.y)){
             return true;
         }
         return false;

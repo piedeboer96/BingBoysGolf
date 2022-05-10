@@ -230,26 +230,7 @@ public class GameScreen extends ScreenAdapter {
 			System.out.println("closed app in "+ANSI.RED+(System.nanoTime() - init)+ANSI.RESET+" nanoseconds.");
 			System.exit(0);
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.C)) { // switch camera
-			if (this.useFreeCam) { // switch to ball cam
-				Gdx.input.setInputProcessor(this.ballMovement);
-				this.useFreeCam = false;
-			}
-			else { // switch to free cam
-				Gdx.input.setInputProcessor(this.freeMovement);
-				this.useFreeCam = true;
-			}
-		}	
-		if (Gdx.input.isKeyJustPressed(Keys.V)) { // shoot testing velocity
-			this.shoot(Input.VB.x, Input.VB.y);
-		}
-		if (Gdx.input.isKeyJustPressed(Keys.R)) { // reset ball to the start
-			this.golfball.STATE.x = Input.V0.x; 
-			this.golfball.STATE.y = Input.V0.y;
-		}
-
-		// bots
-		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // sim. annealing
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // sim. annealing bot
 			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.sa.runSA().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
@@ -273,6 +254,23 @@ public class GameScreen extends ScreenAdapter {
 			this.ruleBasedBot = new RuleBasedBot(this.golfball.STATE);
 			StateVector dbState = this.ruleBasedBot.Play();
 			this.shoot(dbState.vx, dbState.vy);
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.C)) { // switch camera
+			if (this.useFreeCam) { // switch to ball cam
+				Gdx.input.setInputProcessor(this.ballMovement);
+				this.useFreeCam = false;
+			}
+			else { // switch to free cam
+				Gdx.input.setInputProcessor(this.freeMovement);
+				this.useFreeCam = true;
+			}
+		}	
+		if (Gdx.input.isKeyJustPressed(Keys.V)) { // shoot testing velocity
+			this.shoot(Input.VB.x, Input.VB.y);
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.R)) { // reset ball to the start
+			this.golfball.STATE.x = Input.V0.x; 
+			this.golfball.STATE.y = Input.V0.y;
 		}
 
 		// shooting the ball
@@ -309,7 +307,7 @@ public class GameScreen extends ScreenAdapter {
 
 			// sound effect and shot counter
 			this.app.hitSound.play();
-			this.increaseHitCounter(1);
+			hitsCounter++;
 
 			// hit the ball
 			this.golfball.STATE.prev = new Vector2(this.v.x, this.v.z);
