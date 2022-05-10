@@ -18,8 +18,10 @@ public class Game {
      */
     public static float h = 0.05f;
 
+    /**
+     * Number of simulations.
+     */
     public static int simulCounter = 0;
-
 
     /**
      * Friction caused by hitting trees.
@@ -58,8 +60,6 @@ public class Game {
         // check tree collision
         Tree hittree = Terrain.collision.ballHitTree(sv);
         if (hittree != null) {
-            System.out.println("tree");
-
             Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
             Vector2 vB = new Vector2(sv.x, sv.y);
 
@@ -81,7 +81,6 @@ public class Game {
         if (Terrain.collision.ballIsInTargetRadius(sv)) {
             if (reference != null) this.endGame(reference);
             sv.stop = true;
-            System.out.println("HITHITHITHITHIHTIHTIHTIHTIHTIHTIHTIHTIHT");
         }
 
         // check for a stop
@@ -117,7 +116,13 @@ public class Game {
         System.out.println(message);
     }
 
-
+    /**
+     * Helper method for doing bot simulations.
+     * @param sv statevector
+     * @param p particle
+     * @param n neighbour
+     * @param s soldier
+     */
     public void runEngine(StateVector sv, Particle p, Neighbour n, Soldier s) {
         simulCounter++;
         while(!sv.stop){

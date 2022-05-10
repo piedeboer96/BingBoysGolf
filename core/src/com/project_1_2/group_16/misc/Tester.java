@@ -1,12 +1,32 @@
 package com.project_1_2.group_16.misc;
 
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.gamelogic.Spline;
+import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.*;
 import com.project_1_2.group_16.physics.Physics;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Tester {
+
+    public static ArrayList<float[][]> tesStepSize(StateVector sv, int nmbr_steps, float stepSize, NumericalSolver[] solvers, int MaxIt){
+        float[] initialValues = {sv.x, sv.y, sv.vx, sv.vy};
+        ArrayList<float[][]> shrimp = new ArrayList<>();
+        int local_nmbr_steps = nmbr_steps;
+        float local_stepSize = stepSize;
+        shrimp.add(testSolvers(new StateVector(initialValues[0], initialValues[1], initialValues[2], initialValues[3]), local_nmbr_steps, local_stepSize, solvers));
+        for(int i = 0; i < MaxIt-1; i++){
+            local_nmbr_steps *= 2;
+            local_stepSize /= 2;
+            System.out.println(local_nmbr_steps + " stepsize: " + local_stepSize);
+            shrimp.add(testSolvers(new StateVector(initialValues[0], initialValues[1], initialValues[2], initialValues[3]), local_nmbr_steps, local_stepSize, solvers));
+
+        }
+        return shrimp;
+    }
 
     /**
      * Method used to test multiple solvers with the same state vector
@@ -57,16 +77,22 @@ public class Tester {
 
 
     public static void main(String[] args) {
-        StateVector sv = new StateVector(Input.V0.x, Input.V0.y, 1, 0);
-        float stepSize = 0.0001f;
-        int nmbr_steps = 50;
-        NumericalSolver RK4 = new RK4();
-        //NumericalSolver adam = new AdamsM4th();
-
+        Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
+        Terrain.spline.createSpline();
+        StateVector sv = new StateVector(0, 0, 5, 0);
+        float stepSize = 0.1f;
+        int nmbr_steps = (int)(1/stepSize);
         float[] result = analyticalAnswer(sv.vx, stepSize*nmbr_steps);
         System.out.print(Arrays.toString(result) + " ?= ");
-        System.out.println(Arrays.toString(testSolver(sv, nmbr_steps, stepSize, RK4)));
 
+        ArrayList<float[][]> data = tesStepSize(sv, nmbr_steps, stepSize, new NumericalSolver[]{new RK4(), new RK2(), new Euler(), new AdamsM4th(), new AdamsB2nd()}, 6);
+
+        for(int i = 0; i < data.size(); i++){
+            for(int j = 0; j < data.get(i).length; j++){
+                System.out.println(Arrays.toString(data.get(i)[j]));
+            }
+            System.out.println();
+        }
 
     }
 }
