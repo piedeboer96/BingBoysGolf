@@ -230,7 +230,7 @@ public class GameScreen extends ScreenAdapter {
 			System.exit(0);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // sim. annealing bot
-			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
+			this.sa = new SA(100, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.sa.runSA().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
@@ -240,7 +240,7 @@ public class GameScreen extends ScreenAdapter {
 			this.shoot(sol[0], sol[1]);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ // particle swarm optimization bot
-			this.pso = new PSO(1000, 20, this.golfball.STATE.x, this.golfball.STATE.y);
+			this.pso = new PSO(100, 20, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.pso.runPSO().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}

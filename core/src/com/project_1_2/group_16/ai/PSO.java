@@ -20,7 +20,7 @@ public class PSO {
     float startY = 0;
 
     int maxIterations;
-    Particle[] particles;
+    ArrayList<Particle> particles;
 
     int iteration = 1;
     float N = population_size;
@@ -43,7 +43,7 @@ public class PSO {
      */
     public List<Float> runPSO(){
         int count = 0;
-        N = particles.length;
+        N = particles.size();
         W = 0.72984f;
         c1 = 1f;
         c2 = 2.0f;
@@ -57,13 +57,13 @@ public class PSO {
             if(globalBest.fitness < Input.R){
                 break outerloop;
             }
-            for(int i = 0; i < particles.length; i++){
+            for(int i = 0; i < particles.size(); i++){
                 iteration = i + 1;
                 W = (float) (0.4*((iteration-N)/Math.pow(N, 2)) + 0.4f);
                 c1 = -3*(iteration/N)+3.5f;
                 c2 = 3*(iteration/N)+0.5f;
 
-                Particle current = particles[i];
+                Particle current = particles.get(i);
 
                 float[] updated = getValidVelocity(updatedVelocity(current));
 
@@ -182,24 +182,24 @@ public class PSO {
         socialInfluence[1] = c2*U2y*(globalBest.getVy()-particle.getVy());
         return socialInfluence;
     }
-    public Particle[] initializeParticles(){
+    public ArrayList<Particle> initializeParticles(){
         ArrayList<float[]> init_vel = Score.availableVelocities(startX, startY);
         globalBest = new Particle(new StateVector(startX, startY, 0.1f, 0.1f));
-        Particle[] particles  = new Particle[population_size];
+        ArrayList<Particle>particles  = new ArrayList<Particle>();
         for(int i = 0; i < init_vel.size(); i++){
             Particle particle = new Particle(new StateVector(startX, startY, init_vel.get(i)[0], init_vel.get(i)[1]));
             particle.setlocalBest(particle);
-            particles[i] = particle;
-            if(particles[i].getFitness() < globalBest.getFitness()) {
-                globalBest = Particle.clone(particles[i]);
+            particles.add(particle);
+            if(particle.getFitness() < globalBest.getFitness()) {
+                globalBest = Particle.clone(particle);
             }
         }
-        for(int i = init_vel.size(); i<population_size; i++){
+        for(int i = particles.size(); i< population_size; i++){
             float[] velocities = Score.validVelocity(-5.0f, 5.0f, startX, startY);
-            particles[i] = new Particle(new StateVector(startX, startY, velocities[0], velocities[1]));
-            particles[i].setlocalBest(particles[i]);
-            if(particles[i].getFitness() < globalBest.getFitness()) {
-                globalBest = Particle.clone(particles[i]);
+            particles.add(new Particle(new StateVector(startX, startY, velocities[0], velocities[1])));
+            particles.get(i).setlocalBest(particles.get(i));
+            if(particles.get(i).fitness < globalBest.getFitness()) {
+                globalBest = Particle.clone(particles.get(i));
             }
         }
         return particles;
