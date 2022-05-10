@@ -7,10 +7,11 @@ import com.project_1_2.group_16.physics.Acceleration;
  * Here the derivatives are calculated using the physics 'acceleration' class.
  */
 public class Derivation {
-    float dx_dt;
-    float dy_dt;
-    float dvx_dt;
-    float dvy_dt;
+
+    public float dx_dt;
+    public float dy_dt;
+    public float dvx_dt;
+    public float dvy_dt;
     public static Acceleration acc = new Acceleration();
 
     /**
@@ -30,7 +31,7 @@ public class Derivation {
     /**
      * Empty constructor for convenience
      */
-    public Derivation(){
+    public Derivation() {
         this.dx_dt = 0;
         this.dy_dt = 0;
         this.dvx_dt = 0;
@@ -45,44 +46,12 @@ public class Derivation {
      * @param multiplier For Runge Kutta, in some instances you would need to multiply the "h" with a certain "multiplier"
      * @return new Derivation object containing all the Derivations of the state vector
      */
-    public static Derivation getDerivation(StateVector sv, float h, Derivation d, float multiplier){
+    public static Derivation getDerivation(StateVector sv, float h, Derivation d, float multiplier) {
         float multipliedH = h*multiplier;
         StateVector tempSV = new StateVector(sv.x + (multipliedH * d.dx_dt), sv.y+ (multipliedH * d.dy_dt), sv.vx + (multipliedH * d.dvx_dt), sv.vy + (multipliedH * d.dvy_dt));
         float [] pDerivatives = Terrain.getSlope(new float[]{sv.x, sv.y}, h);
         float accelerationX = acc.getAccelerationX(pDerivatives[0], pDerivatives[1], sv);
         float accelerationY = acc.getAccelerationY(pDerivatives[0], pDerivatives[1], sv);
         return new Derivation(tempSV.vx, tempSV.vy, accelerationX, accelerationY);
-    }
-
-    /**
-     * Getter for dx_dt
-     * @return dx_dt
-     */
-    public float getDx_dt() {
-        return dx_dt;
-    }
-
-    /**
-     * Getter for dy_dt
-     * @return dy_dt
-     */
-    public float getDy_dt() {
-        return dy_dt;
-    }
-
-    /**
-     * Getter for dvx_dt
-     * @return dvx_dt
-     */
-    public float getDvx_dt() {
-        return dvx_dt;
-    }
-
-    /**
-     * Getter for dvy_dt
-     * @return dvy_dt
-     */
-    public float getDvy_dt() {
-        return dvy_dt;
     }
 }

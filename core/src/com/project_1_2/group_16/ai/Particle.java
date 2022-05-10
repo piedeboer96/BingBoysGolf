@@ -18,7 +18,7 @@ public class Particle {
         this.init_sv =  new StateVector(sv.x, sv.y, sv.vx, sv.vy);
         this.game = new Game();
         this.game.setNumericalSolver(NumericalSolver.RK4);
-        this.game.runEngine(this.sv, null, this, null, null);
+        this.game.runEngine(this.sv, this, null, null);
     }
 
     public Particle(StateVector init, StateVector sv, double fitness){

@@ -64,10 +64,10 @@ public class AdamsM4th implements NumericalSolver{
             sv.vx = vel_x1Corr;
             sv.vy = vel_y1Corr;
 
-            sv4.setState(sv3);
-            sv3.setState(sv2);
-            sv2.setState(sv1);
-            sv1.setState(sv);
+            sv4.set(sv3);
+            sv3.set(sv2);
+            sv2.set(sv1);
+            sv1.set(sv);
 
             this.partialDerivatives = Terrain.getSlope(new float[]{sv.x, sv.y}, h);
         }
@@ -91,7 +91,7 @@ public class AdamsM4th implements NumericalSolver{
     public static void main(String[] args) {
         AdamsM4th am4 = new AdamsM4th();
         RK4 rk4 = new RK4();
-        RK2 rk2 = new RK2();
+        //RK2 rk2 = new RK2();
         int counter = 0;
         float t = 0;
         float t2 = 0;

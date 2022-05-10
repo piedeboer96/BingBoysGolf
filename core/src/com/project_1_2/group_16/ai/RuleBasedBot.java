@@ -58,9 +58,8 @@ public class RuleBasedBot {
             Randomise();
             sv = new StateVector(svForXandY.x, svForXandY.y, float_randomX, float_randomY);
             this.game.setNumericalSolver(NumericalSolver.RK4);
-            this.game.runEngine(sv, null, null, null, null);
-            if(DEBUG)System.out.println("this is the new x "+sv.x);
-            if(DEBUG)System.out.println("this is the new y "+sv.y);
+            this.game.runEngine(sv, null, null, null);
+            System.out.println("this is the new x "+sv.x);
             //score = FloodFill.getMatrixValue(sv.x, sv.y);
             score = Score.calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y);
             //System.out.println("this is the score " + score);

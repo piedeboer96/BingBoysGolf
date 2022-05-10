@@ -37,7 +37,7 @@ public class Soldier {
     public void calcFitness(){
         game.setNumericalSolver(NumericalSolver.RK4);
         StateVector sv = new StateVector(startX, startY, velX, velY);
-        game.runEngine(sv,null, null, null, this);
+        game.runEngine(sv, null, null, this);
         this.endPosX = sv.x;
         this.endPosY = sv.y;
 //        fitness = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
