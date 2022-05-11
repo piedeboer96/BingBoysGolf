@@ -8,6 +8,7 @@ import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.physics.Physics;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,47 +43,82 @@ public class PSO {
     /**
      * Method which can be called to run the PSO
      */
-    public List<Float> runPSO(){
+    public List<Float> runPSO() {
+
         int count = 0;
         N = particles.size();
         W = 0.72984f;
         c1 = 1f;
         c2 = 2.0f;
         outerloop:
-        while(count < maxIterations && globalBest.getFitness() > Input.R){
+        while (count < maxIterations && globalBest.getFitness() > Input.R) {
+
             count++;
             Particle localSearch = doLocalSearch(globalBest);
-            if(localSearch.fitness < globalBest.fitness){
+            if (localSearch.fitness < globalBest.fitness) {
                 globalBest = localSearch;
             }
-            if(globalBest.fitness < Input.R){
+            if (globalBest.fitness < Input.R) {
                 break outerloop;
             }
-            for(int i = 0; i < particles.size(); i++){
+
+            ParticleThread[] threads = new ParticleThread[particles.size()];
+            for (int i = 0; i < particles.size(); i++) {
                 iteration = i + 1;
-                W = (float) (0.4*((iteration-N)/Math.pow(N, 2)) + 0.4f);
-                c1 = -3*(iteration/N)+3.5f;
-                c2 = 3*(iteration/N)+0.5f;
+                W = (float) (0.4 * ((iteration - N) / Math.pow(N, 2)) + 0.4f);
+                c1 = -3 * (iteration / N) + 3.5f;
+                c2 = 3 * (iteration / N) + 0.5f;
+                ParticleThread.closedThreads = 0;
 
                 Particle current = particles.get(i);
-
                 float[] updated = getValidVelocity(updatedVelocity(current));
 
-                    Particle updatedP = new Particle(new StateVector(startX, startY, updated[0], updated[1]));
-                    updatedP.setlocalBest(current.getlocalBest());
-                    current = updatedP;
-                    if(current.getlocalBest().getFitness() > current.getFitness()){
-                        current.setlocalBest(updatedP);
-                        if(current.getlocalBest().getFitness()< globalBest.getFitness()){
-                            globalBest = Particle.clone(current);
-                        }
+                threads[i] = new ParticleThread(startX, startY, updated[0], updated[1], i, current.getlocalBest());
+                threads[i].start();
+//                Particle updatedP = new Particle(new StateVector(startX, startY, updated[0], updated[1]));
+//                updatedP.setlocalBest(current.getlocalBest());
+                //Separate loop
+                /*
+                current = updatedP;
+                if (current.getlocalBest().getFitness() > current.getFitness()) {
+                    current.setlocalBest(updatedP);
+                    if (current.getlocalBest().getFitness() < globalBest.getFitness()) {
+                        globalBest = Particle.clone(current);
                     }
+                }*/
             }
+            particles = runThreads(threads);
         }
         ArrayList<Float> toReturn = new ArrayList<>();
         toReturn.add(globalBest.getVx());
         toReturn.add(globalBest.getVy());
         return toReturn;
+    }
+
+    public ArrayList<Particle> runThreads(ParticleThread[] threads){
+        ArrayList<Particle> particleslocal = new ArrayList<>();
+        boolean stop = false;
+        while(!stop){
+            int count = 0;
+            for(int i = 0; i < threads.length; i++){
+                if(threads[i].hasFound){
+                    count++;
+                }
+            }
+            if(count >= threads.length){
+                stop = true;
+            }
+        }
+        for(int i = 0; i < threads.length; i++){
+            if (threads[i].getParticle().getlocalBest().getFitness() > threads[i].getParticle().getFitness()) {
+                threads[i].getParticle().setlocalBest(threads[i].getParticle());
+                if (threads[i].getParticle().getlocalBest().getFitness() < globalBest.getFitness()) {
+                    globalBest = Particle.clone(threads[i].getParticle());
+                }
+            }
+            particleslocal.add(threads[i].getParticle());
+        }
+        return particleslocal;
     }
 
     /**
@@ -102,6 +138,9 @@ public class PSO {
 
     public Particle doLocalSearch(Particle p){
         ArrayList<float[]> neighbourHood = new ArrayList<float[]>();
+        if(p.getlocalBest() == null){
+            p.setlocalBest(p);
+        }
         Particle toReturn = p;
         float stepSize = 0.2f;
         float vx = p.getVx();
@@ -116,14 +155,22 @@ public class PSO {
         neighbourHood.add(new float[] {vx-stepSize, vy-stepSize});
 
         double bestFitness = Integer.MAX_VALUE;
+        ParticleThread[] threads = new ParticleThread[neighbourHood.size()];
+        int index = 0;
         for(float[] f : neighbourHood){
-            Particle particle = new Particle(new StateVector(startX, startY, f[0], f[1]));
-            if(particle.fitness < Input.R * 3.15f){
-                return particle;
+            threads[index] = new ParticleThread(startX, startY, f[0], f[1], index, p.getlocalBest());
+            threads[index].start();
+            index++;
+            //Particle particle = new Particle(new StateVector(startX, startY, f[0], f[1]));
+        }
+        ArrayList<Particle> particle_local = runThreads(threads);
+        for(Particle pt : particle_local){
+            if(pt.fitness < Input.R * 3.15f){
+                return pt;
             }
-            if(particle.fitness < bestFitness){
-                toReturn = particle;
-                bestFitness = particle.fitness;
+            if(p.fitness < bestFitness){
+                toReturn = pt;
+                bestFitness = pt.fitness;
             }
         }
         return toReturn;
@@ -205,10 +252,12 @@ public class PSO {
         }
         return particles;
     }
+
+
     public static void main(String[] args) {
         Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
         Terrain.spline.createSpline();
-        PSO pso = new PSO(100, 20, Input.V0.x, Input.V0.y);
+        PSO pso = new PSO(1000, 20, Input.V0.x, Input.V0.y);
         ArrayList<Float> toDisplay = (ArrayList<Float>) pso.runPSO();
         System.out.println("here is the result " + toDisplay.get(0) + " " + toDisplay.get(1));
         System.out.println("ammount of simulations needed : " + Game.simulCounter);
