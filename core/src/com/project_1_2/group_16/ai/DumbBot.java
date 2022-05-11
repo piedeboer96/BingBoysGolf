@@ -52,10 +52,8 @@ public class DumbBot {
         if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
     }
 
-    public StateVector Play(){
-        sv.vx = c1;
-        sv.vy = c2;
-        return sv;
+    public float[] Play() {
+        return new float[] {c1, c2};
     }
 
 }

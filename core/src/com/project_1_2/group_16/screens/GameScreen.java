@@ -26,7 +26,6 @@ import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.NumericalSolver;
-import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Flagpole;
@@ -63,7 +62,7 @@ public class GameScreen extends ScreenAdapter {
     // logic
     private boolean allowHit;
     private int hitsCounter;
-    private final Vector3 v = new Vector3();
+    private Vector3 v = new Vector3();
     private float colorutil;
 
 	// bots
@@ -85,7 +84,6 @@ public class GameScreen extends ScreenAdapter {
         game.setNumericalSolver(NumericalSolver.RK4);
 
         // init skins
-        //this.font = App.THEME.getUISkin().getFont("default-font");
 		this.font = new BitmapFont();
 
         // create crosshair
@@ -157,6 +155,7 @@ public class GameScreen extends ScreenAdapter {
 		this.app.modelBatch.render(this.instances, this.app.environment);
 		this.app.modelBatch.end();
 
+		// update camera directions
         this.xDir = this.ballCam.direction.x;
 		this.zDir = this.ballCam.direction.z;
 
@@ -182,12 +181,10 @@ public class GameScreen extends ScreenAdapter {
 		if (this.power > 1 && this.allowHit) {
 			this.app.shapeBatch.begin(ShapeType.Filled);
 			this.colorutil = 510 * (this.power - 1) / 4;
-			if (this.colorutil > 255) {
+			if (this.colorutil > 255)
 				this.app.shapeBatch.setColor(1f, (510f - this.colorutil) / 255f, 0f, 1f);
-			}
-			else {
+			else
 				this.app.shapeBatch.setColor(this.colorutil / 255f, 1f, 0f, 1f);
-			}
 			this.app.shapeBatch.circle(App.SCREEN_WIDTH / 2, App.SCREEN_HEIGHT / 2, this.power * 10f);
 			this.app.shapeBatch.end();
 		}
@@ -230,7 +227,20 @@ public class GameScreen extends ScreenAdapter {
 			System.out.println("closed app in "+ANSI.RED+(System.nanoTime() - init)+ANSI.RESET+" nanoseconds.");
 			System.exit(0);
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // sim. annealing bot
+		if (Gdx.input.isKeyJustPressed(Keys.C)) { // switch camera
+			Gdx.input.setInputProcessor(this.useFreeCam ? this.ballMovement : this.freeMovement);
+			this.useFreeCam = !this.useFreeCam;
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.V)) { // shoot testing velocity
+			this.shoot(Input.VB.x, Input.VB.y);
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.R)) { // reset ball to the start
+			this.golfball.STATE.x = Input.V0.x; 
+			this.golfball.STATE.y = Input.V0.y;
+		}
+
+		// bots
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // sim. annealing
 			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.sa.runSA().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
@@ -247,32 +257,19 @@ public class GameScreen extends ScreenAdapter {
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_4)) { // dumb bot
 			this.dumbBot = new DumbBot(this.golfball.STATE);
-			StateVector dbState = this.dumbBot.Play();
-			this.shoot(dbState.vx, dbState.vy);
+			//StateVector dbState = this.dumbBot.Play();
+			//this.shoot(dbState.vx, dbState.vy);
+			float[] sol = this.dumbBot.Play();
+			this.shoot(sol[0], sol[1]);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_5)) { // rule based bot
 			this.ruleBasedBot = new RuleBasedBot(this.golfball.STATE);
-			StateVector dbState = this.ruleBasedBot.Play();
-			this.shoot(dbState.vx, dbState.vy);
+			//StateVector dbState = this.ruleBasedBot.Play();
+			//this.shoot(dbState.vx, dbState.vy);
+			float[] sol = this.ruleBasedBot.Play();
+			this.shoot(sol[0], sol[1]);
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.C)) { // switch camera
-			if (this.useFreeCam) { // switch to ball cam
-				Gdx.input.setInputProcessor(this.ballMovement);
-				this.useFreeCam = false;
-			}
-			else { // switch to free cam
-				Gdx.input.setInputProcessor(this.freeMovement);
-				this.useFreeCam = true;
-			}
-		}	
-		if (Gdx.input.isKeyJustPressed(Keys.V)) { // shoot testing velocity
-			this.shoot(Input.VB.x, Input.VB.y);
-		}
-		if (Gdx.input.isKeyJustPressed(Keys.R)) { // reset ball to the start
-			this.golfball.STATE.x = Input.V0.x; 
-			this.golfball.STATE.y = Input.V0.y;
-		}
-
+		
 		// shooting the ball
 		if (this.ballMovement.getPowerStatus() == PowerStatus.POWER_UP) {
 			this.power += App.POWER_DELTA;

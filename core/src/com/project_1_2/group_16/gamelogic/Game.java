@@ -54,7 +54,7 @@ public class Game {
             sv.stop = true;
 
             // stroke penalty
-            if (reference != null) reference.increaseHitCounter(1);
+            if (reference != null) reference.GAME_SCREEN.increaseHitCounter(1);
         }
 
         // check tree collision
@@ -109,9 +109,9 @@ public class Game {
      */
     public void endGame(App app) {
         String message = "Congratulations! ";
-        switch (app.increaseHitCounter(0)) {
+        switch (app.GAME_SCREEN.increaseHitCounter(0)) {
             case 1: message += " You got a hole-in-one! Unbelievable!"; break;
-            default: message += "You finished the hole in "+app.increaseHitCounter(0)+" shots!";
+            default: message += "You finished the hole in "+app.GAME_SCREEN.increaseHitCounter(0)+" shots!";
         }
         System.out.println(message);
     }

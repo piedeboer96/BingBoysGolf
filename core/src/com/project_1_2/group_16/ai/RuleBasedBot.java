@@ -116,10 +116,8 @@ public class RuleBasedBot {
         }
     }
 
-    public StateVector Play(){
-        sv.vx = newsv.vx;
-        sv.vy = newsv.vy;
-        return sv;
+    public float[] Play() {
+        return new float[] {newsv.vx, newsv.vy};
     }
 
 }

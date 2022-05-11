@@ -1,4 +1,4 @@
-### tree_model.g3dj taken from:
+### tree_model_default.g3dj taken from:
 https://www.turbosquid.com/3d-models/tree-pixel-low-poly-3d-model-1764347
 
 # License:
@@ -13,3 +13,8 @@ https://freesound.org/people/zolopher/sounds/75206/
 
 ### water_sound.wav taken from:
 https://freesound.org/people/Quistard/sounds/166818/
+
+
+
+### background.png created by Group 16
+### skin is the default LibGDX skin

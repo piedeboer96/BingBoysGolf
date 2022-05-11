@@ -67,12 +67,7 @@ public class Flagpole {
      * @param face the direction the flag is facing
      */
     public void rotateTowardsGolfball(Vector3 golfball, Vector3 face) {
-        if (this.pos.x < golfball.x) {
-			this.instance.transform.rotate(Vector3.Y, 90+57.2958f*angleBetween(this.pos, golfball, face));
-		}
-		else {
-			this.instance.transform.rotate(Vector3.Y, 270-57.2958f*angleBetween(this.pos, golfball, face));
-		}
+		this.instance.transform.rotate(Vector3.Y,(this.pos.x<golfball.x?90:270)+57.2958f*angleBetween(this.pos,golfball,face));
     }
 
     /**

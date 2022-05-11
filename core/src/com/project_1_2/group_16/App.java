@@ -58,7 +58,7 @@ public class App extends Game {
 		hitSound = Gdx.audio.newSound(Gdx.files.internal("hit_sound.wav"));
 		dropSound = Gdx.audio.newSound(Gdx.files.internal("water_sound.wav"));
 		
-		// init batches and other things
+		// init batches
 		this.modelBatch = new ModelBatch();
 		this.shapeBatch = new ShapeRenderer();
 		this.spriteBatch = new SpriteBatch();
@@ -71,14 +71,5 @@ public class App extends Game {
 		// open title screen
 		this.TITLE_SCREEN.create();
 		this.setScreen(this.TITLE_SCREEN);
-	}
-
-	/**
-	 * Increase the hit-counter by n.
-	 * @param n increase the counter by this number
-	 * @return the new value
-	 */
-	public int increaseHitCounter(int n) {
-		return this.GAME_SCREEN.increaseHitCounter(n);
 	}
 }
