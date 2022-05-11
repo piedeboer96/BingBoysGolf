@@ -211,12 +211,17 @@ public class TerrainStage extends InputScreen {
             this.addActor(this.brushLabel);
         }
 
+        // update hole and ball position
+        this.screen.getScreens().get(0).parseInputs();
+
         // render / update tiles
         float brush = Float.parseFloat(this.brushField.getText());
         for (int i = 0; i < this.renderGrid.length; i++) {
             for (int j = 0; j < this.renderGrid.length; j++) {
                 if (!firstTime) this.renderGrid[i][j].updateInput(this.input, brush);
-                this.renderGrid[i][j].configure(this.input);
+                if (this.renderGrid[i][j].containsHole(this.renderGrid.length)) this.renderGrid[i][j].setColor(Color.RED);
+                else if (this.renderGrid[i][j].containsBall(this.renderGrid.length)) this.renderGrid[i][j].setColor(Color.WHITE);
+                else this.renderGrid[i][j].configure(this.input);
                 if (firstTime) this.addActor(this.renderGrid[i][j]);
             }
         }
@@ -250,12 +255,32 @@ public class TerrainStage extends InputScreen {
          * @param y y-coordinate
          * @return
          */
-        public boolean contains(float x , float y) {
+        public boolean contains(float x, float y) {
             if (x < this.x) return false;
             if (y < this.y) return false;
             if (x > this.x + this.size) return false;
             if (y > this.y + this.size) return false;
             return true;
+        }
+
+        /**
+         * If this tile contains the hole.
+         * @param size the total number of tiles
+         * @return
+         */
+        public boolean containsHole(float size) {
+            return (int)(Math.abs(Input.VT.x + App.FIELD_SIZE/2)*size/App.FIELD_SIZE) == j && 
+                   (int)(Math.abs(Input.VT.y + App.FIELD_SIZE/2)*size/App.FIELD_SIZE) == i;
+        }
+
+        /**
+         * If this tile contains the ball.
+         * @param size the total number of tiles
+         * @return
+         */
+        public boolean containsBall(float size) {
+            return (int)(Math.abs(Input.V0.x + App.FIELD_SIZE/2)*size/App.FIELD_SIZE) == j && 
+                   (int)(Math.abs(Input.V0.y + App.FIELD_SIZE/2)*size/App.FIELD_SIZE) == i;
         }
 
         /**

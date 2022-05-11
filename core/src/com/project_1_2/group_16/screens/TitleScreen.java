@@ -86,6 +86,14 @@ public class TitleScreen extends ScreenAdapter {
     }
 
     /**
+     * Get all different screens this titlescreen has.
+     * @return
+     */
+    public List<InputScreen> getScreens() {
+        return this.screens;
+    }
+
+    /**
      * Set the screen to be displayed to the user
      * @param screen InputScreen.MAIN / ADVANCED_SETTINGS / TERRAIN_SETTINGS
      */

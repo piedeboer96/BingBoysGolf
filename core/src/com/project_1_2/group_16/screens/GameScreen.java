@@ -241,7 +241,7 @@ public class GameScreen extends ScreenAdapter {
 			this.shoot(sol[0], sol[1]);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ // particle swarm optimization
-			this.pso = new PSO(1000, 20, this.golfball.STATE.x, this.golfball.STATE.y);
+			this.pso = new PSO(100, 20, this.golfball.STATE.x, this.golfball.STATE.y);
 			Float[] sol = this.pso.runPSO().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
