@@ -31,6 +31,15 @@ CLEAN UP:
 - screens
 
 
+
+INSTRUCTIONS TEXT TODO:
+MAIN STAGE:
+- controls
+ADVANCED STAGE:
+- info about MUK, MUS, MUKS, MUSS
+TERRAIN STAGE:
+- info about drawing splines
+
 ----------------------------------------------
 OLD README
 
