@@ -6,13 +6,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
 
+/**
+ * Wrapper class for the flap pole and hole.
+ */
 public class Flagpole {
 
     private Model model;
     private ModelInstance instance;
     private float r;
     private Vector3 pos = new Vector3();
-    
+
     /**
      * Create a flagpole object, which represents the flagpole and hole visible on the course. 
      * Has attributes used both in front- and back-end.

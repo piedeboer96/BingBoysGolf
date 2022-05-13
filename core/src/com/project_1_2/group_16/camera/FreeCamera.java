@@ -6,7 +6,10 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 
-// parts of code taken from: https://stackoverflow.com/a/34058580
+/**
+ * Camera that allows the user to freely move around the course.
+ * Adapted from: https://stackoverflow.com/a/34058580
+ */
 public class FreeCamera implements InputProcessor {
 
     /**

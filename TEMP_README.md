@@ -21,12 +21,12 @@ CLEAN UP:
 - App (DONE)
 - Input (DONE)
 - themes (DONE)
+- models (DONE)
+- misc (DONE)
+- camera (DONE)
 
-- models
-- misc
 - math
 - gamelogic
-- camera
 - ai
 - screens
 
