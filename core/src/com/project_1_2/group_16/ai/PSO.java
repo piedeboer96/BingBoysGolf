@@ -19,6 +19,8 @@ public class PSO {
     int population_size = 0;
     float startX = 0;
     float startY = 0;
+    PSO local;
+    boolean found;
 
     int maxIterations;
     ArrayList<Particle> particles;
@@ -38,13 +40,15 @@ public class PSO {
         this.startX = startX;
         this.startY = startY;
         particles = initializeParticles();
+        found = false;
+        local = new PSO(maxIterations, population_size, startX, startY);
     }
 
     /**
      * Method which can be called to run the PSO
      */
     public List<Float> runPSO() {
-
+        long start = System.currentTimeMillis();
         int count = 0;
         N = particles.size();
         W = 0.72984f;
@@ -59,7 +63,9 @@ public class PSO {
                 globalBest = localSearch;
             }
             if (globalBest.fitness < Input.R) {
+                found = true;
                 break outerloop;
+
             }
 
             ParticleThread[] threads = new ParticleThread[particles.size()];
@@ -75,19 +81,16 @@ public class PSO {
 
                 threads[i] = new ParticleThread(startX, startY, updated[0], updated[1], i, current.getlocalBest());
                 threads[i].start();
-//                Particle updatedP = new Particle(new StateVector(startX, startY, updated[0], updated[1]));
-//                updatedP.setlocalBest(current.getlocalBest());
-                //Separate loop
-                /*
-                current = updatedP;
-                if (current.getlocalBest().getFitness() > current.getFitness()) {
-                    current.setlocalBest(updatedP);
-                    if (current.getlocalBest().getFitness() < globalBest.getFitness()) {
-                        globalBest = Particle.clone(current);
-                    }
-                }*/
             }
             particles = runThreads(threads);
+            if(System.currentTimeMillis() - start >= 2){
+                found = false;
+                System.out.println("rerun PSO");
+                break outerloop;
+            }
+        }
+        if(!found){
+            return local.runPSO();
         }
         ArrayList<Float> toReturn = new ArrayList<>();
         toReturn.add(globalBest.getVx());
@@ -95,6 +98,11 @@ public class PSO {
         return toReturn;
     }
 
+    /**
+     * Method used to create particles using multiple threads.
+     * @param threads ParticleThread
+     * @return Arraylist of particles
+     */
     public ArrayList<Particle> runThreads(ParticleThread[] threads){
         ArrayList<Particle> particleslocal = new ArrayList<>();
         boolean stop = false;
@@ -161,7 +169,6 @@ public class PSO {
             threads[index] = new ParticleThread(startX, startY, f[0], f[1], index, p.getlocalBest());
             threads[index].start();
             index++;
-            //Particle particle = new Particle(new StateVector(startX, startY, f[0], f[1]));
         }
         ArrayList<Particle> particle_local = runThreads(threads);
         for(Particle pt : particle_local){
@@ -257,7 +264,10 @@ public class PSO {
     public static void main(String[] args) {
         Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
         Terrain.spline.createSpline();
+        long start = System.currentTimeMillis();
         PSO pso = new PSO(1000, 20, Input.V0.x, Input.V0.y);
+        long end = System.currentTimeMillis();
+        System.out.println("Runtime: " + (end-start));
         ArrayList<Float> toDisplay = (ArrayList<Float>) pso.runPSO();
         System.out.println("here is the result " + toDisplay.get(0) + " " + toDisplay.get(1));
         System.out.println("ammount of simulations needed : " + Game.simulCounter);
