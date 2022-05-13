@@ -4,8 +4,8 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.NumericalSolver;
+import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
-import com.project_1_2.group_16.physics.Physics;
 
 import java.util.ArrayList;
 import java.util.Arrays;

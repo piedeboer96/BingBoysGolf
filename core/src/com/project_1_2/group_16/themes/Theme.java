@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
- * The theme provides all textures used in the game.
+ * The theme provides all textures used in the application.
  */
 public interface Theme {
 

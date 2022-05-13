@@ -9,14 +9,13 @@ import com.project_1_2.group_16.ai.Score;
 import com.project_1_2.group_16.ai.Soldier;
 import com.project_1_2.group_16.math.*;
 import com.project_1_2.group_16.models.Tree;
-import com.project_1_2.group_16.physics.Physics;
 
 public class Game {
 
     /**
      * Step size.
      */
-    public static float h = 0.05f;
+    public static final float h = 0.05f;
 
     /**
      * Number of simulations.
@@ -99,8 +98,6 @@ public class Game {
             case NumericalSolver.EULER: this.solver = new Euler(); break;
             case NumericalSolver.RK2: this.solver = new RK2(); break;
             case NumericalSolver.RK4: this.solver = new RK4(); break;
-            case NumericalSolver.ADAMSB2: this.solver = new AdamsB2nd(); break;
-            case NumericalSolver.ADAMSM4: this.solver = new AdamsM4th(); break;
         }
     }
 

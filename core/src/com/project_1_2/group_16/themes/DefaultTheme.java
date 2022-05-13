@@ -14,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.project_1_2.group_16.App;
 
+/**
+ * The default theme for the application.
+ */
 public class DefaultTheme implements Theme {
 
     private final Color sky = new Color(178f / 255, 255f / 255, 255f / 255, 1f);

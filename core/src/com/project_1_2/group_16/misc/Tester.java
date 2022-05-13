@@ -4,7 +4,6 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.*;
-import com.project_1_2.group_16.physics.Physics;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -85,7 +84,7 @@ public class Tester {
         float[] result = analyticalAnswer(sv.vx, stepSize*nmbr_steps);
         System.out.print(Arrays.toString(result) + " ?= ");
 
-        ArrayList<float[][]> data = tesStepSize(sv, nmbr_steps, stepSize, new NumericalSolver[]{new RK4(), new RK2(), new Euler(), new AdamsM4th(), new AdamsB2nd()}, 6);
+        ArrayList<float[][]> data = tesStepSize(sv, nmbr_steps, stepSize, new NumericalSolver[]{new RK4(), new RK2(), new Euler()}, 6);
 
         for(int i = 0; i < data.size(); i++){
             for(int j = 0; j < data.get(i).length; j++){
