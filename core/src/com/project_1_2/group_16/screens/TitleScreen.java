@@ -37,7 +37,8 @@ public class TitleScreen extends ScreenAdapter {
      * Create all components.
      */
     public void create() {
-        this.skin = App.THEME.getUISkin();
+        this.skin = App.THEME.getUISkin(); // https://stackoverflow.com/a/38401475
+        this.skin.getFont("default-font").getData().markupEnabled = true;
 
         this.screens = new ArrayList<InputScreen>();
         this.screens.add(new MainStage(this));

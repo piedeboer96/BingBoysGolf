@@ -119,7 +119,9 @@ public class TerrainStage extends InputScreen {
         this.info.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.show(stage);
             }
         });
         this.addActor(this.info);

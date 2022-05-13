@@ -71,7 +71,9 @@ public class AdvancedStage extends InputScreen {
         this.mukInfo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.show(stage);
             }
         });
         this.addActor(this.mukInfo);
@@ -90,7 +92,9 @@ public class AdvancedStage extends InputScreen {
         this.musInfo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.show(stage);
             }
         });
         this.addActor(this.musInfo);
@@ -109,7 +113,9 @@ public class AdvancedStage extends InputScreen {
         this.muksInfo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.show(stage);
             }
         });
         this.addActor(this.muksInfo);
@@ -128,7 +134,9 @@ public class AdvancedStage extends InputScreen {
         this.mussInfo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.show(stage);
             }
         });
         this.addActor(this.mussInfo);
