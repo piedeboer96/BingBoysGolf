@@ -133,7 +133,7 @@ public class Game {
                     p.fitness = temp;
                 }
             } else if(n!=null) {
-                if (temp < n.getFitness()){
+                if (temp < n.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
                     n.fitness = temp;
                 }
             } else if(s!=null) {

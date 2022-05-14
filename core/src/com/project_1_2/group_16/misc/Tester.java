@@ -7,6 +7,7 @@ import com.project_1_2.group_16.math.*;
 import com.project_1_2.group_16.physics.Physics;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -19,8 +20,8 @@ public class Tester {
         float local_stepSize = stepSize;
         shrimp.add(testSolvers(new StateVector(initialValues[0], initialValues[1], initialValues[2], initialValues[3]), local_nmbr_steps, local_stepSize, solvers));
         for(int i = 0; i < MaxIt-1; i++){
-            local_nmbr_steps *= 2;
-            local_stepSize /= 2;
+            local_nmbr_steps *= 2f;
+            local_stepSize /= 2f;
             System.out.println(local_nmbr_steps + " stepsize: " + local_stepSize);
             shrimp.add(testSolvers(new StateVector(initialValues[0], initialValues[1], initialValues[2], initialValues[3]), local_nmbr_steps, local_stepSize, solvers));
 
@@ -68,24 +69,26 @@ public class Tester {
         return solver.toString() + ": [ x: " + sv.x  + " y: " + sv.y + " vx: " + sv.x + " vy: " + sv.y + " ]";
     }
 
-    public static float[] analyticalAnswer(float velocity, float time){
-        float acceleration = -Input.MUK * Physics.GRAV_CONSTANT;
-        float distance = (float)(velocity*time + 0.5*acceleration*(time*time));
-        float endVelocity = velocity + acceleration*time;
-        return new float[]{distance, endVelocity};
+    public static BigDecimal[] analyticalAnswer(float velocity, float time){
+        BigDecimal acceleration = BigDecimal.valueOf(-Input.MUK * Physics.GRAV_CONSTANT);
+        BigDecimal distance0 = BigDecimal.valueOf(0.5).multiply(acceleration.multiply(BigDecimal.valueOf((time*time))));
+        BigDecimal distance1 = distance0.add(BigDecimal.valueOf(velocity * time));
+        BigDecimal endVelocity = acceleration.multiply(BigDecimal.valueOf(time)).add(BigDecimal.valueOf(velocity));
+        return new BigDecimal[]{distance1, endVelocity};
     }
 
 
     public static void main(String[] args) {
         Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
         Terrain.spline.createSpline();
+        Input.USE_SPLINES = false;
         StateVector sv = new StateVector(0, 0, 5, 0);
-        float stepSize = 0.1f;
+        float stepSize = 0.05f;
         int nmbr_steps = (int)(1/stepSize);
-        float[] result = analyticalAnswer(sv.vx, stepSize*nmbr_steps);
+        BigDecimal[] result = analyticalAnswer(sv.vx, stepSize*nmbr_steps);
         System.out.print(Arrays.toString(result) + " ?= ");
 
-        ArrayList<float[][]> data = tesStepSize(sv, nmbr_steps, stepSize, new NumericalSolver[]{new RK4(), new RK2(), new Euler(), new AdamsM4th(), new AdamsB2nd()}, 6);
+        ArrayList<float[][]> data = tesStepSize(sv, nmbr_steps, stepSize, new NumericalSolver[]{new RK4(), new RK2(), new Euler()}, 6);
 
         for(int i = 0; i < data.size(); i++){
             for(int j = 0; j < data.get(i).length; j++){
