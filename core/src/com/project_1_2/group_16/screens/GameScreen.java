@@ -237,6 +237,8 @@ public class GameScreen extends ScreenAdapter {
 		if (Gdx.input.isKeyJustPressed(Keys.R)) { // reset ball to the start
 			this.golfball.STATE.x = Input.V0.x; 
 			this.golfball.STATE.y = Input.V0.y;
+			this.golfball.STATE.vx = 0;
+			this.golfball.STATE.vy = 0;
 		}
 
 		// bots

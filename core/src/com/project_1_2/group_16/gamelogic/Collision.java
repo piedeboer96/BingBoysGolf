@@ -14,7 +14,7 @@ public class Collision {
     /**
      * Maximum velocity allowed for a hole to count.
      */
-    public static final float MAX_HOLE_VELOCITY = 2 * Game.h;
+    public static final float MAX_HOLE_VELOCITY = 2;
 
     /**
      * Return whether the ball is in the target-radius based on the coordinates of the Statevector.
