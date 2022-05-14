@@ -24,8 +24,8 @@ CLEAN UP:
 - models (DONE)
 - misc (DONE)
 - camera (DONE)
+- math (DONE)
 
-- math
 - gamelogic
 - ai
 - screens

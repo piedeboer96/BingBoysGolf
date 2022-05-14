@@ -3,7 +3,7 @@ package com.project_1_2.group_16.math;
 import com.project_1_2.group_16.gamelogic.Terrain;
 
 /**
- * Here the derivatives are calculated using the physics 'acceleration' class.
+ * Here the derivatives are calculated using the physics class.
  */
 public class Derivation {
 

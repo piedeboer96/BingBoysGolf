@@ -3,17 +3,12 @@ package com.project_1_2.group_16.math;
 import com.project_1_2.group_16.gamelogic.Terrain;
 
 /**
- * Euler’s method.
+ * Euler’s method for solving ODE's.
  */
 public class Euler implements NumericalSolver {
 
     private float[] partialDerivatives;
     
-    /**
-     * Euler ODE Solver
-     * @param h step-size
-     * @param sv state vector of the ball
-     */
     @Override
     public void solve(float h, StateVector sv) {
         this.partialDerivatives = Terrain.getSlope(new float[] {sv.x, sv.y}, h);
@@ -32,8 +27,6 @@ public class Euler implements NumericalSolver {
 
         sv.vx = vel_x1;
         sv.vy = vel_y1;
-
-        System.out.println("sv_END: " + sv);
     }
 
     @Override
