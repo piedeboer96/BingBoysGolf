@@ -46,8 +46,11 @@ public class TerrainStage extends InputScreen {
     private Label brushLabel;
     private TextField brushField;
 
+    private TextButton info;
+
     public TerrainStage(TitleScreen screen) {
         super(screen);
+        super.stage = this;
     }
 
     @Override
@@ -106,6 +109,19 @@ public class TerrainStage extends InputScreen {
             }
         });
         this.addActor(this.render);
+
+        // info button
+        this.info = new TextButton("info", this.screen.skin);
+        this.info.setPosition(this.render.getX(Align.bottomRight) + 5, this.render.getY(Align.bottom));
+        this.info.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.show(stage);
+            }
+        });
+        this.addActor(this.info);
 
         // function button
         this.useFunction = new CheckBox("Use function", this.screen.skin);

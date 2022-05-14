@@ -11,6 +11,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Terrain;
 
+/**
+ * Class used for building the terrain model.
+ */
 public class TerrainBuilder extends ModelBuilder {
 
     /**

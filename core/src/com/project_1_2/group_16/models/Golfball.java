@@ -8,6 +8,9 @@ import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
 
+/**
+ * Wrapper class for the golfball.
+ */
 public class Golfball {
 
     /**
@@ -15,6 +18,9 @@ public class Golfball {
      */
     public static final float SIZE = 0.1f;
 
+    /**
+     * The 'state' of the golfball. Encapsulates its position and velocity.
+     */
     public final StateVector STATE = new StateVector(0, 0, 0, 0);
     
     private Model model;

@@ -1,10 +1,9 @@
 package com.project_1_2.group_16.math;
 
 import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.physics.Acceleration;
 
 /**
- * Here the derivatives are calculated using the physics 'acceleration' class.
+ * Here the derivatives are calculated using the physics class.
  */
 public class Derivation {
 
@@ -12,7 +11,6 @@ public class Derivation {
     public float dy_dt;
     public float dvx_dt;
     public float dvy_dt;
-    public static Acceleration acc = new Acceleration();
 
     /**
      * Initialize derivatives.
@@ -49,9 +47,9 @@ public class Derivation {
     public static Derivation getDerivation(StateVector sv, float h, Derivation d, float multiplier) {
         float multipliedH = h*multiplier;
         StateVector tempSV = new StateVector(sv.x + (multipliedH * d.dx_dt), sv.y+ (multipliedH * d.dy_dt), sv.vx + (multipliedH * d.dvx_dt), sv.vy + (multipliedH * d.dvy_dt));
-        float [] pDerivatives = Terrain.getSlope(new float[]{sv.x, sv.y}, h);
-        float accelerationX = acc.getAccelerationX(pDerivatives[0], pDerivatives[1], sv);
-        float accelerationY = acc.getAccelerationY(pDerivatives[0], pDerivatives[1], sv);
+        float [] pDerivatives = Terrain.getSlope(new float[]{sv.x, sv.y});
+        float accelerationX = Physics.getAccelerationX(pDerivatives[0], pDerivatives[1], sv);
+        float accelerationY = Physics.getAccelerationY(pDerivatives[0], pDerivatives[1], sv);
         return new Derivation(tempSV.vx, tempSV.vy, accelerationX, accelerationY);
     }
 }

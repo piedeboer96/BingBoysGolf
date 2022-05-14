@@ -15,6 +15,10 @@ import com.project_1_2.group_16.screens.TitleScreen;
 import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.Theme;
 
+/**
+ * The main hub of the application. 
+ * This class is the entry point for the entire game.
+ */
 public class App extends Game {
 
 	// constants

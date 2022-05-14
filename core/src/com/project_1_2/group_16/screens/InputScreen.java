@@ -2,12 +2,21 @@ package com.project_1_2.group_16.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+/**
+ * Abstract class that represents the stage of an inputscreen.
+ * The title screen can display these screens seperately
+ */
 public abstract class InputScreen extends Stage {
 
     /**
      * Reference to the screen for which this stage was created.
      */
     protected TitleScreen screen;
+
+    /**
+     * Reference to the sub-class of this inputscreen.
+     */
+    protected Stage stage;
 
     /**
      * The main screen.

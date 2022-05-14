@@ -12,7 +12,7 @@ import com.project_1_2.group_16.App;
 public class TitleScreen extends ScreenAdapter {
     
     /**
-     * Reference the the main application.
+     * Reference to the main application.
      */
     private App app;
 
@@ -37,7 +37,8 @@ public class TitleScreen extends ScreenAdapter {
      * Create all components.
      */
     public void create() {
-        this.skin = App.THEME.getUISkin();
+        this.skin = App.THEME.getUISkin(); // https://stackoverflow.com/a/38401475
+        this.skin.getFont("default-font").getData().markupEnabled = true;
 
         this.screens = new ArrayList<InputScreen>();
         this.screens.add(new MainStage(this));

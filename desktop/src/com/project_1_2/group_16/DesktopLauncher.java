@@ -3,6 +3,9 @@ package com.project_1_2.group_16;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
+/**
+ * Helper class for launching the game.
+ */
 public class DesktopLauncher {
 
 	public static void main(String[] arg) {
@@ -13,11 +16,5 @@ public class DesktopLauncher {
 		config.setForegroundFPS(30);
 		config.useVsync(false);
 		new Lwjgl3Application(new App(), config);
-
-		// reminder for self to build executable jar:
-		// - open new terminal
-		// - cd to desktop
-		// - gradle dist command will create an executable jar in build/libs
-		// use launch4j to wrap the jar
 	}
 }
