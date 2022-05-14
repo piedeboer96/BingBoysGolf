@@ -3,7 +3,6 @@ package com.project_1_2.group_16.screens;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -32,11 +31,9 @@ public class AdvancedStage extends InputScreen {
     private TextField mussField;
     private TextButton mussInfo;
 
-    private Stage stage;
-
     public AdvancedStage(TitleScreen screen) {
         super(screen);
-        this.stage = this;
+        super.stage = this;
     }
 
     @Override

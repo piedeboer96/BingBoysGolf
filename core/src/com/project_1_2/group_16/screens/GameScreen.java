@@ -257,15 +257,11 @@ public class GameScreen extends ScreenAdapter {
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_4)) { // dumb bot
 			this.dumbBot = new DumbBot(this.golfball.STATE);
-			//StateVector dbState = this.dumbBot.Play();
-			//this.shoot(dbState.vx, dbState.vy);
 			float[] sol = this.dumbBot.Play();
 			this.shoot(sol[0], sol[1]);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_5)) { // rule based bot
 			this.ruleBasedBot = new RuleBasedBot(this.golfball.STATE);
-			//StateVector dbState = this.ruleBasedBot.Play();
-			//this.shoot(dbState.vx, dbState.vy);
 			float[] sol = this.ruleBasedBot.Play();
 			this.shoot(sol[0], sol[1]);
 		}
@@ -304,7 +300,7 @@ public class GameScreen extends ScreenAdapter {
 
 			// sound effect and shot counter
 			this.app.hitSound.play();
-			hitsCounter++;
+			this.increaseHitCounter(1);
 
 			// hit the ball
 			this.golfball.STATE.prev = new Vector2(this.v.x, this.v.z);

@@ -12,7 +12,7 @@ import com.project_1_2.group_16.App;
 public class TitleScreen extends ScreenAdapter {
     
     /**
-     * Reference the the main application.
+     * Reference to the main application.
      */
     private App app;
 

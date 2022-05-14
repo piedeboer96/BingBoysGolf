@@ -9,6 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+/**
+ * Dialog for showing information on a 2D stage.
+ */
 public class InfoDialog extends Dialog {
 
     private List<String> text = new ArrayList<String>();
@@ -17,6 +20,10 @@ public class InfoDialog extends Dialog {
         super("information", skin);
     }
 
+    /**
+     * Add text to the dialog. This text will be placed on a new line.
+     * @param text 
+     */
     public void addText(String text) {
         this.text.add(text);
     }
@@ -26,7 +33,7 @@ public class InfoDialog extends Dialog {
         // close button
         this.button("close");
 
-        // content
+        // add text
         Table content = this.getContentTable();
         for (String s : this.text) {
             content.add(new Label(s, this.getSkin())).fillX().expandX().row();
@@ -37,6 +44,7 @@ public class InfoDialog extends Dialog {
 
     @Override
     public void result(Object obj) {
+        // close the dialog
         this.remove();
     }
 }
