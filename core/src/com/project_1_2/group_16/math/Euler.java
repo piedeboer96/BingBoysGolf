@@ -11,7 +11,7 @@ public class Euler implements NumericalSolver {
     
     @Override
     public void solve(float h, StateVector sv) {
-        this.partialDerivatives = Terrain.getSlope(new float[] {sv.x, sv.y}, h);
+        this.partialDerivatives = Terrain.getSlope(new float[] {sv.x, sv.y});
         
         float pos_x1 = sv.x + (h * sv.vx);
         float pos_y1 = sv.y + (h * sv.vy);

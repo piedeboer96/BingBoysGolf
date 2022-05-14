@@ -12,13 +12,34 @@ import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.models.Tree;
 import bsh.EvalError;
 
-
+/**
+ * Class that represents the terrain of the golf course.
+ */
 public class Terrain {
 
+    /**
+     * The edge of the map.
+     */
+    public static final float MAP_EDGE = App.FIELD_SIZE / 2 + App.TILE_SIZE;
+    
+    /**
+     * All sandpits.
+     */
     public static final List<Sandpit> sandPits = new ArrayList<Sandpit>();
+
+    /**
+     * All trees.
+     */
     public static final List<Tree> trees = new ArrayList<Tree>();
-    public static final float WATER_EDGE = App.FIELD_SIZE / 2 + App.TILE_SIZE;
+    
+    /**
+     * Collision detection for the terrain.
+     */
     public static final Collision collision = new Collision();
+
+    /**
+     * Spline used for calculating height coordinates.
+     */
     public static Spline spline;
 
     /**
@@ -31,7 +52,12 @@ public class Terrain {
      * @throws ClassCastException if the height function doesn't return a {@code double} value
      */
     public static float getHeight(float x, float y) {
-        return Input.USE_SPLINES ? spline.getHeight(x, y) : spline.getHeightFunction(x, y);
+        // make everything outside of the rendered area water
+        if (Math.abs(x) > Terrain.MAP_EDGE || Math.abs(y) > Terrain.MAP_EDGE) {
+            return -1;
+        }
+
+        return Math.max(Input.USE_SPLINES ? spline.getHeight(x, y) : spline.getHeightFunction(x, y), -0.01f);
     }
 
     /**
@@ -46,18 +72,17 @@ public class Terrain {
     }
     
     /**
-     * Return the slope in dh/dx and dh/dy using two-point centered point difference formula
+     * Return the slope in dh/dx and dh/dy using two-point centered point difference formula.
      * @param coordinates array of coordinates
      * @param h step-size
      * @return array with dh/dx and dh/dy
      */
-    public static float[] getSlope(float[] coordinates, float h) {
-        h = 1f/1000000f;
-        float[] slopes = {
+    public static float[] getSlope(float[] coordinates) {
+        float h = 1f/1000000f;
+        return new float[] {
             (getHeight(coordinates[0] + h, coordinates[1]) - getHeight(coordinates[0] - h, coordinates[1]))/(2*h),
             (getHeight(coordinates[0], coordinates[1]+h) - getHeight(coordinates[0], coordinates[1] - h))/(2*h)
         };
-        return slopes;
     }
 
     /**
@@ -79,16 +104,17 @@ public class Terrain {
     }
 
     /**
-     * Add sandpits to the course
+     * Add sandpits to the course.
      */
     public static void initSandPits() {
-        Vector2 sV; float sX, sZ;
+        Vector2 sV; float sX, sZ; int j;
         for (int i = 0; i < Input.SAND; i++) {
+            j = 0;
             do {
                 sX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
                 sZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
                 sV = new Vector2(sX, sZ);
-            } while (getHeight(sX, sZ) < 0 || sV.dst(Input.V0) < 2 || sV.dst(Input.VT) < 2);
+            } while ((j < 50 && getHeight(sX, sZ) < 0) || sV.dst(Input.V0) < 2 || sV.dst(Input.VT) < 2);
             sandPits.add(new Sandpit(sX, sZ, 1f));
             sandPits.add(new Sandpit(sX + (float)Math.random() * 1f - 0.5f, sZ + (float)Math.random() * 1f - 0.5f, 1f));
             sandPits.add(new Sandpit(sX + (float)Math.random() * 1f - 0.5f, sZ + (float)Math.random() * 1f - 0.5f, 1f));
@@ -96,7 +122,7 @@ public class Terrain {
     }
 
     /**
-     * Add trees to the course
+     * Add trees to the course.
      * @param model tree model
      */
     public static void initTrees(Model model) {

@@ -10,6 +10,9 @@ import com.project_1_2.group_16.ai.Soldier;
 import com.project_1_2.group_16.math.*;
 import com.project_1_2.group_16.models.Tree;
 
+/**
+ * Class that handles most of the game logic.
+ */
 public class Game {
 
     /**
@@ -18,20 +21,16 @@ public class Game {
     public static final float h = 0.05f;
 
     /**
-     * Number of simulations.
-     */
-    public static int simulCounter = 0;
-
-    /**
      * Friction caused by hitting trees.
      */
     public static final float treeFriction = -0.75f;
 
     /**
-     * Collision handler.
+     * Number of simulations.
      */
-    public final Collision collision = new Collision();
+    public static int simulCounter = 0;
 
+    // numerical solver
     private NumericalSolver solver;
 
     /**
@@ -41,7 +40,6 @@ public class Game {
      */
     public void run(final StateVector sv, App reference) {
         // update state vector with numerical solver
-
         this.solver.solve(h, sv);
 
         // check water collision
@@ -104,7 +102,7 @@ public class Game {
     /**
      * Display a message that the user has completed the course
      */
-    public void endGame(App app) {
+    public void endGame(App app) { // TODO
         String message = "Congratulations! ";
         switch (app.GAME_SCREEN.increaseHitCounter(0)) {
             case 1: message += " You got a hole-in-one! Unbelievable!"; break;
@@ -122,19 +120,21 @@ public class Game {
      */
     public void runEngine(StateVector sv, Particle p, Neighbour n, Soldier s) {
         simulCounter++;
-        while(!sv.stop){
+        while (!sv.stop) {
             run(sv, null);
             float temp = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
-            if(p!=null) {
-                if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
+            if (p!=null) {
+                if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY) {
                     p.fitness = temp;
                 }
-            } else if(n!=null) {
-                if (temp < n.getFitness()){
+            } 
+            else if (n!=null) {
+                if (temp < n.getFitness()) {
                     n.fitness = temp;
                 }
-            } else if(s!=null) {
-                if(temp < s.fitness && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
+            } 
+            else if (s!=null) {
+                if (temp < s.fitness && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY) {
                     s.fitness = temp;
                 }
             }

@@ -26,9 +26,10 @@ CLEAN UP:
 - camera (DONE)
 - math (DONE)
 
-- gamelogic
-- ai
-- screens
+- gamelogic (Only end screen)
+
+- ai (TODO)
+- screens (TODO)
 
 
 

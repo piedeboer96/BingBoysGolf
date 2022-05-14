@@ -27,7 +27,7 @@ public class RK2 implements NumericalSolver{
         sv.x = pos_x1;
         sv.y = pos_y1;
 
-        this.partialDerivatives = Terrain.getSlope(new float[] {sv.x, sv.y}, h);
+        this.partialDerivatives = Terrain.getSlope(new float[] {sv.x, sv.y});
     }
 
     @Override

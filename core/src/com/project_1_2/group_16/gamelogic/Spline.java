@@ -7,6 +7,10 @@ import com.project_1_2.group_16.misc.ANSI;
 import bsh.EvalError;
 import bsh.Interpreter;
 
+/**
+ * Represents the terrain-spline. 
+ * Used for calculating the height coordinates of the terrain.
+ */
 public class Spline {
 
     /**
@@ -66,7 +70,7 @@ public class Spline {
     private String heightFunction;
 
     /**
-     * All input points that describe any custom elements of the terrain.
+     * All input points that describe any custom elevation of the terrain.
      */
     private float[][] input;
 
@@ -79,14 +83,9 @@ public class Spline {
      * Evaluates the height of a pair of coordinates.
      * @param x x-coordinate
      * @param y y-coordinate
-     * @return max(z-coordinate, -0.01)
+     * @return z-coordinate
      */
     public float getHeight(float x, float y) {
-        // make everything outside of the rendered area water
-        if (Math.abs(x) > Terrain.WATER_EDGE || Math.abs(y) > Terrain.WATER_EDGE) {
-            return -1;
-        }
-
         // calculate the height within the relevant quadrant
         for (Quadrant q : this.quadrants) {
             if (q.contains(x, y)) {
@@ -100,18 +99,13 @@ public class Spline {
      * Evaluates the height of a pair of coordinates using the height function.
      * @param x x-coordinate
      * @param y y-coordinate
-     * @return max(z-coordinate, -0.01)
+     * @return z-coordinate
      */
     public float getHeightFunction(float x, float y) {
-        // make everything outside of the rendered area water
-        if (Math.abs(x) > Terrain.WATER_EDGE || Math.abs(y) > Terrain.WATER_EDGE) {
-            return -1;
-        }
-
         // evaluate height function
         String eval = ((("float x = "+x).concat("; float y = ")+y).concat("; ")+this.heightFunction).concat(";");
         try {
-            return Math.max((float)(double)(BSH.eval(eval)), -0.01f);
+            return (float)(double)BSH.eval(eval);
         } catch (EvalError e) {
             System.out.println(ANSI.RED+"eval error"+ANSI.RESET+", interpreted: "+eval); 
             System.exit(0);
@@ -357,7 +351,7 @@ public class Spline {
             y = (y - nn.y) / (pp.y - nn.y);
             float[][] x_matrix = {{1, x, (float)Math.pow(x, 2), (float)Math.pow(x, 3)}};
             float[][] y_matrix = {{1}, {y}, {(float)Math.pow(y, 2)}, {(float)Math.pow(y, 3)}};
-            return Math.max(multiplyMatrix(x_matrix, multiplyMatrix(this.A, y_matrix))[0][0], -0.01f);
+            return multiplyMatrix(x_matrix, multiplyMatrix(this.A, y_matrix))[0][0];
         }
     }
 }

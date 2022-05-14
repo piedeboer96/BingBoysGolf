@@ -11,7 +11,7 @@ public class Input {
     /**
      * Starting position of the golfball.
      */
-    public static Vector2 V0 = new Vector2(-6.296444f, 4.1530037f);
+    public static Vector2 V0 = new Vector2(-3, 0);
 
     /**
      * Position of the hole.
@@ -31,7 +31,7 @@ public class Input {
     /**
      * Kinetic Friction.
      */
-    public static float MUK =  0.05f;
+    public static float MUK =  0.08f;
 
     /**
      * Static Friction.
@@ -41,19 +41,20 @@ public class Input {
     /**
      * Kinetic Friction (sandpit).
      */
-    public static float MUKS = 0.32f;
+    public static float MUKS = 4 * MUK;
 
     /**
      * Static Friction (sandpit).
      */
-    public static float MUSS = 0.8f;
+    public static float MUSS = 4 * MUS;
 
     /**
      * Height Function.
-     * Math.pow(Math.E,(-(x*x + y*y))/40)-0.5
-     * 0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8))
      */
     public static String H = "0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8))";
+    // examples (for testing):
+    // Math.pow(Math.E,(-(x*x + y*y))/40)-0.5
+    // 0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8))
 
     /**
      * Number of trees.
