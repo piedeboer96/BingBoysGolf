@@ -25,14 +25,15 @@ CLEAN UP:
 - misc (DONE)
 - camera (DONE)
 - math (DONE)
-
-- gamelogic (Only end screen)
+- gamelogic (DONE)
 
 - ai (TODO)
 - screens (TODO)
 
 Further TODO:
+- make someone else proof-read instructions & readme
 - test console output after jar compile
+- test vertical allignment on other PCs
 
 
 INSTRUCTIONS TEXT TODO:

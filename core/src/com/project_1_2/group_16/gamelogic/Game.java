@@ -103,7 +103,7 @@ public class Game {
     /**
      * Display a message that the user has completed the course
      */
-    public void endGame(App app) { // TODO
+    public void endGame(App app) {
         String message = "Congratulations! ";
         switch (app.GAME_SCREEN.increaseHitCounter(0)) {
             case 1: message += " You got a hole-in-one! Unbelievable!"; break;
