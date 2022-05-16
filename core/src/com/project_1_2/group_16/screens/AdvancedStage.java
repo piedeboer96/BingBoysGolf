@@ -11,6 +11,9 @@ import com.badlogic.gdx.utils.Align;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 
+/**
+ * Stage used for the advanced settings.
+ */
 public class AdvancedStage extends InputScreen {
 
     private TextButton back;

@@ -13,6 +13,9 @@ import com.badlogic.gdx.utils.Align;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 
+/**
+ * Stage used as the main title screen.
+ */
 public class MainStage extends InputScreen {
 
     private TextButton play;
@@ -59,6 +62,7 @@ public class MainStage extends InputScreen {
         });
         this.addActor(this.play);
 
+        // controls
         this.controls = new TextButton("Controls", screen.skin);
         this.controls.setHeight(50);
         this.controls.setWidth(240);

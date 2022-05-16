@@ -19,6 +19,9 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.gamelogic.Terrain;
 
+/**
+ * Stage used for the terrain settings.
+ */
 public class TerrainStage extends InputScreen {
 
     private TextButton back;
@@ -153,7 +156,7 @@ public class TerrainStage extends InputScreen {
             this.useFunction.setChecked(true);
         }
 
-        // formula pre-render
+        // function pre-render
         this.renderGrid = new RenderTile[Spline.SPLINE_SIZE*4][Spline.SPLINE_SIZE*4];
         float size = -2+(0.4f*App.SCREEN_WIDTH)/this.renderGrid.length;
         for (int i = 0; i < this.renderGrid.length; i++) {

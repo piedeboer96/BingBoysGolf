@@ -26,14 +26,15 @@ CLEAN UP:
 - camera (DONE)
 - math (DONE)
 - gamelogic (DONE)
+- screens (TODO)
 
 - ai (TODO)
-- screens (TODO)
 
 Further TODO:
 - make someone else proof-read instructions & readme
 - test console output after jar compile
 - test vertical allignment on other PCs
+- new tree collision
 
 
 INSTRUCTIONS TEXT TODO:
