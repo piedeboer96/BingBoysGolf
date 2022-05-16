@@ -31,6 +31,8 @@ CLEAN UP:
 - ai (TODO)
 - screens (TODO)
 
+Further TODO:
+- test console output after jar compile
 
 
 INSTRUCTIONS TEXT TODO:
