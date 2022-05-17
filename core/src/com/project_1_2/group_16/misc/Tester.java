@@ -4,7 +4,6 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.*;
-import com.project_1_2.group_16.physics.Physics;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
