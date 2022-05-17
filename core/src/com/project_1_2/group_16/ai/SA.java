@@ -35,7 +35,6 @@ public class SA {
         this.start_x = startX;
         this.start_y = startY;
         setState(findInitalState());
-
     }
 
     /**
@@ -167,7 +166,7 @@ public class SA {
         return state;
     }
 
-    /**
+    /**w
      *
      * @param updated_state
      */
