@@ -9,13 +9,10 @@ import com.project_1_2.group_16.math.StateVector;
  * The class of the DumbBot
  * this is the most basic bot
  * Shoots the golfball with full velocity in the direction of the target
- */
-/**
  * c1 is the scalar of the velocity in the x direction
  * c2 is the scalar of the velocity in the y direction
  * target the target coordinates
  */
-
 public class DumbBot {
     private StateVector sv, init_sv;
     private Game game;

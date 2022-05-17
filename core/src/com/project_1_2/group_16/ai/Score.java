@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Helper methods used for the AI
+ * Helper methods used for the AI 'scoring'.
  */
-
 public class Score {
 
     /**
