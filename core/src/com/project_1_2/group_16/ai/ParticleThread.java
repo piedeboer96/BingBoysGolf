@@ -3,9 +3,10 @@ package com.project_1_2.group_16.ai;
 import com.project_1_2.group_16.math.StateVector;
 
 /**
- * This class contains the thread used in PSO, for multithreading purpose
+ * This class contains the thread used in PSO, for multithreading purpose.
  */
 public class ParticleThread implements Runnable {
+
     public static int closedThreads = 0;
     Thread thread;
     float x, y, vx, vy;
@@ -38,14 +39,14 @@ public class ParticleThread implements Runnable {
         hasFound = true;
     }
 
-    public void start () {
+    public void start() {
         if(this.thread == null){
             this.thread = new Thread(this);
             this.thread.start();
         }
     }
 
-    public Particle getParticle(){
+    public Particle getParticle() {
         return this.particle;
     }
 }

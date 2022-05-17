@@ -1,6 +1,5 @@
 package com.project_1_2.group_16.ai;
 
-import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;

@@ -6,9 +6,10 @@ import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 
 /**
- * This is our neighbour class used in Simulated annealing
+ * This is our neighbour class used in Simulated annealing.
  */
 public class Neighbour {
+
     private StateVector sv, init_sv;
     private float vx, vy;
     private Game game;
@@ -71,5 +72,4 @@ public class Neighbour {
     public float calculateManhattanY (){
         return sv.y - Input.VT.y;
     }
-
 }

@@ -10,7 +10,6 @@ import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.models.Tree;
-import bsh.EvalError;
 
 /**
  * Class that represents the terrain of the golf course.
@@ -46,10 +45,7 @@ public class Terrain {
      * Evaluates the height-formula for a set of coordinates. 
      * @param x x coordinate
      * @param y y coordinate
-     * @returns max(z-coordinate, -0.01)
-     * 
-     * @throws EvalError if the height function can't be evaluated
-     * @throws ClassCastException if the height function doesn't return a {@code double} value
+     * @return max(z-coordinate, -0.01)
      */
     public static float getHeight(float x, float y) {
         // make everything outside of the rendered area water
@@ -74,7 +70,6 @@ public class Terrain {
     /**
      * Return the slope in dh/dx and dh/dy using two-point centered point difference formula.
      * @param coordinates array of coordinates
-     * @param h step-size
      * @return array with dh/dx and dh/dy
      */
     public static float[] getSlope(float[] coordinates) {

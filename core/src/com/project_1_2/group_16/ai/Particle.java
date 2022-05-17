@@ -1,10 +1,12 @@
 package com.project_1_2.group_16.ai;
 
-import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 
+/**
+ * This class contains the particle which is used in the Particle swarm optimazation.
+ */
 public class Particle {
 
     private StateVector sv, init_sv;

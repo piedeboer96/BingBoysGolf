@@ -1,19 +1,14 @@
 package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
-import com.project_1_2.group_16.gamelogic.Game;
-import com.project_1_2.group_16.gamelogic.Spline;
-import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class contains the Particle swarm optimization algorithm
+ * This class contains the Particle swarm optimization algorithm.
  */
 public class PSO {
 
@@ -54,7 +49,6 @@ public class PSO {
      * Method which can be called to run the PSO
      */
     public List<Float> runPSO() {
-        long start = System.currentTimeMillis();
         int count = 0;
         N = particles.size();
         W = 0.72984f;
@@ -266,5 +260,4 @@ public class PSO {
         }
         return particles;
     }
-
 }

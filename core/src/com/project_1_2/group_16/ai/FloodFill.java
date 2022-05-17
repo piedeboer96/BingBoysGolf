@@ -145,7 +145,7 @@ public class FloodFill {
                 holeSet = true;
                 flood_i = i;
                 flood_j = j;
-                System.out.println("hole: " + flood_i + " " + flood_j);
+                // System.out.println("hole: " + flood_i + " " + flood_j);
                 return 0;
             }else{
                 return Integer.MAX_VALUE; //if height is bigger then 0 and the coordinates are not the holse coordinate -> value = Integer.MAX_Value
@@ -188,7 +188,4 @@ public class FloodFill {
             return "x : " + this.x + " y: " + this.y;
         }
     }
-
 }
-
-

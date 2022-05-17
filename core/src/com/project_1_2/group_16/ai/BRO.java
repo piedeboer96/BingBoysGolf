@@ -2,8 +2,6 @@ package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
-import com.project_1_2.group_16.gamelogic.Spline;
-import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
@@ -51,7 +49,7 @@ public class BRO {
         initializePopulation();
         bestSoldier = findBestSoldierInPop();
         if(bestSoldier.fitness < Input.R){
-            System.out.println(bestSoldier.toString());
+            //System.out.println(bestSoldier.toString());
             ArrayList<Float> toReturn = new ArrayList<>();
             toReturn.add(bestSoldier.velX); toReturn.add(bestSoldier.velY);
             return toReturn;
@@ -65,11 +63,11 @@ public class BRO {
         float shrink = (float) (Math.ceil(Math.log10(maxIter)));
         float delta = (Math.round(maxIter/shrink));
         int iter = 0;
-        int localSearchCounter = 0;
         //Main loop to find the solution
         outerloop:
         while(iter<maxIter){
-            System.out.println(iter++);
+            // System.out.println(iter++);
+            iter++;
             if(iter==51){
                 break outerloop;
             }
@@ -146,7 +144,7 @@ public class BRO {
                 }
             }
         }
-        System.out.println("best is " + bestSoldier.toString());
+        //System.out.println("best is " + bestSoldier.toString());
         ArrayList<Float> toReturn = new ArrayList<>();
         toReturn.add(bestSoldier.velX); toReturn.add(bestSoldier.velY);
         return toReturn;
@@ -198,7 +196,7 @@ public class BRO {
         for(float[] f : temp){
             population.add(new Soldier(f[0], f[1], startX, startY));
         }
-        System.out.println("here");
+        //System.out.println("here");
         for(int i=population.size(); i<popSize; i++){
             float[] f = Score.validVelocity(-5f, 5f, startX, startY);
             population.add(new Soldier(f[0], f[1], startX, startY));
@@ -256,6 +254,7 @@ public class BRO {
         }
         return toReturn;
     }
+
     /**
      * Finds worst soldier in population based on the fitness of all the soldiers in the population
      * @return worse soldier
@@ -323,13 +322,4 @@ public class BRO {
         sd = sd/yVels.length-1;
         return (float) (Math.sqrt(sd));
     }
-    public static void main (String[] args){
-        Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
-        Terrain.spline.createSpline();
-        System.out.println("starting...");
-        BRO bro = new BRO(20, 100, 2, Input.V0.x, Input.V0.y);
-        bro.runBRO();
-        System.out.println("amount of simulations taken " + Game.simulCounter);
-    }
-
 }

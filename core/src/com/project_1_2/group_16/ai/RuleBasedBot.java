@@ -2,7 +2,6 @@ package com.project_1_2.group_16.ai;
 
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.Input;
-import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.StateVector;
 
 /**
@@ -14,8 +13,8 @@ import com.project_1_2.group_16.math.StateVector;
  * target the target coordinates
  */
 public class RuleBasedBot {
-    private StateVector sv, init_sv;
-    private Game game;
+
+    private StateVector sv;
     private final Vector2 target = Input.VT;
     private final float maxV = 5f;
     private float c1;
@@ -25,13 +24,11 @@ public class RuleBasedBot {
     //Initialisation of the StateVector
     public RuleBasedBot(StateVector sv){
         this.sv = sv;
-        this.init_sv = new StateVector(sv.x, sv.y, sv.vx, sv.vy);
-        this.game = new Game();
         //adjust the scalar of c1 and c2
         ScaleC();
     }
 
-    public void ScaleC(){
+    public void ScaleC() {
         //Calculates the difference in the points
         c1 = target.x - sv.x;
         c2 = target.y - sv.y;
@@ -44,7 +41,7 @@ public class RuleBasedBot {
         //multiply every Scaled velocity by the maximum velocity
         c1 = c1*maxV;
         c2 = c2*maxV;
-        System.out.println("total C " + c1 +" " + c2);
+        //System.out.println("total C " + c1 +" " + c2);
 
         if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
     }
@@ -52,5 +49,4 @@ public class RuleBasedBot {
     public float[] Play() {
         return new float[] {c1, c2};
     }
-
 }
