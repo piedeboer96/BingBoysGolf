@@ -10,9 +10,9 @@ import com.project_1_2.group_16.math.StateVector;
 import java.util.ArrayList;
 
 /**
- * Helper methods used for the AI 'scoring'.
+ * Helper methods used for the AI algorithms
  */
-public class Score {
+public class AIHelper {
 
     /**
      * Method which calculates the eucledian distance
@@ -37,7 +37,7 @@ public class Score {
         float[] vxy = new float[2];
         vxy[0] = (float)(minVelocity + Math.random()*(Math.abs(maxVelocity-minVelocity)));
         vxy[1] = (float)(minVelocity + Math.random()*(Math.abs(maxVelocity-minVelocity)));
-        if(Physics.magnitude(vxy[0], vxy[1]) > 5 || !checkIfBetter(vxy[0], vxy[1], startX, startY) || checkWater(vxy[0], vxy[1])){
+        if(Physics.magnitude(vxy[0], vxy[1]) > 5 || !checkIfBetter(vxy[0], vxy[1], startX, startY)){
             return validVelocity(minVelocity, maxVelocity, startX, startY);
         }
         return vxy;
@@ -62,28 +62,6 @@ public class Score {
     }
 
     /**
-     * Method which takes the velocity vector of the ball and makes a prediction whether
-     * the ball will hit water or not
-     * @param velX velocity in the x direction
-     * @param velY velocity in the y direction
-     * @return true if the ball is likely to hit water, else false
-     */
-    public static boolean checkWater(float velX, float velY){
-        float denom = Physics.magnitude(velX, velY);
-        velX /= denom;
-        velY /= denom;
-        float x = Input.V0.x, y = Input.V0.y;
-        while(x<=10 && y<=10 && x>=-10 && y>=-10){
-            x+=velX;
-            y+=velY;
-            if(Terrain.getHeight(x, y) < 0 && (x<=10 && y<=10 && x>=-10 && y>=-10)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Static method to develop a list of candidates of possible solutions
      * @return the list of possible solutions
      */
@@ -101,7 +79,7 @@ public class Score {
 
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
-                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY, startX, startY) && !checkWater(velX, velY)){
+                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY, startX, startY)){
                     toReturn.add(new float [] {velX, velY});
                 }
             }

@@ -96,7 +96,7 @@ public class BRO {
                 }
                 Soldier nearest = findNearestSoldier(s);
                 Soldier vic, dam;
-                if(s.fitness < nearest.fitness){
+                if(s.fitness > nearest.fitness){
                     vic = s;
                     dam = nearest;
                 }else {
@@ -192,30 +192,18 @@ public class BRO {
      * Method to initialize population for BRO algorithm
      */
     public void initializePopulation(){
-        ArrayList<float[]> temp = Score.availableVelocities(startX, startY);
+        ArrayList<float[]> temp = AIHelper.availableVelocities(startX, startY);
         for(float[] f : temp){
             population.add(new Soldier(f[0], f[1], startX, startY));
         }
         //System.out.println("here");
         for(int i=population.size(); i<popSize; i++){
-            float[] f = Score.validVelocity(-5f, 5f, startX, startY);
+            float[] f = AIHelper.validVelocity(-5f, 5f, startX, startY);
             population.add(new Soldier(f[0], f[1], startX, startY));
         }
         for(Soldier s : population){
             initialPop.add(s);
         }
-    }
-
-    /**
-     * Sort the population of soldiers based on its fitness value
-     */
-    public void sortPopulation(){
-        Collections.sort(population, new Comparator<Soldier>(){
-            @Override
-            public int compare(Soldier o1, Soldier o2) {
-                return (int) (o1.fitness - o2.fitness);
-            }
-        });
     }
 
     /**
@@ -230,7 +218,7 @@ public class BRO {
             if(s==soldier){
                 continue;
             }
-            float curDistance = Score.calculateEucledianDistance(soldier.velX, soldier.velY, s.velX, s.velY);
+            float curDistance = AIHelper.calculateEucledianDistance(soldier.velX, soldier.velY, s.velX, s.velY);
             if(curDistance < distance){
                 nearestSoldier = s;
                 distance = curDistance;
@@ -322,4 +310,8 @@ public class BRO {
         sd = sd/yVels.length-1;
         return (float) (Math.sqrt(sd));
     }
+
+//    public static void main(String[] args) {
+//        Te
+//    }
 }

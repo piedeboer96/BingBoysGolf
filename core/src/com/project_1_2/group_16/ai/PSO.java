@@ -239,7 +239,7 @@ public class PSO {
      * @return arraylist of particles
      */
     public ArrayList<Particle> initializeParticles(){
-        ArrayList<float[]> init_vel = Score.availableVelocities(startX, startY);
+        ArrayList<float[]> init_vel = AIHelper.availableVelocities(startX, startY);
         globalBest = new Particle(new StateVector(startX, startY, 0.1f, 0.1f));
         ArrayList<Particle>particles  = new ArrayList<Particle>();
         for(int i = 0; i < init_vel.size(); i++){
@@ -251,7 +251,7 @@ public class PSO {
             }
         }
         for(int i = particles.size(); i< population_size; i++){
-            float[] velocities = Score.validVelocity(-5.0f, 5.0f, startX, startY);
+            float[] velocities = AIHelper.validVelocity(-5.0f, 5.0f, startX, startY);
             particles.add(new Particle(new StateVector(startX, startY, velocities[0], velocities[1])));
             particles.get(i).setlocalBest(particles.get(i));
             if(particles.get(i).fitness < globalBest.getFitness()) {

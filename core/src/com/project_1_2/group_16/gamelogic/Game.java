@@ -5,7 +5,7 @@ import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.ai.Neighbour;
 import com.project_1_2.group_16.ai.Particle;
-import com.project_1_2.group_16.ai.Score;
+import com.project_1_2.group_16.ai.AIHelper;
 import com.project_1_2.group_16.ai.Soldier;
 import com.project_1_2.group_16.math.*;
 import com.project_1_2.group_16.models.Tree;
@@ -114,7 +114,7 @@ public class Game {
         simulCounter++;
         while(!sv.stop) {
             run(sv, null);
-            float temp = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
+            float temp = AIHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
             if(p!=null) {
                 if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY) {
                     p.fitness = temp;

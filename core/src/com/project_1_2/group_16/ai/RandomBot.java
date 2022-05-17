@@ -57,7 +57,7 @@ public class RandomBot {
             //System.out.println("this is the new x "+sv.x);
             //System.out.println("this is the new y "+sv.y);
             //score = FloodFill.getMatrixValue(sv.x, sv.y);
-            score = Score.calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y);
+            score = AIHelper.calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y);
             //System.out.println("this is the score " + score);
             if ((!scoreInitialise || bestScore > score) && score!=-1) {
                 scoreInitialise = true;
