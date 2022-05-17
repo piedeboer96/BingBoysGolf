@@ -10,6 +10,9 @@ import com.project_1_2.group_16.math.StateVector;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class contains our Simulated annealing optimazation algorithm
+ */
 public class SA {
     public static final float MAXVEL = 5f;
     private static float start_x = 0;
@@ -69,14 +72,12 @@ public class SA {
                 }
             }
         }else {
-            System.out.println("found on first hit!");
         }
         ArrayList<Float> vxvy = new ArrayList<>();
         vxvy.add(bestState.getVx());
         vxvy.add(bestState.getVy());
         return vxvy;
     }
-
 
     /**
      * Method which generates random vectors and picks the best vector which is used at the start of SA
@@ -91,17 +92,12 @@ public class SA {
             if(temp.getFitness() < bestFitness){
                 if(temp.getFitness() < Input.R * 3.15f){
                     this.bestState = new Neighbour(temp);
-                    System.out.println(temp.getVx() + " " + temp.getVy());
-
                     return temp;
                 }
                 bestFitness = temp.getFitness();
                 bestNeighbour = temp;
             }
         }
-//        float[] velocities = Score.bestVelocity();
-//        bestNeighbour = new Neighbour(new StateVector(hole_x, hole_y, velocities[0], velocities[1]));
-        System.out.println(bestNeighbour.getVx() + " " + bestNeighbour.getVy());
         this.bestState = new Neighbour(bestNeighbour);
         return bestNeighbour;
     }
@@ -158,49 +154,31 @@ public class SA {
     }
 
 
-    /**
-     *
-     * @return
-     */
     public Neighbour getState() {
         return state;
     }
 
-    /**w
-     *
-     * @param updated_state
-     */
     private void setState(Neighbour updated_state){
         this.state = new Neighbour(updated_state);
     }
 
     /**
-     *
-     * @param state
-     * @param updated
-     * @return
+     * Method which calculates the probability based on the current state and the update neighbour
+     * @param state current state
+     * @param updated update neighbour
+     * @return the probability
      */
     private float getProbability(Neighbour state, Neighbour updated) {
         return (float)Math.exp(-1*(state.getFitness() - updated.getFitness()) / Temperature);
     }
 
     /**
-     * @param k
-     * @return
+     * The temperature decreases from an initial positive value to zero. Simulating the annealing proces.
+     * @param k the current iteration
+     * @return the current temprature
      */
     public double getTemperature(int k) {
         return 1 - (k+1)/kmax;
     }
 
-    public static void main(String[] args) {
-        Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
-        Terrain.spline.createSpline();
-        long start = System.currentTimeMillis();
-        SA test = new SA(1000, 0.2f, Input.V0.x, Input.V0.y);
-        System.out.println("best is " + test.runSA());
-        long end = System.currentTimeMillis();
-        System.out.println("yeah " + test.bestState.getFitness());
-        System.out.println("Runtime: " + (end - start) + " ms");
-        System.out.println("amount of simulations taken " + Game.simulCounter);
-    }
 }
