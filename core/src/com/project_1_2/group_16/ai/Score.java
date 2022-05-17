@@ -8,7 +8,6 @@ import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Helper methods used for the AI 'scoring'.
@@ -24,7 +23,7 @@ public class Score {
      * @return the eucledian distance
      */
     public static float calculateEucledianDistance(float xt, float yt, float endx, float endy){
-        //will become floodfill output
+        //will become floodFill output
         return (float) Math.sqrt(Math.pow(xt-endx, 2) + Math.pow(yt-endy, 2));
     }
 
@@ -43,6 +42,7 @@ public class Score {
         }
         return vxy;
     }
+
     /**
      * Simulates one step of the Numerical solver using the given velocities and checks if it moves in a direction closer to
      * the hole
@@ -85,7 +85,6 @@ public class Score {
 
     /**
      * Static method to develop a list of candidates of possible solutions
-     * TODO: NEED TO WORK ON IT SO IT TAKES ITS STARTING POSITIONS AS A PARAMETER
      * @return the list of possible solutions
      */
     public static ArrayList<float[]> availableVelocities (float startX, float startY) {
@@ -97,9 +96,9 @@ public class Score {
         xH = (Math.abs(maxVelX - minVelX))/6.15f;
         yH = (Math.abs(maxVelY - minVelY))/6.15f;
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
-        System.out.println(Input.VT.x + " " + startX + " " + Input.VT.y + " " + startY);
+
         toReturn.add(new float[] {((Input.VT.x - startX)/(Math.abs(Input.VT.x - startX) + Math.abs(Input.VT.y-startY)))*5.0f, ((Input.VT.y-startY)/(Math.abs(Input.VT.x - startX) + Math.abs(Input.VT.y-startY)))*5.0f});
-        System.out.println("here " + toReturn.get(0)[0] + " " + toReturn.get(0)[1]);
+
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
                 if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY, startX, startY) && !checkWater(velX, velY)){
@@ -107,11 +106,8 @@ public class Score {
                 }
             }
         }
-        System.out.println("this is " + toReturn.size());
+
         return toReturn;
     }
 
-    public static void main(String[] args) {
-        System.out.println(checkWater(3.1300812f, 1.5040649f));
-    }
 }
