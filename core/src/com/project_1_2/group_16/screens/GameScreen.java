@@ -17,9 +17,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.ai.BRO;
-import com.project_1_2.group_16.ai.DumbBot;
-import com.project_1_2.group_16.ai.PSO;
 import com.project_1_2.group_16.ai.RuleBasedBot;
+import com.project_1_2.group_16.ai.PSO;
+import com.project_1_2.group_16.ai.RandomBot;
 import com.project_1_2.group_16.ai.SA;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
@@ -67,8 +67,8 @@ public class GameScreen extends ScreenAdapter {
     private float colorutil;
 
 	// bots
-	private DumbBot dumbBot;
-	private RuleBasedBot ruleBasedBot;
+	private RuleBasedBot dumbBot;
+	private RandomBot ruleBasedBot;
 	private SA sa;
 	private BRO bro;
 	private PSO pso;
@@ -259,13 +259,13 @@ public class GameScreen extends ScreenAdapter {
 			Float[] sol = this.pso.runPSO().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.NUM_4)) { // dumb bot
-			this.dumbBot = new DumbBot(this.golfball.STATE);
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_4)) { // rule based bot
+			this.dumbBot = new RuleBasedBot(this.golfball.STATE);
 			float[] sol = this.dumbBot.Play();
 			this.shoot(sol[0], sol[1]);
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.NUM_5)) { // rule based bot
-			this.ruleBasedBot = new RuleBasedBot(this.golfball.STATE);
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_5)) { // random bot
+			this.ruleBasedBot = new RandomBot(this.golfball.STATE);
 			float[] sol = this.ruleBasedBot.Play();
 			this.shoot(sol[0], sol[1]);
 		}
