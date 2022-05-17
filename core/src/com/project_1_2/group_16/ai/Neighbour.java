@@ -5,12 +5,19 @@ import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 
+/**
+ * This is our neighbour class used in Simulated annealing
+ */
 public class Neighbour {
     private StateVector sv, init_sv;
     private float vx, vy;
     private Game game;
     public double fitness = Integer.MAX_VALUE;
 
+    /**
+     * Constructor of the neighbour class
+     * @param sv statevector
+     */
     public Neighbour(StateVector sv){
         //Changing stateVector
         this.sv = sv;
@@ -20,6 +27,11 @@ public class Neighbour {
         this.game.setNumericalSolver(NumericalSolver.RK4);
         this.game.runEngine(this.sv, null, this, null);
     }
+
+    /**
+     * Constructor which uses a neighbour
+     * @param n neighbour
+     */
     public Neighbour (Neighbour n){
         this.vx = n.vx;
         this.vy = n.vy;
@@ -58,14 +70,6 @@ public class Neighbour {
 
     public float calculateManhattanY (){
         return sv.y - Input.VT.y;
-    }
-
-    public void print(){
-        System.out.println("Vx: " + getVx() + " Vy: " + getVy() + " Fitness: " + getFitness());
-    }
-
-    public static Neighbour clone(Neighbour n){
-        return new Neighbour(n.getSv());
     }
 
 }
