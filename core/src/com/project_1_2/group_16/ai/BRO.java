@@ -13,6 +13,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Class for Battle-Royale optimization algorithm to find a hole-in-one. BRO is an evolutionary-algorithm inspired by
+ * battle-royale games which describes its agents as soldiers.
+ */
 public class BRO {
     public int popSize;
     public float startY;
@@ -68,10 +72,7 @@ public class BRO {
             if(iter==51){
                 break outerloop;
             }
-            sortPopulation();
-            System.out.println("iter ---------------" + iter++ + " -------------------------");
-            Soldier possibleBest = population.get(0);
-            System.out.println("possible best " + possibleBest.toString());
+            Soldier possibleBest = findBestSoldierInPop();
             //Do local search of the current best soldier
             if(possibleBest.fitness < bestSoldier.fitness){
                 bestSoldier = possibleBest;
@@ -81,13 +82,11 @@ public class BRO {
             }
             Soldier temp = doLocalSearch(bestSoldier);
             if(temp.fitness < bestSoldier.fitness){
-                System.out.println("Local search helped " + ++localSearchCounter);
                 bestSoldier = new Soldier(temp);
                 population.add(bestSoldier);
                 population.remove(findWorstSoldierInPop());
             }
             if(bestSoldier.fitness<Input.R){
-                System.out.println("solution found!");
                 break outerloop;
             }
             //If solution not found in the local search, update all player's positions using BRO algorithm
@@ -125,7 +124,7 @@ public class BRO {
                     break outerloop;
                 }
             }
-
+            //Update upper and lower bound
             if(iter>=delta) {
                 sdX = calcSDVelX();
                 sdY = calcSDVelY();
