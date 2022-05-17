@@ -240,6 +240,7 @@ public class GameScreen extends ScreenAdapter {
 			this.golfball.STATE.y = Input.V0.y;
 			this.golfball.STATE.vx = 0;
 			this.golfball.STATE.vy = 0;
+			this.increaseHitCounter(-this.increaseHitCounter(0));
 		}
 
 		// bots
