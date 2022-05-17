@@ -12,6 +12,9 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class contains the Particle swarm optimization algorithm
+ */
 public class PSO {
 
     float maxVelocity = 5;
@@ -32,6 +35,13 @@ public class PSO {
 
     Particle globalBest;
 
+    /**
+     * Constructor for PSO
+     * @param maxIterations maximum numbers of iterations
+     * @param population_size
+     * @param startX starting x position of the ball
+     * @param startY starting y position of the ball
+     */
     public PSO(int maxIterations, int population_size, float startX, float startY){
         this.maxIterations = maxIterations;
         this.population_size = population_size;
@@ -74,7 +84,7 @@ public class PSO {
                 Particle current = particles.get(i);
                 float[] updated = getValidVelocity(updatedVelocity(current));
 
-                threads[i] = new ParticleThread(startX, startY, updated[0], updated[1], i, current.getlocalBest());
+                threads[i] = new ParticleThread(startX, startY, updated[0], updated[1], current.getlocalBest());
                 threads[i].start();
             }
             particles = runThreads(threads);
@@ -131,6 +141,11 @@ public class PSO {
         return updatedvxy;
     }
 
+    /**
+     * Method which does a local search for a particle
+     * @param p particle
+     * @return the best local particle
+     */
     public Particle doLocalSearch(Particle p){
         ArrayList<float[]> neighbourHood = new ArrayList<float[]>();
         if(p.getlocalBest() == null){
@@ -153,7 +168,7 @@ public class PSO {
         ParticleThread[] threads = new ParticleThread[neighbourHood.size()];
         int index = 0;
         for(float[] f : neighbourHood){
-            threads[index] = new ParticleThread(startX, startY, f[0], f[1], index, p.getlocalBest());
+            threads[index] = new ParticleThread(startX, startY, f[0], f[1],  p.getlocalBest());
             threads[index].start();
             index++;
         }
@@ -224,6 +239,11 @@ public class PSO {
         socialInfluence[1] = c2*U2y*(globalBest.getVy()-particle.getVy());
         return socialInfluence;
     }
+
+    /**
+     * Method which initializes the particles
+     * @return arraylist of particles
+     */
     public ArrayList<Particle> initializeParticles(){
         ArrayList<float[]> init_vel = Score.availableVelocities(startX, startY);
         globalBest = new Particle(new StateVector(startX, startY, 0.1f, 0.1f));
@@ -247,16 +267,4 @@ public class PSO {
         return particles;
     }
 
-
-    public static void main(String[] args) {
-        Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]);
-        Terrain.spline.createSpline();
-        long start = System.currentTimeMillis();
-        PSO pso = new PSO(1000, 20, Input.V0.x, Input.V0.y);
-        long end = System.currentTimeMillis();
-        System.out.println("Runtime: " + (end-start));
-        ArrayList<Float> toDisplay = (ArrayList<Float>) pso.runPSO();
-        System.out.println("here is the result " + toDisplay.get(0) + " " + toDisplay.get(1));
-        System.out.println("ammount of simulations needed : " + Game.simulCounter);
-    }
 }

@@ -2,6 +2,9 @@ package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.math.StateVector;
 
+/**
+ * This class contains the thread used in PSO, for multithreading purpose
+ */
 public class ParticleThread implements Runnable {
     public static int closedThreads = 0;
     Thread thread;
@@ -9,13 +12,21 @@ public class ParticleThread implements Runnable {
     int index;
     public boolean hasFound;
     Particle particle, localBest;
-    public ParticleThread(float x, float y, float vx, float vy, int index, Particle localBest){
+
+    /**
+     * Constructor for the particle thread
+     * @param x x position of ball
+     * @param y y position of ball
+     * @param vx velocity x
+     * @param vy velocity y
+     * @param localBest the current local best particle
+     */
+    public ParticleThread(float x, float y, float vx, float vy, Particle localBest){
         this.x = x;
         this.y = y;
         this.vx = vx;
         this.vy = vy;
         this.hasFound = false;
-        this.index = index;
         this.localBest = localBest;
     }
 
@@ -32,10 +43,6 @@ public class ParticleThread implements Runnable {
             this.thread = new Thread(this);
             this.thread.start();
         }
-    }
-
-    public int getIndex(){
-        return index;
     }
 
     public Particle getParticle(){
