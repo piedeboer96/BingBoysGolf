@@ -9,6 +9,13 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class Tree {
 
+    /**
+     * Energy lost by hitting trees.
+     */
+    public static final float treeCoefficient = 0.8f;
+
+    public static boolean recentlyHitTree;
+
     private Model model;
     private ModelInstance instance;
     private Vector3 pos = new Vector3();

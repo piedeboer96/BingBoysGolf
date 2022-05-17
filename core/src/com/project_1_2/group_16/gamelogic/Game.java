@@ -23,11 +23,6 @@ public class Game {
     public static int simulCounter = 0;
 
     /**
-     * Friction caused by hitting trees.
-     */
-    public static final float treeFriction = -0.75f;
-
-    /**
      * Collision handler.
      */
     public final Collision collision = new Collision();
@@ -57,22 +52,23 @@ public class Game {
 
         // check tree collision
         Tree hittree = Terrain.collision.ballHitTree(sv);
-        if (hittree != null) {
+        if(hittree == null) {
+            Tree.recentlyHitTree = false;
+        }
+        if (hittree != null && !Tree.recentlyHitTree) {
             Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
             Vector2 vB = new Vector2(sv.x, sv.y);
-
-            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
-                sv.vx *= treeFriction;
+            Vector2 yCompNor = new Vector2(vB.x - vT.x, vB.y - vT.y).nor();
+            Vector2 oldVel = new Vector2(sv.vx, sv.vy);
+            double theta = Math.acos(oldVel.dot(yCompNor)/(oldVel.len() * yCompNor.len()));
+            if(sv.y < vT.y) {
+                oldVel.rotateRad((float) (2 * theta));
+            } else {
+                oldVel.rotateRad((float) ((2 * Math.PI) - (2 * theta)));
             }
-            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
-                sv.vx *= treeFriction;
-            }
-            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
-                sv.vy *= treeFriction;
-            }
-            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
-                sv.vy *= treeFriction;
-            }
+            Tree.recentlyHitTree = true;
+            sv.vx = -oldVel.x * Tree.treeCoefficient;
+            sv.vy = -oldVel.y * Tree.treeCoefficient;
         }
 
         // check for hole collision

@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class BRO {
+
     public int popSize;
     public float startY;
     public float startX;
