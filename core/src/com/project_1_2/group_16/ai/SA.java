@@ -1,19 +1,16 @@
 package com.project_1_2.group_16.ai;
 
 import com.project_1_2.group_16.Input;
-import com.project_1_2.group_16.gamelogic.Game;
-import com.project_1_2.group_16.gamelogic.Spline;
-import com.project_1_2.group_16.gamelogic.Terrain;
-import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class contains our Simulated annealing optimazation algorithm
+ * This class contains our Simulated annealing optimazation algorithm.
  */
 public class SA {
+
     public static final float MAXVEL = 5f;
     private static float start_x = 0;
     private static float start_y = 0;
@@ -35,8 +32,8 @@ public class SA {
         this.kmax = kmax;
         this.neigbourStepSize = neigbourStepSize;
         this.recalculate = true;
-        this.start_x = startX;
-        this.start_y = startY;
+        start_x = startX;
+        start_y = startY;
         setState(findInitalState());
     }
 
@@ -120,7 +117,6 @@ public class SA {
      * @return a random neigbour
      */
     private Neighbour getNeighbour(Neighbour state) {
-        Neighbour toReturn = null;
         ArrayList<StateVector> newVectors = null;
         ArrayList<StateVector> viableVectors = null;
         if (this.recalculate) {
@@ -153,7 +149,6 @@ public class SA {
         return ((current_neighbours.size() <= 0) ? new Neighbour(viableVectors.get((int) Math.random() * newVectors.size())) : current_neighbours.get((int) Math.random() * current_neighbours.size()));
     }
 
-
     public Neighbour getState() {
         return state;
     }
@@ -180,5 +175,4 @@ public class SA {
     public double getTemperature(int k) {
         return 1 - (k+1)/kmax;
     }
-
 }

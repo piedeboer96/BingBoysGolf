@@ -11,7 +11,6 @@ import java.util.Random;
 /**
  * This class contains our most basic bot.
  */
-
 public class RandomBot {
 
     static final int Population = 20;
@@ -55,8 +54,8 @@ public class RandomBot {
             sv = new StateVector(svForXandY.x, svForXandY.y, float_randomX, float_randomY);
             this.game.setNumericalSolver(NumericalSolver.RK4);
             this.game.runEngine(sv, null, null, null);
-            System.out.println("this is the new x "+sv.x);
-            System.out.println("this is the new y "+sv.y);
+            //System.out.println("this is the new x "+sv.x);
+            //System.out.println("this is the new y "+sv.y);
             //score = FloodFill.getMatrixValue(sv.x, sv.y);
             score = Score.calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y);
             //System.out.println("this is the score " + score);
@@ -70,11 +69,9 @@ public class RandomBot {
             }
         }
 
-        System.out.println(newsv);
-        System.out.println("\n");
+        //System.out.println(newsv);
+        //System.out.println("\n");
         scoreInitialise = false;
-
-
     }
 
     /**
@@ -115,5 +112,4 @@ public class RandomBot {
     public float[] Play() {
         return new float[] {newsv.vx, newsv.vy};
     }
-
 }

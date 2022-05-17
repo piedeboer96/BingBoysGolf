@@ -27,8 +27,7 @@ CLEAN UP:
 - math (DONE)
 - gamelogic (DONE)
 - screens (DONE)
-
-- ai (TODO)
+- ai (DONE)
 
 Further TODO:
 - make someone else proof-read instructions & readme
