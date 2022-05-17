@@ -90,8 +90,8 @@ public class MainStage extends InputScreen {
                 infoDialog.addText("1 - Simulated Annealing");
                 infoDialog.addText("2 - Battle Royale Optimization");
                 infoDialog.addText("3 - Particle Swarm Optimization");
-                infoDialog.addText("4 - \"Dumb\" bot");
-                infoDialog.addText("5 - Rule-Based bot");
+                infoDialog.addText("4 - Rule-Based bot");
+                infoDialog.addText("5 - Random bot");
                 infoDialog.show(stage);
             }
         });

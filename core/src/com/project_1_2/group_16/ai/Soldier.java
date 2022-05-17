@@ -5,8 +5,11 @@ import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.StateVector;
 
-//Individual class for BRO algorithm
+/**
+ * Individual class for soldier (agent) for usage of the BRO algorithm.
+ */
 public class Soldier {
+
     public float startX = 0;
     public float startY = 0;
     public float velX;
@@ -17,6 +20,14 @@ public class Soldier {
     public float fitness = Integer.MAX_VALUE;
     public int damageCounter;
 
+    /**
+     * Constructor for soldier.
+     * After running RK4, it calculates fitness based on end positions.
+     * @param velX velocity-x
+     * @param velY velocity-y
+     * @param startX start position x
+     * @param startY start position y
+     */
     public Soldier(float velX, float velY, float startX, float startY){
         this.startX = startX;
         this.startY = startY;
@@ -26,6 +37,10 @@ public class Soldier {
         calcFitness();
     }
 
+    /**
+     * Soldier cloning factory.
+     * @param s soldier you want to take the characerstics from.
+     */
     public Soldier(Soldier s){
         this.velX = s.velX;
         this.velY = s.velY;
@@ -34,6 +49,10 @@ public class Soldier {
         this.endPosX = s.endPosX;
         this.endPosY = s.endPosY;
     }
+
+    /**
+     * Calculate the fitness of a soldier based on it's end position.
+     */
     public void calcFitness(){
         game.setNumericalSolver(NumericalSolver.RK4);
         StateVector sv = new StateVector(startX, startY, velX, velY);
@@ -42,6 +61,8 @@ public class Soldier {
         this.endPosY = sv.y;
 //        fitness = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
     }
+
+    @Override
     public String toString(){
         return "velX " + velX + " velY " + velY + " fitness " + fitness + " endPosX : " + endPosX + " endPosY : " + endPosY;
     }

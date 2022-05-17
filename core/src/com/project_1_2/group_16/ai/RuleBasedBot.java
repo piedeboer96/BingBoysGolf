@@ -1,123 +1,56 @@
 package com.project_1_2.group_16.ai;
 
+import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
-import com.project_1_2.group_16.math.NumericalSolver;
-import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 
-import java.util.Random;
-
 /**
- * This class contains our most basic bot.
- * It is partly based on a genetic approach.
- *
- * NOTE: I safe-deleted a lot of unused code,
- * if you need it PLEASE check an earlier revision in git.
+ * The class of the DumbBot
+ * this is the most basic bot
+ * Shoots the golfball with full velocity in the direction of the target
+ * c1 is the scalar of the velocity in the x direction
+ * c2 is the scalar of the velocity in the y direction
+ * target the target coordinates
  */
-
 public class RuleBasedBot {
-
-    static final int Population = 20;
-    static Random rand = new Random();
-    static final float max = 5.0F;
-    static float score;
-    static float bestScore;
-    static boolean scoreInitialise = false;
-
-    public float float_randomX;
-    public float float_randomY;
-    static int random_int;
-    public StateVector svForXandY;
-    public StateVector sv;
-    public static StateVector newsv;
+    private StateVector sv, init_sv;
     private Game game;
-
+    private final Vector2 target = Input.VT;
+    private final float maxV = 5f;
+    private float c1;
+    private float c2;
     final boolean DEBUG = false;
 
+    //Initialisation of the StateVector
     public RuleBasedBot(StateVector sv){
         this.sv = sv;
+        this.init_sv = new StateVector(sv.x, sv.y, sv.vx, sv.vy);
         this.game = new Game();
-        this.svForXandY = sv;
-        BestShot(sv,game);
+        //adjust the scalar of c1 and c2
+        ScaleC();
     }
 
-    /**
-     * Method that finds the best shot.
-     * Multiple generations run.
-     * The score is being evaluated using the FloodFill matrix.
-     * Lowest value means closest 'floodFill' based distance to
-     * the target. This will update the best shot.
-     */
-    public void BestShot(StateVector sv,Game game) {
-        this.sv = sv;
-        this.game = game;
+    public void ScaleC(){
+        //Calculates the difference in the points
+        c1 = target.x - sv.x;
+        c2 = target.y - sv.y;
+        if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
+        //Scale the c1 and c2 down
+        float total = Math.abs(c1)+Math.abs(c2);
+        c1 = c1 / total;
+        c2 = c2 / total;
+        if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
+        //multiply every Scaled velocity by the maximum velocity
+        c1 = c1*maxV;
+        c2 = c2*maxV;
+        System.out.println("total C " + c1 +" " + c2);
 
-        for(int i = 0; i < Population; ++i) {
-
-            Randomise();
-            sv = new StateVector(svForXandY.x, svForXandY.y, float_randomX, float_randomY);
-            this.game.setNumericalSolver(NumericalSolver.RK4);
-            this.game.runEngine(sv, null, null, null);
-            System.out.println("this is the new x "+sv.x);
-            System.out.println("this is the new y "+sv.y);
-            //score = FloodFill.getMatrixValue(sv.x, sv.y);
-            score = Score.calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y);
-            //System.out.println("this is the score " + score);
-            if ((!scoreInitialise || bestScore > score) && score!=-1) {
-                scoreInitialise = true;
-                bestScore = score;
-                newsv = new StateVector(sv.x, sv.y, float_randomX, float_randomY);
-                if(DEBUG)System.out.println("the best score at the moment is " + bestScore);
-                if(DEBUG)System.out.println("with a force applied in the x direction of " + sv.vx);
-                if(DEBUG)System.out.println("with a force applied in the y direction of " + sv.vy);
-            }
-        }
-
-        System.out.println(newsv);
-        System.out.println("\n");
-        scoreInitialise = false;
-
-
-    }
-
-    /**
-     * Give a random x & y value, that is positive or negative, and between 0 & 5
-     *
-     */
-    public void Randomise(){
-        random_int = rand.nextInt(2);
-        if(random_int == 0){
-            float_randomX = rand.nextFloat() * max;
-        }
-        else{
-            float_randomX = -(rand.nextFloat() * max);
-        }
-        random_int = rand.nextInt(2);
-
-        if(random_int == 0){
-            float_randomY = rand.nextFloat() * max;
-        }
-        else{
-            float_randomY = -(rand.nextFloat() * max);
-        }
-        getValidVelocity(float_randomX,float_randomY);
-    }
-
-    /**
-     *
-     * @param float_randomX takes the random x value
-     * @param float_randomY takes the random y value
-     * Randomise again if the magnitude is above the max
-     */
-    public void getValidVelocity(float float_randomX,float float_randomY){
-        if(Physics.magnitude(float_randomX, float_randomY) > max){
-            Randomise();
-        }
+        if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
     }
 
     public float[] Play() {
-        return new float[] {newsv.vx, newsv.vy};
+        return new float[] {c1, c2};
     }
 
 }

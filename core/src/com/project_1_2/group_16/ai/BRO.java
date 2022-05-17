@@ -18,6 +18,7 @@ import java.util.List;
  * battle-royale games which describes its agents as soldiers.
  */
 public class BRO {
+
     public int popSize;
     public float startY;
     public float startX;

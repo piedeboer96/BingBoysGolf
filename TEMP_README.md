@@ -26,24 +26,13 @@ CLEAN UP:
 - camera (DONE)
 - math (DONE)
 - gamelogic (DONE)
-- screens (TODO)
+- screens (DONE)
 
 - ai (TODO)
 
 Further TODO:
 - make someone else proof-read instructions & readme
 - test console output after jar compile
-- test vertical allignment on other PCs
-- new tree collision
-
-
-INSTRUCTIONS TEXT TODO:
-MAIN STAGE:
-- controls
-ADVANCED STAGE:
-- info about MUK, MUS, MUKS, MUSS
-TERRAIN STAGE:
-- info about drawing splines
 
 ----------------------------------------------
 OLD README
