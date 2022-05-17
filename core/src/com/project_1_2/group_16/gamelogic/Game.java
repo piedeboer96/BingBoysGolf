@@ -42,7 +42,6 @@ public class Game {
      */
     public void run(final StateVector sv, App reference) {
         // update state vector with numerical solver
-
         this.solver.solve(h, sv);
 
         // check water collision
@@ -79,7 +78,7 @@ public class Game {
         }
 
         // check for hole collision
-        if (Terrain.collision.ballIsInTargetRadius(sv) && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY) {
+        if (Terrain.collision.ballIsInTargetRadius(sv)) {
             if (reference != null) this.endGame(reference);
             sv.stop = true;
         }
@@ -124,19 +123,19 @@ public class Game {
      */
     public void runEngine(StateVector sv, Particle p, Neighbour n, Soldier s) {
         simulCounter++;
-        while(!sv.stop){
+        while(!sv.stop) {
             run(sv, null);
             float temp = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
             if(p!=null) {
-                if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
+                if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY) {
                     p.fitness = temp;
                 }
             } else if(n!=null) {
-                if (temp < n.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
+                if (temp < n.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY) {
                     n.fitness = temp;
                 }
             } else if(s!=null) {
-                if(temp < s.fitness && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY){
+                if(temp < s.fitness && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY) {
                     s.fitness = temp;
                 }
             }

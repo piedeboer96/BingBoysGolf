@@ -32,6 +32,9 @@ import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.TerrainBuilder;
 
+/**
+ * The screen that is used for the actual gameplay.
+ */
 public class GameScreen extends ScreenAdapter {
     
     // app reference
@@ -42,13 +45,11 @@ public class GameScreen extends ScreenAdapter {
 	private Array<ModelInstance> instances;
     private Game game;
 
-    // skins
-    private BitmapFont font;
-
     // models
     private Vector2 ch1, ch2, ch3, ch4;
     private Golfball golfball;
 	private Flagpole flagpole;
+	private BitmapFont font;
 
     // cameras
 	private PerspectiveCamera freeCam;
@@ -178,7 +179,7 @@ public class GameScreen extends ScreenAdapter {
 		this.app.spriteBatch.end();
 
         // draw power gauge
-		if (this.power > 1 && this.allowHit) {
+		if (this.power > App.MIN_POWER && this.allowHit) {
 			this.app.shapeBatch.begin(ShapeType.Filled);
 			this.colorutil = 510 * (this.power - 1) / 4;
 			if (this.colorutil > 255)
@@ -197,7 +198,7 @@ public class GameScreen extends ScreenAdapter {
 		this.app.shapeBatch.end();
 
 		// update golfball
-		if (this.allowHit == false) {
+		if (this.allowHit == false) { // ball is moving
 			this.game.run(this.golfball.STATE, this.app);
 		}
 		if(this.golfball.STATE.stop) { // ball has come to a rest

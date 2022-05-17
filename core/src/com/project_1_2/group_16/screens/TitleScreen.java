@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.project_1_2.group_16.App;
 
+/**
+ * The first screen that appears when the app is launched.
+ */
 public class TitleScreen extends ScreenAdapter {
     
     /**

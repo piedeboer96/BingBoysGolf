@@ -13,6 +13,9 @@ import com.badlogic.gdx.utils.Align;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 
+/**
+ * Stage used as the main title screen.
+ */
 public class MainStage extends InputScreen {
 
     private TextButton play;
@@ -59,6 +62,7 @@ public class MainStage extends InputScreen {
         });
         this.addActor(this.play);
 
+        // controls
         this.controls = new TextButton("Controls", screen.skin);
         this.controls.setHeight(50);
         this.controls.setWidth(240);
@@ -67,7 +71,27 @@ public class MainStage extends InputScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 InfoDialog infoDialog = new InfoDialog(screen.skin);
-                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.addText("MAIN CONTROLS:");
+                infoDialog.addText("ESC - Quit the application");
+                infoDialog.addText("C - Switch camera");
+                infoDialog.addText("R - Reset ball");
+                infoDialog.addText("");
+                infoDialog.addText("BALL CAMERA CONTROLS:");
+                infoDialog.addText("Drag the mouse to move the camera");
+                infoDialog.addText("Hold SPACE to shoot the ball");
+                infoDialog.addText("(the ball will be shot in the direction of the camera)");
+                infoDialog.addText("");
+                infoDialog.addText("CINEMATIC CAMERA CONTROLS:");
+                infoDialog.addText("W A S D / Arrow keys - Move around");
+                infoDialog.addText("SPACE - Go up");
+                infoDialog.addText("SHIFT - Go down");
+                infoDialog.addText("");
+                infoDialog.addText("BOT CONTROLS");
+                infoDialog.addText("1 - Simulated Annealing");
+                infoDialog.addText("2 - Battle Royale Optimization");
+                infoDialog.addText("3 - Particle Swarm Optimization");
+                infoDialog.addText("4 - \"Dumb\" bot");
+                infoDialog.addText("5 - Rule-Based bot");
                 infoDialog.show(stage);
             }
         });

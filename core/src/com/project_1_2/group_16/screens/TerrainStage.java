@@ -19,6 +19,9 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.gamelogic.Terrain;
 
+/**
+ * Stage used for the terrain settings.
+ */
 public class TerrainStage extends InputScreen {
 
     private TextButton back;
@@ -117,7 +120,15 @@ public class TerrainStage extends InputScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 InfoDialog infoDialog = new InfoDialog(screen.skin);
-                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.addText("Clicking the \"render\" button will render the current terrain from a top-down view.");
+                infoDialog.addText("As long as the \"Use spline\" box is enabled, the user can customise this terrain.");
+                infoDialog.addText("");
+                infoDialog.addText("Set the added height in the brush-textfield and drag over the map to color");
+                infoDialog.addText("some tiles gray, then press \"render\" to commit these changes.");
+                infoDialog.addText("");
+                infoDialog.addText("(pressing the render button will take the current value of the brush-textfield,");
+                infoDialog.addText("and add it to the current gray-colored tiles. To apply multiple height changes make");
+                infoDialog.addText("sure to press \"render\" after each height-level)");
                 infoDialog.show(stage);
             }
         });
@@ -145,7 +156,7 @@ public class TerrainStage extends InputScreen {
             this.useFunction.setChecked(true);
         }
 
-        // formula pre-render
+        // function pre-render
         this.renderGrid = new RenderTile[Spline.SPLINE_SIZE*4][Spline.SPLINE_SIZE*4];
         float size = -2+(0.4f*App.SCREEN_WIDTH)/this.renderGrid.length;
         for (int i = 0; i < this.renderGrid.length; i++) {

@@ -11,6 +11,9 @@ import com.badlogic.gdx.utils.Align;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 
+/**
+ * Stage used for the advanced settings.
+ */
 public class AdvancedStage extends InputScreen {
 
     private TextButton back;
@@ -69,7 +72,7 @@ public class AdvancedStage extends InputScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 InfoDialog infoDialog = new InfoDialog(screen.skin);
-                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.addText("Kinetic Friction-Coefficient");
                 infoDialog.show(stage);
             }
         });
@@ -90,7 +93,7 @@ public class AdvancedStage extends InputScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 InfoDialog infoDialog = new InfoDialog(screen.skin);
-                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.addText("Static Friction-Coefficient");
                 infoDialog.show(stage);
             }
         });
@@ -111,7 +114,7 @@ public class AdvancedStage extends InputScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 InfoDialog infoDialog = new InfoDialog(screen.skin);
-                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.addText("Kinetic Friction-Coefficient (sandpits)");
                 infoDialog.show(stage);
             }
         });
@@ -132,7 +135,7 @@ public class AdvancedStage extends InputScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 InfoDialog infoDialog = new InfoDialog(screen.skin);
-                infoDialog.addText("[BLUE]TODO"); // TODO
+                infoDialog.addText("Static Friction-Coefficient (sandpits)");
                 infoDialog.show(stage);
             }
         });

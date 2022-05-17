@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  * Abstract class that represents the stage of an inputscreen.
- * The title screen can display these screens seperately
+ * The title screen can display children of this class seperately.
  */
 public abstract class InputScreen extends Stage {
 
