@@ -143,4 +143,6 @@ public class Golfball {
     public void updateState() {
         this.moveTo(this.STATE.x, this.STATE.y);
     }
+
+    public static boolean treeCollide = false;
 }

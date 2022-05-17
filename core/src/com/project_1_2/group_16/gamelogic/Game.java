@@ -8,6 +8,7 @@ import com.project_1_2.group_16.ai.Particle;
 import com.project_1_2.group_16.ai.Score;
 import com.project_1_2.group_16.ai.Soldier;
 import com.project_1_2.group_16.math.*;
+import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tree;
 
 public class Game {
@@ -15,7 +16,7 @@ public class Game {
     /**
      * Step size.
      */
-    public static float h = 0.001f;
+    public static float h = 0.05f;
 
     /**
      * Number of simulations.
@@ -58,22 +59,23 @@ public class Game {
 
         // check tree collision
         Tree hittree = Terrain.collision.ballHitTree(sv);
-        if (hittree != null) {
+        if(hittree == null){
+            Golfball.treeCollide = false;
+        }
+        if (hittree != null && !Golfball.treeCollide) {
             Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
             Vector2 vB = new Vector2(sv.x, sv.y);
-
-            if (vB.x > vT.x + hittree.getRadius() * 0.5) {
-                sv.vx *= treeFriction;
+            Vector2 yCompNor = new Vector2(vB.x - vT.x, vB.y - vT.y).nor();
+            Vector2 oldVel = new Vector2(sv.vx, sv.vy);
+            double theta = Math.acos(oldVel.dot(yCompNor)/(oldVel.len() * yCompNor.len()));
+            if(sv.y < vT.y) {
+                oldVel.rotateRad((float) (2 * theta));
+            } else {
+                oldVel.rotateRad((float) ((2 * Math.PI) - (2 * theta)));
             }
-            else if (vB.x < vT.x - hittree.getRadius() * 0.5) {
-                sv.vx *= treeFriction;
-            }
-            else if (vB.y > vT.y + hittree.getRadius() * 0.5) {
-                sv.vy *= treeFriction;
-            }
-            else if (vB.y < vT.y - hittree.getRadius() * 0.5) {
-                sv.vy *= treeFriction;
-            }
+            Golfball.treeCollide = true;
+            sv.vx = -oldVel.x;
+            sv.vy = -oldVel.y;
         }
 
         // check for hole collision
