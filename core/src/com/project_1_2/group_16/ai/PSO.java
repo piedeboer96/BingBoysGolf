@@ -5,8 +5,8 @@ import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.NumericalSolver;
-import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.physics.Physics;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -89,9 +89,9 @@ public class PSO {
                 break outerloop;
             }
         }
-        //if(!found){
-            //return local.runPSO();
-        //}
+        if(!found){
+            return local.runPSO();
+        }
         ArrayList<Float> toReturn = new ArrayList<>();
         toReturn.add(globalBest.getVx());
         toReturn.add(globalBest.getVy());
