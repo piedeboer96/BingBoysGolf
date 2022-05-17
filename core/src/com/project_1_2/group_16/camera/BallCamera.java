@@ -8,6 +8,9 @@ import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Golfball;
 
+/**
+ * Camera that allows the user to follow the golfball.
+ */
 public class BallCamera implements InputProcessor {
 
     private Camera camera;

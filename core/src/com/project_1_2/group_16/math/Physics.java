@@ -2,6 +2,9 @@ package com.project_1_2.group_16.math;
 
 import com.project_1_2.group_16.gamelogic.Terrain;
 
+/**
+ * Class containing calculations related to physics.
+ */
 public class Physics {
 
     /**
@@ -18,7 +21,7 @@ public class Physics {
      * @return length
      */
     public static float magnitude(float x1, float x2) {
-        return (float) Math.sqrt(x1 * x1 + x2 * x2);
+        return (float)Math.sqrt(x1 * x1 + x2 * x2);
     }
 
     /**
@@ -30,10 +33,10 @@ public class Physics {
      */
     public static float getAccelerationX(float dh_dx, float dh_dy, StateVector sv) {
         float kinetic_friction = Terrain.getKineticFriction(sv);
-        if (Physics.magnitude(sv.vx,sv.vy) < 0.05  && Physics.magnitude(dh_dx,dh_dy) > 0) {
-            return (-Physics.GRAV_CONSTANT * kinetic_friction * dh_dx) / Physics.magnitude(dh_dx, dh_dy);
+        if (magnitude(sv.vx,sv.vy) < 0.05  && magnitude(dh_dx,dh_dy) > 0) {
+            return (-GRAV_CONSTANT * kinetic_friction * dh_dx) / magnitude(dh_dx, dh_dy);
         }
-        return ((-Physics.GRAV_CONSTANT * (dh_dx)) - ((kinetic_friction * Physics.GRAV_CONSTANT) * (sv.vx / (Physics.magnitude(sv.vx,sv.vy)))));
+        return ((-GRAV_CONSTANT * (dh_dx)) - ((kinetic_friction * GRAV_CONSTANT) * (sv.vx / (magnitude(sv.vx,sv.vy)))));
     }
 
     /**
@@ -45,9 +48,9 @@ public class Physics {
      */
     public static float getAccelerationY(float dh_dx, float dh_dy, StateVector sv) {
         float kinetic_friction = Terrain.getKineticFriction(sv);
-        if (Physics.magnitude(sv.vx,sv.vy) < 0.05 && Physics.magnitude(dh_dx,dh_dy) > 0) {
-            return (-Physics.GRAV_CONSTANT * kinetic_friction * dh_dy) / Physics.magnitude(dh_dx, dh_dy);
+        if (magnitude(sv.vx,sv.vy) < 0.05 && magnitude(dh_dx,dh_dy) > 0) {
+            return (-GRAV_CONSTANT * kinetic_friction * dh_dy) / magnitude(dh_dx, dh_dy);
         }
-        return ((-Physics.GRAV_CONSTANT * (dh_dy)) - ((kinetic_friction * Physics.GRAV_CONSTANT) * (sv.vy / (Physics.magnitude(sv.vx, sv.vy)))));
+        return ((-GRAV_CONSTANT * (dh_dy)) - ((kinetic_friction * GRAV_CONSTANT) * (sv.vy / (magnitude(sv.vx, sv.vy)))));
     }
 }

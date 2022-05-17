@@ -2,25 +2,30 @@ package com.project_1_2.group_16.math;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class StateVector extends Vector2 implements Cloneable {
+/**
+ * Represents a vector that contains position and velocity.
+ * Captures the 'state' of an object.
+ */
+public class StateVector extends Vector2 {
 
     /**
-     * x-velocity
+     * x-velocity.
      */
     public float vx;
 
     /**
-     * y-velocity
+     * y-velocity.
      */
     public float vy;
 
     /**
-     * The previous position
+     * The previous position.
+     * Used for resetting the ball if it hits an obstacle.
      */
     public Vector2 prev;
 
     /**
-     * Stopping condition
+     * Stopping condition.
      */
     public boolean stop = false;
 
@@ -35,17 +40,6 @@ public class StateVector extends Vector2 implements Cloneable {
         super(x, y);
         this.vx = vx;
         this.vy = vy;
-    }
-
-    /**
-     * Set the statevector to a new statevector (only oopies position and velocity).
-     * @param sv the new statevector
-     */
-    public void set(StateVector sv) {
-        this.x = sv.x;
-        this.y = sv.y;
-        this.vx = sv.vx;
-        this.vy = sv.vy;
     }
 
     @Override

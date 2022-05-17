@@ -13,6 +13,9 @@ import com.badlogic.gdx.utils.Align;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 
+/**
+ * Stage used as the main title screen.
+ */
 public class MainStage extends InputScreen {
 
     private TextButton play;
@@ -34,8 +37,11 @@ public class MainStage extends InputScreen {
 
     private Label loading;
 
+    private TextButton controls;
+
     public MainStage(TitleScreen screen) {
         super(screen);
+        super.stage = this;
     }
 
     @Override
@@ -46,8 +52,8 @@ public class MainStage extends InputScreen {
         // play button
         this.play = new TextButton("Play", this.screen.skin);
         this.play.setHeight(50);
-        this.play.setWidth(500);
-        this.play.setPosition(App.SCREEN_WIDTH / 2, 75, Align.center);
+        this.play.setWidth(240);
+        this.play.setPosition(App.SCREEN_WIDTH / 2 - 10, 75, Align.right);
         this.play.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -55,6 +61,41 @@ public class MainStage extends InputScreen {
             }
         });
         this.addActor(this.play);
+
+        // controls
+        this.controls = new TextButton("Controls", screen.skin);
+        this.controls.setHeight(50);
+        this.controls.setWidth(240);
+        this.controls.setPosition(App.SCREEN_WIDTH / 2 + 10, 75, Align.left);
+        this.controls.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("MAIN CONTROLS:");
+                infoDialog.addText("ESC - Quit the application");
+                infoDialog.addText("C - Switch camera");
+                infoDialog.addText("R - Reset ball");
+                infoDialog.addText("");
+                infoDialog.addText("BALL CAMERA CONTROLS:");
+                infoDialog.addText("Drag the mouse to move the camera");
+                infoDialog.addText("Hold SPACE to shoot the ball");
+                infoDialog.addText("(the ball will be shot in the direction of the camera)");
+                infoDialog.addText("");
+                infoDialog.addText("CINEMATIC CAMERA CONTROLS:");
+                infoDialog.addText("W A S D / Arrow keys - Move around");
+                infoDialog.addText("SPACE - Go up");
+                infoDialog.addText("SHIFT - Go down");
+                infoDialog.addText("");
+                infoDialog.addText("BOT CONTROLS");
+                infoDialog.addText("1 - Simulated Annealing");
+                infoDialog.addText("2 - Battle Royale Optimization");
+                infoDialog.addText("3 - Particle Swarm Optimization");
+                infoDialog.addText("4 - \"Dumb\" bot");
+                infoDialog.addText("5 - Rule-Based bot");
+                infoDialog.show(stage);
+            }
+        });
+        this.addActor(this.controls);
 
         // button for accessing terrain settings
         this.terrainSettings = new TextButton("Terrain Settings", this.screen.skin);

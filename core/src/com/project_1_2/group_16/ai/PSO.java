@@ -5,8 +5,8 @@ import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.NumericalSolver;
+import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
-import com.project_1_2.group_16.physics.Physics;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -19,8 +19,6 @@ public class PSO {
     int population_size = 0;
     float startX = 0;
     float startY = 0;
-    PSO local;
-    boolean found;
 
     int maxIterations;
     ArrayList<Particle> particles;
@@ -40,8 +38,6 @@ public class PSO {
         this.startX = startX;
         this.startY = startY;
         particles = initializeParticles();
-        found = false;
-        local = new PSO(maxIterations, population_size, startX, startY);
     }
 
     /**
@@ -63,7 +59,6 @@ public class PSO {
                 globalBest = localSearch;
             }
             if (globalBest.fitness < Input.R) {
-                found = true;
                 break outerloop;
 
             }
@@ -83,14 +78,6 @@ public class PSO {
                 threads[i].start();
             }
             particles = runThreads(threads);
-            if(System.currentTimeMillis() - start >= 2){
-                found = false;
-                System.out.println("rerun PSO");
-                break outerloop;
-            }
-        }
-        if(!found){
-            return local.runPSO();
         }
         ArrayList<Float> toReturn = new ArrayList<>();
         toReturn.add(globalBest.getVx());

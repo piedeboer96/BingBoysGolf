@@ -2,13 +2,16 @@ package com.project_1_2.group_16.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Wrapper class for sandpits.
+ */
 public class Sandpit {
 
     private Vector2 pos = new Vector2();
     private float r;
 
     /**
-     * Create a sandpit object
+     * Create a sandpit object.
      * @param x x-coordinate
      * @param y y-coordinate
      * @param r radius of the sandpit
@@ -19,7 +22,7 @@ public class Sandpit {
     }
 
     /**
-     * Get the position of the sandpit
+     * Get the position of the sandpit.
      * @return a 2d vector
      */
     public Vector2 getPosition() {
@@ -27,7 +30,7 @@ public class Sandpit {
     }
 
     /**
-     * Get the radius of the sandpit
+     * Get the radius of the sandpit.
      * @return a floating point number
      */
     public float getRadius() {

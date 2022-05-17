@@ -3,7 +3,7 @@ package com.project_1_2.group_16.math;
 import com.project_1_2.group_16.gamelogic.Terrain;
 
 /**
- * Classical 4th-order Runge-Kutta method
+ * Classical 4th-order Runge-Kutta method.
  */
 public class RK4 implements NumericalSolver {
 
@@ -29,8 +29,7 @@ public class RK4 implements NumericalSolver {
         sv.vx = vel_x1;
         sv.vy = vel_y1;
 
-        this.partialDerivatives = Terrain.getSlope(new float[] {sv.x, sv.y}, h);
-
+        this.partialDerivatives = Terrain.getSlope(new float[] {sv.x, sv.y});
     }
 
     @Override

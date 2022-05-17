@@ -32,6 +32,9 @@ import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.TerrainBuilder;
 
+/**
+ * The screen that is used for the actual gameplay.
+ */
 public class GameScreen extends ScreenAdapter {
     
     // app reference
@@ -42,13 +45,11 @@ public class GameScreen extends ScreenAdapter {
 	private Array<ModelInstance> instances;
     private Game game;
 
-    // skins
-    private BitmapFont font;
-
     // models
     private Vector2 ch1, ch2, ch3, ch4;
     private Golfball golfball;
 	private Flagpole flagpole;
+	private BitmapFont font;
 
     // cameras
 	private PerspectiveCamera freeCam;
@@ -178,7 +179,7 @@ public class GameScreen extends ScreenAdapter {
 		this.app.spriteBatch.end();
 
         // draw power gauge
-		if (this.power > 1 && this.allowHit) {
+		if (this.power > App.MIN_POWER && this.allowHit) {
 			this.app.shapeBatch.begin(ShapeType.Filled);
 			this.colorutil = 510 * (this.power - 1) / 4;
 			if (this.colorutil > 255)
@@ -197,7 +198,7 @@ public class GameScreen extends ScreenAdapter {
 		this.app.shapeBatch.end();
 
 		// update golfball
-		if (this.allowHit == false) {
+		if (this.allowHit == false) { // ball is moving
 			this.game.run(this.golfball.STATE, this.app);
 		}
 		if(this.golfball.STATE.stop) { // ball has come to a rest
@@ -237,6 +238,8 @@ public class GameScreen extends ScreenAdapter {
 		if (Gdx.input.isKeyJustPressed(Keys.R)) { // reset ball to the start
 			this.golfball.STATE.x = Input.V0.x; 
 			this.golfball.STATE.y = Input.V0.y;
+			this.golfball.STATE.vx = 0;
+			this.golfball.STATE.vy = 0;
 		}
 
 		// bots
@@ -257,15 +260,11 @@ public class GameScreen extends ScreenAdapter {
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_4)) { // dumb bot
 			this.dumbBot = new DumbBot(this.golfball.STATE);
-			//StateVector dbState = this.dumbBot.Play();
-			//this.shoot(dbState.vx, dbState.vy);
 			float[] sol = this.dumbBot.Play();
 			this.shoot(sol[0], sol[1]);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_5)) { // rule based bot
 			this.ruleBasedBot = new RuleBasedBot(this.golfball.STATE);
-			//StateVector dbState = this.ruleBasedBot.Play();
-			//this.shoot(dbState.vx, dbState.vy);
 			float[] sol = this.ruleBasedBot.Play();
 			this.shoot(sol[0], sol[1]);
 		}
@@ -304,7 +303,7 @@ public class GameScreen extends ScreenAdapter {
 
 			// sound effect and shot counter
 			this.app.hitSound.play();
-			hitsCounter++;
+			this.increaseHitCounter(1);
 
 			// hit the ball
 			this.golfball.STATE.prev = new Vector2(this.v.x, this.v.z);

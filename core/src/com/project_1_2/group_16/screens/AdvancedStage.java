@@ -11,24 +11,32 @@ import com.badlogic.gdx.utils.Align;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 
+/**
+ * Stage used for the advanced settings.
+ */
 public class AdvancedStage extends InputScreen {
 
     private TextButton back;
 
     private Label mukLabel;
     private TextField mukField;
+    private TextButton mukInfo;
 
     private Label musLabel;
     private TextField musField;
+    private TextButton musInfo;
 
     private Label muksLabel;
     private TextField muksField;
+    private TextButton muksInfo;
 
     private Label mussLabel;
     private TextField mussField;
-    
+    private TextButton mussInfo;
+
     public AdvancedStage(TitleScreen screen) {
         super(screen);
+        super.stage = this;
     }
 
     @Override
@@ -57,6 +65,19 @@ public class AdvancedStage extends InputScreen {
         this.mukLabel.setPosition(this.mukField.getX(Align.center), this.mukField.getY(Align.center) + this.mukField.getHeight(), Align.center);
         this.addActor(this.mukField); this.addActor(this.mukLabel);
 
+        // muk info
+        this.mukInfo = new TextButton("?", this.screen.skin);
+        this.mukInfo.setPosition(this.mukField.getX(Align.bottomRight) + 5, this.mukField.getY(Align.bottom));
+        this.mukInfo.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("Kinetic Friction-Coefficient");
+                infoDialog.show(stage);
+            }
+        });
+        this.addActor(this.mukInfo);
+
         // input for mus
         this.musField = new TextField(Float.toString(Input.MUS), this.screen.skin);
         this.musField.setPosition(0.6f*App.SCREEN_WIDTH, 600, Align.center);
@@ -64,6 +85,19 @@ public class AdvancedStage extends InputScreen {
         this.musLabel.setColor(Color.BLACK);
         this.musLabel.setPosition(this.musField.getX(Align.center), this.musField.getY(Align.center) + this.musField.getHeight(), Align.center);
         this.addActor(this.musField); this.addActor(this.musLabel);
+
+        // mus info
+        this.musInfo = new TextButton("?", this.screen.skin);
+        this.musInfo.setPosition(this.musField.getX(Align.bottomRight) + 5, this.musField.getY(Align.bottom));
+        this.musInfo.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("Static Friction-Coefficient");
+                infoDialog.show(stage);
+            }
+        });
+        this.addActor(this.musInfo);
 
         // input for muks
         this.muksField = new TextField(Float.toString(Input.MUKS), this.screen.skin);
@@ -73,6 +107,19 @@ public class AdvancedStage extends InputScreen {
         this.muksLabel.setPosition(this.muksField.getX(Align.center), this.muksField.getY(Align.center) + this.muksField.getHeight(), Align.center);
         this.addActor(this.muksField); this.addActor(this.muksLabel);
 
+        // muks info
+        this.muksInfo = new TextButton("?", this.screen.skin);
+        this.muksInfo.setPosition(this.muksField.getX(Align.bottomRight) + 5, this.muksField.getY(Align.bottom));
+        this.muksInfo.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("Kinetic Friction-Coefficient (sandpits)");
+                infoDialog.show(stage);
+            }
+        });
+        this.addActor(this.muksInfo);
+
         // input for muss
         this.mussField = new TextField(Float.toString(Input.MUSS), this.screen.skin);
         this.mussField.setPosition(0.6f*App.SCREEN_WIDTH, 400, Align.center);
@@ -80,6 +127,19 @@ public class AdvancedStage extends InputScreen {
         this.mussLabel.setColor(Color.BLACK);
         this.mussLabel.setPosition(this.mussField.getX(Align.center), this.mussField.getY(Align.center) + this.mussField.getHeight(), Align.center);
         this.addActor(this.mussField); this.addActor(this.mussLabel);
+
+        // muss info
+        this.mussInfo = new TextButton("?", this.screen.skin);
+        this.mussInfo.setPosition(this.mussField.getX(Align.bottomRight) + 5, this.mussField.getY(Align.bottom));
+        this.mussInfo.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("Static Friction-Coefficient (sandpits)");
+                infoDialog.show(stage);
+            }
+        });
+        this.addActor(this.mussInfo);
     }
 
     @Override
