@@ -100,12 +100,7 @@ public class Game {
      * Display a message that the user has completed the course
      */
     public void endGame(App app) {
-        String message = "Congratulations! ";
-        switch (app.GAME_SCREEN.increaseHitCounter(0)) {
-            case 1: message += " You got a hole-in-one! Unbelievable!"; break;
-            default: message += "You finished the hole in "+app.GAME_SCREEN.increaseHitCounter(0)+" shots!";
-        }
-        System.out.println(message);
+        app.GAME_SCREEN.createFlag(false);
     }
 
     /**

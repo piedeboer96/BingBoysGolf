@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -49,6 +50,7 @@ public class GameScreen extends ScreenAdapter {
     private Vector2 ch1, ch2, ch3, ch4;
     private Golfball golfball;
 	private Flagpole flagpole;
+	private ModelInstance flagInstance;
 	private BitmapFont font;
 
     // cameras
@@ -86,6 +88,7 @@ public class GameScreen extends ScreenAdapter {
 
         // init skins
 		this.font = new BitmapFont();
+		this.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
         // create crosshair
         this.ch1 = new Vector2(App.SCREEN_WIDTH / 2 + App.SCREEN_WIDTH / 150, App.SCREEN_HEIGHT / 2);
@@ -107,9 +110,7 @@ public class GameScreen extends ScreenAdapter {
 		this.golfball.STATE.y = Input.V0.y;
 
 		// create flag
-		this.flagpole = new Flagpole(new Vector3(Input.VT.x, Terrain.getHeight(Input.VT.x, Input.VT.y), Input.VT.y), Input.R);
-		this.flagpole.rotateTowardsGolfball(this.golfball.getPosition(), Vector3.Z);
-		this.instances.add(this.flagpole.getInstance());
+		this.createFlag(true);
 
         // create trees
 		Terrain.initTrees(App.THEME.treeModel(assets));
@@ -154,6 +155,7 @@ public class GameScreen extends ScreenAdapter {
         // update models
 		this.app.modelBatch.begin(this.useFreeCam ? this.freeCam : this.ballCam);
 		this.app.modelBatch.render(this.instances, this.app.environment);
+		this.app.modelBatch.render(this.flagInstance, this.app.environment);
 		this.app.modelBatch.end();
 
 		// update camera directions
@@ -241,6 +243,7 @@ public class GameScreen extends ScreenAdapter {
 			this.golfball.STATE.vx = 0;
 			this.golfball.STATE.vy = 0;
 			this.increaseHitCounter(-this.increaseHitCounter(0));
+			this.createFlag(true);
 		}
 
 		// bots
@@ -323,5 +326,17 @@ public class GameScreen extends ScreenAdapter {
 	public int increaseHitCounter(int n) {
 		this.hitsCounter += n;
 		return this.hitsCounter;
+	}
+
+	/**
+	 * Create the flag model.
+	 * @param off true if the hole hasn't been hit
+	 */
+	public void createFlag(boolean off) {
+		this.flagpole = new Flagpole(new Vector3(Input.VT.x, Terrain.getHeight(Input.VT.x, Input.VT.y), 
+									 Input.VT.y), Input.R, off);
+		this.flagpole.rotateTowardsGolfball(new Vector3(Input.V0.x, Terrain.getHeight(Input.V0.x, Input.V0.y),
+											Input.V0.y), Vector3.Z);
+		this.flagInstance = this.flagpole.getInstance();
 	}
 }

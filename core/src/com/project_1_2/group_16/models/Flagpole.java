@@ -24,8 +24,8 @@ public class Flagpole {
      * @param r the radius of the hole
      * @param theme textures used for the flagpole model
      */
-    public Flagpole(Vector3 pos, float r) {
-        this.model = App.THEME.flagModel(r);
+    public Flagpole(Vector3 pos, float r, boolean off) {
+        this.model = App.THEME.flagModel(r, off);
         this.instance = new ModelInstance(this.model);
         this.r = r;
         this.pos.set(pos);

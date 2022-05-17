@@ -13,7 +13,7 @@ public interface Theme {
 
     public Model golfballModel(float size);
 
-    public Model flagModel(float r);
+    public Model flagModel(float r, boolean off);
 
     public Model treeModel(AssetManager assets);
 
