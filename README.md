@@ -20,8 +20,8 @@ Group 16:
 
 ### Instructions
 
-1. To launch the game, please navigate to either the windows or mac_os folder, and double click the BingBoysGolf
-   file located in there. If this doesn't work, open a terminal in the mac_os folder, and type the following command:
+1. To launch the game, double click the BingBoysGolf.jar file. 
+   If this doesn't work, open a terminal and type the following command:
    java -jar BingBoysGolf.jar
 
 2. Use the input-textfields on the UI to customise the game.

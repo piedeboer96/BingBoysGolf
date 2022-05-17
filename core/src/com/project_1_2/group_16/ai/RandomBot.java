@@ -75,7 +75,7 @@ public class RandomBot {
     }
 
     /**
-     * Give a random x & y value, that is positive or negative, and between 0 & 5
+     * Give a random x and y value, that is positive or negative, and between 0 and 5
      *
      */
     public void Randomise(){

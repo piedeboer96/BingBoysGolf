@@ -30,8 +30,6 @@ public class Golfball {
     
     /**
      * Create a golfball object, used both in front- and back-end.
-     * @param builder a modelbuilder for creating the model
-     * @param theme the textures of the golfball
      */
     public Golfball() {
 		this.model = App.THEME.golfballModel(Golfball.SIZE);

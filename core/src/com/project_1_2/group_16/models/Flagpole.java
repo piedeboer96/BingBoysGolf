@@ -19,10 +19,9 @@ public class Flagpole {
     /**
      * Create a flagpole object, which represents the flagpole and hole visible on the course. 
      * Has attributes used both in front- and back-end.
-     * @param builder the modelbuilder used for creating the model
      * @param pos the position of the hole
      * @param r the radius of the hole
-     * @param theme textures used for the flagpole model
+     * @param off if the flagpole texture is set on or off
      */
     public Flagpole(Vector3 pos, float r, boolean off) {
         this.model = App.THEME.flagModel(r, off);
