@@ -63,7 +63,8 @@ public class Game {
             double theta = Math.acos(oldVel.dot(yCompNor)/(oldVel.len() * yCompNor.len()));
             if(sv.y < vT.y) {
                 oldVel.rotateRad((float) (2 * theta));
-            } else {
+            }
+            else {
                 oldVel.rotateRad((float) ((2 * Math.PI) - (2 * theta)));
             }
             Tree.recentlyHitTree = true;

@@ -45,11 +45,14 @@ public class Derivation {
      * @return new Derivation object containing all the Derivations of the state vector
      */
     public static Derivation getDerivation(StateVector sv, float h, Derivation d, float multiplier) {
+        // Change the StateVector to be used to derive the velocities and accelerations
         float multipliedH = h*multiplier;
         StateVector tempSV = new StateVector(sv.x + (multipliedH * d.dx_dt), sv.y+ (multipliedH * d.dy_dt), sv.vx + (multipliedH * d.dvx_dt), sv.vy + (multipliedH * d.dvy_dt));
-        float [] pDerivatives = Terrain.getSlope(new float[]{sv.x, sv.y});
-        float accelerationX = Physics.getAccelerationX(pDerivatives[0], pDerivatives[1], sv);
-        float accelerationY = Physics.getAccelerationY(pDerivatives[0], pDerivatives[1], sv);
+        // Use the newly found StateVector to compute the accelerations
+        float [] pDerivatives = Terrain.getSlope(new float[]{tempSV.x, tempSV.y});
+        float accelerationX = Physics.getAccelerationX(pDerivatives[0], pDerivatives[1], tempSV);
+        float accelerationY = Physics.getAccelerationY(pDerivatives[0], pDerivatives[1], tempSV);
+        // Return the found Derivations (velocities wrt X and Y, accelerations wrt X and Y)
         return new Derivation(tempSV.vx, tempSV.vy, accelerationX, accelerationY);
     }
 }
