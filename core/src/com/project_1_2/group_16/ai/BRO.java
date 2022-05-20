@@ -7,8 +7,6 @@ import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -66,7 +64,6 @@ public class BRO {
         //Main loop to find the solution
         outerloop:
         while(iter<maxIter){
-            // System.out.println(iter++);
             iter++;
             if(iter==51){
                 break outerloop;
@@ -96,7 +93,7 @@ public class BRO {
                 }
                 Soldier nearest = findNearestSoldier(s);
                 Soldier vic, dam;
-                if(s.fitness > nearest.fitness){
+                if(s.fitness < nearest.fitness){
                     vic = s;
                     dam = nearest;
                 }else {
@@ -116,6 +113,7 @@ public class BRO {
                         dam.velY = (float) (Math.random() * (upperBoundY - lowerBoundY) + lowerBoundY);
                     }
                     dam.damageCounter = 0;
+                    vic.damageCounter = 0;
                 }
                 dam.calcFitness();
                 if(dam.fitness < Input.R){
