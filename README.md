@@ -22,8 +22,8 @@ Group 16:
 
 1. To launch the game, open this repository in your favourite IDE and navigate to the following file:
    BingBoysGolf/desktop/src/com/project_1_2/group_16/DesktopLauncher.java
-   And run this file to launch the game. (note: on mac_os it is recommended to run the game using gradle instead,
-   see instruction bellow in the "notes" section.)
+   And run this file to launch the game. (note: on macOS it is recommended to run the game using gradle instead,
+   see instruction bellow in the "notes" section)
 
 2. Use the input-textfields on the UI to customise the game.
 
@@ -66,8 +66,6 @@ Group 16:
   If you want to switch numerical solvers, navigate to the following file in the source code:
   BingBoysGolf/core/src/com/project_1_2/group16/screens/GameScreen.java
   and change the numerical solver on line 87 to either RK2 or EULER.
-  (changing this will only effect the source code, not the pre-compiled project,
-  the main class of the source code is located in the desktop package)
 
 - Gradle instructions:
   - make sure you have gradle installed: https://gradle.org/

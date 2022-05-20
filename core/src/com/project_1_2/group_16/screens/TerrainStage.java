@@ -121,14 +121,16 @@ public class TerrainStage extends InputScreen {
             public void clicked(InputEvent event, float x, float y) {
                 InfoDialog infoDialog = new InfoDialog(screen.skin);
                 infoDialog.addText("Clicking the \"render\" button will render the current terrain from a top-down view.");
-                infoDialog.addText("As long as the \"Use spline\" box is enabled, the user can customise this terrain.");
+                infoDialog.addText("As long as the \"Use spline\" box is enabled, you can customize this terrain.");
                 infoDialog.addText("");
                 infoDialog.addText("Set the added height in the brush-textfield and drag over the map to color");
-                infoDialog.addText("some tiles gray, then press \"render\" to commit these changes.");
+                infoDialog.addText("some tiles gray, then press the \"render\" button to commit these changes.");
                 infoDialog.addText("");
                 infoDialog.addText("(pressing the render button will take the current value of the brush-textfield,");
                 infoDialog.addText("and add it to the current gray-colored tiles. To apply multiple height changes make");
-                infoDialog.addText("sure to press \"render\" after each height-level)");
+                infoDialog.addText("sure to commit each height-level seperately)");
+                infoDialog.addText("");
+                infoDialog.addText("Sandpits and trees are generated randomly around the terrain.");
                 infoDialog.show(stage);
             }
         });
