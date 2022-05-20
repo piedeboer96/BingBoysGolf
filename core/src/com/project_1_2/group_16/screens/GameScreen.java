@@ -67,6 +67,7 @@ public class GameScreen extends ScreenAdapter {
     private int hitsCounter;
     private Vector3 v = new Vector3();
     private float colorutil;
+	private float v0x, v0y;
 
 	// bots
 	private RuleBasedBot dumbBot;
@@ -176,7 +177,11 @@ public class GameScreen extends ScreenAdapter {
 		this.font.draw(this.app.spriteBatch, "Shots: "+this.hitsCounter, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 130f);
 		this.font.draw(this.app.spriteBatch, "xDir: "+this.xDir, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 155f);
 		this.font.draw(this.app.spriteBatch, "yDir: "+this.zDir, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 170f);
-		this.font.draw(this.app.spriteBatch, "power: "+(this.power - 1) / 4, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 185f);
+		this.font.draw(this.app.spriteBatch, "Power: "+(this.power - 1) / 4, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 185f);
+		this.font.draw(this.app.spriteBatch, "Simulatons: "+Game.simulCounter, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 210f);
+		this.font.draw(this.app.spriteBatch, "Shot velocity:", App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 235f);
+		this.font.draw(this.app.spriteBatch, "V0x = "+this.v0x, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 250f);
+		this.font.draw(this.app.spriteBatch, "V0y = "+this.v0y, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 265f);
 		this.font.draw(this.app.spriteBatch, "FPS: "+Gdx.graphics.getFramesPerSecond(), 5f, App.SCREEN_HEIGHT - 5f);
 		this.app.spriteBatch.end();
 
@@ -246,6 +251,8 @@ public class GameScreen extends ScreenAdapter {
 			this.allowHit = true;
 			this.increaseHitCounter(-this.increaseHitCounter(0));
 			this.createFlag(true);
+			Game.simulCounter = 0;
+			this.v0x = 0; this.v0y = 0;
 		}
 
 		// bots
@@ -303,6 +310,7 @@ public class GameScreen extends ScreenAdapter {
 	 */
 	public boolean shoot(float vX, float vY) {
 		if (this.allowHit) {
+			this.v0x = vX; this.v0y = vY;
 			this.v.set(this.golfball.getPosition());
 			this.golfball.STATE.vx = vX;
 			this.golfball.STATE.vy = vY;
