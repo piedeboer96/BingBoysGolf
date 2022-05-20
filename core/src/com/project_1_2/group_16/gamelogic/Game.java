@@ -55,7 +55,7 @@ public class Game {
         if(hittree == null) {
             Tree.recentlyHitTree = false;
         }
-        if (hittree != null && !Tree.recentlyHitTree) {
+        else if (!Tree.recentlyHitTree) {
             Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
             Vector2 vB = new Vector2(sv.x, sv.y);
             Vector2 yCompNor = new Vector2(vB.x - vT.x, vB.y - vT.y).nor();

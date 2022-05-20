@@ -7,8 +7,6 @@ import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**

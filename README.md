@@ -20,15 +20,42 @@ Group 16:
 
 ### Instructions
 
-1. To launch the game, double click the BingBoysGolf.jar file. 
-   If this doesn't work, open a terminal and type the following command:
-   java -jar BingBoysGolf.jar
+1. To launch the game, open this repository in your favourite IDE and navigate to the following file:
+   BingBoysGolf/desktop/src/com/project_1_2/group_16/DesktopLauncher.java
+   And run this file to launch the game. (note: on mac_os it is recommended to run the game using gradle instead,
+   see instruction bellow in the "notes" section.)
 
 2. Use the input-textfields on the UI to customise the game.
 
 3. If anything is unclear, please read the info-buttons and the controls for further instructions.
 
-4. Press the play button to run the game!
+4. Press the play button to run the game! You can find all relevant data in the pink labels on the screen.
+
+
+
+### Controls
+(you can also find this on the title screen)
+- MAIN CONTROLS:
+  - ESC - Quit the application
+  - C - Switch camera
+  - R - Reset ball
+
+- BALL CAMERA CONTROLS:
+  - Drag the mouse to move the camera
+  - Hold SPACE to shoot the ball
+  - (the ball will be shot in the direction of the camera)
+
+- CINEMATIC CAMERA CONTROLS:
+  - W A S D / Arrow keys - Move around
+  - SPACE - Go up
+  - SHIFT - Go down
+
+- BOT CONTROLS:
+  - 1 - Simulated Annealing
+  - 2 - Battle Royale Optimization
+  - 3 - Particle Swarm Optimization
+  - 4 - Rule-Based bot
+  - 5 - Random bot
 
 
 
@@ -42,7 +69,13 @@ Group 16:
   (changing this will only effect the source code, not the pre-compiled project,
   the main class of the source code is located in the desktop package)
 
+- Gradle instructions:
+  - make sure you have gradle installed: https://gradle.org/
+  - open a terminal and navigate to this repository
+  - to run the game, type "gradle run" in the terminal (starting up might take a while)
+
 - Java Runtime Environment must be needed to run the game (minimum 16).
+  - https://www.java.com/nl/
 
 - Citation of graphical assets can be found in a seperate file inside the assets folder.
 
