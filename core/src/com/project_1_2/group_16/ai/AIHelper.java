@@ -7,6 +7,7 @@ import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Helper methods used for the AI algorithms
@@ -64,7 +65,7 @@ public class AIHelper {
      * Static method to develop a list of candidates of possible solutions
      * @return the list of possible solutions
      */
-    public static ArrayList<float[]> availableVelocities (float startX, float startY) {
+    public static List<float[]> availableVelocities (float startX, float startY) {
         float minVelX = -5.0f;
         float maxVelX = 5.0f;
         float minVelY = -5.0f;

@@ -19,7 +19,7 @@ public class PSO {
     float startY = 0;
 
     int maxIterations;
-    ArrayList<Particle> particles;
+    List<Particle> particles;
     int m;
 
     int iteration = 1;
@@ -94,7 +94,7 @@ public class PSO {
      * @param threads ParticleThread
      * @return Arraylist of particles
      */
-    public ArrayList<Particle> runThreads(ParticleThread[] threads){
+    public List<Particle> runThreads(ParticleThread[] threads){
         ArrayList<Particle> particleslocal = new ArrayList<>();
         boolean stop = false;
         while(!stop){
@@ -166,7 +166,7 @@ public class PSO {
             threads[index].start();
             index++;
         }
-        ArrayList<Particle> particle_local = runThreads(threads);
+        List<Particle> particle_local = runThreads(threads);
         for(Particle pt : particle_local){
             if(pt.fitness < Input.R * 3.15f){
                 return pt;
@@ -238,8 +238,8 @@ public class PSO {
      * Method which initializes the particles
      * @return arraylist of particles
      */
-    public ArrayList<Particle> initializeParticles(){
-        ArrayList<float[]> init_vel = AIHelper.availableVelocities(startX, startY);
+    public List<Particle> initializeParticles(){
+        List<float[]> init_vel = AIHelper.availableVelocities(startX, startY);
         globalBest = new Particle(new StateVector(startX, startY, 0.1f, 0.1f));
         ArrayList<Particle>particles  = new ArrayList<Particle>();
         for(int i = 0; i < init_vel.size(); i++){

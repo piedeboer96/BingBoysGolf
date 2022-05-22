@@ -34,7 +34,7 @@ public class RandomBot {
         this.sv = sv;
         this.game = new Game();
         this.svForXandY = sv;
-        BestShot(sv,game);
+        bestShot(sv,game);
     }
 
     /**
@@ -44,13 +44,13 @@ public class RandomBot {
      * Lowest value means closest 'floodFill' based distance to
      * the target. This will update the best shot.
      */
-    public void BestShot(StateVector sv,Game game) {
+    public void bestShot(StateVector sv,Game game) {
         this.sv = sv;
         this.game = game;
 
         for(int i = 0; i < Population; ++i) {
 
-            Randomise();
+            randomise();
             sv = new StateVector(svForXandY.x, svForXandY.y, float_randomX, float_randomY);
             this.game.setNumericalSolver(NumericalSolver.RK4);
             this.game.runEngine(sv, null, null, null);
@@ -78,7 +78,7 @@ public class RandomBot {
      * Give a random x and y value, that is positive or negative, and between 0 and 5
      *
      */
-    public void Randomise(){
+    public void randomise(){
         random_int = rand.nextInt(2);
         if(random_int == 0){
             float_randomX = rand.nextFloat() * max;
@@ -105,11 +105,11 @@ public class RandomBot {
      */
     public void getValidVelocity(float float_randomX,float float_randomY){
         if(Physics.magnitude(float_randomX, float_randomY) > max){
-            Randomise();
+            randomise();
         }
     }
 
-    public float[] Play() {
+    public float[] play() {
         return new float[] {newsv.vx, newsv.vy};
     }
 }

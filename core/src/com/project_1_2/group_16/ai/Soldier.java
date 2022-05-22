@@ -58,7 +58,6 @@ public class Soldier {
         game.runEngine(sv, null, null, this);
         this.endPosX = sv.x;
         this.endPosY = sv.y;
-//        fitness = Score.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
     }
 
     @Override

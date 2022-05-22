@@ -190,11 +190,10 @@ public class BRO {
      * Method to initialize population for BRO algorithm
      */
     public void initializePopulation(){
-        ArrayList<float[]> temp = AIHelper.availableVelocities(startX, startY);
+        List<float[]> temp = AIHelper.availableVelocities(startX, startY);
         for(float[] f : temp){
             population.add(new Soldier(f[0], f[1], startX, startY));
         }
-        //System.out.println("here");
         for(int i=population.size(); i<popSize; i++){
             float[] f = AIHelper.validVelocity(-5f, 5f, startX, startY);
             population.add(new Soldier(f[0], f[1], startX, startY));
@@ -308,8 +307,4 @@ public class BRO {
         sd = sd/yVels.length-1;
         return (float) (Math.sqrt(sd));
     }
-
-//    public static void main(String[] args) {
-//        Te
-//    }
 }

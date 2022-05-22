@@ -25,10 +25,10 @@ public class RuleBasedBot {
     public RuleBasedBot(StateVector sv){
         this.sv = sv;
         //adjust the scalar of c1 and c2
-        ScaleC();
+        scaleC();
     }
 
-    public void ScaleC() {
+    public void scaleC() {
         //Calculates the difference in the points
         c1 = target.x - sv.x;
         c2 = target.y - sv.y;
@@ -46,7 +46,7 @@ public class RuleBasedBot {
         if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
     }
 
-    public float[] Play() {
+    public float[] play() {
         return new float[] {c1, c2};
     }
 }

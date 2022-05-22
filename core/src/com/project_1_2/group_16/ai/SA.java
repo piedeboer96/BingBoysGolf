@@ -81,7 +81,7 @@ public class SA {
      * @return the vector with highest fitness
      */
     public Neighbour findInitalState(){
-        ArrayList<float[]> initialCandidates = AIHelper.availableVelocities(start_x, start_y);
+        List<float[]> initialCandidates = AIHelper.availableVelocities(start_x, start_y);
         Neighbour bestNeighbour = null;
         double bestFitness = Integer.MAX_VALUE;
         for(int i=0; i<initialCandidates.size(); i++){

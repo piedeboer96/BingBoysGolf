@@ -273,12 +273,12 @@ public class GameScreen extends ScreenAdapter {
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_4)) { // rule based bot
 			this.dumbBot = new RuleBasedBot(this.golfball.STATE);
-			float[] sol = this.dumbBot.Play();
+			float[] sol = this.dumbBot.play();
 			this.shoot(sol[0], sol[1]);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_5)) { // random bot
 			this.ruleBasedBot = new RandomBot(this.golfball.STATE);
-			float[] sol = this.ruleBasedBot.Play();
+			float[] sol = this.ruleBasedBot.play();
 			this.shoot(sol[0], sol[1]);
 		}
 		

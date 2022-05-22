@@ -41,18 +41,18 @@ public abstract class InputScreen extends Stage {
     /**
      * Init all components that this stage uses.
      */
-    protected void init() {}
+    protected abstract void init();
 
     /**
      * Parse all inputs from the user to the input file.
      */
-    protected void parseInputs() {}
+    protected abstract void parseInputs();
 
     /**
      * Respond to key presses.
      * @param keyCode the code of the key pressed
      */
-    protected void keyInput(int keyCode) {}
+    protected abstract void keyInput(int keyCode);
 
     @Override
     public boolean keyDown(int keyCode) {
