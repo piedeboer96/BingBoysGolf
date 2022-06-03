@@ -146,7 +146,7 @@ public class SA {
                 current_neighbours.add(neighbour);
             }
         }
-        return ((current_neighbours.size() <= 0) ? new Neighbour(viableVectors.get((int) Math.random() * newVectors.size())) : current_neighbours.get((int) Math.random() * current_neighbours.size()));
+        return ((current_neighbours.size() <= 0) ? new Neighbour(newVectors.get((int) Math.random() * newVectors.size())) : current_neighbours.get((int) Math.random() * current_neighbours.size()));
     }
 
     public Neighbour getState() {
