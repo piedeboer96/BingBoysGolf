@@ -49,6 +49,11 @@ public abstract class InputScreen extends Stage {
     protected abstract void parseInputs();
 
     /**
+     * Set all values to the current values from the input file.
+     */
+    protected abstract void setValues();
+
+    /**
      * Respond to key presses.
      * @param keyCode the code of the key pressed
      */

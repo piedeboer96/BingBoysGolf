@@ -58,7 +58,7 @@ public class AdvancedStage extends InputScreen {
         this.addActor(this.back);
 
         // input for muk
-        this.mukField = new TextField(Float.toString(Input.MUK), this.screen.skin);
+        this.mukField = new TextField("", this.screen.skin);
         this.mukField.setPosition(0.4f*App.SCREEN_WIDTH, 600, Align.center);
         this.mukLabel = new Label("MUK", this.screen.skin);
         this.mukLabel.setColor(Color.BLACK);
@@ -79,7 +79,7 @@ public class AdvancedStage extends InputScreen {
         this.addActor(this.mukInfo);
 
         // input for mus
-        this.musField = new TextField(Float.toString(Input.MUS), this.screen.skin);
+        this.musField = new TextField("", this.screen.skin);
         this.musField.setPosition(0.6f*App.SCREEN_WIDTH, 600, Align.center);
         this.musLabel = new Label("MUS", this.screen.skin);
         this.musLabel.setColor(Color.BLACK);
@@ -100,7 +100,7 @@ public class AdvancedStage extends InputScreen {
         this.addActor(this.musInfo);
 
         // input for muks
-        this.muksField = new TextField(Float.toString(Input.MUKS), this.screen.skin);
+        this.muksField = new TextField("", this.screen.skin);
         this.muksField.setPosition(0.4f*App.SCREEN_WIDTH, 400, Align.center);
         this.muksLabel = new Label("MUKS", this.screen.skin);
         this.muksLabel.setColor(Color.BLACK);
@@ -121,7 +121,7 @@ public class AdvancedStage extends InputScreen {
         this.addActor(this.muksInfo);
 
         // input for muss
-        this.mussField = new TextField(Float.toString(Input.MUSS), this.screen.skin);
+        this.mussField = new TextField("", this.screen.skin);
         this.mussField.setPosition(0.6f*App.SCREEN_WIDTH, 400, Align.center);
         this.mussLabel = new Label("MUSS", this.screen.skin);
         this.mussLabel.setColor(Color.BLACK);
@@ -148,6 +148,14 @@ public class AdvancedStage extends InputScreen {
         Input.MUS = Float.parseFloat(this.musField.getText());
         Input.MUKS = Float.parseFloat(this.muksField.getText());
         Input.MUSS = Float.parseFloat(this.mussField.getText());
+    }
+
+    @Override
+    protected void setValues() {
+        this.mukField.setText(Float.toString(Input.MUK));
+        this.musField.setText(Float.toString(Input.MUS));
+        this.muksField.setText(Float.toString(Input.MUKS));
+        this.mussField.setText(Float.toString(Input.MUSS));
     }
 
     @Override

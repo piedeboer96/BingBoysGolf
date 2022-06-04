@@ -69,7 +69,7 @@ public class TerrainStage extends InputScreen {
         this.addActor(this.back);
 
         // input for the height function
-        this.functionField = new TextField(Input.H, this.screen.skin);
+        this.functionField = new TextField("", this.screen.skin);
         this.functionField.setHeight(50);
         this.functionField.setWidth(500);
         this.functionField.setPosition(App.SCREEN_WIDTH / 2, 1000, Align.center);
@@ -79,7 +79,7 @@ public class TerrainStage extends InputScreen {
         this.addActor(this.functionField); this.addActor(this.functionLabel);
 
         // input for the number of trees
-        this.treeField = new TextField(Integer.toString(Input.TREES), this.screen.skin);
+        this.treeField = new TextField("", this.screen.skin);
         this.treeField.setPosition(0.2f*App.SCREEN_WIDTH, 1000, Align.center);
         this.treeLabel = new Label("No. Trees", this.screen.skin);
         this.treeLabel.setColor(Color.BLACK);
@@ -87,7 +87,7 @@ public class TerrainStage extends InputScreen {
         this.addActor(this.treeField); this.addActor(this.treeLabel);
 
         // input for the number of sandpits
-        this.sandField = new TextField(Integer.toString(Input.SAND), this.screen.skin);
+        this.sandField = new TextField("", this.screen.skin);
         this.sandField.setPosition(0.8f*App.SCREEN_WIDTH, 1000, Align.center);
         this.sandLabel = new Label("No. Sandpits", this.screen.skin);
         this.sandLabel.setColor(Color.BLACK);
@@ -157,7 +157,6 @@ public class TerrainStage extends InputScreen {
         this.brushLabel = new Label("Brush", this.screen.skin);
         this.brushLabel.setColor(Color.BLACK);
         this.brushLabel.setPosition(this.brushField.getX(), this.brushField.getY() + this.brushField.getHeight());
-        this.input = Input.BICUBIC_INPUT;
     }
 
     @Override
@@ -167,6 +166,14 @@ public class TerrainStage extends InputScreen {
         Input.SAND = Integer.parseInt(this.sandField.getText());
 
         Terrain.setSpline(Input.H, this.input).createSpline();
+    }
+
+    @Override
+    protected void setValues() {
+        this.functionField.setText(Input.H);
+        this.treeField.setText(Integer.toString(Input.TREES));
+        this.sandField.setText(Integer.toString(Input.SAND));
+        this.input = Input.BICUBIC_INPUT;
     }
 
     @Override

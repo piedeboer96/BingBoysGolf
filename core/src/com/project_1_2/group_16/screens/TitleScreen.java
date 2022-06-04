@@ -52,6 +52,11 @@ public class TitleScreen extends ScreenAdapter {
     @Override
     public void show() {
         this.setActiveScreen(InputScreen.MAIN);
+
+        // set default values
+        for (InputScreen s : this.screens) {
+            s.setValues();
+        }
     }
 
     @Override

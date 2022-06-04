@@ -124,7 +124,7 @@ public class MainStage extends InputScreen {
         this.addActor(this.advancedSettings);
 
         // input for the starting position (x)
-        this.v0xField = new TextField(Float.toString(Input.V0.x), this.screen.skin);
+        this.v0xField = new TextField("", this.screen.skin);
         this.v0xField.setPosition(0.1f*App.SCREEN_WIDTH, 600, Align.center);
         this.v0xLabel = new Label("Initial x position", this.screen.skin);
         this.v0xLabel.setColor(Color.BLACK);
@@ -132,7 +132,7 @@ public class MainStage extends InputScreen {
         this.addActor(this.v0xField); this.addActor(this.v0xLabel);
 
         // input for the starting position (y)
-        this.v0yField = new TextField(Float.toString(Input.V0.y), this.screen.skin);
+        this.v0yField = new TextField("", this.screen.skin);
         this.v0yField.setPosition(0.2f*App.SCREEN_WIDTH, 600, Align.center);
         this.v0yLabel = new Label("Initial y position", this.screen.skin);
         this.v0yLabel.setColor(Color.BLACK);
@@ -140,7 +140,7 @@ public class MainStage extends InputScreen {
         this.addActor(this.v0yField); this.addActor(this.v0yLabel);
 
         // input for the hole position (x)
-        this.vtxField = new TextField(Float.toString(Input.VT.x), this.screen.skin);
+        this.vtxField = new TextField("", this.screen.skin);
         this.vtxField.setPosition(0.1f*App.SCREEN_WIDTH, 400, Align.center);
         this.vtxLabel = new Label("Hole x position", this.screen.skin);
         this.vtxLabel.setColor(Color.BLACK);
@@ -148,7 +148,7 @@ public class MainStage extends InputScreen {
         this.addActor(this.vtxField); this.addActor(this.vtxLabel);
 
         // input for the hole position (y)
-        this.vtyField = new TextField(Float.toString(Input.VT.y), this.screen.skin);
+        this.vtyField = new TextField("", this.screen.skin);
         this.vtyField.setPosition(0.2f*App.SCREEN_WIDTH, 400, Align.center);
         this.vtyLabel = new Label("Hole y position", this.screen.skin);
         this.vtyLabel.setColor(Color.BLACK);
@@ -156,7 +156,7 @@ public class MainStage extends InputScreen {
         this.addActor(this.vtyField); this.addActor(this.vtyLabel);
 
         // input for the hole radius
-        this.rField = new TextField(Float.toString(Input.R), this.screen.skin);
+        this.rField = new TextField("", this.screen.skin);
         this.rField.setPosition((this.vtxField.getX(Align.center)+this.vtyField.getX(Align.center))/2, 200, Align.center);
         this.rLabel = new Label("Hole radius", this.screen.skin);
         this.rLabel.setColor(Color.BLACK);
@@ -174,6 +174,15 @@ public class MainStage extends InputScreen {
         Input.V0 = new Vector2(Float.parseFloat(this.v0xField.getText()), Float.parseFloat(this.v0yField.getText()));
         Input.VT = new Vector2(Float.parseFloat(this.vtxField.getText()), Float.parseFloat(this.vtyField.getText()));
         Input.R = Float.parseFloat(this.rField.getText());
+    }
+
+    @Override
+    protected void setValues() {
+        this.v0xField.setText(Float.toString(Input.V0.x));
+        this.v0yField.setText(Float.toString(Input.V0.y));
+        this.vtxField.setText(Float.toString(Input.VT.x));
+        this.vtyField.setText(Float.toString(Input.VT.y));
+        this.rField.setText(Float.toString(Input.R));
     }
 
     @Override
