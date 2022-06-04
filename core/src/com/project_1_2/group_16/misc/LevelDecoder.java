@@ -30,10 +30,11 @@ public class LevelDecoder {
         JsonValue startPosition = fullInput.get("starting_position");
         Input.V0 = new Vector2(startPosition.getFloat("x"), startPosition.getFloat("y"));
 
-        // flag position
-        JsonValue flagPosition = fullInput.get("flag_position");
-        Input.VT = new Vector2(flagPosition.getFloat("x"), flagPosition.getFloat("y"));
-        Input.R = flagPosition.getFloat("radius");
+        // flag elements
+        JsonValue flag = fullInput.get("flag");
+        Input.VT = new Vector2(flag.getFloat("x"), flag.getFloat("y"));
+        Input.R = flag.getFloat("radius");
+        Input.VH = flag.getFloat("velocity");
 
         // terrain
         JsonValue terrain = fullInput.get("terrain");

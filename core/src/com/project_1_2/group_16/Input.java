@@ -24,6 +24,11 @@ public class Input {
     public static float R;
 
     /**
+     * Maximum velocity allowed for a hole to count.
+     */
+    public static float VH;
+
+    /**
      * Height Function.
      */
     public static String H;

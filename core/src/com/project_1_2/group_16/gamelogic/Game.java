@@ -117,15 +117,15 @@ public class Game {
             run(sv, null);
             float temp = AIHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
             if(p!=null) {
-                if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY) {
+                if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Input.VH) {
                     p.fitness = temp;
                 }
             } else if(n!=null) {
-                if (temp < n.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY) {
+                if (temp < n.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Input.VH) {
                     n.fitness = temp;
                 }
             } else if(s!=null) {
-                if(temp < s.fitness && Physics.magnitude(sv.vx, sv.vy) < Collision.MAX_HOLE_VELOCITY) {
+                if(temp < s.fitness && Physics.magnitude(sv.vx, sv.vy) < Input.VH) {
                     s.fitness = temp;
                 }
             }

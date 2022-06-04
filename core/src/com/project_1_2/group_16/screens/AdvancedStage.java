@@ -34,6 +34,10 @@ public class AdvancedStage extends InputScreen {
     private TextField mussField;
     private TextButton mussInfo;
 
+    private Label holeVelocityLabel;
+    private TextField holeVelocityField;
+    private TextButton holeVelocityInfo;
+
     public AdvancedStage(TitleScreen screen) {
         super(screen);
         super.stage = this;
@@ -59,7 +63,7 @@ public class AdvancedStage extends InputScreen {
 
         // input for muk
         this.mukField = new TextField("", this.screen.skin);
-        this.mukField.setPosition(0.4f*App.SCREEN_WIDTH, 600, Align.center);
+        this.mukField.setPosition(0.4f*App.SCREEN_WIDTH, 700, Align.center);
         this.mukLabel = new Label("MUK", this.screen.skin);
         this.mukLabel.setColor(Color.BLACK);
         this.mukLabel.setPosition(this.mukField.getX(Align.center), this.mukField.getY(Align.center) + this.mukField.getHeight(), Align.center);
@@ -80,7 +84,7 @@ public class AdvancedStage extends InputScreen {
 
         // input for mus
         this.musField = new TextField("", this.screen.skin);
-        this.musField.setPosition(0.6f*App.SCREEN_WIDTH, 600, Align.center);
+        this.musField.setPosition(0.6f*App.SCREEN_WIDTH, 700, Align.center);
         this.musLabel = new Label("MUS", this.screen.skin);
         this.musLabel.setColor(Color.BLACK);
         this.musLabel.setPosition(this.musField.getX(Align.center), this.musField.getY(Align.center) + this.musField.getHeight(), Align.center);
@@ -101,7 +105,7 @@ public class AdvancedStage extends InputScreen {
 
         // input for muks
         this.muksField = new TextField("", this.screen.skin);
-        this.muksField.setPosition(0.4f*App.SCREEN_WIDTH, 400, Align.center);
+        this.muksField.setPosition(0.4f*App.SCREEN_WIDTH, 500, Align.center);
         this.muksLabel = new Label("MUKS", this.screen.skin);
         this.muksLabel.setColor(Color.BLACK);
         this.muksLabel.setPosition(this.muksField.getX(Align.center), this.muksField.getY(Align.center) + this.muksField.getHeight(), Align.center);
@@ -122,7 +126,7 @@ public class AdvancedStage extends InputScreen {
 
         // input for muss
         this.mussField = new TextField("", this.screen.skin);
-        this.mussField.setPosition(0.6f*App.SCREEN_WIDTH, 400, Align.center);
+        this.mussField.setPosition(0.6f*App.SCREEN_WIDTH, 500, Align.center);
         this.mussLabel = new Label("MUSS", this.screen.skin);
         this.mussLabel.setColor(Color.BLACK);
         this.mussLabel.setPosition(this.mussField.getX(Align.center), this.mussField.getY(Align.center) + this.mussField.getHeight(), Align.center);
@@ -140,6 +144,27 @@ public class AdvancedStage extends InputScreen {
             }
         });
         this.addActor(this.mussInfo);
+
+        // input for hole velocity
+        this.holeVelocityField = new TextField("", this.screen.skin);
+        this.holeVelocityField.setPosition(0.4f*App.SCREEN_WIDTH, 300, Align.center);
+        this.holeVelocityLabel = new Label("Hole velocity", this.screen.skin);
+        this.holeVelocityLabel.setColor(Color.BLACK);
+        this.holeVelocityLabel.setPosition(this.holeVelocityField.getX(Align.center), this.holeVelocityField.getY(Align.center) + this.holeVelocityField.getHeight(), Align.center);
+        this.addActor(this.holeVelocityField); this.addActor(this.holeVelocityLabel);
+
+        // muk info
+        this.holeVelocityInfo = new TextButton("?", this.screen.skin);
+        this.holeVelocityInfo.setPosition(this.holeVelocityField.getX(Align.bottomRight) + 5, this.holeVelocityField.getY(Align.bottom));
+        this.holeVelocityInfo.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("Maximum velocity allowed for a hole to count");
+                infoDialog.show(stage);
+            }
+        });
+        this.addActor(this.holeVelocityInfo);
     }
 
     @Override
@@ -148,6 +173,7 @@ public class AdvancedStage extends InputScreen {
         Input.MUS = Float.parseFloat(this.musField.getText());
         Input.MUKS = Float.parseFloat(this.muksField.getText());
         Input.MUSS = Float.parseFloat(this.mussField.getText());
+        Input.VH = Float.parseFloat(this.holeVelocityField.getText());
     }
 
     @Override
@@ -156,6 +182,7 @@ public class AdvancedStage extends InputScreen {
         this.musField.setText(Float.toString(Input.MUS));
         this.muksField.setText(Float.toString(Input.MUKS));
         this.mussField.setText(Float.toString(Input.MUSS));
+        this.holeVelocityField.setText(Float.toString(Input.VH));
     }
 
     @Override

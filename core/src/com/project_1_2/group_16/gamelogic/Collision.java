@@ -12,18 +12,13 @@ import com.project_1_2.group_16.models.Tree;
 public class Collision {
 
     /**
-     * Maximum velocity allowed for a hole to count.
-     */
-    public static final float MAX_HOLE_VELOCITY = 2;
-
-    /**
      * Return whether the ball is in the target-radius based on the coordinates of the Statevector.
      * Also takes velocity into account.
      * @param sv stateVector to pull position from
      * @return boolean, whether it is in the radius...
      */
     public boolean ballIsInTargetRadius(StateVector sv) {
-        return Input.VT.dst(sv.x, sv.y) < Input.R && Physics.magnitude(sv.vx, sv.vy) < MAX_HOLE_VELOCITY;
+        return Input.VT.dst(sv.x, sv.y) < Input.R && Physics.magnitude(sv.vx, sv.vy) < Input.VH;
     }
 
     /**
