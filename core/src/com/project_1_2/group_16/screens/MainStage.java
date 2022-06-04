@@ -47,7 +47,7 @@ public class MainStage extends InputScreen {
     @Override
     protected void init() {
         // background
-        this.addActor(App.THEME.getMainBackground());
+        this.addActor(this.screen.getBackground());
 
         // play button
         this.play = new TextButton("Play", this.screen.skin);

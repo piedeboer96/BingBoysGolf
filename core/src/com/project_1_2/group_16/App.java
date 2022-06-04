@@ -12,8 +12,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.project_1_2.group_16.models.TerrainBuilder;
 import com.project_1_2.group_16.screens.GameScreen;
 import com.project_1_2.group_16.screens.TitleScreen;
-import com.project_1_2.group_16.themes.DefaultTheme;
-import com.project_1_2.group_16.themes.Theme;
 
 /**
  * The main hub of the application. 
@@ -32,7 +30,6 @@ public class App extends Game {
 	public static final float MIN_POWER = 1f;
 	public static final float MAX_POWER = 5f;
 	public static final float POWER_DELTA = 0.05f; 
-	public static final Theme THEME = new DefaultTheme();
 	public static int SCREEN_WIDTH; // can't init some constants due to class compilation
 	public static int SCREEN_HEIGHT;
 	public Sound hitSound;

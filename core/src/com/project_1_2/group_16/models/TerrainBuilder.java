@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
 
 /**
@@ -48,13 +49,13 @@ public class TerrainBuilder extends ModelBuilder {
                 // apply the correct texture
                 avg = averageVector(p1, p2, p3, p4);
                 if (avg.y < 0) { // water texture
-                    texture = new Material(ColorAttribute.createDiffuse(Math.random() < 0.5 ? App.THEME.waterColorLight() : App.THEME.waterColorDark()));
+                    texture = new Material(ColorAttribute.createDiffuse(Math.random() < 0.5 ? Input.THEME.waterColorLight() : Input.THEME.waterColorDark()));
                 }
                 else if (Terrain.collision.isInSandPit(avg.x, avg.z)) { // sandpit texture
-                    texture = new Material(ColorAttribute.createDiffuse(Math.random() < 0.8 ? App.THEME.sandColorLight() : App.THEME.sandColorDark()));
+                    texture = new Material(ColorAttribute.createDiffuse(Math.random() < 0.8 ? Input.THEME.sandColorLight() : Input.THEME.sandColorDark()));
                 }
                 else { // grass texture (depending on height)
-                    texture = new Material(ColorAttribute.createDiffuse(checkerPattern ? App.THEME.grassColorLight(avg.y) : App.THEME.grassColorDark(avg.y)));
+                    texture = new Material(ColorAttribute.createDiffuse(checkerPattern ? Input.THEME.grassColorLight(avg.y) : Input.THEME.grassColorDark(avg.y)));
                 }
 
                 // build the tile out of 2 triangle meshes

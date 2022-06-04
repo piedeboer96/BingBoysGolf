@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.Input;
 
 /**
  * Wrapper class for the flap pole and hole.
@@ -24,7 +24,7 @@ public class Flagpole {
      * @param off if the flagpole texture is set on or off
      */
     public Flagpole(Vector3 pos, float r, boolean off) {
-        this.model = App.THEME.flagModel(r, off);
+        this.model = Input.THEME.flagModel(r, off);
         this.instance = new ModelInstance(this.model);
         this.r = r;
         this.pos.set(pos);

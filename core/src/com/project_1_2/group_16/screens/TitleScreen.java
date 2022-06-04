@@ -7,6 +7,9 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.misc.LevelDecoder;
@@ -42,7 +45,8 @@ public class TitleScreen extends ScreenAdapter {
      * Create all components.
      */
     public void create() {
-        this.skin = App.THEME.getUISkin(); // https://stackoverflow.com/a/38401475
+        // https://stackoverflow.com/a/38401475
+        this.skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         this.skin.getFont("default-font").getData().markupEnabled = true;
 
         this.screens = new ArrayList<InputScreen>();
@@ -102,6 +106,18 @@ public class TitleScreen extends ScreenAdapter {
      */
     public List<InputScreen> getScreens() {
         return this.screens;
+    }
+
+    /**
+     * Get the background for all input screens
+     * @return
+     */
+    public Image getBackground() {
+        // https://stackoverflow.com/questions/16886228/java-libgdx-how-do-i-resize-my-textures-in-libgdx
+        Pixmap p1 = new Pixmap(Gdx.files.internal("background.png"));
+        Pixmap p2 = new Pixmap(App.SCREEN_WIDTH, App.SCREEN_HEIGHT, p1.getFormat());
+        p2.drawPixmap(p1, 0, 0, p1.getWidth(), p1.getHeight(), 0, 0, p2.getWidth(), p2.getHeight());
+        return new Image(new Texture(p2));
     }
 
     /**

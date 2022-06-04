@@ -114,7 +114,7 @@ public class GameScreen extends ScreenAdapter {
 		this.createFlag(true);
 
         // create trees
-		Terrain.initTrees(App.THEME.treeModel(assets));
+		Terrain.initTrees(Input.THEME.treeModel(assets));
 		for (int i = 0; i < Input.TREES; i++) {
 			this.instances.add(Terrain.trees.get(i).getInstance());
 		}
@@ -151,7 +151,7 @@ public class GameScreen extends ScreenAdapter {
         // clear screen
 		if (App.OS_IS_WIN) Gdx.gl.glViewport(0, 0, App.SCREEN_WIDTH, App.SCREEN_HEIGHT);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		ScreenUtils.clear(App.THEME.skyColor());
+		ScreenUtils.clear(Input.THEME.skyColor());
 
         // update models
 		this.app.modelBatch.begin(this.useFreeCam ? this.freeCam : this.ballCam);

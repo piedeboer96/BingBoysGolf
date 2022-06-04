@@ -1,12 +1,19 @@
 package com.project_1_2.group_16;
 
 import com.badlogic.gdx.math.Vector2;
+import com.project_1_2.group_16.themes.DefaultTheme;
+import com.project_1_2.group_16.themes.Theme;
 
 /**
  * Handles all user input for the game. 
  * Default values in here are shown as the default values on the GUI.
  */
 public class Input {
+
+    /**
+     * The theme (textures) for the game.
+     */
+    public static Theme THEME = new DefaultTheme();
 
     /**
      * Starting position of the golfball.

@@ -53,7 +53,7 @@ public class TerrainStage extends InputScreen {
     @Override
     protected void init() {
         // background
-        this.addActor(App.THEME.getTerrainBackground());
+        this.addActor(this.screen.getBackground());
 
         // back button
         this.back = new TextButton("Back", this.screen.skin);
@@ -295,8 +295,8 @@ public class TerrainStage extends InputScreen {
          */
         public void configure(float[][] input) {
             this.z = Terrain.spline.getHeightFunction(this.px, this.py) + input[this.i/4][this.j/4];
-            if (this.z < 0) this.color = App.THEME.waterColorLight();
-            else this.color = App.THEME.grassColorLight(this.z);
+            if (this.z < 0) this.color = Input.THEME.waterColorLight();
+            else this.color = Input.THEME.grassColorLight(this.z);
         }
 
         /**

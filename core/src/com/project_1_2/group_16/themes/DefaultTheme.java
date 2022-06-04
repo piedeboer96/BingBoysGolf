@@ -1,18 +1,12 @@
 package com.project_1_2.group_16.themes;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.project_1_2.group_16.App;
 
 /**
  * The default theme for the application.
@@ -98,29 +92,5 @@ public class DefaultTheme implements Theme {
     @Override
     public Color skyColor() {
         return this.sky;
-    }
-
-    @Override
-    public Skin getUISkin() {
-        return new Skin(Gdx.files.internal("skin/uiskin.json"));
-    }
-
-    @Override
-    public Image getMainBackground() {
-        // https://stackoverflow.com/questions/16886228/java-libgdx-how-do-i-resize-my-textures-in-libgdx
-        Pixmap p1 = new Pixmap(Gdx.files.internal("background.png"));
-        Pixmap p2 = new Pixmap(App.SCREEN_WIDTH, App.SCREEN_HEIGHT, p1.getFormat());
-        p2.drawPixmap(p1, 0, 0, p1.getWidth(), p1.getHeight(), 0, 0, p2.getWidth(), p2.getHeight());
-        return new Image(new Texture(p2));
-    }
-
-    @Override
-    public Image getAdvancedBackground() {
-        return this.getMainBackground();
-    }
-
-    @Override
-    public Image getTerrainBackground() {
-        return this.getMainBackground();
     }
 }

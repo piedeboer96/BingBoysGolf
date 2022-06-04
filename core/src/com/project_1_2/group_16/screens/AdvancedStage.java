@@ -42,7 +42,7 @@ public class AdvancedStage extends InputScreen {
     @Override
     protected void init() {
         // background
-        this.addActor(App.THEME.getAdvancedBackground());
+        this.addActor(this.screen.getBackground());
 
         // back button
         this.back = new TextButton("Back", this.screen.skin);

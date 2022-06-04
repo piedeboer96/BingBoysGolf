@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
-import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.StateVector;
 
@@ -32,7 +32,7 @@ public class Golfball {
      * Create a golfball object, used both in front- and back-end.
      */
     public Golfball() {
-		this.model = App.THEME.golfballModel(Golfball.SIZE);
+		this.model = Input.THEME.golfballModel(Golfball.SIZE);
         this.instance = new ModelInstance(model);
     }
 
