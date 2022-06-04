@@ -1,5 +1,6 @@
 package com.project_1_2.group_16.screens;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.project_1_2.group_16.App;
+import com.project_1_2.group_16.misc.LevelDecoder;
 
 /**
  * The first screen that appears when the app is launched.
@@ -109,5 +111,19 @@ public class TitleScreen extends ScreenAdapter {
     public void setActiveScreen(int screen) {
         this.activeScreen = this.screens.get(screen);
         Gdx.input.setInputProcessor(this.activeScreen);
+    }
+
+    /**
+     * Load a pre-computed level.
+     * @param level file containing the level data
+     */
+    public void loadLevel(File level) {
+        // decode level
+        LevelDecoder.decode(level);
+
+        // update screens
+        for (InputScreen s : this.screens) {
+            s.setValues();
+        }
     }
 }

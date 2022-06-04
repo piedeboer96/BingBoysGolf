@@ -16,10 +16,5 @@ https://freesound.org/people/Quistard/sounds/166818/
 
 
 
-### app-icon.ico taken from:
-https://icon-icons.com/icon/green-golf-flag-sport/85256
-
-
-
 ### background.png created by Group 16
 ### all skin-files are taken from LibGDX
