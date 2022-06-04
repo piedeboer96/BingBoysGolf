@@ -53,7 +53,7 @@ public class MainStage extends InputScreen {
         this.play = new TextButton("Play", this.screen.skin);
         this.play.setHeight(50);
         this.play.setWidth(240);
-        this.play.setPosition(App.SCREEN_WIDTH / 2 - 10, 75, Align.right);
+        this.play.setPosition(App.SCREEN_WIDTH / 2 - 10, 100, Align.right);
         this.play.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -63,10 +63,10 @@ public class MainStage extends InputScreen {
         this.addActor(this.play);
 
         // controls
-        this.controls = new TextButton("Controls", screen.skin);
+        this.controls = new TextButton("Controls", this.screen.skin);
         this.controls.setHeight(50);
         this.controls.setWidth(240);
-        this.controls.setPosition(App.SCREEN_WIDTH / 2 + 10, 75, Align.left);
+        this.controls.setPosition(App.SCREEN_WIDTH / 2 + 10, 100, Align.left);
         this.controls.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
