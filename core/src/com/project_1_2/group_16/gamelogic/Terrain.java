@@ -53,7 +53,7 @@ public class Terrain {
             return -1;
         }
 
-        return Math.max(Input.USE_SPLINES ? spline.getHeight(x, y) : spline.getHeightFunction(x, y), -0.01f);
+        return Math.max(spline.getHeight(x, y), -0.01f);
     }
 
     /**

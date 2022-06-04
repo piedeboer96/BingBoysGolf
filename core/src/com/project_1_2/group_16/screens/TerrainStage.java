@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -34,10 +32,6 @@ public class TerrainStage extends InputScreen {
     
     private Label sandLabel;
     private TextField sandField;
-
-    private ButtonGroup<CheckBox> group;
-    private CheckBox useFunction;
-    private CheckBox useSpline;
 
     private TextButton render;
     private RenderTile[][] renderGrid;
@@ -136,28 +130,6 @@ public class TerrainStage extends InputScreen {
         });
         this.addActor(this.info);
 
-        // function button
-        this.useFunction = new CheckBox("Use function", this.screen.skin);
-        this.useFunction.setPosition(App.SCREEN_WIDTH / 2 - this.functionField.getWidth() / 4, 950, Align.center);
-        this.addActor(this.useFunction);
-
-        // spline button
-        this.useSpline = new CheckBox("Use spline", this.screen.skin);
-        this.useSpline.setPosition(App.SCREEN_WIDTH / 2 + this.functionField.getWidth() / 4, 950, Align.center);
-        this.addActor(this.useSpline);
-
-        // button group
-        this.group = new ButtonGroup<CheckBox>(this.useFunction, this.useSpline);
-        this.group.setMinCheckCount(1);
-        this.group.setMaxCheckCount(1);
-        this.group.setUncheckLast(true);
-        if (Input.USE_SPLINES) {
-            this.useSpline.setChecked(true);
-        }
-        else {
-            this.useFunction.setChecked(true);
-        }
-
         // function pre-render
         this.renderGrid = new RenderTile[Spline.SPLINE_SIZE*4][Spline.SPLINE_SIZE*4];
         float size = -2+(0.4f*App.SCREEN_WIDTH)/this.renderGrid.length;
@@ -185,7 +157,7 @@ public class TerrainStage extends InputScreen {
         this.brushLabel = new Label("Brush", this.screen.skin);
         this.brushLabel.setColor(Color.BLACK);
         this.brushLabel.setPosition(this.brushField.getX(), this.brushField.getY() + this.brushField.getHeight());
-        this.input = Input.SPLINE;
+        this.input = Input.BICUBIC_INPUT;
     }
 
     @Override
@@ -193,10 +165,8 @@ public class TerrainStage extends InputScreen {
         Input.H = this.functionField.getText();
         Input.TREES = Integer.parseInt(this.treeField.getText());
         Input.SAND = Integer.parseInt(this.sandField.getText());
-        Input.USE_SPLINES = this.useSpline.isChecked();
 
-        if (Input.USE_SPLINES) Terrain.setSpline(Input.H, this.input).createSpline();
-        else Terrain.setSpline(Input.H, this.input);
+        Terrain.setSpline(Input.H, this.input).createSpline();
     }
 
     @Override
@@ -211,7 +181,7 @@ public class TerrainStage extends InputScreen {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (!this.useSpline.isChecked() || this.firstTime) return false;
+        if (this.firstTime) return false;
         screenY = App.SCREEN_HEIGHT - screenY;
         for (int i = 0; i < this.renderGrid.length; i++) {
             for (int j = 0; j < this.renderGrid.length; j++) {

@@ -67,14 +67,9 @@ public class Input {
     public static int SAND = 0;
 
     /**
-     * If the terrain uses a spline or a heightfunction.
+     * Pre-computed spline for bicubic interpolation.
      */
-    public static boolean USE_SPLINES = true;
-
-    /**
-     * Pre-computed spline.
-     */
-    public static float[][] SPLINE = {
+    public static float[][] BICUBIC_INPUT = {
         {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
         {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
         {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
