@@ -53,16 +53,14 @@ public class TitleScreen extends ScreenAdapter {
         this.screens.add(new MainStage(this));
         this.screens.add(new AdvancedStage(this));
         this.screens.add(new TerrainStage(this));
+
+        // set default values
+        this.loadLevel(new File((App.OS_IS_WIN ? "./" : "../")+"default_level.json"));
     }
 
     @Override
     public void show() {
         this.setActiveScreen(InputScreen.MAIN);
-
-        // set default values
-        for (InputScreen s : this.screens) {
-            s.setValues();
-        }
     }
 
     @Override

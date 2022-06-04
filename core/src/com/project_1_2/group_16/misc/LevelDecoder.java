@@ -13,5 +13,6 @@ public class LevelDecoder {
      */
     public static void decode(File level) {
         // TODO
+        System.out.println("TODO: decode level here");
     }
 }

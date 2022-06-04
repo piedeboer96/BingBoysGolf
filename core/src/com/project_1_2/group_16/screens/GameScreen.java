@@ -239,9 +239,6 @@ public class GameScreen extends ScreenAdapter {
 			Gdx.input.setInputProcessor(this.useFreeCam ? this.ballMovement : this.freeMovement);
 			this.useFreeCam = !this.useFreeCam;
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.V)) { // shoot testing velocity
-			this.shoot(Input.VB.x, Input.VB.y);
-		}
 		if (Gdx.input.isKeyJustPressed(Keys.R)) { // reset ball to the start
 			this.golfball.STATE.x = Input.V0.x; 
 			this.golfball.STATE.y = Input.V0.y;
