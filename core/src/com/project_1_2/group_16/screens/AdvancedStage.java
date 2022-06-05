@@ -52,7 +52,7 @@ public class AdvancedStage extends InputScreen {
         this.back = new TextButton("Back", this.screen.skin);
         this.back.setHeight(50);
         this.back.setWidth(500);
-        this.back.setPosition(App.SCREEN_WIDTH / 2, 100, Align.center);
+        this.back.setPosition(App.SCREEN_WIDTH / 2, 75, Align.center);
         this.back.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

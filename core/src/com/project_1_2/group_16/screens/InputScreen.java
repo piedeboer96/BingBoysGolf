@@ -1,11 +1,6 @@
 package com.project_1_2.group_16.screens;
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
-import com.project_1_2.group_16.App;
 
 /**
  * Abstract class that represents the stage of an inputscreen.
@@ -37,14 +32,10 @@ public abstract class InputScreen extends Stage {
      * The terrain-settings screen.
      */
     public static final int TERRAIN_SETTINGS = 2;
-
-    private TextButton loadLevel;
-    private TextButton saveLevel;
     
     public InputScreen(TitleScreen screen) {
         this.screen = screen;
         this.init();
-        this.setupLevelButtons();
     }
 
     /**
@@ -72,40 +63,5 @@ public abstract class InputScreen extends Stage {
     public boolean keyDown(int keyCode) {
         this.keyInput(keyCode);
         return true;
-    }
-
-    /**
-     * Setup the load/save level buttons on this input screen.
-     */
-    private void setupLevelButtons() {
-        // load level button
-        this.loadLevel = new TextButton("Load Level", this.screen.skin);
-        this.loadLevel.setHeight(40);
-        this.loadLevel.setWidth(240);
-        this.loadLevel.setPosition(App.SCREEN_WIDTH/2 - 10, 40, Align.right);
-        this.loadLevel.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                InfoDialog infoDialog = new InfoDialog(screen.skin);
-                infoDialog.addText("[BLUE]TODO");
-                infoDialog.show(stage);
-            }
-        });
-        this.addActor(this.loadLevel);
-
-        // save level button
-        this.saveLevel = new TextButton("Save Level", this.screen.skin);
-        this.saveLevel.setHeight(40);
-        this.saveLevel.setWidth(240);
-        this.saveLevel.setPosition(App.SCREEN_WIDTH/2 + 10, 40, Align.left);
-        this.saveLevel.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                InfoDialog infoDialog = new InfoDialog(screen.skin);
-                infoDialog.addText("[BLUE]TODO");
-                infoDialog.show(stage);
-            }
-        });
-        this.addActor(this.saveLevel);
     }
 }

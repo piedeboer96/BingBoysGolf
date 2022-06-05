@@ -38,6 +38,7 @@ public class MainStage extends InputScreen {
     private Label loading;
 
     private TextButton controls;
+    private TextButton loadLevel;
 
     public MainStage(TitleScreen screen) {
         super(screen);
@@ -52,8 +53,8 @@ public class MainStage extends InputScreen {
         // play button
         this.play = new TextButton("Play", this.screen.skin);
         this.play.setHeight(50);
-        this.play.setWidth(240);
-        this.play.setPosition(App.SCREEN_WIDTH / 2 - 10, 100, Align.right);
+        this.play.setWidth(320);
+        this.play.setPosition(App.SCREEN_WIDTH / 2 + this.play.getWidth() / 2, 75, Align.right);
         this.play.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -65,8 +66,8 @@ public class MainStage extends InputScreen {
         // controls
         this.controls = new TextButton("Controls", this.screen.skin);
         this.controls.setHeight(50);
-        this.controls.setWidth(240);
-        this.controls.setPosition(App.SCREEN_WIDTH / 2 + 10, 100, Align.left);
+        this.controls.setWidth(200);
+        this.controls.setPosition(this.play.getX(Align.right) + 10, 75, Align.left);
         this.controls.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -96,6 +97,13 @@ public class MainStage extends InputScreen {
             }
         });
         this.addActor(this.controls);
+
+        // button for loading a level
+        this.loadLevel = new TextButton("Load Level", this.screen.skin);
+        this.loadLevel.setHeight(50);
+        this.loadLevel.setWidth(200);
+        this.loadLevel.setPosition(this.play.getX(Align.left) - 10, 75, Align.right);
+        this.addActor(this.loadLevel);
 
         // button for accessing terrain settings
         this.terrainSettings = new TextButton("Terrain Settings", this.screen.skin);
