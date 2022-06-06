@@ -57,7 +57,7 @@ public class LevelDecoder {
         }
         JsonIterator bicubicIterator = terrain.get("bicubic_input").iterator();
         Input.BICUBIC_INPUT = new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE];
-        for (int i = Spline.SPLINE_SIZE - 1; i >= 0; i--) {
+        for (int i = 0; i < Spline.SPLINE_SIZE; i++) {
             Input.BICUBIC_INPUT[i] = bicubicIterator.next().asFloatArray();
         }
         
