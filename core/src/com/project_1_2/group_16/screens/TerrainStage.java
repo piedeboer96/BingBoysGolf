@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -26,6 +28,10 @@ public class TerrainStage extends InputScreen {
 
     private Label functionLabel;
     private TextField functionField;
+
+    private ButtonGroup<CheckBox> group;
+    private CheckBox defaultObstacles;
+    private CheckBox randomObstacles;
 
     private Label treeLabel;
     private TextField treeField;
@@ -93,6 +99,22 @@ public class TerrainStage extends InputScreen {
         this.sandLabel.setColor(Color.BLACK);
         this.sandLabel.setPosition(this.sandField.getX(Align.center), this.sandField.getY(Align.center) + this.sandField.getHeight(), Align.center);
         this.addActor(this.sandField); this.addActor(this.sandLabel);
+
+        // default obstacles checkbox
+        this.defaultObstacles = new CheckBox("Default obstacles", this.screen.skin);
+        this.defaultObstacles.setPosition(App.SCREEN_WIDTH / 2 - this.functionField.getWidth() / 4, 950, Align.center);
+        this.addActor(this.defaultObstacles);
+
+        // random obstacles checkbox
+        this.randomObstacles = new CheckBox("Random obstacles", this.screen.skin);
+        this.randomObstacles.setPosition(App.SCREEN_WIDTH / 2 + this.functionField.getWidth() / 4, 950, Align.center);
+        this.addActor(this.randomObstacles);
+
+        // button group
+        this.group = new ButtonGroup<CheckBox>(this.defaultObstacles, this.randomObstacles);
+        this.group.setMinCheckCount(1);
+        this.group.setMaxCheckCount(1);
+        this.group.setUncheckLast(true);
 
         // render button
         this.render = new TextButton("Render", this.screen.skin);
@@ -162,8 +184,9 @@ public class TerrainStage extends InputScreen {
     @Override
     protected void parseInputs() {
         Input.H = this.functionField.getText();
-        Input.TREES = Integer.parseInt(this.treeField.getText());
-        Input.SAND = Integer.parseInt(this.sandField.getText());
+        Input.NUMBER_OF_TREES = Integer.parseInt(this.treeField.getText());
+        Input.NUMBER_OF_SANDPITS = Integer.parseInt(this.sandField.getText());
+        Input.RANDOM_OBSTACLES = this.randomObstacles.isChecked();
 
         Terrain.setSpline(Input.H, this.input).createSpline();
     }
@@ -171,8 +194,10 @@ public class TerrainStage extends InputScreen {
     @Override
     protected void setValues() {
         this.functionField.setText(Input.H);
-        this.treeField.setText(Integer.toString(Input.TREES));
-        this.sandField.setText(Integer.toString(Input.SAND));
+        this.treeField.setText("0");
+        this.sandField.setText("0");
+        this.defaultObstacles.setChecked(true);
+        this.randomObstacles.setChecked(false);
         this.input = Input.BICUBIC_INPUT;
     }
 

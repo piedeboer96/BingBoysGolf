@@ -1,5 +1,7 @@
 package com.project_1_2.group_16.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Input.Keys;
@@ -25,13 +27,16 @@ import com.project_1_2.group_16.ai.SA;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.gamelogic.Sandpit;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.misc.ANSI;
+import com.project_1_2.group_16.misc.LevelEncoder;
 import com.project_1_2.group_16.misc.PowerStatus;
 import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.TerrainBuilder;
+import com.project_1_2.group_16.models.Tree;
 
 /**
  * The screen that is used for the actual gameplay.
@@ -98,7 +103,12 @@ public class GameScreen extends ScreenAdapter {
 		this.ch4 = new Vector2(App.SCREEN_WIDTH / 2, App.SCREEN_HEIGHT / 2 - App.SCREEN_HEIGHT / 100);
 
         // terrain generation
-		Terrain.initSandPits();
+		if (Input.RANDOM_OBSTACLES) {
+			Input.SAND = new ArrayList<Sandpit>();
+			for (int i = 0; i < Input.NUMBER_OF_SANDPITS; i++) {
+				Terrain.createRandomSandpit();
+			}
+		}
 		this.app.terrainBuilder = new TerrainBuilder();
 		this.app.terrainBuilder.begin();
 		this.instances.add(new ModelInstance(this.app.terrainBuilder.end()));
@@ -114,9 +124,15 @@ public class GameScreen extends ScreenAdapter {
 		this.createFlag(true);
 
         // create trees
-		Terrain.initTrees(Input.THEME.treeModel(assets));
-		for (int i = 0; i < Input.TREES; i++) {
-			this.instances.add(Terrain.trees.get(i).getInstance());
+		if (Input.RANDOM_OBSTACLES) {
+			Input.TREES = new ArrayList<Tree>();
+			for (int i = 0; i < Input.NUMBER_OF_TREES; i++) {
+				Terrain.createRandomTree();
+			}
+		}
+		for (Tree t : Input.TREES) {
+			t.setModel(Input.THEME.treeModel(assets));
+			this.instances.add(t.getInstance());
 		}
 
         // create ball camera
@@ -250,6 +266,11 @@ public class GameScreen extends ScreenAdapter {
 			this.createFlag(true);
 			Game.simulCounter = 0;
 			this.v0x = 0; this.v0y = 0;
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.S)) { // save level
+			if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {
+				if (!LevelEncoder.isEncoded()) LevelEncoder.encode();
+			}
 		}
 
 		// bots

@@ -36,9 +36,9 @@ public class Collision {
      * @return the tree the ball hit, if the ball didn't hit a tree it returns null
      */
     public Tree ballHitTree(StateVector sv) {
-        for (int i = 0; i < Input.TREES; i++) {
-            if (ballIsInTreeRadius(sv, Terrain.trees.get(i))) {
-                return Terrain.trees.get(i);
+        for (Tree t : Input.TREES) {
+            if (ballIsInTreeRadius(sv, t)) {
+                return t;
             }
         }
         return null;
@@ -60,7 +60,7 @@ public class Collision {
      * @param y y-coordinate
      */
     public boolean isInSandPit(float x, float y) {
-        for (Sandpit pit : Terrain.sandPits) {
+        for (Sandpit pit : Input.SAND) {
             if (pit.getPosition().dst(x, y) < pit.getRadius()) {
                 return true;
             }

@@ -24,6 +24,8 @@ public class DefaultTheme implements Theme {
     private final Color hole_off = Color.RED;
     private final Color hole_on = Color.GREEN;
 
+    private Model treeModel;
+
     @Override
     public Model golfballModel(float size) {
         ModelBuilder builder = new ModelBuilder();
@@ -54,9 +56,12 @@ public class DefaultTheme implements Theme {
 
     @Override
     public Model treeModel(AssetManager assets) {
-        assets.load("tree_model_default.g3dj", Model.class);
-        assets.finishLoading();
-        return assets.get("tree_model_default.g3dj", Model.class);
+        if (this.treeModel == null) {
+            assets.load("tree_model_default.g3dj", Model.class);
+            assets.finishLoading();
+            this.treeModel = assets.get("tree_model_default.g3dj", Model.class);
+        }
+        return this.treeModel;
     }
 
     @Override

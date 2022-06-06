@@ -1,11 +1,6 @@
 package com.project_1_2.group_16.gamelogic;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.StateVector;
@@ -20,16 +15,6 @@ public class Terrain {
      * The edge of the map.
      */
     public static final float MAP_EDGE = App.FIELD_SIZE / 2 + App.TILE_SIZE;
-    
-    /**
-     * All sandpits.
-     */
-    public static final List<Sandpit> sandPits = new ArrayList<Sandpit>();
-
-    /**
-     * All trees.
-     */
-    public static final List<Tree> trees = new ArrayList<Tree>();
     
     /**
      * Collision detection for the terrain.
@@ -99,40 +84,33 @@ public class Terrain {
     }
 
     /**
-     * Add sandpits to the course.
+     * Create a tree with a random position and size.
+     * Position can't be on water (unless necessary), or within distance 1 of the ball or hole.
      */
-    public static void initSandPits() {
-        Vector2 sV; float sX, sZ; int j;
-        for (int i = 0; i < Input.SAND; i++) {
-            j = 0;
-            do {
-                sX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
-                sZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
-                sV = new Vector2(sX, sZ);
-            } while ((j < 50 && getHeight(sX, sZ) < 0) || sV.dst(Input.V0) < 2 || sV.dst(Input.VT) < 2);
-            sandPits.add(new Sandpit(sX, sZ, 1f));
-            sandPits.add(new Sandpit(sX + (float)Math.random() * 1f - 0.5f, sZ + (float)Math.random() * 1f - 0.5f, 1f));
-            sandPits.add(new Sandpit(sX + (float)Math.random() * 1f - 0.5f, sZ + (float)Math.random() * 1f - 0.5f, 1f));
-        }
+    public static void createRandomTree() {
+        Vector2 trV; float trX, trZ; int j = 0;
+        do {
+            j++;
+            trX = 0.95f * (float)(Math.random() * App.FIELD_SIZE - App.FIELD_SIZE / 2);
+            trZ = 0.95f* (float)(Math.random() * App.FIELD_SIZE - App.FIELD_SIZE / 2);
+            trV = new Vector2(trX, trZ);
+        } while ((j < 50 && Terrain.getHeight(trX, trZ) < 0.1) || trV.dst(Input.V0) < 1 || trV.dst(Input.VT) < 1);
+        float trR = (float)(Math.random() * 0.3 + .2);
+        Input.TREES.add(new Tree(trX, trZ, trR));
     }
 
     /**
-     * Add trees to the course.
-     * @param model tree model
+     * Create a sandpit with a random position and size.
+     * Position can't be on water (unless necessary), or within distance 2 of the ball or hole.
      */
-    public static void initTrees(Model model) {
-        Vector2 trV; float trX, trZ; int j = 0;
-		for (int i = 0; i < Input.TREES; i++) {
-            j = 0;
-			do {
-                j++;
-				trX = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
-				trZ = (float)(Math.random() * (App.FIELD_SIZE - App.TILE_SIZE) - App.FIELD_SIZE / 2);
-				trV = new Vector2(trX, trZ);
-			} while ((j < 50 && Terrain.getHeight(trX, trZ) < 0.1) || trV.dst(Input.V0) < 1 || trV.dst(Input.VT) < 1);
-			float trR = (float)(Math.random() * 0.3 + .2);
-			if (model!=null) trees.add(new Tree(model, new Vector3(trV.x, Terrain.getHeight(trV.x, trV.y) - 0.1f, trV.y), trR));
-            else trees.add(new Tree(new Vector3(trV.x, Terrain.getHeight(trV.x, trV.y) - 0.1f, trV.y), trR));
-		}
+    public static void createRandomSandpit() {
+        Vector2 sV; float sX, sZ; int j = 0;
+        do {
+            j++;
+            sX = 0.95f * (float)(Math.random() * App.FIELD_SIZE - App.FIELD_SIZE / 2);
+            sZ = 0.95f * (float)(Math.random() * App.FIELD_SIZE - App.FIELD_SIZE / 2);
+            sV = new Vector2(sX, sZ);
+        } while ((j < 50 && getHeight(sX, sZ) < 0) || sV.dst(Input.V0) < 2 || sV.dst(Input.VT) < 2);
+        Input.SAND.add(new Sandpit(sX, sZ, 1f + (float)(Math.random()*0.75)));
     }
 }

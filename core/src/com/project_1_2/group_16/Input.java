@@ -1,6 +1,10 @@
 package com.project_1_2.group_16;
 
+import java.util.List;
+
 import com.badlogic.gdx.math.Vector2;
+import com.project_1_2.group_16.gamelogic.Sandpit;
+import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.themes.Theme;
 
 /**
@@ -34,14 +38,29 @@ public class Input {
     public static String H;
 
     /**
-     * Number of trees.
+     * If the game should use pre-defined or random obstacles.
      */
-    public static int TREES;
+    public static boolean RANDOM_OBSTACLES;
 
     /**
-     * Number of sandpits.
+     * Number of random trees (only applicable if RANDOM_OBSTACLES is true).
      */
-    public static int SAND;
+    public static int NUMBER_OF_TREES;
+
+    /**
+     * Number of random sandpits (only applicable if RANDOM_OBSTACLES is true).
+     */
+    public static int NUMBER_OF_SANDPITS;
+
+    /**
+     * Trees.
+     */
+    public static List<Tree> TREES;
+
+    /**
+     * Sandpits.
+     */
+    public static List<Sandpit> SAND;
 
     /**
      * Pre-computed spline for bicubic interpolation.

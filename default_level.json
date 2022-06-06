@@ -11,8 +11,12 @@
 
     "terrain": {
         "height_function": "0.4*(0.9 - Math.pow(Math.E, (-1*(x*x+y*y))/8))",
-        "number_of_trees": 0,
-        "number_of_sandpits": 0,
+        "trees": [
+            
+        ],
+        "sandpits": [
+            
+        ],
         "bicubic_input": [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

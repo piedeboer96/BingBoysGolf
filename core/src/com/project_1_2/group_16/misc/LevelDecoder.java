@@ -1,6 +1,7 @@
 package com.project_1_2.group_16.misc;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
@@ -8,7 +9,9 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.JsonIterator;
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.gamelogic.Sandpit;
 import com.project_1_2.group_16.gamelogic.Spline;
+import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.themes.DefaultTheme;
 
 /**
@@ -39,8 +42,20 @@ public class LevelDecoder {
         // terrain
         JsonValue terrain = fullInput.get("terrain");
         Input.H = terrain.getString("height_function");
-        Input.TREES = terrain.getInt("number_of_trees");
-        Input.SAND = terrain.getInt("number_of_sandpits");
+        JsonIterator treeIterator = terrain.get("trees").iterator();
+        Input.TREES = new ArrayList<Tree>();
+        JsonValue tree;
+        while (treeIterator.hasNext()) {
+            tree = treeIterator.next();
+            Input.TREES.add(new Tree(tree.getFloat("x"), tree.getFloat("y"), tree.getFloat("radius")));
+        }
+        JsonIterator sandIterator = terrain.get("sandpits").iterator();
+        Input.SAND = new ArrayList<Sandpit>();
+        JsonValue sandpit;
+        while (sandIterator.hasNext()) {
+            sandpit = sandIterator.next();
+            Input.SAND.add(new Sandpit(sandpit.getFloat("x"), sandpit.getFloat("y"), sandpit.getFloat("radius")));
+        }
         JsonIterator bicubicIterator = terrain.get("bicubic_input").iterator();
         Input.BICUBIC_INPUT = new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE];
         for (int i = Spline.SPLINE_SIZE - 1; i >= 0; i--) {

@@ -3,6 +3,7 @@ package com.project_1_2.group_16.models;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
+import com.project_1_2.group_16.gamelogic.Terrain;
 
 /**
  * Wrapper class for trees.
@@ -16,42 +17,31 @@ public class Tree {
 
     public static boolean recentlyHitTree;
 
-    private Model model;
     private ModelInstance instance;
-    private Vector3 pos = new Vector3();
+    private Vector3 pos;
     private float r;
 
     /**
      * Create a tree object
-     * @param model the tree model
-     * @param pos the position of the tree
+     * @param x the x-coordinate of the tree
+     * @param y the y-coordinate of the tree
      * @param r the radius of the tree
      */
-    public Tree(Model model, Vector3 pos, float r) {
-        this.model = model;
+    public Tree(float x, float y, float r) {
+        this.pos = new Vector3(x, 0, y);
+        this.r = r;
+    }
+
+    /**
+     * Set the model of this tree.
+     * @param model a model reference
+     */
+    public void setModel(Model model) {
         this.instance = new ModelInstance(model);
-        this.pos.set(pos);
-        this.r = r;
-
-        this.instance.transform.translate(pos.x, pos.y, pos.z);
-		this.instance.transform.rotate(Vector3.Y, (float)(Math.random()*360));
-		this.instance.transform.scale(0.5f * r, 0.5f * r, 0.5f * r);
-    }
-
-    /**
-     * Create tree object without interfering with graphics
-     */
-    public Tree(Vector3 pos, float r){
-        this.pos.set(pos);
-        this.r = r;
-    }
-    
-    /**
-     * Get the model of the tree
-     * @return a model object
-     */
-    public Model getModel() {
-        return this.model;
+        this.pos.y = Terrain.getHeight(this.pos.x, this.pos.z) - 0.1f;
+        this.instance.transform.translate(this.pos);
+        this.instance.transform.rotate(Vector3.Y, (float)(Math.random()*360));
+        this.instance.transform.scale(0.5f * r, 0.5f * r, 0.5f * r);
     }
 
     /**
