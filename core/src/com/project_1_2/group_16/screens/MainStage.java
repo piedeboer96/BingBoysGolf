@@ -78,6 +78,7 @@ public class MainStage extends InputScreen {
                 infoDialog.addText("ESC - Quit the application");
                 infoDialog.addText("C - Switch camera");
                 infoDialog.addText("R - Reset ball");
+                infoDialog.addText("Ctrl + S - Save level");
                 infoDialog.addText("");
                 infoDialog.addText("BALL CAMERA CONTROLS:");
                 infoDialog.addText("Drag the mouse to move the camera");

@@ -137,8 +137,13 @@ public class TerrainStage extends InputScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("When \"Default obstacles\" is selected, obstacles will be rendered as specified");
+                infoDialog.addText("in the level currently loaded (if no level loaded there will be no obstacles).");
+                infoDialog.addText("When \"Random obstacles\" is selected, all obstacles specified in the level currently");
+                infoDialog.addText("loaded will be overwritten with randomly-generated obstacles. The quantity of these");
+                infoDialog.addText("obstacles can be specified in the textboxes in the corners of the screen.");
+                infoDialog.addText("");
                 infoDialog.addText("Clicking the \"render\" button will render the current terrain from a top-down view.");
-                infoDialog.addText("As long as the \"Use spline\" box is enabled, you can customize this terrain.");
                 infoDialog.addText("");
                 infoDialog.addText("Set the added height in the brush-textfield and drag over the map to color");
                 infoDialog.addText("some tiles gray, then press the \"render\" button to commit these changes.");
@@ -146,8 +151,6 @@ public class TerrainStage extends InputScreen {
                 infoDialog.addText("(pressing the render button will take the current value of the brush-textfield,");
                 infoDialog.addText("and add it to the current gray-colored tiles. To apply multiple height changes make");
                 infoDialog.addText("sure to commit each height-level seperately)");
-                infoDialog.addText("");
-                infoDialog.addText("Sandpits and trees are generated randomly around the terrain.");
                 infoDialog.show(stage);
             }
         });
