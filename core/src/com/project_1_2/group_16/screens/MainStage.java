@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.misc.InfoDialog;
+import com.project_1_2.group_16.misc.LevelSelector;
 
 /**
  * Stage used as the main title screen.
@@ -103,6 +105,13 @@ public class MainStage extends InputScreen {
         this.loadLevel.setHeight(50);
         this.loadLevel.setWidth(200);
         this.loadLevel.setPosition(this.play.getX(Align.left) - 10, 75, Align.right);
+        this.loadLevel.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                LevelSelector selector = new LevelSelector(screen);
+                selector.show(stage);
+            }
+        });
         this.addActor(this.loadLevel);
 
         // button for accessing terrain settings

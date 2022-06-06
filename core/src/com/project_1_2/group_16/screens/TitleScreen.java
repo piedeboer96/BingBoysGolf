@@ -1,11 +1,11 @@
 package com.project_1_2.group_16.screens;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -55,7 +55,7 @@ public class TitleScreen extends ScreenAdapter {
         this.screens.add(new TerrainStage(this));
 
         // set default values
-        this.loadLevel(new File((App.OS_IS_WIN ? "./" : "../")+"default_level.json"));
+        this.loadLevel(new FileHandle((App.OS_IS_WIN ? "./" : "../")+"default_level.json"));
     }
 
     @Override
@@ -131,7 +131,7 @@ public class TitleScreen extends ScreenAdapter {
      * Load a pre-computed level.
      * @param level file containing the level data
      */
-    public void loadLevel(File level) {
+    public void loadLevel(FileHandle level) {
         // decode level
         LevelDecoder.decode(level);
 

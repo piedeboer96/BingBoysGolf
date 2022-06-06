@@ -1,4 +1,4 @@
-package com.project_1_2.group_16.screens;
+package com.project_1_2.group_16.misc;
 
 import java.util.ArrayList;
 import java.util.List;

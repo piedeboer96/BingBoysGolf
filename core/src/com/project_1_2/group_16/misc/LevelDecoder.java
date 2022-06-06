@@ -1,6 +1,5 @@
 package com.project_1_2.group_16.misc;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -25,9 +24,9 @@ public class LevelDecoder {
      * Decode a pre-computed level, and parse it to the input file.
      * @param level file containing the level data
      */
-    public static void decode(File level) {
+    public static void decode(FileHandle level) {
         // get the full level
-        JsonValue fullInput = PARSER.parse(new FileHandle(level));
+        JsonValue fullInput = PARSER.parse(level);
         
         // start position
         JsonValue startPosition = fullInput.get("starting_position");

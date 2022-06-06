@@ -18,6 +18,7 @@ import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.misc.InfoDialog;
 
 /**
  * Stage used for the terrain settings.
