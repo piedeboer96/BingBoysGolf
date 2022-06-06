@@ -39,7 +39,7 @@ public class LevelEncoder {
      */
     public static void encode() {
         // create level name
-        String levelName = "custom-level-"+DATE_FORMAT.format(new Date());
+        String levelName = "saved-"+DATE_FORMAT.format(new Date());
         
         // create string representation of level
         StringBuilder builder = new StringBuilder();

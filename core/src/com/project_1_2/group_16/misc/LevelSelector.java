@@ -182,7 +182,7 @@ public class LevelSelector extends Dialog {
 
         @Override
         public String toString() {
-            return this.fileHandle.isDirectory() ? this.fileHandle.name() + "/" : this.fileHandle.nameWithoutExtension();
+            return this.fileHandle.isDirectory() ? this.fileHandle.name() : this.fileHandle.nameWithoutExtension();
         }
     }
 }
