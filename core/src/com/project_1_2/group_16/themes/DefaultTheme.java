@@ -24,26 +24,27 @@ public class DefaultTheme implements Theme {
     private final Color hole_off = Color.RED;
     private final Color hole_on = Color.GREEN;
 
+    private final Material tree_bumper = new Material(ColorAttribute.createDiffuse(0.8f, 0.145528f,  0.060455f, 1),
+                                                      ColorAttribute.createAmbient(0.050876f, 0.050876f, 0.050876f, 1));
+    private final ModelBuilder builder = new ModelBuilder();
+
     private Model treeModel;
 
     @Override
     public Model golfballModel(float size) {
-        ModelBuilder builder = new ModelBuilder();
         Material golfball = new Material(ColorAttribute.createDiffuse(Color.WHITE));
-        return builder.createSphere(size, size, size, 10, 10, golfball, Usage.Position + Usage.Normal);
+        return this.builder.createSphere(size, size, size, 10, 10, golfball, Usage.Position + Usage.Normal);
     }
 
     @Override
-    public Model flagModel(float r, boolean off) {
-        ModelBuilder builder = new ModelBuilder();
-        
+    public Model flagModel(float r, boolean off) { 
         Material poleMaterial = new Material(ColorAttribute.createDiffuse(Color.LIGHT_GRAY));
         Material flagMaterial = new Material(ColorAttribute.createDiffuse(Color.RED));
         Material holeMaterial = new Material(ColorAttribute.createDiffuse(off ? this.hole_off : this.hole_on));
 
-        Model pole = builder.createCylinder(.01f, 1.5f, .01f, 20, poleMaterial, Usage.Position + Usage.Normal);
-        Model flag = builder.createBox(.25f, .125f, .005f, flagMaterial, Usage.Position + Usage.Normal);
-        Model hole = builder.createCylinder(2*r, 0.1f, 2*r, 20, holeMaterial, Usage.Position);
+        Model pole = this.builder.createCylinder(.01f, 1.5f, .01f, 20, poleMaterial, Usage.Position + Usage.Normal);
+        Model flag = this.builder.createBox(.25f, .125f, .005f, flagMaterial, Usage.Position + Usage.Normal);
+        Model hole = this.builder.createCylinder(2*r, 0.1f, 2*r, 20, holeMaterial, Usage.Position);
 
         flag.nodes.get(0).translation.x = .125f;
         flag.nodes.get(0).translation.y = .6875f;
@@ -62,6 +63,11 @@ public class DefaultTheme implements Theme {
             this.treeModel = assets.get("tree_model_default.g3dj", Model.class);
         }
         return this.treeModel;
+    }
+
+    @Override
+    public Model treeBumper(float r) {
+        return this.builder.createCylinder(2*r, 0.3f, 2*r, 20, this.tree_bumper, Usage.Position + Usage.Normal);
     }
 
     @Override

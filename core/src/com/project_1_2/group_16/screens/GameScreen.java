@@ -132,7 +132,9 @@ public class GameScreen extends ScreenAdapter {
 		}
 		for (Tree t : Input.TREES) {
 			t.setModel(Input.THEME.treeModel(assets));
+			t.setBumper(Input.THEME.treeBumper(t.getRadius()));
 			this.instances.add(t.getInstance());
+			this.instances.add(t.getBumper());
 		}
 
         // create ball camera

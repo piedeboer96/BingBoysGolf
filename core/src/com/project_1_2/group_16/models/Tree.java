@@ -18,6 +18,7 @@ public class Tree {
     public static boolean recentlyHitTree;
 
     private ModelInstance instance;
+    private ModelInstance bumper;
     private Vector3 pos;
     private float r;
 
@@ -41,7 +42,16 @@ public class Tree {
         this.pos.y = Terrain.getHeight(this.pos.x, this.pos.z) - 0.1f;
         this.instance.transform.translate(this.pos);
         this.instance.transform.rotate(Vector3.Y, (float)(Math.random()*360));
-        this.instance.transform.scale(0.5f * r, 0.5f * r, 0.5f * r);
+        this.instance.transform.scale(0.5f * this.r, 0.5f * this.r, 0.5f * this.r);
+    }
+
+    /**
+     * Set a bumper model for this tree.
+     * @param model
+     */
+    public void setBumper(Model model) {
+        this.bumper = new ModelInstance(model);
+        this.bumper.transform.translate(this.pos.x, this.pos.y, this.pos.z);
     }
 
     /**
@@ -50,6 +60,14 @@ public class Tree {
      */
     public ModelInstance getInstance() {
         return this.instance;
+    }
+
+    /**
+     * Get the instance of the bumper of this tree.
+     * @return
+     */
+    public ModelInstance getBumper() {
+        return this.bumper;
     }
 
     /**
