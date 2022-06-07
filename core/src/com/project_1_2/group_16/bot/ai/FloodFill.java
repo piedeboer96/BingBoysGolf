@@ -15,22 +15,43 @@ import static com.project_1_2.group_16.App.*;
  */
 
 public class FloodFill {
+    private Terrain terrain;
 
-    static int size_X = 100, size_Y = 100;
-    static boolean holeSet = false;
-    public static int[][] matrixParcour = new int[size_X][size_Y];
-    static int[][] visitedNodes = new int[matrixParcour.length][matrixParcour.length];
-    public static double flood_i, flood_j;
+    int size_X, size_Y;
+    boolean holeSet = false;
+    int[][] floodFillTable;
+    int[][] visitedNodes;
+    public double flood_i, flood_j;
+    float stepSize;
+
+    //TODO: Add warning about step-size, int casting for the size x and y
+    public FloodFill(float stepSize){
+        this.stepSize = stepSize;
+        size_X = (int)(FIELD_SIZE/stepSize);
+        size_Y =  (int)(FIELD_SIZE/stepSize);
+        this.floodFillTable = new int[size_X][size_Y];
+        this.visitedNodes = new int[size_X][size_Y];
+        fillGraphTable();
+    }
+
 
     /**
      * FloodFill algorithm to be able to create a matrix that represents the shortest distance
      * from any point to some target point. It takes advanced parcours with walls, water, etc.
      * into account. The algorithm runs from the starting position of x and y.
-     * @param x x coordinate
-     * @param y y coordinae
+     * @param input_x x coordinate
+     * @param input_y y coordinae
      */
-    public static void floodFill(int x, int y){
 
+    //void -> int[][]
+    public int[][] runFloodFill(float input_x, float input_y){
+        int x = coordinateToIndex(input_x);
+        int y = coordinateToIndex(input_y);
+        floodFillTable[x][y] = 0;
+        flood_i = x;
+        flood_j = y;
+
+        System.out.println("In Floodfill x and y coordinate: x:" + x + " y: " + y + " value: " + floodFillTable[x][y]);
         // Creating queue for the bfs
         Queue<Coordinate> queue = new LinkedList<>();
 
@@ -41,13 +62,16 @@ public class FloodFill {
         // Marking {x, y} as visited in the visted nodes array
         visitedNodes[x][y] = 1;
 
+        //TODO: check the int cast
+
         while (!queue.isEmpty())
         {
-            int matrix_value = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1; //calculates which the neighbours should get
+            int matrix_value = (int) (Math.abs(flood_i - y)+ Math.abs(flood_j-x))+1; //calculates which the neighbours should get
             Coordinate current = queue.peek(); //grabs the first coordinate in the queue
             x = current.getX();
             y = current.getY();
-            int oldCol = matrixParcour[x][y]; //the value of the current node in the matrixparcour array
+            System.out.println("In Floodfill x and y coordinate: x:" + x + " y: " + y + " value: " + floodFillTable[x][y]);
+            int oldCol = floodFillTable[x][y]; //the value of the current node in the matrix parcour array
             queue.remove(); //remove the coordinate you are going to check from the queue
 
             /*Perform a search for all neighbouring nodes of the current node and set that value to matrix_value.
@@ -60,7 +84,7 @@ public class FloodFill {
                     Coordinate down = new Coordinate(x + 1, y);
                     queue.add(down);
                     visitedNodes[x+1][y] = 1;
-                    matrixParcour[x+1][y] = matrix_value;
+                    floodFillTable[x+1][y] = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;
                 }
             }
 
@@ -70,7 +94,7 @@ public class FloodFill {
                     Coordinate up = new Coordinate(x - 1, y);
                     queue.add(up);
                     visitedNodes[x-1][y] = 1;
-                    matrixParcour[x-1][y] =  matrix_value;
+                    floodFillTable[x-1][y] =  (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;;
                 }
             }
 
@@ -80,9 +104,8 @@ public class FloodFill {
                     Coordinate left = new Coordinate(x, y-1);
                     queue.add(left);
                     visitedNodes[x][y-1] = 1;
-                    matrixParcour[x][y-1] =  matrix_value;
+                    floodFillTable[x][y-1] =  (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;;
                 }
-
             }
 
             //right
@@ -91,37 +114,48 @@ public class FloodFill {
                     Coordinate right = new Coordinate(x, y+1);
                     queue.add(right);
                     visitedNodes[x][y+1] = 1;
-                    matrixParcour[x][y+1] =  matrix_value;
+                    floodFillTable[x][y+1] =  (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;;
                 }
-
             }
         }
+        return floodFillTable;
     }
 
     /**
      * Fill graph table based on the field. All the coordinates that are not in water get the value Integer.Max_Value and
      * all coordinates in water get value -1
      */
-    public static void fillGraphTable(){
+    public void fillGraphTable(){
         float x, y;
-        for(int i = 0; i < FIELD_DETAIL; i++) {
-            for(int j = 0; j < FIELD_DETAIL; j++) {
-                x = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (i + 1);
-                y = -FIELD_SIZE / 2 + TILE_SIZE / 2 + TILE_SIZE * (j + 1);
-                matrixParcour[i][j] = getArrayValue(x, y,i,j);
+        for(int i = 0; i < size_X; i++) {
+            for(int j = 0; j < size_Y; j++) {
+                x = -FIELD_SIZE / 2 + stepSize / 2 + stepSize * (i + 1);
+                y = -FIELD_SIZE / 2 + stepSize / 2 + stepSize * (j + 1);
+
+                floodFillTable[i][j] = getArrayValue(x, y, i, j);
             }
         }
     }
 
     /**
-     * Getter method which returns the floodfill value based on an x and y coordinate
+     *
+     * @param coordinate
+     * @return
+     */
+    public int coordinateToIndex(float coordinate){
+        float rounded_coordinate = Math.round(coordinate);
+        return (int)((rounded_coordinate + FIELD_SIZE/2 - stepSize/2)/stepSize)-1;
+    }
+
+    /**
+     * Get method which returns the floodfill value based on an x and y coordinate
      * @param x x coordinate
      * @param y y coordinae
      */
-    public static int getMatrixValue(float x, float y){
-        int i = (int)((x + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
-        int j = (int)((y + FIELD_SIZE/2 - TILE_SIZE/2)/TILE_SIZE)-1;
-        return matrixParcour[i][j];
+    public int getFloodFillFitness(float x, float y){
+        int i = (int)((x + FIELD_SIZE/2 - stepSize/2)/stepSize)-1;
+        int j = (int)((y + FIELD_SIZE/2 - stepSize/2)/stepSize)-1;
+        return floodFillTable[i][j];
     }
 
     /**
@@ -134,7 +168,7 @@ public class FloodFill {
      * @param j index in matrix parcour
      * @return
      */
-    public static int getArrayValue(float x, float y, int i, int j){
+    public int getArrayValue(float x, float y, int i, int j){
 
         float terrainHeight = Terrain.getHeight(x,y);
 
@@ -145,7 +179,7 @@ public class FloodFill {
                 holeSet = true;
                 flood_i = i;
                 flood_j = j;
-                // System.out.println("hole: " + flood_i + " " + flood_j);
+                System.out.println("hole: " + flood_i + " " + flood_j);
                 return 0;
             }else{
                 return Integer.MAX_VALUE; //if height is bigger then 0 and the coordinates are not the holse coordinate -> value = Integer.MAX_Value
@@ -161,8 +195,8 @@ public class FloodFill {
      * @param newCol the new color (calculated distance)
      * @return boolean
      */
-    public static boolean isValidStep(int i, int j, int oldCol, int newCol){
-        if(i < 0 || i >= matrixParcour.length || j < 0 || j >= matrixParcour.length || (matrixParcour[i][j] != oldCol && matrixParcour[i][j]!=Integer.MAX_VALUE && matrixParcour[i][j] == -1)) {
+    public boolean isValidStep(int i, int j, int oldCol, int newCol){
+        if(i < 0 || i >= floodFillTable.length || j < 0 || j >= floodFillTable.length || (floodFillTable[i][j] != oldCol && floodFillTable[i][j]!=Integer.MAX_VALUE && floodFillTable[i][j] == -1)) {
             return false;
         }
         return true;
