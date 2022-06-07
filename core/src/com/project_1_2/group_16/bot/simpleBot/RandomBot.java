@@ -1,4 +1,4 @@
-package com.project_1_2.group_16.simpleBot;
+package com.project_1_2.group_16.bot.simpleBot;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.ai.AIHelper;
