@@ -1,6 +1,7 @@
 package com.project_1_2.group_16.bot.ai;
 
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.AdvancedBot;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.StateVector;
@@ -74,7 +75,7 @@ public class SA extends AdvancedBot {
      * @return the vector with highest fitness
      */
     public Neighbour findInitalState(){
-        List<float[]> initialCandidates = AIHelper.availableVelocities(getStartX(), getStartY());
+        List<float[]> initialCandidates = BotHelper.availableVelocities(getStartX(), getStartY());
         Neighbour bestNeighbour = null;
         double bestFitness = Integer.MAX_VALUE;
         for(int i=0; i<initialCandidates.size(); i++){

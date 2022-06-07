@@ -1,4 +1,4 @@
-package com.project_1_2.group_16.bot.ai;
+package com.project_1_2.group_16.bot;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Game;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Helper methods used for the AI algorithms
  */
-public class AIHelper {
+public class BotHelper {
 
     /**
      * Method which calculates the eucledian distance

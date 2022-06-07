@@ -1,6 +1,7 @@
 package com.project_1_2.group_16.bot.ai;
 
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.AdvancedBot;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
@@ -186,12 +187,12 @@ public class BRO extends AdvancedBot {
      * Method to initialize population for BRO algorithm
      */
     public void initializePopulation(){
-        List<float[]> temp = AIHelper.availableVelocities(this.getStartX(), this.getStartY());
+        List<float[]> temp = BotHelper.availableVelocities(this.getStartX(), this.getStartY());
         for(float[] f : temp){
             population.add(new Soldier(new StateVector(this.getStartX(), this.getStartY(), f[0], f[1]), this.getGame()));
         }
         for(int i=population.size(); i<popSize; i++){
-            float[] f = AIHelper.validVelocity(-5f, 5f, this.getStartX(), this.getStartY());
+            float[] f = BotHelper.validVelocity(-5f, 5f, this.getStartX(), this.getStartY());
             population.add(new Soldier(new StateVector(this.getStartX(), this.getStartY(), f[0], f[1]), this.getGame()));
         }
         for(Soldier s : population){
@@ -211,7 +212,7 @@ public class BRO extends AdvancedBot {
             if(s==soldier){
                 continue;
             }
-            float curDistance = AIHelper.calculateEucledianDistance(soldier.velX, soldier.velY, s.velX, s.velY);
+            float curDistance = BotHelper.calculateEucledianDistance(soldier.velX, soldier.velY, s.velX, s.velY);
             if(curDistance < distance){
                 nearestSoldier = s;
                 distance = curDistance;

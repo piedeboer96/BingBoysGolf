@@ -1,6 +1,7 @@
 package com.project_1_2.group_16.bot.ai;
 
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.AdvancedBot;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.Physics;
@@ -223,7 +224,7 @@ public class PSO extends AdvancedBot {
      * @return arraylist of particles
      */
     public List<Particle> initializeParticles(){
-        List<float[]> init_vel = AIHelper.availableVelocities(getStartX(), getStartY());
+        List<float[]> init_vel = BotHelper.availableVelocities(getStartX(), getStartY());
         globalBest = new Particle(new StateVector(getStartX(), getStartY(), 0.1f, 0.1f), getGame());
         ArrayList<Particle>particles  = new ArrayList<Particle>();
         for(int i = 0; i < init_vel.size(); i++){
@@ -235,7 +236,7 @@ public class PSO extends AdvancedBot {
             }
         }
         for(int i = particles.size(); i< population_size; i++){
-            float[] velocities = AIHelper.validVelocity(-5.0f, 5.0f, getStartX(), getStartY());
+            float[] velocities = BotHelper.validVelocity(-5.0f, 5.0f, getStartX(), getStartY());
             particles.add(new Particle(new StateVector(getStartX(), getStartY(), velocities[0], velocities[1]), getGame()));
             particles.get(i).setlocalBest(particles.get(i));
             if(particles.get(i).fitness < globalBest.fitness) {

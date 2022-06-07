@@ -1,7 +1,7 @@
-package com.project_1_2.group_16.simpleBot;
+package com.project_1_2.group_16.bot.simpleBot;
 
 import com.project_1_2.group_16.Input;
-import com.project_1_2.group_16.bot.ai.AIHelper;
+import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.Physics;
@@ -55,7 +55,7 @@ public class RandomBot {
             sv = new StateVector(svForXandY.x, svForXandY.y, float_randomX, float_randomY);
             this.game.setNumericalSolver(NumericalSolver.RK4);
             this.game.runEngine(sv, null);
-            score = AIHelper.calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y);
+            score = BotHelper.calculateEucledianDistance(sv.x, sv.y, Input.VT.x, Input.VT.y);
             if ((!scoreInitialise || bestScore > score) && score!=-1) {
                 scoreInitialise = true;
                 bestScore = score;

@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.Agent;
-import com.project_1_2.group_16.bot.ai.AIHelper;
+import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.math.*;
 import com.project_1_2.group_16.models.Tree;
 
@@ -105,7 +105,7 @@ public class Game {
         simulCounter++;
         while(!sv.stop) {
             run(sv, null);
-            float temp = AIHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
+            float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
             if (a!=null){
                 if(temp < a.fitness && Physics.magnitude(sv.vx, sv.vy) < Input.VH){
                     a.fitness = temp;
