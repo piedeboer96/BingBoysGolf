@@ -149,8 +149,9 @@ public class FloodFill {
      * @param y y coordinae
      */
     public int getFloodFillFitness(float x, float y){
-        int i = (int)((x + FIELD_SIZE/2 - stepSize/2)/stepSize)-1;
-        int j = (int)((y + FIELD_SIZE/2 - stepSize/2)/stepSize)-1;
+        //check if did didn't fuck up
+        int i = coordinateToIndex(x);
+        int j = coordinateToIndex(y);
         return floodFillTable[i][j];
     }
 
@@ -169,16 +170,16 @@ public class FloodFill {
         float terrainHeight = Terrain.getHeight(x,y);
 
         if(terrainHeight<0) {                       //if height smaller than 0 -> value = -1;
-            return -1;
+            return Integer.MAX_VALUE;
         }else{
             if(Math.abs(Input.VT.x - x) < Input.R && Math.abs(Input.VT.y - y) < Input.R && !holeSet){ //if the coordinates are the coordinates of the hole -> value = 0
                 holeSet = true;
                 flood_i = i;
                 flood_j = j;
-                System.out.println("hole: " + flood_i + " " + flood_j);
+                //System.out.println("hole: " + flood_i + " " + flood_j);
                 return 0;
             }else{
-                return Integer.MAX_VALUE; //if height is bigger then 0 and the coordinates are not the holse coordinate -> value = Integer.MAX_Value
+                return -1; //if height is bigger then 0 and the coordinates are not the holse coordinate -> value = Integer.MAX_Value
             }
         }
     }
@@ -192,7 +193,7 @@ public class FloodFill {
      * @return boolean
      */
     public boolean isValidStep(int i, int j, int oldCol, int newCol){
-        if(i < 0 || i >= floodFillTable.length || j < 0 || j >= floodFillTable.length || (floodFillTable[i][j] != oldCol && floodFillTable[i][j]!=Integer.MAX_VALUE && floodFillTable[i][j] == -1)) {
+        if(i < 0 || i >= floodFillTable.length || j < 0 || j >= floodFillTable.length || (floodFillTable[i][j] != oldCol && floodFillTable[i][j]==Integer.MAX_VALUE)) {
             return false;
         }
         return true;
