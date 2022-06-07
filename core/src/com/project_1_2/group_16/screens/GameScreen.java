@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.ai.BRO;
 import com.project_1_2.group_16.bot.simpleBot.RuleBasedBot;
 import com.project_1_2.group_16.bot.ai.PSO;
@@ -37,12 +38,13 @@ import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.TerrainBuilder;
 import com.project_1_2.group_16.models.Tree;
+import com.project_1_2.group_16.models.Wall;
 
 /**
  * The screen that is used for the actual gameplay.
  */
 public class GameScreen extends ScreenAdapter {
-    
+
     // app reference
     private App app;
 
@@ -137,6 +139,12 @@ public class GameScreen extends ScreenAdapter {
 			this.instances.add(t.getBumper());
 		}
 
+		// create walls
+		for (Wall w : Input.WALLS) {
+			w.setModel(Input.THEME.wallModel(w.getWidth(), Wall.HEIGHT, w.getLength()));
+			this.instances.add(w.getInstance());
+		}
+
         // create ball camera
 		this.ballCam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		this.ballCam.position.set(Input.V0.x, Terrain.getHeight(Input.V0.x, Input.V0.y) + 0.25f, Input.V0.y - 0.5f);
@@ -154,6 +162,9 @@ public class GameScreen extends ScreenAdapter {
 		this.freeCam.far = App.RENDER_DISTANCE;
 		this.freeCam.update();
 		this.freeMovement = new FreeCamera(this.freeCam);
+
+		//creating the floodfillTable
+		BotHelper.setFloodFillTable();
     }
 
     @Override

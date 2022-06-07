@@ -1,18 +1,22 @@
 package com.project_1_2.group_16.bot;
 
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.bot.ai.FloodFill;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Helper methods used for the AI algorithms
  */
 public class BotHelper {
+    private static FloodFill floodFill;
+    private static int[][] scoreMatrix;
 
     /**
      * Method which calculates the eucledian distance
@@ -23,8 +27,29 @@ public class BotHelper {
      * @return the eucledian distance
      */
     public static float calculateEucledianDistance(float xt, float yt, float endx, float endy){
-        //will become floodFill output
         return (float) Math.sqrt(Math.pow(xt-endx, 2) + Math.pow(yt-endy, 2));
+    }
+
+    public static int getFloodFillFitness(float x, float y){
+
+        int fitness;
+        try{
+            fitness = scoreMatrix[floodFill.coordinateToIndex(x)][floodFill.coordinateToIndex(y)];
+            if(fitness < 5){
+                System.out.println("X_postion: " + x + " Y_position: " + y + "Fitness: " + fitness);
+            }
+        }catch (Exception e){
+            fitness = Integer.MAX_VALUE;
+        }
+        return fitness;
+    }
+
+    public static void setFloodFillTable(){
+        floodFill = new FloodFill(.5f);
+        scoreMatrix = floodFill.runFloodFill(Input.VT.x, Input.VT.y);
+        for(int[] i : scoreMatrix){
+            System.out.println(Arrays.toString(i));
+        }
     }
 
     /**

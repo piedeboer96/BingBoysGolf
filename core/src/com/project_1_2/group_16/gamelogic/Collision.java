@@ -5,6 +5,7 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.models.Tree;
+import com.project_1_2.group_16.models.Wall;
 
 /**
  * Class that handles collision detection for all game objects.
@@ -52,6 +53,20 @@ public class Collision {
      */
     public boolean ballIsInTreeRadius(StateVector sv, Tree tree) {
         return new Vector2(tree.getPosition().x, tree.getPosition().z).dst(sv.x, sv.y) < tree.getRadius();
+    }
+
+    /**
+     * Checks if the wall is inside a wall.
+     * @param sv the statevector of the ball
+     * @return the wall hit, or null if not any
+     */
+    public Wall ballIsInWall(StateVector sv) {
+        for (Wall w : Input.WALLS) {
+            if (w.contains(sv.x, sv.y)) {
+                return w;
+            }
+        }
+        return null;
     }
 
     /**

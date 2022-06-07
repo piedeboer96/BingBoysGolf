@@ -5,6 +5,7 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.gamelogic.Sandpit;
 import com.project_1_2.group_16.models.Tree;
+import com.project_1_2.group_16.models.Wall;
 import com.project_1_2.group_16.themes.Theme;
 
 /**
@@ -61,6 +62,11 @@ public class Input {
      * Sandpits.
      */
     public static List<Sandpit> SAND;
+
+    /**
+     * Walls.
+     */
+    public static List<Wall> WALLS;
 
     /**
      * Pre-computed spline for bicubic interpolation.

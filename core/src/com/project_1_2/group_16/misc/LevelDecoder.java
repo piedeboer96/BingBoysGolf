@@ -11,6 +11,7 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Sandpit;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.models.Tree;
+import com.project_1_2.group_16.models.Wall;
 import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.MoonTheme;
 
@@ -61,6 +62,18 @@ public class LevelDecoder {
         for (int i = 0; i < Spline.SPLINE_SIZE; i++) {
             Input.BICUBIC_INPUT[i] = bicubicIterator.next().asFloatArray();
         }
+
+        // walls (optional for maze)
+        Input.WALLS = new ArrayList<Wall>();
+        try {
+            JsonIterator wallIterator = terrain.get("walls").iterator();
+            JsonValue wall; Vector2 pos;
+            while (wallIterator.hasNext()) {
+                wall = wallIterator.next();
+                pos = new Vector2(wall.getFloat("x"), wall.getFloat("y"));
+                Input.WALLS.add(new Wall(pos, wall.getFloat("width"), wall.getFloat("height")));
+            }
+        } catch (NullPointerException e) {};
         
         // friction coefficients
         Input.MUK = fullInput.getFloat("kinetic_friction");
