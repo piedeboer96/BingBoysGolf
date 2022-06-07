@@ -67,6 +67,9 @@ public class LevelDecoder {
         Input.MUKS = fullInput.getFloat("kinetic_friction_sand");
         Input.MUSS = fullInput.getFloat("static_friction_sand");
 
+        // gravity
+        Input.GRAVITY = fullInput.getFloat("gravity");
+
         // theme
         String theme = fullInput.getString("theme").toLowerCase();
         switch (theme) {

@@ -1,16 +1,12 @@
 package com.project_1_2.group_16.math;
 
+import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
 
 /**
  * Class containing calculations related to physics.
  */
 public class Physics {
-
-    /**
-     * Gravitational constant (in m per sec^2).
-     */
-    public static final float GRAV_CONSTANT = 9.81f;
 
     /**
      * Find the magnitude based on two coordinates,
@@ -34,9 +30,9 @@ public class Physics {
     public static float getAccelerationX(float dh_dx, float dh_dy, StateVector sv) {
         float kinetic_friction = Terrain.getKineticFriction(sv);
         if (magnitude(sv.vx,sv.vy) < 0.05  && magnitude(dh_dx,dh_dy) > 0) {
-            return (-GRAV_CONSTANT * kinetic_friction * dh_dx) / magnitude(dh_dx, dh_dy);
+            return (-Input.GRAVITY * kinetic_friction * dh_dx) / magnitude(dh_dx, dh_dy);
         }
-        return ((-GRAV_CONSTANT * (dh_dx)) - ((kinetic_friction * GRAV_CONSTANT) * (sv.vx / (magnitude(sv.vx,sv.vy)))));
+        return ((-Input.GRAVITY * (dh_dx)) - ((kinetic_friction * Input.GRAVITY) * (sv.vx / (magnitude(sv.vx,sv.vy)))));
     }
 
     /**
@@ -49,8 +45,8 @@ public class Physics {
     public static float getAccelerationY(float dh_dx, float dh_dy, StateVector sv) {
         float kinetic_friction = Terrain.getKineticFriction(sv);
         if (magnitude(sv.vx,sv.vy) < 0.05 && magnitude(dh_dx,dh_dy) > 0) {
-            return (-GRAV_CONSTANT * kinetic_friction * dh_dy) / magnitude(dh_dx, dh_dy);
+            return (-Input.GRAVITY * kinetic_friction * dh_dy) / magnitude(dh_dx, dh_dy);
         }
-        return ((-GRAV_CONSTANT * (dh_dy)) - ((kinetic_friction * GRAV_CONSTANT) * (sv.vy / (magnitude(sv.vx, sv.vy)))));
+        return ((-Input.GRAVITY * (dh_dy)) - ((kinetic_friction * Input.GRAVITY) * (sv.vy / (magnitude(sv.vx, sv.vy)))));
     }
 }

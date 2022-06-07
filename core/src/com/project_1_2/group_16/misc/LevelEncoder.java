@@ -97,6 +97,7 @@ public class LevelEncoder {
         builder.append("    \"static_friction\": "+Input.MUS+",\n");
         builder.append("    \"kinetic_friction_sand\": "+Input.MUKS+",\n");
         builder.append("    \"static_friction_sand\": "+Input.MUSS+",\n\n");
+        builder.append("    \"gravity\": "+Input.GRAVITY+",\n\n");
         if (Input.THEME instanceof DefaultTheme) {
             builder.append("    \"theme\": \"default\"\n");
         }
