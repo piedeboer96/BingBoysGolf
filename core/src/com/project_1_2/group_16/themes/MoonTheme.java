@@ -24,6 +24,7 @@ public class MoonTheme implements Theme {
     private final Color hole_off = Color.RED;
     private final Color hole_on = Color.GREEN;
 
+    private final Material wall = new Material(ColorAttribute.createDiffuse(Color.PINK));
     private final Material tree_bumper = new Material(ColorAttribute.createDiffuse(0.4f, 0.313725f, 0.278431f, 1),
                                                       ColorAttribute.createAmbient(0.050876f, 0.050876f, 0.050876f, 1));
     private final ModelBuilder builder = new ModelBuilder();
@@ -68,6 +69,11 @@ public class MoonTheme implements Theme {
     @Override
     public Model treeBumper(float r) {
         return this.builder.createCylinder(2*r, 0.3f, 2*r, 20, this.tree_bumper, Usage.Position + Usage.Normal);
+    }
+
+    @Override
+    public Model wallModel(float width, float height, float depth) {
+        return this.builder.createBox(width, height, depth, wall, Usage.Position + Usage.Normal);
     }
 
     @Override

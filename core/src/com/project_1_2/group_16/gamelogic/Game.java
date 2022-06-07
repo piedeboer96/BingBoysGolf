@@ -7,6 +7,7 @@ import com.project_1_2.group_16.bot.Agent;
 import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.math.*;
 import com.project_1_2.group_16.models.Tree;
+import com.project_1_2.group_16.models.Wall;
 
 public class Game {
 
@@ -30,6 +31,7 @@ public class Game {
     public void run(final StateVector sv, App reference) {
         // update state vector with numerical solver
         this.solver.solve(h, sv);
+
         // check water collision
         if (Terrain.collision.ballIsInWater(sv)) {
             // reset position
@@ -62,6 +64,51 @@ public class Game {
             Tree.recentlyHitTree = true;
             sv.vx = -oldVel.x * Tree.treeCoefficient;
             sv.vy = -oldVel.y * Tree.treeCoefficient;
+        }
+
+        // check wall collision
+        Wall hitWall = Terrain.collision.ballIsInWall(sv);
+        if (hitWall != null && !Wall.recentlyHitWall) {
+            Wall.recentlyHitWall = true;
+
+            Vector2 position = new Vector2(sv.x, sv.y);
+            Vector2 velocity = new Vector2(sv.vx, sv.vy);
+            Vector2 tNegativeOne = position.cpy().sub(velocity);
+
+            Vector2 wallVector = hitWall.closestWall(sv.x, sv.y);
+            
+            float adjacent, opposite;
+            double inputAngle, rotationAngle;
+            if (wallVector == Vector2.X) { // horizontal
+                adjacent = Math.abs(position.x - tNegativeOne.x);
+                opposite = Math.abs(position.y - tNegativeOne.y);
+
+                inputAngle = Math.atan(opposite / adjacent);
+                rotationAngle = Math.PI - 2 * inputAngle;
+
+                if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
+                else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+                else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+                else velocity.rotateRad((float)rotationAngle);
+            }
+            else { // vertical
+                adjacent = Math.abs(position.y - tNegativeOne.y);
+                opposite = Math.abs(position.x - tNegativeOne.x);
+
+                inputAngle = Math.atan(opposite / adjacent);
+                rotationAngle = Math.PI - 2 * inputAngle;
+
+                if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+                else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)rotationAngle);
+                else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
+                else velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+            }
+
+            sv.vx = -velocity.x * Wall.frictionCoeficient;
+            sv.vy = -velocity.y * Wall.frictionCoeficient;
+        }
+        else if (hitWall == null) {
+            Wall.recentlyHitWall = false;
         }
 
         // check for hole collision

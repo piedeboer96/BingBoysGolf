@@ -37,6 +37,7 @@ import com.project_1_2.group_16.models.Flagpole;
 import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.TerrainBuilder;
 import com.project_1_2.group_16.models.Tree;
+import com.project_1_2.group_16.models.Wall;
 
 /**
  * The screen that is used for the actual gameplay.
@@ -135,6 +136,12 @@ public class GameScreen extends ScreenAdapter {
 			t.setBumper(Input.THEME.treeBumper(t.getRadius()));
 			this.instances.add(t.getInstance());
 			this.instances.add(t.getBumper());
+		}
+
+		// create walls
+		for (Wall w : Input.WALLS) {
+			w.setModel(Input.THEME.wallModel(w.getWidth(), Wall.HEIGHT, w.getLength()));
+			this.instances.add(w.getInstance());
 		}
 
         // create ball camera
