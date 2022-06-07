@@ -12,6 +12,7 @@ import com.project_1_2.group_16.gamelogic.Sandpit;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.themes.DefaultTheme;
+import com.project_1_2.group_16.themes.MoonTheme;
 
 /**
  * Auxiliary class for decoding a pre-computed level.
@@ -73,6 +74,7 @@ public class LevelDecoder {
         // theme
         String theme = fullInput.getString("theme").toLowerCase();
         switch (theme) {
+            case "moon": Input.THEME = new MoonTheme(); break;
             default: Input.THEME = new DefaultTheme();
         }
     }
