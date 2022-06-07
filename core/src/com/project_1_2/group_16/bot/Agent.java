@@ -23,8 +23,6 @@ public abstract class Agent {
     public void calcFitness(){
         StateVector sv = new StateVector(startX, startY, velX, velY);
         game.runEngine(sv,this);
-        System.out.println("X_END : " + sv.x);
-        System.out.println("Y_END : " + sv.y);
     }
 
     public Game getGame() {

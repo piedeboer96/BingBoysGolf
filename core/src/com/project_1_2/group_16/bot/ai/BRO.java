@@ -105,7 +105,7 @@ public class BRO extends AdvancedBot {
                 }
                 else {
                     dam.velX = 6;
-                    while(Physics.magnitude(dam.velX, dam.velY) > 5) {
+                    while(Physics.magnitude(dam.velX, dam.velY) >= 5) {
                         dam.velX = (float) (Math.random() * (upperBoundX - lowerBoundX) + lowerBoundX);
                         dam.velY = (float) (Math.random() * (upperBoundY - lowerBoundY) + lowerBoundY);
                     }

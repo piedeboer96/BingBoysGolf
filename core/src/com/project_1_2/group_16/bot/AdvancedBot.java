@@ -11,6 +11,7 @@ public abstract class AdvancedBot {
         this.startX = startX;
         this.startY = startY;
         this.game = game;
+        Game.useFloodFill = true;
     }
     public abstract List<Float> runBot();
     public float getStartX(){

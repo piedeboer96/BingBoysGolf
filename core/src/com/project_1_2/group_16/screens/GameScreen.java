@@ -19,7 +19,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.ai.BRO;
+import com.project_1_2.group_16.bot.ai.FloodFill;
 import com.project_1_2.group_16.bot.simpleBot.RuleBasedBot;
 import com.project_1_2.group_16.bot.ai.PSO;
 import com.project_1_2.group_16.bot.simpleBot.RandomBot;
@@ -43,7 +45,8 @@ import com.project_1_2.group_16.models.Wall;
  * The screen that is used for the actual gameplay.
  */
 public class GameScreen extends ScreenAdapter {
-    
+    public FloodFill floodFillTable;
+
     // app reference
     private App app;
 
@@ -161,6 +164,9 @@ public class GameScreen extends ScreenAdapter {
 		this.freeCam.far = App.RENDER_DISTANCE;
 		this.freeCam.update();
 		this.freeMovement = new FreeCamera(this.freeCam);
+
+		//creating the floodfillTable
+		BotHelper.setFloodFillTable();
     }
 
     @Override
