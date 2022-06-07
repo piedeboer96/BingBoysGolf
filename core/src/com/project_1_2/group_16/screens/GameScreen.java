@@ -19,11 +19,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
-import com.project_1_2.group_16.ai.BRO;
-import com.project_1_2.group_16.ai.RuleBasedBot;
-import com.project_1_2.group_16.ai.PSO;
-import com.project_1_2.group_16.ai.RandomBot;
-import com.project_1_2.group_16.ai.SA;
+import com.project_1_2.group_16.bot.ai.BRO;
+import com.project_1_2.group_16.simpleBot.RuleBasedBot;
+import com.project_1_2.group_16.bot.ai.PSO;
+import com.project_1_2.group_16.simpleBot.RandomBot;
+import com.project_1_2.group_16.bot.ai.SA;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.gamelogic.Game;
@@ -275,18 +275,18 @@ public class GameScreen extends ScreenAdapter {
 
 		// bots
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // sim. annealing
-			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y);
-			Float[] sol = this.sa.runSA().toArray(new Float[2]);
+			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y, this.game);
+			Float[] sol = this.sa.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){ // battle royale optimization
-			this.bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y);
-			Float[] sol = this.bro.runBRO().toArray(new Float[2]);
+			this.bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y, this.game);
+			Float[] sol = this.bro.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ // particle swarm optimization
-			this.pso = new PSO(300, 20, this.golfball.STATE.x, this.golfball.STATE.y);
-			Float[] sol = this.pso.runPSO().toArray(new Float[2]);
+			this.pso = new PSO(300, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game);
+			Float[] sol = this.pso.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_4)) { // rule based bot

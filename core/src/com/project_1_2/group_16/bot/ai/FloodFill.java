@@ -1,4 +1,4 @@
-package com.project_1_2.group_16.ai;
+package com.project_1_2.group_16.bot.ai;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;

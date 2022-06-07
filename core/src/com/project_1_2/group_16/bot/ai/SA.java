@@ -1,6 +1,8 @@
-package com.project_1_2.group_16.ai;
+package com.project_1_2.group_16.bot.ai;
 
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.bot.AdvancedBot;
+import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
@@ -9,12 +11,9 @@ import java.util.List;
 /**
  * This class contains our Simulated annealing optimazation algorithm.
  */
-public class SA {
+public class SA extends AdvancedBot {
 
     public static final float MAXVEL = 5f;
-    private static float start_x = 0;
-    private static float start_y = 0;
-
     private float neigbourStepSize;
     private double Temperature;
     private int kmax;
@@ -28,20 +27,15 @@ public class SA {
      * @param kmax max iterations
      * @param neigbourStepSize step size for generating neighbours
      */
-    public SA(int kmax, float neigbourStepSize, float startX, float startY){
+    public SA(int kmax, float neigbourStepSize, float startX, float startY, Game game){
+        super(startX, startY, game);
         this.kmax = kmax;
         this.neigbourStepSize = neigbourStepSize;
         this.recalculate = true;
-        start_x = startX;
-        start_y = startY;
         setState(findInitalState());
     }
-
-    /**
-     * Method used for running the SA
-     * @return array of x and y velocities
-     */
-    public List<Float> runSA(){
+    @Override
+    public List<Float> runBot() {
         if(bestState.getFitness() > Input.R) {
             outerloop:
             for (int i = 0; i < kmax; i++) {
@@ -65,10 +59,9 @@ public class SA {
                     break outerloop;
                 }
                 if(state.getFitness() < bestState.getFitness()){
-                    bestState = new Neighbour(state);
+                    bestState = state.createClone();
                 }
             }
-        }else {
         }
         ArrayList<Float> vxvy = new ArrayList<>();
         vxvy.add(bestState.getVx());
@@ -81,21 +74,21 @@ public class SA {
      * @return the vector with highest fitness
      */
     public Neighbour findInitalState(){
-        List<float[]> initialCandidates = AIHelper.availableVelocities(start_x, start_y);
+        List<float[]> initialCandidates = AIHelper.availableVelocities(getStartX(), getStartY());
         Neighbour bestNeighbour = null;
         double bestFitness = Integer.MAX_VALUE;
         for(int i=0; i<initialCandidates.size(); i++){
-            Neighbour temp = new Neighbour(new StateVector(start_x, start_y, initialCandidates.get(i)[0], initialCandidates.get(i)[1]));
+            Neighbour temp = new Neighbour(new StateVector(getStartX(), getStartY(), initialCandidates.get(i)[0], initialCandidates.get(i)[1]), getGame());
             if(temp.getFitness() < bestFitness){
                 if(temp.getFitness() < Input.R * 3.15f){
-                    this.bestState = new Neighbour(temp);
+                    this.bestState = temp.createClone();
                     return temp;
                 }
                 bestFitness = temp.getFitness();
                 bestNeighbour = temp;
             }
         }
-        this.bestState = new Neighbour(bestNeighbour);
+        this.bestState = bestNeighbour.createClone();
         return bestNeighbour;
     }
 
@@ -124,13 +117,13 @@ public class SA {
             newVectors = new ArrayList<>();
             float vx = state.getVx();
             float vy = state.getVy();
-            newVectors.add(new StateVector(start_x, start_y, vx + neigbourStepSize, vy));
-            newVectors.add(new StateVector(start_x, start_y, vx - neigbourStepSize, vy));
-            newVectors.add(new StateVector(start_x, start_y, vx, vy + neigbourStepSize));
-            newVectors.add(new StateVector(start_x, start_y, vx, vy - neigbourStepSize));
-            newVectors.add(new StateVector(start_x, start_y, vx - neigbourStepSize, vy - neigbourStepSize));
-            newVectors.add(new StateVector(start_x, start_y, vx + neigbourStepSize, vy - neigbourStepSize));
-            newVectors.add(new StateVector(start_x, start_y, vx - neigbourStepSize, vy + neigbourStepSize));
+            newVectors.add(new StateVector(getStartX(), getStartY(), vx + neigbourStepSize, vy));
+            newVectors.add(new StateVector(getStartX(), getStartY(), vx - neigbourStepSize, vy));
+            newVectors.add(new StateVector(getStartX(), getStartY(), vx, vy + neigbourStepSize));
+            newVectors.add(new StateVector(getStartX(), getStartY(), vx, vy - neigbourStepSize));
+            newVectors.add(new StateVector(getStartX(), getStartY(), vx - neigbourStepSize, vy - neigbourStepSize));
+            newVectors.add(new StateVector(getStartX(), getStartY(), vx + neigbourStepSize, vy - neigbourStepSize));
+            newVectors.add(new StateVector(getStartX(), getStartY(), vx - neigbourStepSize, vy + neigbourStepSize));
 
             viableVectors = new ArrayList<>();
             for (int i = 0; i < newVectors.size(); i++) {
@@ -139,14 +132,14 @@ public class SA {
                 }
             }
             for (int i = 0; i < viableVectors.size(); i++) {
-                Neighbour neighbour = new Neighbour(viableVectors.get(i));
+                Neighbour neighbour = new Neighbour(viableVectors.get(i), this.getGame());
                 if (neighbour.getFitness() < Input.R){
                     return neighbour;
                 }
                 current_neighbours.add(neighbour);
             }
         }
-        return ((current_neighbours.size() <= 0) ? new Neighbour(newVectors.get((int) Math.random() * newVectors.size())) : current_neighbours.get((int) Math.random() * current_neighbours.size()));
+        return ((current_neighbours.size() <= 0) ? new Neighbour(newVectors.get((int) Math.random() * newVectors.size()), getGame()) : current_neighbours.get((int) Math.random() * current_neighbours.size()));
     }
 
     public Neighbour getState() {
@@ -154,7 +147,7 @@ public class SA {
     }
 
     private void setState(Neighbour updated_state){
-        this.state = new Neighbour(updated_state);
+        this.state = updated_state.createClone();
     }
 
     /**
@@ -175,4 +168,6 @@ public class SA {
     public double getTemperature(int k) {
         return 1 - (k+1)/kmax;
     }
+
+
 }

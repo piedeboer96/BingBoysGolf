@@ -1,6 +1,7 @@
-package com.project_1_2.group_16.ai;
+package com.project_1_2.group_16.bot.ai;
 
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.bot.AdvancedBot;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.Physics;
@@ -13,14 +14,12 @@ import java.util.List;
  * Class for Battle-Royale optimization algorithm to find a hole-in-one. BRO is an evolutionary-algorithm inspired by
  * battle-royale games which describes its agents as soldiers.
  */
-public class BRO {
+public class BRO extends AdvancedBot {
 
-    public int popSize;
-    public float startY;
-    public float startX;
-    public int maxIter;
-    public Soldier bestSoldier;
-    int threshold;
+    private final int popSize;
+    private final int maxIter;
+    private Soldier bestSoldier;
+    private int threshold;
     ArrayList<Soldier> population = new ArrayList<Soldier>();
     ArrayList<Soldier> initialPop = new ArrayList<>();
 
@@ -30,18 +29,15 @@ public class BRO {
      * @param maxIter The max iterations it will run
      * @param threshold The preferred threshold for which a player is damaged then it respawns
      */
-    public BRO(int popSize, int maxIter, int threshold, float startX, float startY){
+    public BRO(int popSize, int maxIter, int threshold, float startX, float startY, Game game){
+        super(startX, startY, game);
         this.popSize = popSize;
         this.maxIter = maxIter;
         this.threshold = threshold;
-        this.startX = startX;
-        this.startY = startY;
     }
 
-    /**
-     * Driver method for BRO algorithm
-     */
-    public List<Float> runBRO(){
+    @Override
+    public List<Float> runBot() {
         //Initialize variables and the population
         float upperBoundX, upperBoundY, lowerBoundX, lowerBoundY, ogUBx, ogLBx, ogUBy, ogLBy;
         initializePopulation();
@@ -78,7 +74,7 @@ public class BRO {
             }
             Soldier temp = doLocalSearch(bestSoldier);
             if(temp.fitness < bestSoldier.fitness){
-                bestSoldier = new Soldier(temp);
+                bestSoldier = temp.createClone();
                 population.add(bestSoldier);
                 population.remove(findWorstSoldierInPop());
             }
@@ -117,7 +113,7 @@ public class BRO {
                 }
                 dam.calcFitness();
                 if(dam.fitness < Input.R){
-                    bestSoldier = new Soldier(dam);
+                    bestSoldier = dam.createClone();
                     break outerloop;
                 }
             }
@@ -172,9 +168,9 @@ public class BRO {
         for(float[] f : neighbourHood){
             Game g = new Game();
             g.setNumericalSolver(NumericalSolver.RK4);
-            StateVector sv = new StateVector(startX, startY, f[0], f[1]);
-            Soldier sold = new Soldier(f[0], f[1], startX, startY);
-            g.runEngine(sv, null, null, sold);
+            StateVector sv = new StateVector(this.getStartX(), this.getStartY(), f[0], f[1]);
+            Soldier sold = new Soldier(new StateVector(this.getStartX(), this.getStartY(), f[0], f[1]), this.getGame());
+            g.runEngine(sv, sold);
             if(sold.fitness < Input.R * 3.15f){
                 return sold;
             }
@@ -190,13 +186,13 @@ public class BRO {
      * Method to initialize population for BRO algorithm
      */
     public void initializePopulation(){
-        List<float[]> temp = AIHelper.availableVelocities(startX, startY);
+        List<float[]> temp = AIHelper.availableVelocities(this.getStartX(), this.getStartY());
         for(float[] f : temp){
-            population.add(new Soldier(f[0], f[1], startX, startY));
+            population.add(new Soldier(new StateVector(this.getStartX(), this.getStartY(), f[0], f[1]), this.getGame()));
         }
         for(int i=population.size(); i<popSize; i++){
-            float[] f = AIHelper.validVelocity(-5f, 5f, startX, startY);
-            population.add(new Soldier(f[0], f[1], startX, startY));
+            float[] f = AIHelper.validVelocity(-5f, 5f, this.getStartX(), this.getStartY());
+            population.add(new Soldier(new StateVector(this.getStartX(), this.getStartY(), f[0], f[1]), this.getGame()));
         }
         for(Soldier s : population){
             initialPop.add(s);

@@ -3,10 +3,8 @@ package com.project_1_2.group_16.gamelogic;
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
-import com.project_1_2.group_16.ai.Neighbour;
-import com.project_1_2.group_16.ai.Particle;
-import com.project_1_2.group_16.ai.AIHelper;
-import com.project_1_2.group_16.ai.Soldier;
+import com.project_1_2.group_16.bot.Agent;
+import com.project_1_2.group_16.bot.ai.AIHelper;
 import com.project_1_2.group_16.math.*;
 import com.project_1_2.group_16.models.Tree;
 
@@ -22,11 +20,6 @@ public class Game {
      */
     public static int simulCounter = 0;
 
-    /**
-     * Collision handler.
-     */
-    public final Collision collision = new Collision();
-
     private NumericalSolver solver;
 
     /**
@@ -37,7 +30,6 @@ public class Game {
     public void run(final StateVector sv, App reference) {
         // update state vector with numerical solver
         this.solver.solve(h, sv);
-
         // check water collision
         if (Terrain.collision.ballIsInWater(sv)) {
             // reset position
@@ -105,28 +97,18 @@ public class Game {
     }
 
     /**
-     * Helper method for doing bot simulations.
-     * @param sv statevector
-     * @param p particle
-     * @param n neighbour
-     * @param s soldier
+     * Helper method for doing bot simulations, runs the Physics Engine until the Ball stops
+     * @param sv StateVector of the ball
+     * @param a agent, iteratively updates an Agent's fitness
      */
-    public void runEngine(StateVector sv, Particle p, Neighbour n, Soldier s) {
+    public void runEngine(StateVector sv, Agent a) {
         simulCounter++;
         while(!sv.stop) {
             run(sv, null);
             float temp = AIHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
-            if(p!=null) {
-                if (temp < p.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Input.VH) {
-                    p.fitness = temp;
-                }
-            } else if(n!=null) {
-                if (temp < n.getFitness() && Physics.magnitude(sv.vx, sv.vy) < Input.VH) {
-                    n.fitness = temp;
-                }
-            } else if(s!=null) {
-                if(temp < s.fitness && Physics.magnitude(sv.vx, sv.vy) < Input.VH) {
-                    s.fitness = temp;
+            if (a!=null){
+                if(temp < a.fitness && Physics.magnitude(sv.vx, sv.vy) < Input.VH){
+                    a.fitness = temp;
                 }
             }
         }

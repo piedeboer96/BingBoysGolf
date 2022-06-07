@@ -1,4 +1,4 @@
-package com.project_1_2.group_16.ai;
+package com.project_1_2.group_16.simpleBot;
 
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.Input;
