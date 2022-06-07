@@ -15,7 +15,6 @@ import static com.project_1_2.group_16.App.*;
  */
 
 public class FloodFill {
-    private Terrain terrain;
 
     int size_X, size_Y;
     boolean holeSet = false;
@@ -24,7 +23,7 @@ public class FloodFill {
     public double flood_i, flood_j;
     float stepSize;
 
-    //TODO: Add warning about step-size, int casting for the size x and y
+    //todo: Add warning about step-size, int casting for the size x and y
     public FloodFill(float stepSize){
         this.stepSize = stepSize;
         size_X = (int)(FIELD_SIZE/stepSize);
@@ -62,11 +61,8 @@ public class FloodFill {
         // Marking {x, y} as visited in the visted nodes array
         visitedNodes[x][y] = 1;
 
-        //TODO: check the int cast
-
         while (!queue.isEmpty())
         {
-            int matrix_value = (int) (Math.abs(flood_i - y)+ Math.abs(flood_j-x))+1; //calculates which the neighbours should get
             Coordinate current = queue.peek(); //grabs the first coordinate in the queue
             x = current.getX();
             y = current.getY();
