@@ -28,8 +28,8 @@ public class SA extends AdvancedBot {
      * @param kmax max iterations
      * @param neigbourStepSize step size for generating neighbours
      */
-    public SA(int kmax, float neigbourStepSize, float startX, float startY, Game game){
-        super(startX, startY, game);
+    public SA(int kmax, float neigbourStepSize, float startX, float startY, Game game, boolean random){
+        super(startX, startY, game, random);
         this.kmax = kmax;
         this.neigbourStepSize = neigbourStepSize;
         this.recalculate = true;
@@ -64,10 +64,15 @@ public class SA extends AdvancedBot {
                 }
             }
         }
-        ArrayList<Float> vxvy = new ArrayList<>();
-        vxvy.add(bestState.getVx());
-        vxvy.add(bestState.getVy());
-        return vxvy;
+        ArrayList<Float> toReturn = new ArrayList<>();
+        if(getRandom()){
+            float[] fvxy = randomize(bestState.getVx(), bestState.getVy());
+            toReturn.add(fvxy[0]); toReturn.add(fvxy[1]);
+        }else {
+            toReturn.add(bestState.getVx());
+            toReturn.add(bestState.getVy());
+        }
+        return toReturn;
     }
 
     /**
