@@ -15,6 +15,8 @@ public interface Theme {
 
     public Model treeModel(AssetManager assets);
 
+    public Model treeBumper(float r);
+
     public Color grassColorLight(float height);
 
     public Color grassColorDark(float height);

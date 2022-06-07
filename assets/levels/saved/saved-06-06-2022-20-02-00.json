@@ -100,5 +100,7 @@
     "kinetic_friction_sand": 0.32,
     "static_friction_sand": 0.8,
 
+    "gravity": 9.81,
+
     "theme": "default"
 }

@@ -39,6 +39,10 @@ public class AdvancedStage extends InputScreen {
     private TextField holeVelocityField;
     private TextButton holeVelocityInfo;
 
+    private Label gravityLabel;
+    private TextField gravityField;
+    private TextButton gravityInfo;
+
     public AdvancedStage(TitleScreen screen) {
         super(screen);
         super.stage = this;
@@ -154,7 +158,7 @@ public class AdvancedStage extends InputScreen {
         this.holeVelocityLabel.setPosition(this.holeVelocityField.getX(Align.center), this.holeVelocityField.getY(Align.center) + this.holeVelocityField.getHeight(), Align.center);
         this.addActor(this.holeVelocityField); this.addActor(this.holeVelocityLabel);
 
-        // muk info
+        // hole velocity info
         this.holeVelocityInfo = new TextButton("?", this.screen.skin);
         this.holeVelocityInfo.setPosition(this.holeVelocityField.getX(Align.bottomRight) + 5, this.holeVelocityField.getY(Align.bottom));
         this.holeVelocityInfo.addListener(new ClickListener() {
@@ -166,6 +170,27 @@ public class AdvancedStage extends InputScreen {
             }
         });
         this.addActor(this.holeVelocityInfo);
+
+        // gravity input
+        this.gravityField = new TextField("", this.screen.skin);
+        this.gravityField.setPosition(0.6f*App.SCREEN_WIDTH, 300, Align.center);
+        this.gravityLabel = new Label("Gravity", this.screen.skin);
+        this.gravityLabel.setColor(Color.BLACK);
+        this.gravityLabel.setPosition(this.gravityField.getX(Align.center), this.gravityField.getY(Align.center) + this.gravityField.getHeight(), Align.center);
+        this.addActor(this.gravityField); this.addActor(this.gravityLabel);
+
+        // gravity info
+        this.gravityInfo = new TextButton("?", this.screen.skin);
+        this.gravityInfo.setPosition(this.gravityField.getX(Align.bottomRight) + 5, this.gravityField.getY(Align.bottom));
+        this.gravityInfo.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                InfoDialog infoDialog = new InfoDialog(screen.skin);
+                infoDialog.addText("Gravity Constant");
+                infoDialog.show(stage);
+            }
+        });
+        this.addActor(this.gravityInfo);
     }
 
     @Override
@@ -175,6 +200,7 @@ public class AdvancedStage extends InputScreen {
         Input.MUKS = Float.parseFloat(this.muksField.getText());
         Input.MUSS = Float.parseFloat(this.mussField.getText());
         Input.VH = Float.parseFloat(this.holeVelocityField.getText());
+        Input.GRAVITY = Float.parseFloat(this.gravityField.getText());
     }
 
     @Override
@@ -184,6 +210,7 @@ public class AdvancedStage extends InputScreen {
         this.muksField.setText(Float.toString(Input.MUKS));
         this.mussField.setText(Float.toString(Input.MUSS));
         this.holeVelocityField.setText(Float.toString(Input.VH));
+        this.gravityField.setText(Float.toString(Input.GRAVITY));
     }
 
     @Override

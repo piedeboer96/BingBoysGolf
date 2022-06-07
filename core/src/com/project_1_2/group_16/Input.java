@@ -88,6 +88,11 @@ public class Input {
     public static float MUSS;
 
     /**
+     * Gravity constant.
+     */
+    public static float GRAVITY;
+
+    /**
      * The theme (textures) for the game.
      */
     public static Theme THEME;
