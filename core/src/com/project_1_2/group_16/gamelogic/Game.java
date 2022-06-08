@@ -177,7 +177,6 @@ public class Game {
             //float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
            float temp;
 
-
            if(useFloodFill){
                temp = BotHelper.getFloodFillFitness(sv.x, sv.y);
                if(temp <= 1){

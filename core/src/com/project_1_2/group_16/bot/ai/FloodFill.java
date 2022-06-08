@@ -50,7 +50,7 @@ public class FloodFill {
         flood_i = x;
         flood_j = y;
 
-        System.out.println("In Floodfill x and y coordinate: x:" + x + " y: " + y + " value: " + floodFillTable[x][y]);
+        //System.out.println("In Floodfill x and y coordinate: x:" + x + " y: " + y + " value: " + floodFillTable[x][y]);
         // Creating queue for the bfs
         Queue<Coordinate> queue = new LinkedList<>();
 
@@ -66,7 +66,7 @@ public class FloodFill {
             Coordinate current = queue.peek(); //grabs the first coordinate in the queue
             x = current.getX();
             y = current.getY();
-            System.out.println("In Floodfill x and y coordinate: x:" + x + " y: " + y + " value: " + floodFillTable[x][y]);
+            //System.out.println("In Floodfill x and y coordinate: x:" + x + " y: " + y + " value: " + floodFillTable[x][y]);
             int oldCol = floodFillTable[x][y]; //the value of the current node in the matrix parcour array
             queue.remove(); //remove the coordinate you are going to check from the queue
 
