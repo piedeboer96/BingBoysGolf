@@ -22,7 +22,7 @@ public class LevelEncoder {
     /**
      * Location where level files will be saved.
      */
-    public static final String LOCATION = (App.OS_IS_WIN ? "./" : "../") + "/assets/levels/saved/";
+    public static final String LOCATION = (App.OS_IS_WIN ? "./" : "../") + "/assets/levels/";
 
     private static boolean alreadySaved;
     
@@ -38,7 +38,7 @@ public class LevelEncoder {
      * Save the current level (from Input.java) as a .json file.
      * The file gets saved to the level folder in assets.
      */
-    public static void encode() {
+    public static void encode(String location) {
         // create level name
         String levelName = "saved-"+DATE_FORMAT.format(new Date());
         
@@ -77,6 +77,20 @@ public class LevelEncoder {
             builder.append("\n");
         }
         builder.append("        ],\n");
+        if (!Input.WALLS.isEmpty()) {
+            builder.append("        \"walls\": [\n");
+            for (int i = 0; i < Input.WALLS.size(); i++) {
+                builder.append("            {\"x\": "+Input.WALLS.get(i).getPosition().x);
+                builder.append(", \"y\": "+Input.WALLS.get(i).getPosition().y);
+                builder.append(", \"width\": "+Input.WALLS.get(i).getWidth());
+                builder.append(", \"length\": "+Input.WALLS.get(i).getLength()+"}");
+                if (i != Input.WALLS.size() - 1) {
+                    builder.append(",");
+                }
+                builder.append("\n");
+            }
+            builder.append("        ],\n");
+        }
         builder.append("        \"bicubic_input\": [\n");
         for (int r = 0; r < Input.BICUBIC_INPUT.length; r++) {
             builder.append("            [");
@@ -109,7 +123,7 @@ public class LevelEncoder {
         
         // create json file of level
         String json = builder.toString();
-        FileHandle file = new FileHandle(LOCATION+levelName+".json");
+        FileHandle file = new FileHandle(location+levelName+".json");
         file.writeString(json, false);
         
         // confirm encoding

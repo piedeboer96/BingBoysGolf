@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
-import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.ai.BRO;
 import com.project_1_2.group_16.bot.simpleBot.RuleBasedBot;
 import com.project_1_2.group_16.bot.ai.PSO;
@@ -163,8 +162,8 @@ public class GameScreen extends ScreenAdapter {
 		this.freeCam.update();
 		this.freeMovement = new FreeCamera(this.freeCam);
 
-		//creating the floodfillTable
-		BotHelper.setFloodFillTable();
+		// creating the floodfillTable
+		//BotHelper.setFloodFillTable();
     }
 
     @Override
@@ -282,7 +281,7 @@ public class GameScreen extends ScreenAdapter {
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.S)) { // save level
 			if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {
-				if (!LevelEncoder.isEncoded()) LevelEncoder.encode();
+				if (!LevelEncoder.isEncoded()) LevelEncoder.encode(LevelEncoder.LOCATION + "saved/");
 			}
 		}
 

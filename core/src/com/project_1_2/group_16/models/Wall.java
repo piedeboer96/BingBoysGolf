@@ -13,7 +13,7 @@ public class Wall {
     /**
      * Height of the wall (above the ground).
      */
-    public static final float HEIGHT = 0.5f;
+    public static final float HEIGHT = 0.25f;
 
     /**
      * Energy lost by hitting walls
@@ -21,9 +21,9 @@ public class Wall {
     public static final float frictionCoeficient = 0.8f;
 
     /**
-     * If the ball has recently hit a wall. 
+     * If the ball has recently hit this wall. 
      */
-    public static boolean recentlyHitWall;
+    public boolean recentlyHit;
 
     private Vector2 topLeft;
     private Vector2 topRight;
@@ -61,6 +61,10 @@ public class Wall {
      */
     public ModelInstance getInstance() {        
         return this.instance;
+    }
+
+    public Vector2 getPosition() {
+        return this.topLeft;
     }
 
     public float getWidth() {

@@ -70,8 +70,8 @@ public class Game {
 
         // check wall collision
         Wall hitWall = Terrain.collision.ballIsInWall(sv);
-        if (hitWall != null && !Wall.recentlyHitWall) {
-            Wall.recentlyHitWall = true;
+        if (hitWall != null && !hitWall.recentlyHit) {
+            hitWall.recentlyHit = true;
 
             Vector2 position = new Vector2(sv.x, sv.y);
             Vector2 velocity = new Vector2(sv.vx, sv.vy);
@@ -110,7 +110,9 @@ public class Game {
             sv.vy = -velocity.y * Wall.frictionCoeficient;
         }
         else if (hitWall == null) {
-            Wall.recentlyHitWall = false;
+            for (Wall w : Input.WALLS) {
+                w.recentlyHit = false;
+            }
         }
 
         // check for hole collision
