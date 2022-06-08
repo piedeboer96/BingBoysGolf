@@ -22,7 +22,7 @@ public class LevelEncoder {
     /**
      * Location where level files will be saved.
      */
-    public static final String LOCATION = (App.OS_IS_WIN ? "./" : "../") + "/assets/levels/";
+    public static final String LOCATION = (App.OS_IS_WIN ? "./" : "../") + "/assets/levels/saved/";
 
     private static boolean alreadySaved;
     
@@ -38,7 +38,7 @@ public class LevelEncoder {
      * Save the current level (from Input.java) as a .json file.
      * The file gets saved to the level folder in assets.
      */
-    public static void encode(String location) {
+    public static void encode() {
         // create level name
         String levelName = "saved-"+DATE_FORMAT.format(new Date());
         
@@ -123,7 +123,7 @@ public class LevelEncoder {
         
         // create json file of level
         String json = builder.toString();
-        FileHandle file = new FileHandle(location+levelName+".json");
+        FileHandle file = new FileHandle(LOCATION+levelName+".json");
         file.writeString(json, false);
         
         // confirm encoding

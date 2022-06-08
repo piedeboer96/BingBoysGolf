@@ -283,7 +283,7 @@ public class GameScreen extends ScreenAdapter {
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.S)) { // save level
 			if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {
-				if (!LevelEncoder.isEncoded()) LevelEncoder.encode(LevelEncoder.LOCATION + "saved/");
+				if (!LevelEncoder.isEncoded()) LevelEncoder.encode();
 			}
 		}
 

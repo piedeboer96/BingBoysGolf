@@ -1,5 +1,6 @@
 package com.project_1_2.group_16.misc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -17,7 +18,7 @@ public class MazeGenerator {
     /**
      * Width of the walls of the maze.
      */
-    public static final float WALL_WIDTH = 0.2f;
+    public static final float WALL_WIDTH = 0.5f;
 
     private static int complexity;
 
@@ -56,6 +57,7 @@ public class MazeGenerator {
         createMaze(0, 0);
 
         // create walls
+        Input.WALLS = new ArrayList<Wall>();
         Node n;
         for (int i = 0; i < complexity; i++) {
             for (int j = 0; j < complexity; j++) {
@@ -71,9 +73,6 @@ public class MazeGenerator {
                 }
             }
         }
-
-        // save maze
-        LevelEncoder.encode(LevelEncoder.LOCATION + "mazes/");
     }
 
     /**
@@ -169,11 +168,4 @@ public class MazeGenerator {
 			this.dy = dy;
 		}
 	};
-
-
-
-    // public static void main(String[] args) {
-    //     LevelDecoder.decode(new com.badlogic.gdx.files.FileHandle((App.OS_IS_WIN?"./":"../")+"default_level.json"));
-    //     MazeGenerator.generateMaze(5);
-    // }
 }
