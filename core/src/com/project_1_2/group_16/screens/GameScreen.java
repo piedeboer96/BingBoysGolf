@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.ai.BRO;
+import com.project_1_2.group_16.bot.ai.NelderMead;
 import com.project_1_2.group_16.bot.simpleBot.RuleBasedBot;
 import com.project_1_2.group_16.bot.ai.PSO;
 import com.project_1_2.group_16.bot.simpleBot.RandomBot;
@@ -81,6 +82,7 @@ public class GameScreen extends ScreenAdapter {
 	private SA sa;
 	private BRO bro;
 	private PSO pso;
+	private NelderMead nelderMead;
 
     public GameScreen(App app) {
         this.app = app;
@@ -309,6 +311,12 @@ public class GameScreen extends ScreenAdapter {
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_5)) { // random bot
 			this.ruleBasedBot = new RandomBot(this.golfball.STATE);
 			float[] sol = this.ruleBasedBot.play();
+			this.shoot(sol[0], sol[1]);
+		}
+
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_6)) { //nelder mead
+			this.nelderMead = new NelderMead(this.golfball.STATE.x, this.golfball.STATE.y, this.game, 50, 1, 2, 0.5, 1);
+			Float[] sol = this.nelderMead.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		
