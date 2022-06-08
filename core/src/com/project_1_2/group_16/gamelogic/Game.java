@@ -48,24 +48,42 @@ public class Game {
 
         // check tree collision
         Tree hittree = Terrain.collision.ballHitTree(sv);
-        if(hittree == null) {
-            Tree.recentlyHitTree = false;
+        if (hittree == null) {
+            for (Tree t : Input.TREES) {
+                t.recentlyHit = false;
+            }
         }
-        else if (!Tree.recentlyHitTree) {
-            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
-            Vector2 vB = new Vector2(sv.x, sv.y);
-            Vector2 yCompNor = new Vector2(vB.x - vT.x, vB.y - vT.y).nor();
-            Vector2 oldVel = new Vector2(sv.vx, sv.vy);
-            double theta = Math.acos(oldVel.dot(yCompNor)/(oldVel.len() * yCompNor.len()));
-            if(sv.y < vT.y) {
-                oldVel.rotateRad((float) (2 * theta));
-            }
-            else {
-                oldVel.rotateRad((float) ((2 * Math.PI) - (2 * theta)));
-            }
-            Tree.recentlyHitTree = true;
-            sv.vx = -oldVel.x * Tree.treeCoefficient;
-            sv.vy = -oldVel.y * Tree.treeCoefficient;
+        else if (!hittree.recentlyHit) {
+            hittree.recentlyHit = true;
+
+            Vector2 tree = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
+            Vector2 position = new Vector2(sv.x, sv.y);
+            Vector2 velocity = new Vector2(sv.vx, sv.vy);
+            Vector2 tNegativeOne = position.cpy().sub(velocity);
+
+            double deltaNormal = (tree.y - position.y) / (tree.x - position.x);
+            double deltaOrthoNormal = -1.0 / deltaNormal;
+
+            double bNormal = tNegativeOne.y - deltaNormal * tNegativeOne.x;
+            double bOrthoNormal = position.y - deltaOrthoNormal * position.x;
+
+            float xProject = (float)((bOrthoNormal - bNormal) / (deltaNormal - deltaOrthoNormal));
+            float yProject = (float)(deltaNormal * xProject + bNormal);
+            Vector2 tProject = new Vector2(xProject, yProject);
+
+            float opposite = tProject.dst(tNegativeOne);
+            float adjacent = tProject.dst(position);
+
+            double inputAngle = Math.atan(opposite / adjacent);
+            double rotationAngle = Math.PI - 2 * inputAngle;
+
+            if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
+            else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+            else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+            else velocity.rotateRad((float)rotationAngle);
+
+            sv.vx = -velocity.x * Tree.treeCoefficient;
+            sv.vy = -velocity.y * Tree.treeCoefficient;
         }
 
         // check wall collision
@@ -109,7 +127,7 @@ public class Game {
             sv.vx = -velocity.x * Wall.frictionCoeficient;
             sv.vy = -velocity.y * Wall.frictionCoeficient;
         }
-        else if (hitWall == null) {
+        else if (hitWall == null) { // TODO OPTIMISE!!! GETS CALLED EVERY FRAME EVEN WHEN NO WHERE NEAR!!!
             for (Wall w : Input.WALLS) {
                 w.recentlyHit = false;
             }
