@@ -172,8 +172,8 @@ public class MazeGenerator {
 
 
 
-    public static void main(String[] args) {
-        LevelDecoder.decode(new com.badlogic.gdx.files.FileHandle((App.OS_IS_WIN?"./":"../")+"default_level.json"));
-        MazeGenerator.generateMaze(15);
-    }
+    // public static void main(String[] args) {
+    //     LevelDecoder.decode(new com.badlogic.gdx.files.FileHandle((App.OS_IS_WIN?"./":"../")+"default_level.json"));
+    //     MazeGenerator.generateMaze(5);
+    // }
 }
