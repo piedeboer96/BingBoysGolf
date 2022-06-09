@@ -46,9 +46,7 @@ public class BotHelper {
     public static void setFloodFillTable(){
         floodFill = new FloodFill(.5f);
         scoreMatrix = floodFill.runFloodFill(Input.VT.x, Input.VT.y);
-//        for(int[] i : scoreMatrix){
-//            System.out.println(Arrays.toString(i));
-//        }
+        //floodFill.prettyPrint(scoreMatrix);
     }
 
     /**

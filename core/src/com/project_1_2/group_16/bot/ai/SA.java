@@ -7,6 +7,7 @@ import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,17 +38,17 @@ public class SA extends AdvancedBot {
     }
     @Override
     public List<Float> runBot() {
-        if(bestState.getFitness() > Input.R) {
+        if(bestState.fitness > Input.R) {
             outerloop:
             for (int i = 0; i < kmax; i++) {
                 Temperature = getTemperature(i);
                 Neighbour randomNeighbour = getNeighbour(state);
-                if (randomNeighbour.getFitness() < Input.R) {
+                if (randomNeighbour.fitness < Input.R) {
                     bestState = randomNeighbour;
                     setState(randomNeighbour);
                     break outerloop;
                 }
-                double cost = state.getFitness() - randomNeighbour.getFitness();
+                double cost = state.fitness - randomNeighbour.fitness;
                 if (cost >= 0) {
                     setState(randomNeighbour);
                 } else {
@@ -55,11 +56,11 @@ public class SA extends AdvancedBot {
                         setState(randomNeighbour);
                     }
                 }
-                if (state.getFitness() < Input.R) {
+                if (state.fitness < Input.R) {
                     bestState = state;
                     break outerloop;
                 }
-                if(state.getFitness() < bestState.getFitness()){
+                if(state.fitness < bestState.fitness){
                     bestState = state.createClone();
                 }
             }
@@ -80,12 +81,12 @@ public class SA extends AdvancedBot {
         double bestFitness = Integer.MAX_VALUE;
         for(int i=0; i<initialCandidates.size(); i++){
             Neighbour temp = new Neighbour(new StateVector(getStartX(), getStartY(), initialCandidates.get(i)[0], initialCandidates.get(i)[1]), getGame());
-            if(temp.getFitness() < bestFitness){
-                if(temp.getFitness() < Input.R * 3.15f){
+            if(temp.fitness < bestFitness){
+                if(temp.fitness < Input.R * 3.15f){
                     this.bestState = temp.createClone();
                     return temp;
                 }
-                bestFitness = temp.getFitness();
+                bestFitness = temp.fitness;
                 bestNeighbour = temp;
             }
         }
@@ -134,7 +135,7 @@ public class SA extends AdvancedBot {
             }
             for (int i = 0; i < viableVectors.size(); i++) {
                 Neighbour neighbour = new Neighbour(viableVectors.get(i), this.getGame());
-                if (neighbour.getFitness() < Input.R){
+                if (neighbour.fitness < Input.R){
                     return neighbour;
                 }
                 current_neighbours.add(neighbour);
@@ -158,7 +159,7 @@ public class SA extends AdvancedBot {
      * @return the probability
      */
     private float getProbability(Neighbour state, Neighbour updated) {
-        return (float)Math.exp(-1*(state.getFitness() - updated.getFitness()) / Temperature);
+        return (float)Math.exp(-1*(state.fitness - updated.fitness) / Temperature);
     }
 
     /**

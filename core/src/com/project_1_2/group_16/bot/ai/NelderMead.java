@@ -42,13 +42,112 @@ public class NelderMead extends AdvancedBot {
 
     @Override
     public List<Float> runBot() {
-        NelderAgent solution = runNelderMead();
+        NelderAgent solution = runNelderAgentV2();
         ArrayList<Float> toReturn = new ArrayList<>();
         toReturn.add(solution.velX);
         toReturn.add(solution.velY);
         return toReturn;
     }
 
+    NelderAgent runNelderAgentV2(){
+        NelderAgent[] agents = getSortedInitalAgents();
+        Centroid centroid = computeCentroid(agents);
+
+        //for loop
+        //ordering
+        for(int i = 0; i < this.max_iterations; i++){
+            agents = orderAgents(agents);
+            System.out.println("Best agent-->  x: " + agents[2].velX + " y: " + agents[2].velY + " fitness: " + agents[2].fitness);
+            System.out.println("middle agent-->  x: " + agents[1].velX + " y: " + agents[1].velY + " fitness: " + agents[1].fitness);
+            System.out.println("worst agent-->  x: " + agents[0].velX + " y: " + agents[0].velY + " fitness: " + agents[0].fitness);
+
+            //centroid
+            centroid = computeCentroid(agents);
+
+            //transformation
+            /*
+                1. Reflect:
+                2. Expand
+                3. Contract
+                    Outside
+                    Inside
+                4. Shrink
+             */
+            NelderAgent reflection_point = reflection(agents, centroid);
+
+            //toremove
+            NelderAgent prev_best_agent = agents[2];
+
+
+            //Reflect
+            if(reflection_point.fitness >= agents[2].fitness && reflection_point.fitness < agents[1].fitness){
+                System.out.println("REFLECT");
+                agents[0] = reflection_point;
+            }else{
+                //expand
+                if(reflection_point.fitness < agents[2].fitness){
+                    NelderAgent expansion_point = expansion(agents, reflection_point, centroid);
+                    if(expansion_point.fitness < reflection_point.fitness){
+                        System.out.println("EXPAND");
+                        agents[0] = expansion_point;
+                    }else{
+                        System.out.println("REFLECT --> COMARISON EXPAND");
+                        agents[0] = reflection_point;
+                    }
+                }else{
+                    //contract
+                    if(reflection_point.fitness >= agents[1].fitness){
+
+                        //outside
+                        if(reflection_point.fitness >= agents[2].fitness && reflection_point.fitness < agents[0].fitness){
+                            NelderAgent contraction_point = contractionOutside(agents, centroid, reflection_point);
+                            if(contraction_point.fitness < reflection_point.fitness){
+                                System.out.println("CONTRACT OUTSIDE");
+                                agents[0] = contraction_point;
+                            }
+                            else{
+                                System.out.println("SHRINK --> OUTSIDE CONTRACT");
+                                agents[0] = shrinkage(agents, agents[0]);
+                                agents[1] = shrinkage(agents, agents[1]);
+                            }
+                        }else{
+                            //inside
+                            if(reflection_point.fitness>= agents[0].fitness){
+                                NelderAgent contraction_point = contractionInside(agents, centroid);
+                                if(contraction_point.fitness < agents[0].fitness){
+                                    System.out.println("CONTRACT INSIDE");
+                                    agents[0] = contraction_point;
+                                }
+                                else{
+                                    System.out.println("SHRINK --> INSIDE CONTRACT");
+                                    agents[0] = shrinkage(agents, agents[0]);
+                                    agents[1] = shrinkage(agents, agents[1]);
+                                }
+                            }
+                        }
+                        //inside
+                    }else{
+                        System.out.println("SHRINK ");
+                        //shrink
+                        agents[0] = shrinkage(agents, agents[0]);
+                        agents[1] = shrinkage(agents, agents[1]);
+                    }
+                }
+            }
+
+            //check to stop
+            //IF CONVERGED RETURN ELSE REITERATE
+
+
+            //______________________remove converged______________________
+            if(agents[2].fitness < Input.R || (agents[0].fitness == agents[1].fitness && agents[1].fitness == agents[2].fitness)) {
+                System.out.println("Converged at iteration: " + i + " Best agent --> vx: "+ agents[2].velX + " vy: " + agents[2].velY);
+                return agents[2];
+            }
+        }
+
+        return agents[0];
+    }
 
     //Simplex
     class Simplex {
@@ -153,18 +252,40 @@ public class NelderMead extends AdvancedBot {
 
 
     /**
-     * Calculate new agent that represents contration
+     * Calculate new agent that represents contration outside
      * @param agents list of sorted agents
      * @param centroid centroid
      * @return agent representing contraction point
      */
-    NelderAgent contraction(NelderAgent[] agents, Centroid centroid) {
+    NelderAgent contractionInside(NelderAgent[] agents, Centroid centroid) {
 
         double vx_c = centroid.getCx();
         double vy_c = centroid.getCy();
 
         double vx_h = agents[0].velX;
         double vy_h = agents[0].velY;
+
+        double vx_contract = vx_c + beta*(vx_h - vx_c);
+        double vy_contract = vy_c + beta*(vy_h - vy_c);
+
+        return new NelderAgent( new StateVector(getStartX(), getStartY(), (float)vx_contract, (float)vy_contract) , this.game);
+    }
+
+
+    /**
+     * Calculate new agent that represents contration inside
+     * @param agents list of sorted agents
+     * @param centroid centroid
+     * @param reflection_point reflection point
+     * @return agent representing contraction point
+     */
+    NelderAgent contractionOutside(NelderAgent[] agents, Centroid centroid, NelderAgent reflection_point) {
+
+        double vx_c = centroid.getCx();
+        double vy_c = centroid.getCy();
+
+        double vx_h = reflection_point.velX;
+        double vy_h = reflection_point.velY;
 
         double vx_contract = vx_c + beta*(vx_h - vx_c);
         double vy_contract = vy_c + beta*(vy_h - vy_c);
@@ -202,7 +323,7 @@ public class NelderMead extends AdvancedBot {
 
         for(int j = 0; j < 3; j++){
             for(int i = 0; i < 2; i++){
-                if(agents[i].fitness > agents[i+1].fitness){
+                if(agents[i].fitness < agents[i+1].fitness){
                     NelderAgent intermediate_agent = agents[i];
                     agents[i] = agents[i+1];
                     agents[i+1] = intermediate_agent;
@@ -221,20 +342,40 @@ public class NelderMead extends AdvancedBot {
 
         List<float[]> velocities = BotHelper.availableVelocities(getStartX(), getStartY());
         NelderAgent[] bestAgents = new NelderAgent[velocities.size()];
+        int count= 0;
+        NelderAgent[] initAgents = new NelderAgent[3];
 
+
+       boolean isset_bestagent = false;
+       NelderAgent best_agent = null;
+        outer:
         for(int i = 0; i < bestAgents.length; i++){
             bestAgents[i] = new NelderAgent(new StateVector(getStartX(), getStartY(), velocities.get(i)[0], velocities.get(i)[1]), this.game);
+            if(isset_bestagent){
+
+                    if(bestAgents[i].fitness < best_agent.fitness){
+                        best_agent = bestAgents[i];
+                    }
+
+            }else{
+                best_agent = bestAgents[i];
+                isset_bestagent = true;
+            }
         }
 
-        NelderAgent[] ordered_agents = orderAgents(bestAgents);
+        NelderAgent agentOne = new NelderAgent(new StateVector(getStartX(), getStartY(), -4f, +4f), getGame());
+        NelderAgent agentTwo = new NelderAgent(new StateVector(getStartX(), getStartY(), +4f, -4f), getGame());
+        NelderAgent agentThree = new NelderAgent(new StateVector(getStartX(), getStartY(), 4f, 4f), getGame());
 
-        NelderAgent[] sortedAgents = new NelderAgent[3];
+        initAgents[0] = agentThree;
+        initAgents[1] = agentTwo;
+        initAgents[2] = agentOne;
 
-        sortedAgents[0] = ordered_agents[0];
-        sortedAgents[1] = ordered_agents[1];
-        sortedAgents[2] = ordered_agents[2];
+        NelderAgent[] ordered_agents = orderAgents(initAgents);
 
-        System.out.println("Best init agents-->  x: " + sortedAgents[0].velX + " y: " + sortedAgents[0].velY + " fitness: " + sortedAgents[0].fitness);
+
+
+        System.out.println("Best init agents-->  x: " + ordered_agents[0].velX + " y: " + ordered_agents[0].velY + " fitness: " + ordered_agents[0].fitness);
 
 
 
@@ -259,7 +400,7 @@ public class NelderMead extends AdvancedBot {
 //            System.out.println("fit after: " + sortedAgents[i].fitness);
 //        }
 //        System.out.println("______________________________________________________");
-        return sortedAgents;
+        return ordered_agents;
     }
 
 
@@ -331,14 +472,14 @@ public class NelderMead extends AdvancedBot {
 
                 if(reflection_point.fitness >= agents[1].fitness) {
                     //COMPUTE CONTRACTION POINT
-                    NelderAgent contraction_point = contraction(agents, centroid);
+                    NelderAgent contraction_point = contractionInside(agents, centroid);
 
                     //IF REFLECTION >= BEST AGENT THEN DO replacement
                     if(reflection_point.fitness < agents[0].fitness){
                         agents[0] = reflection_point;
                     }
 
-                    contraction_point = contraction(agents, centroid);
+                    contraction_point = contractionInside(agents, centroid);
 
                     //IF CONTRACTION POINT > BEST AGENT
                     if(contraction_point.fitness > agents[0].fitness) {
@@ -348,34 +489,35 @@ public class NelderMead extends AdvancedBot {
                         agents[1] = shrinkage(agents, agents[1]);
 
                     } else {
-
-
                         agents[0] = contraction_point;
-
-
                     }
-
-
                 }else{
                     agents[2] = reflection_point;
                 }
-
             }
 
             //IF CONVERGED RETURN ELSE REITERATE
-            if(agents[2].fitness < Input.R) {
+            if(agents[2].fitness < Input.R || Math.abs(agents[2].fitness - agents[2].fitness)<Input.R) {
+                System.out.println("Converged at iteration: " + i + " Best agent --> vx: "+ agents[2].velX + " vy: " + agents[2].velY);
                 return agents[2];
             }
         }
+
         return agents[2];
     }
 
 }
 
+
+
+
 class NelderAgent extends Agent {
 
     public NelderAgent(StateVector sv, Game game) {
         super(sv, game);
+    }
+    public NelderAgent createClone (){
+        return new NelderAgent(new StateVector(startX, startY, velX, velY), getGame());
     }
 
 }
