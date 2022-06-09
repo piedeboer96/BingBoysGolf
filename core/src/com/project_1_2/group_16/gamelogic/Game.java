@@ -64,31 +64,12 @@ public class Game {
             Vector2 tree = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
             Vector2 position = new Vector2(sv.x, sv.y);
             Vector2 velocity = new Vector2(sv.vx, sv.vy);
-            Vector2 tNegativeOne = position.cpy().sub(velocity);
+            Vector2 normal = tree.cpy().sub(position).nor();
 
-            double deltaNormal = (tree.y - position.y) / (tree.x - position.x);
-            double deltaOrthoNormal = -1.0 / deltaNormal;
-
-            double bNormal = tNegativeOne.y - deltaNormal * tNegativeOne.x;
-            double bOrthoNormal = position.y - deltaOrthoNormal * position.x;
-
-            float xProject = (float)((bOrthoNormal - bNormal) / (deltaNormal - deltaOrthoNormal));
-            float yProject = (float)(deltaNormal * xProject + bNormal);
-            Vector2 tProject = new Vector2(xProject, yProject);
-
-            float opposite = tProject.dst(tNegativeOne);
-            float adjacent = tProject.dst(position);
-
-            double inputAngle = Math.atan(opposite / adjacent);
-            double rotationAngle = Math.PI - 2 * inputAngle;
-
-            if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
-            else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-            else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-            else velocity.rotateRad((float)rotationAngle);
-
-            sv.vx = -velocity.x * Tree.treeCoefficient;
-            sv.vy = -velocity.y * Tree.treeCoefficient;
+            // https://stackoverflow.com/a/49059789
+            velocity.sub(normal.scl(2*velocity.dot(normal)));
+            sv.vx = velocity.x * Tree.treeCoefficient;
+            sv.vy = velocity.y * Tree.treeCoefficient;
         }
 
         // check wall collision
