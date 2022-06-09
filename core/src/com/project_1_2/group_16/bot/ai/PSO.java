@@ -41,10 +41,6 @@ public class PSO extends AdvancedBot {
         this.maxIterations = maxIterations;
         this.population_size = population_size;
         particles = initializeParticles();
-        System.out.println("INIT PARTICLES -->");
-        for(Particle i : particles){
-            System.out.println("PARTICLE: x: " + i.startX + " y: " + i.startY + " vx: " + i.velX + " vy: " + i.velY);
-        }
     }
 
 
@@ -54,11 +50,6 @@ public class PSO extends AdvancedBot {
         outerloop:
         while (count < maxIterations && globalBest.fitness > Input.R)  {
 
-            System.out.println("Iteration: " + count);
-            for(Particle i : particles){
-                System.out.println("PARTICLE: x: " + i.startX + " y: " + i.startY + " vx: " + i.velX + " vy: " + i.velY);
-            }
-            System.out.println();
             count++;
 
             Particle localSearch = doLocalSearch(globalBest);
@@ -76,7 +67,7 @@ public class PSO extends AdvancedBot {
                 Particle current = particles.get(i);
                 float[] updated = getValidVelocity(updatedVelocity(current));
 
-                System.out.println("INSIDE RUNBOT --> vx: " + updated[0] + " vy: " + updated[1]);
+                //System.out.println("INSIDE RUNBOT --> vx: " + updated[0] + " vy: " + updated[1]);
                 threads[i] = new ParticleThread(getStartX(), getStartY(), updated[0], updated[1], current.getlocalBest(), getGame());
 
                 threads[i].start();
@@ -163,7 +154,7 @@ public class PSO extends AdvancedBot {
         int index = 0;
         for(float[] f : neighbourHood){
             threads[index] = new ParticleThread(getStartX(), getStartY(), f[0], f[1],  p.getlocalBest(), getGame());
-            System.out.println("INSIDE DOLOCALSEARCH --> vx: " + f[0] + " vy: " + f[1]);
+            //System.out.println("INSIDE DOLOCALSEARCH --> vx: " + f[0] + " vy: " + f[1]);
             threads[index].start();
             index++;
         }
@@ -189,7 +180,7 @@ public class PSO extends AdvancedBot {
         if(Float.isNaN(vxvy[0]) || Float.isNaN(vxvy[1])){
             return new float[]{globalBest.velX, globalBest.velY};
         }
-        System.out.println("GET VALID VELOCITY: VXVY: "+Arrays.toString(vxvy));
+        //System.out.println("GET VALID VELOCITY: VXVY: "+Arrays.toString(vxvy));
         if(Physics.magnitude(vxvy[0], vxvy[1]) > App.MAX_POWER){
             float[] vxy = new float[2];
             vxy[0] = (float) (vxvy[0]/Math.sqrt(50));
