@@ -15,7 +15,7 @@ public class Tree {
      */
     public static final float treeCoefficient = 0.8f;
 
-    public static boolean recentlyHitTree;
+    public boolean recentlyHit;
 
     private ModelInstance instance;
     private ModelInstance bumper;

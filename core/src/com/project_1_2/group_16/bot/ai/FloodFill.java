@@ -2,6 +2,8 @@ package com.project_1_2.group_16.bot.ai;
 
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.models.Wall;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -50,7 +52,7 @@ public class FloodFill {
         flood_i = x;
         flood_j = y;
 
-        System.out.println("In Floodfill x and y coordinate: x:" + x + " y: " + y + " value: " + floodFillTable[x][y]);
+        //System.out.println("In Floodfill x and y coordinate: x:" + x + " y: " + y + " value: " + floodFillTable[x][y]);
         // Creating queue for the bfs
         Queue<Coordinate> queue = new LinkedList<>();
 
@@ -66,7 +68,7 @@ public class FloodFill {
             Coordinate current = queue.peek(); //grabs the first coordinate in the queue
             x = current.getX();
             y = current.getY();
-            System.out.println("In Floodfill x and y coordinate: x:" + x + " y: " + y + " value: " + floodFillTable[x][y]);
+            //System.out.println("In Floodfill x and y coordinate: x:" + x + " y: " + y + " value: " + floodFillTable[x][y]);
             int oldCol = floodFillTable[x][y]; //the value of the current node in the matrix parcour array
             queue.remove(); //remove the coordinate you are going to check from the queue
 
@@ -80,7 +82,7 @@ public class FloodFill {
                     Coordinate down = new Coordinate(x + 1, y);
                     queue.add(down);
                     visitedNodes[x+1][y] = 1;
-                    floodFillTable[x+1][y] = (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;
+                    floodFillTable[x+1][y] = floodFillTable[x][y] + 1;
                 }
             }
 
@@ -90,7 +92,7 @@ public class FloodFill {
                     Coordinate up = new Coordinate(x - 1, y);
                     queue.add(up);
                     visitedNodes[x-1][y] = 1;
-                    floodFillTable[x-1][y] =  (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;;
+                    floodFillTable[x-1][y] =  floodFillTable[x][y] + 1;
                 }
             }
 
@@ -100,7 +102,7 @@ public class FloodFill {
                     Coordinate left = new Coordinate(x, y-1);
                     queue.add(left);
                     visitedNodes[x][y-1] = 1;
-                    floodFillTable[x][y-1] =  (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;;
+                    floodFillTable[x][y-1] =  floodFillTable[x][y] + 1;
                 }
             }
 
@@ -110,7 +112,7 @@ public class FloodFill {
                     Coordinate right = new Coordinate(x, y+1);
                     queue.add(right);
                     visitedNodes[x][y+1] = 1;
-                    floodFillTable[x][y+1] =  (int) (Math.abs(flood_i - x)+ Math.abs(flood_j-y))+1;;
+                    floodFillTable[x][y+1] =  floodFillTable[x][y] + 1;
                 }
             }
         }
@@ -123,10 +125,11 @@ public class FloodFill {
      */
     public void fillGraphTable(){
         float x, y;
+
         for(int i = 0; i < size_X; i++) {
             for(int j = 0; j < size_Y; j++) {
-                x = -FIELD_SIZE / 2 + stepSize / 2 + stepSize * (i + 1);
-                y = -FIELD_SIZE / 2 + stepSize / 2 + stepSize * (j + 1);
+                x = -1*FIELD_SIZE / 2  + stepSize * (i + 1);
+                y = -1*FIELD_SIZE / 2  + stepSize * (j + 1);
 
                 floodFillTable[i][j] = getArrayValue(x, y, i, j);
             }
@@ -140,7 +143,7 @@ public class FloodFill {
      */
     public int coordinateToIndex(float coordinate){
         float rounded_coordinate = Math.round(coordinate);
-        return (int)((rounded_coordinate + FIELD_SIZE/2 - stepSize/2)/stepSize)-1;
+        return (int)(((rounded_coordinate + FIELD_SIZE/2)/stepSize));
     }
 
     /**
@@ -149,9 +152,9 @@ public class FloodFill {
      * @param y y coordinae
      */
     public int getFloodFillFitness(float x, float y){
-        //check if did didn't fuck up
-        int i = coordinateToIndex(x);
-        int j = coordinateToIndex(y);
+
+        int i = coordinateToIndex(y);
+        int j = coordinateToIndex(x);
         return floodFillTable[i][j];
     }
 
@@ -169,7 +172,8 @@ public class FloodFill {
 
         float terrainHeight = Terrain.getHeight(x,y);
 
-        if(terrainHeight<0) {                       //if height smaller than 0 -> value = -1;
+        if(terrainHeight<0 || isInWall(x, y)) {                       //if height smaller than 0 -> value = -1;
+            visitedNodes[i][j] = 1;
             return Integer.MAX_VALUE;
         }else{
             if(Math.abs(Input.VT.x - x) < Input.R && Math.abs(Input.VT.y - y) < Input.R && !holeSet){ //if the coordinates are the coordinates of the hole -> value = 0
@@ -182,6 +186,16 @@ public class FloodFill {
                 return -1; //if height is bigger then 0 and the coordinates are not the holse coordinate -> value = Integer.MAX_Value
             }
         }
+    }
+
+
+    public boolean isInWall(float x, float y){
+        for(Wall i : Input.WALLS){
+            if(i.contains(x, y)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -197,6 +211,21 @@ public class FloodFill {
             return false;
         }
         return true;
+    }
+
+    public void prettyPrint(int[][] floodFillTable){
+
+        for(int i = 0; i < size_X; i++){
+            for(int j = 0; j < size_Y; j++){
+                if(floodFillTable[i][j] < Integer.MAX_VALUE){
+                    System.out.print("[" + floodFillTable[i][j] + "]");
+                }
+                else{
+                    System.out.print("["+-1+"]");
+                }
+            }
+            System.out.println();
+        }
     }
 
     /**
@@ -219,4 +248,5 @@ public class FloodFill {
             return "x : " + this.x + " y: " + this.y;
         }
     }
+
 }

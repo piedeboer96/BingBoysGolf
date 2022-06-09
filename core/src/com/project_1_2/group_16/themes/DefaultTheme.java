@@ -24,7 +24,7 @@ public class DefaultTheme implements Theme {
     private final Color hole_off = Color.RED;
     private final Color hole_on = Color.GREEN;
 
-    private final Material wall = new Material(ColorAttribute.createDiffuse(Color.PINK));
+    private final Material wall = new Material(ColorAttribute.createDiffuse(Color.GRAY));
     private final Material tree_bumper = new Material(ColorAttribute.createDiffuse(0.8f, 0.145528f,  0.060455f, 1),
                                                       ColorAttribute.createAmbient(0.050876f, 0.050876f, 0.050876f, 1));
     private final ModelBuilder builder = new ModelBuilder();

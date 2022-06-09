@@ -71,7 +71,7 @@ public class LevelDecoder {
             while (wallIterator.hasNext()) {
                 wall = wallIterator.next();
                 pos = new Vector2(wall.getFloat("x"), wall.getFloat("y"));
-                Input.WALLS.add(new Wall(pos, wall.getFloat("width"), wall.getFloat("height")));
+                Input.WALLS.add(new Wall(pos, wall.getFloat("width"), wall.getFloat("length"), Wall.HEIGHT));
             }
         } catch (NullPointerException e) {};
         

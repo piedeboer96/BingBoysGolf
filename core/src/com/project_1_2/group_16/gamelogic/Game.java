@@ -16,7 +16,7 @@ public class Game {
      */
     public static float h = 0.05f;
 
-    public static boolean useFloodFill = true;
+    public static boolean useFloodFill;
 
     /**
      * Number of simulations.
@@ -24,6 +24,9 @@ public class Game {
     public static int simulCounter = 0;
 
     private NumericalSolver solver;
+
+    private boolean recentlyHitTree;
+    private boolean recentlyHitWall;
 
     /**
      * Run the physics engine.
@@ -48,30 +51,32 @@ public class Game {
 
         // check tree collision
         Tree hittree = Terrain.collision.ballHitTree(sv);
-        if(hittree == null) {
-            Tree.recentlyHitTree = false;
+        if (hittree == null && this.recentlyHitTree) {
+            this.recentlyHitTree = false;
+            for (Tree t : Input.TREES) {
+                t.recentlyHit = false;
+            }
         }
-        else if (!Tree.recentlyHitTree) {
-            Vector2 vT = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
-            Vector2 vB = new Vector2(sv.x, sv.y);
-            Vector2 yCompNor = new Vector2(vB.x - vT.x, vB.y - vT.y).nor();
-            Vector2 oldVel = new Vector2(sv.vx, sv.vy);
-            double theta = Math.acos(oldVel.dot(yCompNor)/(oldVel.len() * yCompNor.len()));
-            if(sv.y < vT.y) {
-                oldVel.rotateRad((float) (2 * theta));
-            }
-            else {
-                oldVel.rotateRad((float) ((2 * Math.PI) - (2 * theta)));
-            }
-            Tree.recentlyHitTree = true;
-            sv.vx = -oldVel.x * Tree.treeCoefficient;
-            sv.vy = -oldVel.y * Tree.treeCoefficient;
+        else if (hittree != null && !hittree.recentlyHit) {
+            this.recentlyHitTree = true;
+            hittree.recentlyHit = true;
+
+            Vector2 tree = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
+            Vector2 position = new Vector2(sv.x, sv.y);
+            Vector2 velocity = new Vector2(sv.vx, sv.vy);
+            Vector2 normal = tree.cpy().sub(position).nor();
+
+            // https://stackoverflow.com/a/49059789
+            velocity.sub(normal.scl(2*velocity.dot(normal)));
+            sv.vx = velocity.x * Tree.treeCoefficient;
+            sv.vy = velocity.y * Tree.treeCoefficient;
         }
 
         // check wall collision
         Wall hitWall = Terrain.collision.ballIsInWall(sv);
-        if (hitWall != null && !Wall.recentlyHitWall) {
-            Wall.recentlyHitWall = true;
+        if (hitWall != null && !hitWall.recentlyHit) {
+            this.recentlyHitWall = true;
+            hitWall.recentlyHit = true;
 
             Vector2 position = new Vector2(sv.x, sv.y);
             Vector2 velocity = new Vector2(sv.vx, sv.vy);
@@ -109,8 +114,11 @@ public class Game {
             sv.vx = -velocity.x * Wall.frictionCoeficient;
             sv.vy = -velocity.y * Wall.frictionCoeficient;
         }
-        else if (hitWall == null) {
-            Wall.recentlyHitWall = false;
+        else if (hitWall == null && this.recentlyHitWall) {
+            this.recentlyHitWall = false;
+            for (Wall w : Input.WALLS) {
+                w.recentlyHit = false;
+            }
         }
 
         // check for hole collision
@@ -155,17 +163,16 @@ public class Game {
         while(!sv.stop) {
             run(sv, null);
             //float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
-           float temp;
+            float temp;
 
-
-           if(useFloodFill){
-               temp = BotHelper.getFloodFillFitness(sv.x, sv.y);
-               if(temp <= 1){
-                   useFloodFill = false;
-               }
-           }else{
-               temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
-           }
+            if(useFloodFill){
+                temp = BotHelper.getFloodFillFitness(sv.x, sv.y);
+                if(temp <= 1){
+                    useFloodFill = false;
+                }
+            }else{
+                temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
+            }
 
             if (a!=null){
 

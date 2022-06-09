@@ -8,7 +8,6 @@ import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public class BotHelper {
         int fitness;
         try{
             fitness = scoreMatrix[floodFill.coordinateToIndex(x)][floodFill.coordinateToIndex(y)];
-            if(fitness < 5){
+            if(fitness < 1){
                 System.out.println("X_postion: " + x + " Y_position: " + y + "Fitness: " + fitness);
             }
         }catch (Exception e){
@@ -47,9 +46,7 @@ public class BotHelper {
     public static void setFloodFillTable(){
         floodFill = new FloodFill(.5f);
         scoreMatrix = floodFill.runFloodFill(Input.VT.x, Input.VT.y);
-        for(int[] i : scoreMatrix){
-            System.out.println(Arrays.toString(i));
-        }
+        //floodFill.prettyPrint(scoreMatrix);
     }
 
     /**

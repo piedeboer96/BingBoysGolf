@@ -19,6 +19,8 @@ import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.misc.InfoDialog;
+import com.project_1_2.group_16.misc.MazeGenerator;
+import com.project_1_2.group_16.models.Wall;
 
 /**
  * Stage used for the terrain settings.
@@ -49,6 +51,10 @@ public class TerrainStage extends InputScreen {
     private TextButton reset;
     private Label brushLabel;
     private TextField brushField;
+
+    private TextButton randomMaze;
+    private Label complexityLabel;
+    private TextField complexityField;
 
     private TextButton info;
 
@@ -183,6 +189,29 @@ public class TerrainStage extends InputScreen {
         this.brushLabel = new Label("Brush", this.screen.skin);
         this.brushLabel.setColor(Color.BLACK);
         this.brushLabel.setPosition(this.brushField.getX(), this.brushField.getY() + this.brushField.getHeight());
+
+        // generate maze button
+        this.randomMaze = new TextButton("Generate maze", this.screen.skin);
+        this.randomMaze.setPosition(0.7f*App.SCREEN_WIDTH + 10, 250, Align.bottomLeft);
+        this.randomMaze.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                MazeGenerator.generateMaze(Integer.parseInt(complexityField.getText()));
+                for (InputScreen s : screen.getScreens()) {
+                    s.setValues();
+                }
+                parseInputs();
+                preRenderFunction(false);
+            }
+        });
+
+        // complexity input
+        this.complexityField = new TextField("3", this.screen.skin);
+        this.complexityField.setWidth(this.randomMaze.getWidth());
+        this.complexityField.setPosition(this.randomMaze.getX(Align.center), this.randomMaze.getY(Align.center) + this.randomMaze.getHeight() + 10, Align.center);
+        this.complexityLabel = new Label("Complexity", this.screen.skin);
+        this.complexityLabel.setColor(Color.BLACK);
+        this.complexityLabel.setPosition(this.complexityField.getX(), this.complexityField.getY() + this.complexityField.getHeight());
     }
 
     @Override
@@ -244,6 +273,10 @@ public class TerrainStage extends InputScreen {
             this.addActor(this.reset);
             this.addActor(this.brushField);
             this.addActor(this.brushLabel);
+
+            this.addActor(this.randomMaze);
+            this.addActor(this.complexityField);
+            this.addActor(this.complexityLabel);
         }
 
         // update hole and ball position
@@ -254,7 +287,8 @@ public class TerrainStage extends InputScreen {
         for (int i = 0; i < this.renderGrid.length; i++) {
             for (int j = 0; j < this.renderGrid.length; j++) {
                 if (!firstTime) this.renderGrid[i][j].updateInput(this.input, brush);
-                if (this.renderGrid[i][j].containsHole(this.renderGrid.length)) this.renderGrid[i][j].setColor(Color.RED);
+                if (this.renderGrid[i][j].containsWall()) this.renderGrid[i][j].setColor(Color.LIGHT_GRAY);
+                else if (this.renderGrid[i][j].containsHole(this.renderGrid.length)) this.renderGrid[i][j].setColor(Color.RED);
                 else if (this.renderGrid[i][j].containsBall(this.renderGrid.length)) this.renderGrid[i][j].setColor(Color.WHITE);
                 else this.renderGrid[i][j].configure(this.input);
                 if (firstTime) this.addActor(this.renderGrid[i][j]);
@@ -296,6 +330,17 @@ public class TerrainStage extends InputScreen {
             if (x > this.x + this.size) return false;
             if (y > this.y + this.size) return false;
             return true;
+        }
+
+        /**
+         * If this tile contains a wall.
+         * @return
+         */
+        public boolean containsWall() {
+            for (Wall w : Input.WALLS) {
+                if (w.contains(this.px, this.py)) return true;
+            }
+            return false;
         }
 
         /**
