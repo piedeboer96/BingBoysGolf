@@ -63,21 +63,22 @@ public class MazeGenerator {
             for (int j = 0; j < complexity; j++) {
                 n = maze[i][j];
                 if (n.hasWallTop()) {
-                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/2, n.center.y - n.size/2), n.size + WALL_WIDTH, WALL_WIDTH, Wall.HEIGHT));
-
-                    // plasters
-                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - 1.5f*WALL_WIDTH, n.center.y - n.size/2), 2*WALL_WIDTH, WALL_WIDTH, Wall.HEIGHT));
-                    Input.WALLS.add(new Wall(new Vector2(n.center.x + n.size/2 - WALL_WIDTH/2, n.center.y - n.size/2), 2*WALL_WIDTH, WALL_WIDTH, Wall.HEIGHT));
+                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 + WALL_WIDTH/4, n.center.y - n.size/2 + WALL_WIDTH/2), n.size - WALL_WIDTH, WALL_WIDTH, Wall.MAZE_WALL));
+                    
+                    // water walls
+                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 + WALL_WIDTH/4 - 1.05f*WALL_WIDTH, n.center.y - n.size/2 + 0.55f*WALL_WIDTH), 1.1f*WALL_WIDTH, 1.1f*WALL_WIDTH, Wall.WATER));
+                    Input.WALLS.add(new Wall(new Vector2(n.center.x + n.size/2 + WALL_WIDTH/4 - 1.05f*WALL_WIDTH, n.center.y - n.size/2 + 0.55f*WALL_WIDTH), 1.1f*WALL_WIDTH, 1.1f*WALL_WIDTH, Wall.WATER));
                 }
             }
             for (int j = 0; j < complexity; j++) {
                 n = maze[i][j];
                 if (n.hasWallLeft()) {
-                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/2, n.center.y + n.size/2), WALL_WIDTH, n.size + WALL_WIDTH, Wall.HEIGHT));
+                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/4 - WALL_WIDTH/2, n.center.y + n.size/2 - WALL_WIDTH/2), WALL_WIDTH, n.size - WALL_WIDTH, Wall.MAZE_WALL));
 
-                    // plasters
-                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/2, n.center.y + n.size/2 + WALL_WIDTH), WALL_WIDTH, 2*WALL_WIDTH, Wall.HEIGHT));
-                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/2, n.center.y - n.size/2), WALL_WIDTH, 2*WALL_WIDTH, Wall.HEIGHT));
+                    // water walls
+                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/4 - WALL_WIDTH/2 - 0.05f*WALL_WIDTH, n.center.y + n.size/2 + 0.55f*WALL_WIDTH), 1.1f*WALL_WIDTH, 1.1f*WALL_WIDTH, Wall.WATER));
+                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/4 - WALL_WIDTH/2 - 0.05f*WALL_WIDTH, n.center.y - n.size/2 + 0.55f*WALL_WIDTH), 1.1f*WALL_WIDTH, 1.1f*WALL_WIDTH, Wall.WATER));
+
                 }
             }
         }

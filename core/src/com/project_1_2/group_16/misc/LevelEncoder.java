@@ -83,7 +83,8 @@ public class LevelEncoder {
                 builder.append("            {\"x\": "+Input.WALLS.get(i).getPosition().x);
                 builder.append(", \"y\": "+Input.WALLS.get(i).getPosition().y);
                 builder.append(", \"width\": "+Input.WALLS.get(i).getWidth());
-                builder.append(", \"length\": "+Input.WALLS.get(i).getLength()+"}");
+                builder.append(", \"length\": "+Input.WALLS.get(i).getLength());
+                builder.append(", \"type\": "+Input.WALLS.get(i).getType()+"}");
                 if (i != Input.WALLS.size() - 1) {
                     builder.append(",");
                 }

@@ -17,7 +17,7 @@ public interface Theme {
 
     public Model treeBumper(float r);
 
-    public Model wallModel(float width, float height, float depth);
+    public Model wallModel(float width, float height, float depth, int type);
 
     public Color grassColorLight(float height);
 

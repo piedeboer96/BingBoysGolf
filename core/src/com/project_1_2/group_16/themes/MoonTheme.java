@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.project_1_2.group_16.models.Wall;
 
 /**
  * The default theme for the application.
@@ -72,8 +73,10 @@ public class MoonTheme implements Theme {
     }
 
     @Override
-    public Model wallModel(float width, float height, float depth) {
-        return this.builder.createBox(width, height, depth, wall, Usage.Position + Usage.Normal);
+    public Model wallModel(float width, float height, float depth, int type) {
+        if (type == Wall.MAZE_WALL) return this.builder.createBox(width, height, depth, wall, Usage.Position + Usage.Normal);
+        else return this.builder.createBox(width, height + 0.025f, depth, 
+        new Material(ColorAttribute.createDiffuse(hole_off)), Usage.Position + Usage.Normal);
     }
 
     @Override

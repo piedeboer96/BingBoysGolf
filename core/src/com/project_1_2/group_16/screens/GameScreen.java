@@ -1,9 +1,6 @@
 package com.project_1_2.group_16.screens;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Input.Keys;
@@ -146,14 +143,8 @@ public class GameScreen extends ScreenAdapter {
 		}
 
 		// create walls
-		Collections.sort(Input.WALLS, new Comparator<Wall>() {
-			@Override
-			public int compare(Wall o1, Wall o2) {
-				return (int)(o1.getArea() - o2.getArea());
-			}
-		});
 		for (Wall w : Input.WALLS) {
-			w.setModel(Input.THEME.wallModel(w.getWidth(), w.getHeight(), w.getLength()));
+			w.setModel(Input.THEME.wallModel(w.getWidth(), Wall.HEIGHT, w.getLength(), w.getType()));
 			this.instances.add(w.getInstance());
 		}
 

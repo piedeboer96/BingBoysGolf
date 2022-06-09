@@ -19,6 +19,10 @@ public class Wall {
      */
     public static final float frictionCoeficient = 0.8f;
 
+    public static final int MAZE_WALL = 0;
+
+    public static final int WATER = 1;
+
     /**
      * If the ball has recently hit this wall. 
      */
@@ -31,11 +35,12 @@ public class Wall {
 
     private float width;
     private float length;
-    private float height;
+
+    private int type;
 
     private ModelInstance instance;
     
-    public Wall(Vector2 topLeft, float width, float length, float height) {
+    public Wall(Vector2 topLeft, float width, float length, int type) {
         this.topLeft = topLeft;
         this.topRight = new Vector2(topLeft.x + width, topLeft.y);
         this.bottomLeft = new Vector2(topLeft.x, topLeft.y - length);
@@ -43,7 +48,8 @@ public class Wall {
 
         this.width = width;
         this.length = length;
-        this.height = height;
+
+        this.type = type;
     }
 
     /**
@@ -53,7 +59,7 @@ public class Wall {
     public void setModel(Model model) {
         this.instance = new ModelInstance(model);
         Vector2 pos = averageVector(this.topLeft, this.topRight, this.bottomLeft, this.bottomRight);
-        this.instance.transform.translate(pos.x, 0.1f + this.height / 2, pos.y);
+        this.instance.transform.translate(pos.x, 0.1f + HEIGHT / 2, pos.y);
     }
 
     /**
@@ -76,12 +82,8 @@ public class Wall {
         return this.length;
     }
 
-    public float getHeight() {
-        return this.height;
-    }
-
-    public float getArea() {
-        return this.width * this.length;
+    public int getType() {
+        return this.type;
     }
 
     /**
@@ -105,10 +107,10 @@ public class Wall {
      * @return Vector2.X if the wall is horizontal, otherwise Vector2.Y
      */
     public Vector2 closestWall(float x, float y) {
-        float dstTop = Math.abs(this.topLeft.y - y);
-        float dstBottom = Math.abs(this.bottomLeft.y - y);
-        float dstLeft = Math.abs(this.topLeft.x - x);
-        float dstRight = Math.abs(this.topRight.x - x);
+        float dstTop = this.width < this.length ? Float.MAX_VALUE : Math.abs(this.topLeft.y - y);
+        float dstBottom = this.width < this.length ? Float.MAX_VALUE : Math.abs(this.bottomLeft.y - y);
+        float dstLeft = this.length < this.width ? Float.MAX_VALUE : Math.abs(this.topLeft.x - x);
+        float dstRight = this.length < this.width ? Float.MAX_VALUE : Math.abs(this.topRight.x - x);
 
         if (dstTop <= dstBottom && dstTop <= dstLeft && dstTop <= dstRight) {
             return Vector2.X; // horizontal
