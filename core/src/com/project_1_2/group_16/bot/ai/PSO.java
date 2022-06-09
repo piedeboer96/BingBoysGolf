@@ -1,11 +1,16 @@
 package com.project_1_2.group_16.bot.ai;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.AdvancedBot;
 import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.gamelogic.Spline;
+import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.math.NumericalSolver;
 import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.misc.LevelDecoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +39,8 @@ public class PSO extends AdvancedBot {
      * @param startX starting x position of the ball
      * @param startY starting y position of the ball
      */
-    public PSO(int maxIterations, int population_size, float startX, float startY, Game game){
-        super(startX, startY, game);
+    public PSO(int maxIterations, int population_size, float startX, float startY, Game game, boolean useFloodFill){
+        super(startX, startY, game, useFloodFill);
         this.maxIterations = maxIterations;
         this.population_size = population_size;
         particles = initializeParticles();
@@ -70,8 +75,10 @@ public class PSO extends AdvancedBot {
             particles = runThreads(threads);
         }
         ArrayList<Float> toReturn = new ArrayList<>();
+
         toReturn.add(globalBest.velX);
         toReturn.add(globalBest.velY);
+
         return toReturn;
     }
 

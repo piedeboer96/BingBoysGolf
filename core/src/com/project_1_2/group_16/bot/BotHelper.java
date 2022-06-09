@@ -44,7 +44,7 @@ public class BotHelper {
     }
 
     public static void setFloodFillTable(){
-        floodFill = new FloodFill(.5f);
+        floodFill = new FloodFill(.08f);
         scoreMatrix = floodFill.runFloodFill(Input.VT.x, Input.VT.y);
         //floodFill.prettyPrint(scoreMatrix);
     }
@@ -93,8 +93,8 @@ public class BotHelper {
         float minVelY = -5.0f;
         float maxVelY = 5.0f;
         float xH, yH;
-        xH = (Math.abs(maxVelX - minVelX))/6.15f;
-        yH = (Math.abs(maxVelY - minVelY))/6.15f;
+        xH = (Math.abs(maxVelX - minVelX))/5.15f;
+        yH = (Math.abs(maxVelY - minVelY))/5.15f;
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
 
         toReturn.add(new float[] {((Input.VT.x - startX)/(Math.abs(Input.VT.x - startX) + Math.abs(Input.VT.y-startY)))*5.0f, ((Input.VT.y-startY)/(Math.abs(Input.VT.x - startX) + Math.abs(Input.VT.y-startY)))*5.0f});
@@ -102,6 +102,27 @@ public class BotHelper {
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
                 if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY, startX, startY)){
+                    toReturn.add(new float [] {velX, velY});
+                }
+            }
+        }
+
+        return toReturn;
+    }
+
+    public static List<float[]> availableVelocities2 (){
+        float minVelX = -5.0f;
+        float maxVelX = 5.0f;
+        float minVelY = -5.0f;
+        float maxVelY = 5.0f;
+        float xH, yH;
+        xH = (Math.abs(maxVelX - minVelX))/6.15f;
+        yH = (Math.abs(maxVelY - minVelY))/6.15f;
+        ArrayList<float[]>toReturn = new ArrayList<float[]>();
+
+        for(float velX = minVelX; velX<=maxVelX; velX+=xH){
+            for(float velY = minVelY; velY<=maxVelY; velY+=yH){
+                if(Physics.magnitude(velX, velY) < 5.0f){
                     toReturn.add(new float [] {velX, velY});
                 }
             }

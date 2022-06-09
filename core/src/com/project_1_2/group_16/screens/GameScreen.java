@@ -19,12 +19,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.BotHelper;
-import com.project_1_2.group_16.bot.ai.BRO;
-import com.project_1_2.group_16.bot.ai.NelderMead;
+import com.project_1_2.group_16.bot.ai.*;
 import com.project_1_2.group_16.bot.simpleBot.RuleBasedBot;
-import com.project_1_2.group_16.bot.ai.PSO;
 import com.project_1_2.group_16.bot.simpleBot.RandomBot;
-import com.project_1_2.group_16.bot.ai.SA;
 import com.project_1_2.group_16.camera.BallCamera;
 import com.project_1_2.group_16.camera.FreeCamera;
 import com.project_1_2.group_16.gamelogic.Game;
@@ -85,6 +82,7 @@ public class GameScreen extends ScreenAdapter {
 	private BRO bro;
 	private PSO pso;
 	private NelderMead nelderMead;
+	private MazeBot mazeBot;
 
     public GameScreen(App app) {
         this.app = app;
@@ -295,17 +293,17 @@ public class GameScreen extends ScreenAdapter {
 
 		// bots
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // sim. annealing
-			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y, this.game);
+			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false    );
 			Float[] sol = this.sa.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){ // battle royale optimization
-			this.bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y, this.game);
+			this.bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
 			Float[] sol = this.bro.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ // particle swarm optimization
-			this.pso = new PSO(100, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game);
+			this.pso = new PSO(100, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
 			Float[] sol = this.pso.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
@@ -321,8 +319,13 @@ public class GameScreen extends ScreenAdapter {
 		}
 
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_6)) { //nelder mead
-			this.nelderMead = new NelderMead(this.golfball.STATE.x, this.golfball.STATE.y, this.game, 500, 1, 2, 0.5, 0.35);
+			this.nelderMead = new NelderMead(this.golfball.STATE.x, this.golfball.STATE.y, this.game, 500, 1, 2, 0.5, 0.35, true);
 			Float[] sol = this.nelderMead.runBot().toArray(new Float[2]);
+			this.shoot(sol[0], sol[1]);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_7)){ //maze bot (simple bruce forto)
+			this.mazeBot = new MazeBot(this.golfball.STATE.x, this.golfball.STATE.y,this.game);
+			Float[] sol = this.mazeBot.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		

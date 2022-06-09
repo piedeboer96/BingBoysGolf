@@ -7,11 +7,12 @@ import java.util.List;
 public abstract class AdvancedBot {
     private float startX, startY;
     private Game game;
-    public AdvancedBot(float startX, float startY, Game game){
+
+    public AdvancedBot(float startX, float startY, Game game, boolean useFloodFill){
         this.startX = startX;
         this.startY = startY;
         this.game = game;
-        Game.useFloodFill = true;
+        Game.useFloodFill = useFloodFill;
     }
     public abstract List<Float> runBot();
     public float getStartX(){
