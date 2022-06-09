@@ -39,8 +39,8 @@ public class PSO extends AdvancedBot {
      * @param startX starting x position of the ball
      * @param startY starting y position of the ball
      */
-    public PSO(int maxIterations, int population_size, float startX, float startY, Game game, boolean random){
-        super(startX, startY, game, random);
+    public PSO(int maxIterations, int population_size, float startX, float startY, Game game, boolean useFloodFill){
+        super(startX, startY, game, useFloodFill);
         this.maxIterations = maxIterations;
         this.population_size = population_size;
         particles = initializeParticles();
@@ -75,13 +75,10 @@ public class PSO extends AdvancedBot {
             particles = runThreads(threads);
         }
         ArrayList<Float> toReturn = new ArrayList<>();
-        if(getRandom()){
-            float[] fvxy = randomize(globalBest.velX, globalBest.velY);
-            toReturn.add(fvxy[0]); toReturn.add(fvxy[1]);
-        }else {
-            toReturn.add(globalBest.velX);
-            toReturn.add(globalBest.velY);
-        }
+
+        toReturn.add(globalBest.velX);
+        toReturn.add(globalBest.velY);
+
         return toReturn;
     }
 
@@ -255,14 +252,5 @@ public class PSO extends AdvancedBot {
             }
         }
         return particles;
-    }
-
-    public static void main(String[] args) {
-        LevelDecoder.decode(new FileHandle(("./default_level.json")));
-        Terrain.setSpline(Input.H, new float[Spline.SPLINE_SIZE][Spline.SPLINE_SIZE]).createSpline();
-        Game g = new Game();
-        g.setNumericalSolver(NumericalSolver.RK4);
-        PSO pso = new PSO(40, 100, Input.V0.x, Input.V0.y, g, true);
-        pso.runBot();
     }
 }

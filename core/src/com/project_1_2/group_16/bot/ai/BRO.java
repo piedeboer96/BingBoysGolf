@@ -30,8 +30,8 @@ public class BRO extends AdvancedBot {
      * @param maxIter The max iterations it will run
      * @param threshold The preferred threshold for which a player is damaged then it respawns
      */
-    public BRO(int popSize, int maxIter, int threshold, float startX, float startY, Game game, boolean random){
-        super(startX, startY, game, random);
+    public BRO(int popSize, int maxIter, int threshold, float startX, float startY, Game game, boolean useFloodFill){
+        super(startX, startY, game, useFloodFill);
         this.popSize = popSize;
         this.maxIter = maxIter;
         this.threshold = threshold;
@@ -141,13 +141,8 @@ public class BRO extends AdvancedBot {
         }
         //System.out.println("best is " + bestSoldier.toString());
         ArrayList<Float> toReturn = new ArrayList<>();
-        if(getRandom()){
-            float[] fvxy = randomize(bestSoldier.velX, bestSoldier.velY);
-            toReturn.add(fvxy[0]); toReturn.add(fvxy[1]);
-        }else {
-            toReturn.add(bestSoldier.velX);
-            toReturn.add(bestSoldier.velY);
-        }
+        toReturn.add(bestSoldier.velX);
+        toReturn.add(bestSoldier.velY);
         return toReturn;
     }
 

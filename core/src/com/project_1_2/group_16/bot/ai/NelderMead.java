@@ -27,8 +27,8 @@ public class NelderMead extends AdvancedBot {
     private int max_iterations;
 
     //Constructor
-    public NelderMead(float startX, float startY, Game game, int max_iterations,double alpha, double beta, double gamma, double delta) {
-        super(startX, startY, game);
+    public NelderMead(float startX, float startY, Game game, int max_iterations,double alpha, double beta, double gamma, double delta, boolean useFloodFill) {
+        super(startX, startY, game, useFloodFill);
         this.max_iterations = max_iterations;
 
         this.alpha = alpha;

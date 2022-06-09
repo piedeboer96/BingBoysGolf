@@ -7,7 +7,6 @@ import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,8 +28,8 @@ public class SA extends AdvancedBot {
      * @param kmax max iterations
      * @param neigbourStepSize step size for generating neighbours
      */
-    public SA(int kmax, float neigbourStepSize, float startX, float startY, Game game, boolean random){
-        super(startX, startY, game, random);
+    public SA(int kmax, float neigbourStepSize, float startX, float startY, Game game, boolean useFloodFill){
+        super(startX, startY, game, useFloodFill);
         this.kmax = kmax;
         this.neigbourStepSize = neigbourStepSize;
         this.recalculate = true;
@@ -66,13 +65,10 @@ public class SA extends AdvancedBot {
             }
         }
         ArrayList<Float> toReturn = new ArrayList<>();
-        if(getRandom()){
-            float[] fvxy = randomize(bestState.getVx(), bestState.getVy());
-            toReturn.add(fvxy[0]); toReturn.add(fvxy[1]);
-        }else {
-            toReturn.add(bestState.getVx());
-            toReturn.add(bestState.getVy());
-        }
+
+        toReturn.add(bestState.getVx());
+        toReturn.add(bestState.getVy());
+
         return toReturn;
     }
 
