@@ -1,5 +1,7 @@
 package com.project_1_2.group_16.bot.ai;
 
+import com.badlogic.gdx.math.Vector2;
+import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.AdvancedBot;
 import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.gamelogic.Game;
@@ -21,6 +23,16 @@ public class MazeBot extends AdvancedBot {
 //        ArrayList<float[]> candidates = (ArrayList<float[]>) BotHelper.availableVelocities(getStartX(), getStartY());
         float bestFitness = Integer.MAX_VALUE;
         float [] bestCandidate = new float[2];
+        if(BotHelper.getFloodFillFitness(getStartX(), getStartY()) == 0){
+            float diffX = Input.VT.x - getStartX();
+            float diffY = Input.VT.y - getStartY();
+            Vector2 v2 = new Vector2(diffX, diffY);
+            v2.nor();
+            List<Float> toReturn = new ArrayList<Float>();
+            toReturn.add(v2.x);
+            toReturn.add(v2.y);
+            return toReturn;
+        }
         for (float[] candidate : candidates){
             StateVector sv = new StateVector(getStartX(), getStartY(), candidate[0], candidate[1]);
             getGame().runEngine(sv, null);
