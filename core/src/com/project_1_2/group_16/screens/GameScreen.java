@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.ai.BRO;
 import com.project_1_2.group_16.bot.ai.NelderMead;
 import com.project_1_2.group_16.bot.simpleBot.RuleBasedBot;
@@ -44,6 +45,8 @@ import com.project_1_2.group_16.models.Wall;
  * The screen that is used for the actual gameplay.
  */
 public class GameScreen extends ScreenAdapter {
+
+	public static float curFitness = 0;
 
     // app reference
     private App app;
@@ -165,7 +168,7 @@ public class GameScreen extends ScreenAdapter {
 		this.freeMovement = new FreeCamera(this.freeCam);
 
 		// creating the floodfillTable
-		//BotHelper.setFloodFillTable();
+		BotHelper.setFloodFillTable();
     }
 
     @Override
@@ -209,6 +212,7 @@ public class GameScreen extends ScreenAdapter {
 		this.font.draw(this.app.spriteBatch, "yDir: "+this.zDir, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 170f);
 		this.font.draw(this.app.spriteBatch, "Power: "+(this.power - 1) / 4, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 185f);
 		this.font.draw(this.app.spriteBatch, "Simulatons: "+Game.simulCounter, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 210f);
+		this.font.draw(this.app.spriteBatch, "Fitness: "+ curFitness, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 300f);
 		this.font.draw(this.app.spriteBatch, "Shot velocity:", App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 235f);
 		this.font.draw(this.app.spriteBatch, "V0x = "+this.v0x, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 250f);
 		this.font.draw(this.app.spriteBatch, "V0y = "+this.v0y, App.SCREEN_WIDTH - 115f, App.SCREEN_HEIGHT - 265f);
@@ -246,6 +250,9 @@ public class GameScreen extends ScreenAdapter {
         // controls
 		if (this.useFreeCam) this.freeMovement.move(Gdx.input, Gdx.graphics.getDeltaTime());
 		this.controls();
+
+
+		curFitness = BotHelper.getFloodFillFitness(this.golfball.STATE.x, this.golfball.STATE.y);
     }
 
     @Override
@@ -299,7 +306,7 @@ public class GameScreen extends ScreenAdapter {
 			this.shoot(sol[0], sol[1]);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ // particle swarm optimization
-			this.pso = new PSO(300, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game);
+			this.pso = new PSO(100, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game);
 			Float[] sol = this.pso.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
@@ -315,7 +322,7 @@ public class GameScreen extends ScreenAdapter {
 		}
 
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_6)) { //nelder mead
-			this.nelderMead = new NelderMead(this.golfball.STATE.x, this.golfball.STATE.y, this.game, 50, 1, 2, 0.5, 1);
+			this.nelderMead = new NelderMead(this.golfball.STATE.x, this.golfball.STATE.y, this.game, 500, 1, 2, 0.5, 0.35);
 			Float[] sol = this.nelderMead.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
@@ -338,6 +345,7 @@ public class GameScreen extends ScreenAdapter {
 			this.power = App.MIN_POWER;
 			this.ballMovement.setPowerStatus(PowerStatus.REST);
 		}
+
 	}
 
     /**

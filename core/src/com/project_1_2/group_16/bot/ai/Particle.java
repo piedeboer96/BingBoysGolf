@@ -20,12 +20,6 @@ public class Particle extends Agent {
         super(sv, game);
     }
 
-    /**
-     * Constructor for particle
-     * @param init initial statevector
-     * @param sv statevector
-     * @param fitness fitness
-     */
     public Particle createClone (){
         return new Particle(new StateVector(startX, startY, velX, velY), getGame());
     }

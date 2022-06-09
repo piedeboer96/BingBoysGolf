@@ -16,7 +16,7 @@ public class Game {
      */
     public static float h = 0.05f;
 
-    public static boolean useFloodFill = true;
+    public static boolean useFloodFill;
 
     /**
      * Number of simulations.
@@ -163,16 +163,16 @@ public class Game {
         while(!sv.stop) {
             run(sv, null);
             //float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
-           float temp;
+            float temp;
 
-           if(useFloodFill){
-               temp = BotHelper.getFloodFillFitness(sv.x, sv.y);
-               if(temp <= 1){
-                   useFloodFill = false;
-               }
-           }else{
-               temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
-           }
+            if(useFloodFill){
+                temp = BotHelper.getFloodFillFitness(sv.x, sv.y);
+                if(temp <= 1){
+                    useFloodFill = false;
+                }
+            }else{
+                temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
+            }
 
             if (a!=null){
 

@@ -17,7 +17,7 @@ public class PSO extends AdvancedBot {
     private int population_size;
 
     private final int maxIterations;
-    private List<Particle> particles;
+    public List<Particle> particles;
 
     private int iteration = 1;
     private final float N = population_size;
@@ -48,6 +48,7 @@ public class PSO extends AdvancedBot {
         outerloop:
         while (count < maxIterations && globalBest.fitness > Input.R) {
             count++;
+
             Particle localSearch = doLocalSearch(globalBest);
             if (localSearch.fitness < globalBest.fitness) {
                 globalBest = localSearch;
