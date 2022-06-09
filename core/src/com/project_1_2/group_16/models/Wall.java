@@ -3,7 +3,6 @@ package com.project_1_2.group_16.models;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector2;
-import com.project_1_2.group_16.gamelogic.Terrain;
 
 /**
  * Wrapper class for a wall object, used in maze courses.
@@ -11,7 +10,7 @@ import com.project_1_2.group_16.gamelogic.Terrain;
 public class Wall {
 
     /**
-     * Height of the wall (above the ground).
+     * Standard height of the wall (above the ground).
      */
     public static final float HEIGHT = 0.25f;
 
@@ -32,10 +31,11 @@ public class Wall {
 
     private float width;
     private float length;
+    private float height;
 
     private ModelInstance instance;
     
-    public Wall(Vector2 topLeft, float width, float length) {
+    public Wall(Vector2 topLeft, float width, float length, float height) {
         this.topLeft = topLeft;
         this.topRight = new Vector2(topLeft.x + width, topLeft.y);
         this.bottomLeft = new Vector2(topLeft.x, topLeft.y - length);
@@ -43,6 +43,7 @@ public class Wall {
 
         this.width = width;
         this.length = length;
+        this.height = height;
     }
 
     /**
@@ -52,7 +53,7 @@ public class Wall {
     public void setModel(Model model) {
         this.instance = new ModelInstance(model);
         Vector2 pos = averageVector(this.topLeft, this.topRight, this.bottomLeft, this.bottomRight);
-        this.instance.transform.translate(pos.x, Terrain.getHeight(pos.x, pos.y) + HEIGHT / 2, pos.y);
+        this.instance.transform.translate(pos.x, 0.1f + this.height / 2, pos.y);
     }
 
     /**
@@ -73,6 +74,10 @@ public class Wall {
 
     public float getLength() {
         return this.length;
+    }
+
+    public float getHeight() {
+        return this.height;
     }
 
     /**

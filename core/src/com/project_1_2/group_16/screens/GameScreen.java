@@ -142,7 +142,7 @@ public class GameScreen extends ScreenAdapter {
 
 		// create walls
 		for (Wall w : Input.WALLS) {
-			w.setModel(Input.THEME.wallModel(w.getWidth(), Wall.HEIGHT, w.getLength()));
+			w.setModel(Input.THEME.wallModel(w.getWidth(), w.getHeight(), w.getLength()));
 			this.instances.add(w.getInstance());
 		}
 

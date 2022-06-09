@@ -25,6 +25,9 @@ public class Game {
 
     private NumericalSolver solver;
 
+    private boolean recentlyHitTree;
+    private boolean recentlyHitWall;
+
     /**
      * Run the physics engine.
      * @param sv the state vector
@@ -48,12 +51,14 @@ public class Game {
 
         // check tree collision
         Tree hittree = Terrain.collision.ballHitTree(sv);
-        if (hittree == null) {
+        if (hittree == null && this.recentlyHitTree) {
+            this.recentlyHitTree = false;
             for (Tree t : Input.TREES) {
                 t.recentlyHit = false;
             }
         }
-        else if (!hittree.recentlyHit) {
+        else if (hittree != null && !hittree.recentlyHit) {
+            this.recentlyHitTree = true;
             hittree.recentlyHit = true;
 
             Vector2 tree = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
@@ -89,6 +94,7 @@ public class Game {
         // check wall collision
         Wall hitWall = Terrain.collision.ballIsInWall(sv);
         if (hitWall != null && !hitWall.recentlyHit) {
+            this.recentlyHitWall = true;
             hitWall.recentlyHit = true;
 
             Vector2 position = new Vector2(sv.x, sv.y);
@@ -127,7 +133,8 @@ public class Game {
             sv.vx = -velocity.x * Wall.frictionCoeficient;
             sv.vy = -velocity.y * Wall.frictionCoeficient;
         }
-        else if (hitWall == null) { // TODO OPTIMISE!!! GETS CALLED EVERY FRAME EVEN WHEN NO WHERE NEAR!!!
+        else if (hitWall == null && this.recentlyHitWall) {
+            this.recentlyHitWall = false;
             for (Wall w : Input.WALLS) {
                 w.recentlyHit = false;
             }
