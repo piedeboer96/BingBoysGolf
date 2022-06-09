@@ -66,8 +66,8 @@ public class MazeGenerator {
                     Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/2, n.center.y - n.size/2), n.size + WALL_WIDTH, WALL_WIDTH, Wall.HEIGHT));
 
                     // plasters
-                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH, n.center.y - n.size/2), WALL_WIDTH, WALL_WIDTH, Wall.HEIGHT));
-                    Input.WALLS.add(new Wall(new Vector2(n.center.x + n.size/2, n.center.y - n.size/2), WALL_WIDTH, WALL_WIDTH, Wall.HEIGHT));
+                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - 1.5f*WALL_WIDTH, n.center.y - n.size/2), 2*WALL_WIDTH, WALL_WIDTH, Wall.HEIGHT));
+                    Input.WALLS.add(new Wall(new Vector2(n.center.x + n.size/2 - WALL_WIDTH/2, n.center.y - n.size/2), 2*WALL_WIDTH, WALL_WIDTH, Wall.HEIGHT));
                 }
             }
             for (int j = 0; j < complexity; j++) {
@@ -76,8 +76,8 @@ public class MazeGenerator {
                     Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/2, n.center.y + n.size/2), WALL_WIDTH, n.size + WALL_WIDTH, Wall.HEIGHT));
 
                     // plasters
-                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/2, n.center.y + n.size/2 + WALL_WIDTH/2), WALL_WIDTH, WALL_WIDTH, Wall.HEIGHT));
-                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/2, n.center.y - n.size/2 - WALL_WIDTH/2), WALL_WIDTH, WALL_WIDTH, Wall.HEIGHT));
+                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/2, n.center.y + n.size/2 + WALL_WIDTH), WALL_WIDTH, 2*WALL_WIDTH, Wall.HEIGHT));
+                    Input.WALLS.add(new Wall(new Vector2(n.center.x - n.size/2 - WALL_WIDTH/2, n.center.y - n.size/2), WALL_WIDTH, 2*WALL_WIDTH, Wall.HEIGHT));
                 }
             }
         }

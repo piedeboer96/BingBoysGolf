@@ -80,6 +80,10 @@ public class Wall {
         return this.height;
     }
 
+    public float getArea() {
+        return this.width * this.length;
+    }
+
     /**
      * If the wall contains a pair of coordinates.
      * @param x x-coordinate

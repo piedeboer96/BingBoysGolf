@@ -1,6 +1,8 @@
 package com.project_1_2.group_16.screens;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -19,6 +21,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.ai.BRO;
 import com.project_1_2.group_16.bot.ai.NelderMead;
 import com.project_1_2.group_16.bot.simpleBot.RuleBasedBot;
@@ -141,6 +144,12 @@ public class GameScreen extends ScreenAdapter {
 		}
 
 		// create walls
+		Collections.sort(Input.WALLS, new Comparator<Wall>() {
+			@Override
+			public int compare(Wall o1, Wall o2) {
+				return (int)(o1.getArea() - o2.getArea());
+			}
+		});
 		for (Wall w : Input.WALLS) {
 			w.setModel(Input.THEME.wallModel(w.getWidth(), w.getHeight(), w.getLength()));
 			this.instances.add(w.getInstance());
@@ -165,7 +174,7 @@ public class GameScreen extends ScreenAdapter {
 		this.freeMovement = new FreeCamera(this.freeCam);
 
 		// creating the floodfillTable
-		//BotHelper.setFloodFillTable();
+		BotHelper.setFloodFillTable();
     }
 
     @Override
