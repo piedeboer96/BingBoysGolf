@@ -47,7 +47,7 @@ public class MazeBot extends AdvancedBot {
      * @return list containing velocity w.r.t x and y direction
      */
     private List<Float> makeHeuristic_BasedShot(){
-        ArrayList<float[]> candidates = (ArrayList<float[]>) BotHelper.availableVelocities2();
+        ArrayList<float[]> candidates = (ArrayList<float[]>) BotHelper.mazeBotCandidates();
         ArrayList<Shot> shots = new ArrayList<Shot>();
         float bestFitness = Integer.MAX_VALUE;
         bestCandidate = new float[2];
