@@ -35,6 +35,10 @@ public class SA extends AdvancedBot {
         this.recalculate = true;
         setState(findInitalState());
     }
+    /**
+     * Runs the SA-Bot
+     * @return the velocity pair
+     */
     @Override
     public List<Float> runBot() {
         if(bestState.fitness > Input.R) {

@@ -36,7 +36,10 @@ public class BRO extends AdvancedBot {
         this.maxIter = maxIter;
         this.threshold = threshold;
     }
-
+    /**
+     * Runs the BroBot
+     * @return the velocity pair
+     */
     @Override
     public List<Float> runBot() {
         //Initialize variables and the population

@@ -42,7 +42,10 @@ public class PSO extends AdvancedBot {
         particles = initializeParticles();
     }
 
-
+    /**
+     * Runs the PSO-Bot
+     * @return the velocity pair
+     */
     @Override
     public List<Float> runBot() {
         int count = 0;
