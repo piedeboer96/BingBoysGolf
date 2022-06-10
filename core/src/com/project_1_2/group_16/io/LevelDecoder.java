@@ -11,8 +11,10 @@ import com.project_1_2.group_16.gamelogic.Sandpit;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.models.Wall;
+import com.project_1_2.group_16.themes.AutumnTheme;
 import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.MoonTheme;
+import com.project_1_2.group_16.themes.WinterTheme;
 
 /**
  * Auxiliary class for decoding a pre-computed level from a .json file.
@@ -86,6 +88,8 @@ public class LevelDecoder {
         // theme
         String theme = fullInput.getString("theme").toLowerCase();
         switch (theme) {
+            case "autumn": Input.THEME = new AutumnTheme(); break;
+            case "winter": Input.THEME = new WinterTheme(); break;
             case "moon": Input.THEME = new MoonTheme(); break;
             default: Input.THEME = new DefaultTheme();
         }

@@ -1,4 +1,4 @@
-### tree_model_default.g3dj taken from:
+### tree_model.g3dj taken from:
 https://www.turbosquid.com/3d-models/tree-pixel-low-poly-3d-model-1764347
 
 # License:
@@ -17,4 +17,4 @@ https://freesound.org/people/Quistard/sounds/166818/
 
 
 ### background.png created by Group 16
-### all skin-files are taken from LibGDX
+### all skin-files are taken from LibGDX source code

@@ -6,8 +6,10 @@ import java.util.Date;
 import com.badlogic.gdx.files.FileHandle;
 import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.misc.ANSI;
+import com.project_1_2.group_16.themes.AutumnTheme;
 import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.MoonTheme;
+import com.project_1_2.group_16.themes.WinterTheme;
 
 /**
  * Auxiliary class for encoding the current level to a .json file.
@@ -116,6 +118,12 @@ public class LevelEncoder {
         builder.append("    \"gravity\": "+Input.GRAVITY+",\n\n");
         if (Input.THEME instanceof DefaultTheme) {
             builder.append("    \"theme\": \"default\"\n");
+        }
+        if (Input.THEME instanceof AutumnTheme) {
+            builder.append("    \"theme\": \"autumn\"\n");
+        }
+        if (Input.THEME instanceof WinterTheme) {
+            builder.append("    \"theme\": \"winter\"\n");
         }
         if (Input.THEME instanceof MoonTheme) {
             builder.append("    \"theme\": \"moon\"\n");

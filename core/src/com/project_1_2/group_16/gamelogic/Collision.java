@@ -6,6 +6,7 @@ import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.models.Wall;
+import com.project_1_2.group_16.themes.WinterTheme;
 
 /**
  * Class that handles collision detection for all game objects.
@@ -28,7 +29,7 @@ public class Collision {
      * @return boolean, true if the ball is in water
      */
     public boolean ballIsInWater(StateVector sv) {
-        return Terrain.getHeight(sv.x, sv.y) < 0;
+        return Input.THEME instanceof WinterTheme ? Terrain.getHeight(sv.x, sv.y) == -0.1f : Terrain.getHeight(sv.x, sv.y) < 0;
     }
 
     /**

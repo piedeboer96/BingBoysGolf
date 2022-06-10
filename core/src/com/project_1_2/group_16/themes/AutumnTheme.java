@@ -10,24 +10,24 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.project_1_2.group_16.models.Wall;
 
 /**
- * A moon theme.
+ * An autumn theme.
  */
-public class MoonTheme implements Theme {
+public class AutumnTheme implements Theme {
 
-    private final Color sky = new Color(24f / 255, 32f / 255, 48f / 255, 1f);
+    private final Color sky = new Color(0.65f, 0.9f, 0.9f, 1f);
 
-    private final Color light_water = new Color(0.12f, 0.17f, 0.33f, 1f);
-    private final Color dark_water = new Color(0.11f, 0.16f, 0.32f, 1f);
+    private final Color light_water = new Color(0.1098f, 0.6275f, 0.9254f, 1f);
+    private final Color dark_water = new Color(0.1098f, 0.6392f, 0.9254f, 1f);
 
-    private final Color light_sand = new Color(0.8020f, 0.8020f, 0.6667f, 1f);
-    private final Color dark_sand = new Color(0.7647f, 0.7333f, 0.6588f, 1f);
+    private final Color light_sand = new Color(0.9411f, 0.9411f, 0.6667f, 1f);
+    private final Color dark_sand = new Color(0.9020f, 0.9020f, 0.6667f, 1f);
 
     private final Color hole_off = Color.RED;
     private final Color hole_on = Color.GREEN;
 
     private final Material wall = new Material(ColorAttribute.createDiffuse(Color.GRAY));
-    private final Material tree_bumper = new Material(ColorAttribute.createDiffuse(0.4f, 0.4f, 0.4f, 1),
-                                                      ColorAttribute.createAmbient(0, 0, 0, 1));
+    private final Material tree_bumper = new Material(ColorAttribute.createDiffuse(0.7f, 0.045528f,  0f, 1),
+                                                      ColorAttribute.createAmbient(0.050876f, 0.050876f, 0.050876f, 1));
     private final ModelBuilder builder = new ModelBuilder();
 
     private Model treeModel;
@@ -60,9 +60,9 @@ public class MoonTheme implements Theme {
     @Override
     public Model treeModel(AssetManager assets) {
         if (this.treeModel == null) {
-            assets.load("tree_model_moon.g3dj", Model.class);
+            assets.load("tree_model_autumn.g3dj", Model.class);
             assets.finishLoading();
-            this.treeModel = assets.get("tree_model_moon.g3dj", Model.class);
+            this.treeModel = assets.get("tree_model_autumn.g3dj", Model.class);
         }
         return this.treeModel;
     }
@@ -81,12 +81,12 @@ public class MoonTheme implements Theme {
 
     @Override
     public Color grassColorLight(float height) {
-        return new Color(0.4039f, 0.4039f, 0.4039f, 1f);
+        return new Color(0.1568f, (75 + height * 100) / 255f, 0.1568f, 1f);
     }
 
     @Override
     public Color grassColorDark(float height) {
-        return new Color(0.3039f, 0.3039f, 0.3039f, 1f);
+        return new Color(0.1568f, (100 + height * 100) / 255f, 0.1568f, 1f);
     }
 
     @Override
