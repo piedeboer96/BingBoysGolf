@@ -132,6 +132,13 @@ public class LevelSelector extends Dialog {
         if (selected != null && !selected.fileHandle.isDirectory()) {
             fileNameInput.setText(selected.fileHandle.path());
         }
+
+        // update height if necessary
+        buildDialog();
+        int height = 155 + 25 * this.fileList.getItems().size;
+        if (height > this.getHeight()) {
+            this.setHeight(height);
+        }
     }
 
     @Override
