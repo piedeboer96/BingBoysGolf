@@ -19,6 +19,11 @@ public class MazeBot extends AdvancedBot {
         //Always set useFloodFill to true as maze bot relies on that specific Heuristic
         super(startX, startY, game, true);
     }
+
+    /**
+     * Runs the MazeBot
+     * @return the velocity pair
+     */
     @Override
     public List<Float> runBot() {
         if(BotHelper.getFloodFillFitness(getStartX(), getStartY()) <= 1){

@@ -84,7 +84,7 @@ public class BotHelper {
     }
 
     /**
-     * Static method to develop a list of candidates of possible solutions
+     * Static method to develop a list of candidates of possible solutions (velocityX, velocityY pair) for all the bots except the maze
      * @return the list of possible solutions
      */
     public static List<float[]> availableVelocities (float startX, float startY) {
@@ -110,6 +110,10 @@ public class BotHelper {
         return toReturn;
     }
 
+    /**
+     * Static method to help develop a list of candidates of possible solutions (velocityX, velocityY pair) for the maze bot
+     * @return the list of possible solutions
+     */
     public static List<float[]> availableVelocities2 (){
         float minVelX = -5.0f;
         float maxVelX = 5.0f;
