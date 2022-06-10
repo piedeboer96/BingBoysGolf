@@ -83,6 +83,7 @@ public class Game {
         if (hitWall != null && !hitWall.recentlyHit) {
             this.recentlyHitWall = true;
             hitWall.recentlyHit = true;
+            System.out.println("something");
 
             if (hitWall.getType() == Wall.MAZE_WALL) { // collision
                 Vector2 position = new Vector2(sv.x, sv.y);

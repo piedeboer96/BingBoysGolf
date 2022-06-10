@@ -100,7 +100,7 @@ public class MazeGenerator {
 			int nextX = currentX + d.dx;
 			int nextY = currentY + d.dy;
 
-            // only visit if valid coordinate and not visisted yet
+            // only visit if valid coordinate and not visited yet
 			if (isValidIndex(nextX) && isValidIndex(nextY) && maze[nextX][nextY].bit == 0) {
 				maze[currentX][currentY].bit += d.bit;
 				maze[nextX][nextY].bit += d.opposite.bit;
@@ -156,7 +156,7 @@ public class MazeGenerator {
 
 		NORTH(1, 0, -1), 
         SOUTH(2, 0, 1), 
-        EAST(4, 1, 0), 
+        EAST(4, 1, 0),
         WEST(8, -1, 0);
 
 		private final int bit;
