@@ -1,5 +1,6 @@
 package com.project_1_2.group_16.bot.ai;
 
+import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.AdvancedBot;
@@ -150,6 +151,7 @@ public class PSO extends AdvancedBot {
         ParticleThread[] threads = new ParticleThread[neighbourHood.size()];
         int index = 0;
         for(float[] f : neighbourHood){
+            f = getValidVelocity(f);
             threads[index] = new ParticleThread(getStartX(), getStartY(), f[0], f[1],  p.getlocalBest(), getGame());
             threads[index].start();
             index++;
@@ -173,7 +175,13 @@ public class PSO extends AdvancedBot {
      * @return a valid velocity
      */
     public float[] getValidVelocity(float[] vxvy){
-        if(Physics.magnitude(vxvy[0], vxvy[1]) > 5f){
+        if(Float.isNaN(vxvy[0]) || Float.isNaN(vxvy[1])){
+            float[] vxy = new float[2];
+            vxy[0] = globalBest.velX;
+            vxy[1] = globalBest.velY;
+            return vxy;
+        }
+        if(Physics.magnitude(vxvy[0], vxvy[1]) > App.MAX_POWER){
             float[] vxy = new float[2];
             vxy[0] = (float) (vxvy[0]/Math.sqrt(50));
             vxy[1] = (float) (vxvy[1]/Math.sqrt(50));

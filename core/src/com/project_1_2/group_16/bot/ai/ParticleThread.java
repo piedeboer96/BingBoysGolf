@@ -26,8 +26,8 @@ public class ParticleThread implements Runnable {
     public ParticleThread(float x, float y, float vx, float vy, Particle localBest, Game game){
         this.x = x;
         this.y = y;
+
         this.vx = vx;
-        this.vy = vy;
         this.game = game;
         this.hasFound = false;
         this.localBest = localBest;
