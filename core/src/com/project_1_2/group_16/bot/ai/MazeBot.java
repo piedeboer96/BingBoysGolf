@@ -1,10 +1,10 @@
 package com.project_1_2.group_16.bot.ai;
 
 import com.badlogic.gdx.math.Vector2;
-import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.AdvancedBot;
 import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.io.Input;
 import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;

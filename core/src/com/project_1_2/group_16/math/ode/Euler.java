@@ -1,6 +1,8 @@
-package com.project_1_2.group_16.math;
+package com.project_1_2.group_16.math.ode;
 
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.math.Physics;
+import com.project_1_2.group_16.math.StateVector;
 
 /**
  * Euler’s method for solving ODE's.

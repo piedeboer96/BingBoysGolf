@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.io.Input;
 
 /**
  * Class used for building the terrain model.

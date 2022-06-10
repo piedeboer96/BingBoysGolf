@@ -1,4 +1,4 @@
-package com.project_1_2.group_16.misc;
+package com.project_1_2.group_16.io;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.JsonIterator;
-import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Sandpit;
 import com.project_1_2.group_16.gamelogic.Spline;
 import com.project_1_2.group_16.models.Tree;

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.io.Input;
 
 /**
  * Wrapper class for the flap pole and hole.

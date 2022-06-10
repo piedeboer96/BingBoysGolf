@@ -1,11 +1,11 @@
-package com.project_1_2.group_16.misc;
+package com.project_1_2.group_16.io;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.misc.ANSI;
 import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.MoonTheme;
 
