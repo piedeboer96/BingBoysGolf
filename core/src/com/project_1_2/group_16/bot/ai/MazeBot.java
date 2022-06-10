@@ -25,7 +25,7 @@ public class MazeBot extends AdvancedBot {
      */
     @Override
     public List<Float> runBot() {
-        return (BotHelper.getFloodFillFitness(getStartX(), getStartY()) <= 10)? makeSimpleShot() : makeHeuristic_BasedShot();
+        return (BotHelper.getFloodFillFitness(getStartX(), getStartY()) <= 50)? makeSimpleShot() : makeHeuristic_BasedShot();
     }
 
     /**
