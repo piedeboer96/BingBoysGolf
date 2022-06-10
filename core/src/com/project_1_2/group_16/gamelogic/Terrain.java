@@ -95,7 +95,7 @@ public class Terrain {
             trZ = 0.95f* (float)(Math.random() * App.FIELD_SIZE - App.FIELD_SIZE / 2);
             trV = new Vector2(trX, trZ);
         } while ((j < 50 && Terrain.getHeight(trX, trZ) < 0.1) || trV.dst(Input.V0) < 1 || trV.dst(Input.VT) < 1);
-        float trR = (float)(Math.random() * 0.3 + .2);
+        float trR = (float)(Math.random() * 0.2 + .2);
         Input.TREES.add(new Tree(trX, trZ, trR));
     }
 

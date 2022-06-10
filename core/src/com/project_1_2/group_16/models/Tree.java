@@ -42,7 +42,7 @@ public class Tree {
         this.pos.y = Terrain.getHeight(this.pos.x, this.pos.z) - 0.1f;
         this.instance.transform.translate(this.pos);
         this.instance.transform.rotate(Vector3.Y, (float)(Math.random()*360));
-        this.instance.transform.scale(0.5f * this.r, 0.5f * this.r, 0.5f * this.r);
+        this.instance.transform.scale(0.7f * this.r, 0.7f * this.r, 0.7f * this.r);
     }
 
     /**
