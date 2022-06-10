@@ -75,6 +75,10 @@ public class NelderMead extends AdvancedBot {
              */
             NelderAgent reflection_point = reflection(agents, centroid);
 
+            //toremove
+            NelderAgent prev_best_agent = agents[2];
+
+
             //Reflect
             if(reflection_point.fitness >= agents[2].fitness && reflection_point.fitness < agents[1].fitness){
                 System.out.println("REFLECT");
@@ -338,11 +342,13 @@ public class NelderMead extends AdvancedBot {
 
         List<float[]> velocities = BotHelper.availableVelocities(getStartX(), getStartY());
         NelderAgent[] bestAgents = new NelderAgent[velocities.size()];
+        int count= 0;
         NelderAgent[] initAgents = new NelderAgent[3];
 
 
        boolean isset_bestagent = false;
        NelderAgent best_agent = null;
+        outer:
         for(int i = 0; i < bestAgents.length; i++){
             bestAgents[i] = new NelderAgent(new StateVector(getStartX(), getStartY(), velocities.get(i)[0], velocities.get(i)[1]), this.game);
             if(isset_bestagent){

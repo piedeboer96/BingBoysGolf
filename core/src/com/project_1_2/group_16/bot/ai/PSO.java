@@ -1,5 +1,6 @@
 package com.project_1_2.group_16.bot.ai;
 
+import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.bot.AdvancedBot;
@@ -34,8 +35,8 @@ public class PSO extends AdvancedBot {
      * @param startX starting x position of the ball
      * @param startY starting y position of the ball
      */
-    public PSO(int maxIterations, int population_size, float startX, float startY, Game game, boolean useFloodFill){
-        super(startX, startY, game, useFloodFill);
+    public PSO(int maxIterations, int population_size, float startX, float startY, Game game, boolean use_floodfill){
+        super(startX, startY, game, use_floodfill);
         this.maxIterations = maxIterations;
         this.population_size = population_size;
         particles = initializeParticles();
@@ -46,7 +47,8 @@ public class PSO extends AdvancedBot {
     public List<Float> runBot() {
         int count = 0;
         outerloop:
-        while (count < maxIterations && globalBest.fitness > Input.R) {
+        while (count < maxIterations && globalBest.fitness > Input.R)  {
+
             count++;
 
             Particle localSearch = doLocalSearch(globalBest);
@@ -64,16 +66,16 @@ public class PSO extends AdvancedBot {
                 Particle current = particles.get(i);
                 float[] updated = getValidVelocity(updatedVelocity(current));
 
+                //System.out.println("INSIDE RUNBOT --> vx: " + updated[0] + " vy: " + updated[1]);
                 threads[i] = new ParticleThread(getStartX(), getStartY(), updated[0], updated[1], current.getlocalBest(), getGame());
+
                 threads[i].start();
             }
             particles = runThreads(threads);
         }
         ArrayList<Float> toReturn = new ArrayList<>();
-
         toReturn.add(globalBest.velX);
         toReturn.add(globalBest.velY);
-
         return toReturn;
     }
 
@@ -151,6 +153,7 @@ public class PSO extends AdvancedBot {
         int index = 0;
         for(float[] f : neighbourHood){
             threads[index] = new ParticleThread(getStartX(), getStartY(), f[0], f[1],  p.getlocalBest(), getGame());
+            //System.out.println("INSIDE DOLOCALSEARCH --> vx: " + f[0] + " vy: " + f[1]);
             threads[index].start();
             index++;
         }
@@ -173,7 +176,11 @@ public class PSO extends AdvancedBot {
      * @return a valid velocity
      */
     public float[] getValidVelocity(float[] vxvy){
-        if(Physics.magnitude(vxvy[0], vxvy[1]) > 5f){
+        if(Float.isNaN(vxvy[0]) || Float.isNaN(vxvy[1])){
+            return new float[]{globalBest.velX, globalBest.velY};
+        }
+        //System.out.println("GET VALID VELOCITY: VXVY: "+Arrays.toString(vxvy));
+        if(Physics.magnitude(vxvy[0], vxvy[1]) > App.MAX_POWER){
             float[] vxy = new float[2];
             vxy[0] = (float) (vxvy[0]/Math.sqrt(50));
             vxy[1] = (float) (vxvy[1]/Math.sqrt(50));

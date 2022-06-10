@@ -101,28 +101,7 @@ public class BotHelper {
 
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
-                if(Physics.magnitude(velX, velY) < 5.0f){
-                    toReturn.add(new float [] {velX, velY});
-                }
-            }
-        }
-
-        return toReturn;
-    }
-
-    public static List<float[]> availableVelocities2 (){
-        float minVelX = -5.0f;
-        float maxVelX = 5.0f;
-        float minVelY = -5.0f;
-        float maxVelY = 5.0f;
-        float xH, yH;
-        xH = (Math.abs(maxVelX - minVelX))/10.15f;
-        yH = (Math.abs(maxVelY - minVelY))/10.15f;
-        ArrayList<float[]>toReturn = new ArrayList<float[]>();
-
-        for(float velX = minVelX; velX<=maxVelX; velX+=xH){
-            for(float velY = minVelY; velY<=maxVelY; velY+=yH){
-                if(Physics.magnitude(velX, velY) < 5.0f){
+                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY, startX, startY)){
                     toReturn.add(new float [] {velX, velY});
                 }
             }

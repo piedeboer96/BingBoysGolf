@@ -16,9 +16,6 @@ public class Game {
      */
     public static float h = 0.05f;
 
-    /**
-     * Determines whether we use the FloodFill table as a heuristic
-     */
     public static boolean useFloodFill;
 
     /**
@@ -37,8 +34,6 @@ public class Game {
      * @param reference a reference to an App object. leave null if doing simulations.
      */
     public void run(final StateVector sv, App reference) {
-        Vector2 previousPosition = new Vector2(sv.x, sv.y);
-
         // update state vector with numerical solver
         this.solver.solve(h, sv);
 
@@ -83,53 +78,41 @@ public class Game {
             this.recentlyHitWall = true;
             hitWall.recentlyHit = true;
 
-            if (hitWall.getType() == Wall.MAZE_WALL) { // collision
-                Vector2 position = new Vector2(sv.x, sv.y);
-                Vector2 velocity = new Vector2(sv.vx, sv.vy);
-                Vector2 tNegativeOne = position.cpy().sub(velocity);
-                
-                Vector2 wallVector = hitWall.closestWall(previousPosition.x, previousPosition.y);
+            Vector2 position = new Vector2(sv.x, sv.y);
+            Vector2 velocity = new Vector2(sv.vx, sv.vy);
+            Vector2 tNegativeOne = position.cpy().sub(velocity);
+
+            Vector2 wallVector = hitWall.closestWall(sv.x, sv.y);
             
-                float adjacent, opposite;
-                double inputAngle, rotationAngle;
-                if (wallVector == Vector2.X) { // horizontal
-                    adjacent = Math.abs(position.x - tNegativeOne.x);
-                    opposite = Math.abs(position.y - tNegativeOne.y);
+            float adjacent, opposite;
+            double inputAngle, rotationAngle;
+            if (wallVector == Vector2.X) { // horizontal
+                adjacent = Math.abs(position.x - tNegativeOne.x);
+                opposite = Math.abs(position.y - tNegativeOne.y);
 
-                    inputAngle = Math.atan(opposite / adjacent);
-                    rotationAngle = Math.PI - 2 * inputAngle;
+                inputAngle = Math.atan(opposite / adjacent);
+                rotationAngle = Math.PI - 2 * inputAngle;
 
-                    if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
-                    else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                    else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                    else velocity.rotateRad((float)rotationAngle);
-                }
-                else { // vertical
-                    adjacent = Math.abs(position.y - tNegativeOne.y);
-                    opposite = Math.abs(position.x - tNegativeOne.x);
-
-                    inputAngle = Math.atan(opposite / adjacent);
-                    rotationAngle = Math.PI - 2 * inputAngle;
-
-                    if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                    else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)rotationAngle);
-                    else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
-                    else velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                }
-
-                sv.vx = -velocity.x * Wall.frictionCoeficient;
-                sv.vy = -velocity.y * Wall.frictionCoeficient;
+                if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
+                else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+                else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+                else velocity.rotateRad((float)rotationAngle);
             }
-            else { // water body
-                // reset position
-                sv.x = reference == null ? Integer.MAX_VALUE : sv.prev.x;
-                sv.y = reference == null ? Integer.MAX_VALUE : sv.prev.y;
+            else { // vertical
+                adjacent = Math.abs(position.y - tNegativeOne.y);
+                opposite = Math.abs(position.x - tNegativeOne.x);
 
-                sv.stop = true;
+                inputAngle = Math.atan(opposite / adjacent);
+                rotationAngle = Math.PI - 2 * inputAngle;
 
-                // stroke penalty
-                if (reference != null) reference.GAME_SCREEN.increaseHitCounter(1);
+                if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+                else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)rotationAngle);
+                else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
+                else velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
             }
+
+            sv.vx = -velocity.x * Wall.frictionCoeficient;
+            sv.vy = -velocity.y * Wall.frictionCoeficient;
         }
         else if (hitWall == null && this.recentlyHitWall) {
             this.recentlyHitWall = false;
@@ -180,20 +163,19 @@ public class Game {
         while(!sv.stop) {
             run(sv, null);
             //float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
-            float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
+            float temp;
+
+            if(useFloodFill){
+                temp = BotHelper.getFloodFillFitness(sv.x, sv.y);
+                if(temp <= 1){
+                    useFloodFill = false;
+                }
+            }else{
+                temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
+            }
 
             if (a!=null){
-                if(temp < a.fitness && Physics.magnitude(sv.vx, sv.vy) < Input.VH){
-                    a.fitness = temp;
-                }
-            }
-        }
-        if(useFloodFill){
-            float temp = BotHelper.getFloodFillFitness(sv.x, sv.y);
-            if(temp <= 1){
-                useFloodFill = false;
-            }
-            if (a!=null){
+
                 if(temp < a.fitness && Physics.magnitude(sv.vx, sv.vy) < Input.VH){
                     a.fitness = temp;
                 }
