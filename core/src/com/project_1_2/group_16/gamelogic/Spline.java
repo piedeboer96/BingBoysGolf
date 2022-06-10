@@ -25,7 +25,6 @@ public class Spline {
 
     /**
      * Size of the grid that makes up the spline.
-     * Must be a minimum of 4.
      */
     public static final int SPLINE_SIZE = 16;
 
@@ -51,6 +50,7 @@ public class Spline {
 
     /**
      * String interpreter.
+     * https://beanshell.github.io/
      */
     private static final Interpreter BSH = new Interpreter();
 
@@ -301,7 +301,7 @@ public class Spline {
         /**
          * Corners of the quadrant.
          */
-        public KnotPoint nn, np, pn, pp;
+        public final KnotPoint nn, np, pn, pp;
 
         /**
          * Quadrant-coefficients.
@@ -311,7 +311,7 @@ public class Spline {
         /**
          * Initial values.
          */
-        public float[][] I;
+        public final float[][] I;
 
         public Quadrant(KnotPoint c1, KnotPoint c2, KnotPoint c3, KnotPoint c4) {
             this.nn = c1;

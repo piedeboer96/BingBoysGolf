@@ -26,7 +26,7 @@ public class MazeGenerator {
 
     /**
      * Generate a random maze with walls. Sets the start and end positions to solvable locations.
-     * @param complexity in many cells the maze will be divided
+     * @param complexity in how many cells the maze will be divided
      */
     public static void generateMaze(int complexity) {
         // set complexity
@@ -125,11 +125,22 @@ public class MazeGenerator {
      */
     static class Node {
 
+        /**
+         * 'Score' that this node has.
+         */
         public int bit;
 
+        /**
+         * Center of this node (game coordinates).
+         */
         public final Vector2 center;
+
+        /**
+         * Length and width of this node.
+         */
         public final float size;
-        public final int i, j;
+
+        private final int i, j;
 
         public Node(int i, int j, int complexity, float fieldSize) {
             this.i = i;
@@ -138,11 +149,19 @@ public class MazeGenerator {
             this.center = new Vector2(-fieldSize / 2 + (i + 0.5f) * this.size, -fieldSize / 2 + (j + 0.5f) * this.size);
         }
 
+        /**
+         * If this node has a wall on its west side.
+         * @return
+         */
         public boolean hasWallLeft() {
             if (this.i == 0) return false;
             return (this.bit & 8) == 0;
         }
 
+        /**
+         * If this node has a wall on its north side.
+         * @return
+         */
         public boolean hasWallTop() {
             if (this.j == 0) return false;
             return (this.bit & 1) == 0;

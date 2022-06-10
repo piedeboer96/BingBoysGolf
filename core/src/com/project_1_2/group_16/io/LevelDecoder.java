@@ -15,7 +15,7 @@ import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.MoonTheme;
 
 /**
- * Auxiliary class for decoding a pre-computed level.
+ * Auxiliary class for decoding a pre-computed level from a .json file.
  */
 public class LevelDecoder {
 

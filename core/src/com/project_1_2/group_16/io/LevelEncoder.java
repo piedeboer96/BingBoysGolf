@@ -10,7 +10,7 @@ import com.project_1_2.group_16.themes.DefaultTheme;
 import com.project_1_2.group_16.themes.MoonTheme;
 
 /**
- * Auxiliary class for encoding the current level.
+ * Auxiliary class for encoding the current level to a .json file.
  */
 public class LevelEncoder {
 
