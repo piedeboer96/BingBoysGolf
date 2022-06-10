@@ -19,17 +19,13 @@ public class MazeBot extends AdvancedBot {
         //Always set useFloodFill to true as maze bot relies on that specific Heuristic
         super(startX, startY, game, true);
     }
-
     /**
      * Runs the MazeBot
      * @return the velocity pair
      */
     @Override
     public List<Float> runBot() {
-        if(BotHelper.getFloodFillFitness(getStartX(), getStartY()) <= 1){
-            return makeSimpleShot();
-        }
-        return makeHeuristic_BasedShot();
+        return (BotHelper.getFloodFillFitness(getStartX(), getStartY()) <= 10)? makeSimpleShot() : makeHeuristic_BasedShot();
     }
 
     /**
@@ -38,10 +34,7 @@ public class MazeBot extends AdvancedBot {
      * @return list containing velocity w.r.t x and y direction
      */
     private List<Float> makeSimpleShot(){
-        float diffX = Input.VT.x - getStartX();
-        float diffY = Input.VT.y - getStartY();
-        Vector2 v2 = new Vector2(diffX, diffY);
-        v2.nor();
+        Vector2 v2 = new Vector2(Input.VT.x - getStartX(), Input.VT.y - getStartY()).nor();
         List<Float> toReturn = new ArrayList<Float>();
         toReturn.add(v2.x);
         toReturn.add(v2.y);
@@ -88,6 +81,9 @@ public class MazeBot extends AdvancedBot {
         return toReturn;
     }
 
+    /**
+     * Inner class which stores shots, implements the Comparable interface, so they can be sorted
+     */
     class Shot implements Comparable<Shot> {
         float velX;
         float velY;

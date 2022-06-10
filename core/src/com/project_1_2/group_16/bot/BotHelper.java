@@ -44,7 +44,7 @@ public class BotHelper {
     }
 
     public static void setFloodFillTable(){
-        floodFill = new FloodFill(.08f);
+        floodFill = new FloodFill(.025f);
         scoreMatrix = floodFill.runFloodFill(Input.VT.x, Input.VT.y);
         //floodFill.prettyPrint(scoreMatrix);
     }
@@ -110,32 +110,43 @@ public class BotHelper {
         return toReturn;
     }
 
+//    /**
+//     * Static method to help develop a list of candidates of possible solutions (velocityX, velocityY pair) for the maze bot
+//     * @return the list of possible solutions
+//     */
+//    public static List<float[]> availableVelocities2 (){
+//        float minVelX = -5.0f;
+//        float maxVelX = 5.0f;
+//        float minVelY = -5.0f;
+//        float maxVelY = 5.0f;
+//        float xH, yH;
+//        xH = (Math.abs(maxVelX - minVelX))/15f;
+//        yH = (Math.abs(maxVelY - minVelY))/15f;
+//        ArrayList<float[]>toReturn = new ArrayList<float[]>();
+//        for(float velX = minVelX; velX<=maxVelX; velX+=xH){
+//            for(float velY = minVelY; velY<=maxVelY; velY+=yH){
+//                if(Physics.magnitude(velX, velY) < 5.0f){
+//                    toReturn.add(new float [] {velX, velY});
+//                }
+//            }
+//        }
+//
+//        return toReturn;
+//    }
     /**
      * Static method to help develop a list of candidates of possible solutions (velocityX, velocityY pair) for the maze bot
      * @return the list of possible solutions
      */
-    public static List<float[]> availableVelocities2 (){
-        float minVelX = -5.0f;
-        float maxVelX = 5.0f;
-        float minVelY = -5.0f;
-        float maxVelY = 5.0f;
-        float xH, yH;
-        xH = (Math.abs(maxVelX - minVelX))/10.15f;
-        yH = (Math.abs(maxVelY - minVelY))/10.15f;
+    public static List <float[]> availableVelocities2(){
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
-        toReturn.add(new float[] {5, 0});
-        toReturn.add(new float[] {-5, 0});
-        toReturn.add(new float[] {0, -5});
-        toReturn.add(new float[] {0, 5});
-
-        for(float velX = minVelX; velX<=maxVelX; velX+=xH){
-            for(float velY = minVelY; velY<=maxVelY; velY+=yH){
-                if(Physics.magnitude(velX, velY) < 5.0f){
-                    toReturn.add(new float [] {velX, velY});
-                }
-            }
+        for(int i=0; i<200; i++){
+            double r = 5 * Math.sqrt(Math.random());
+            double theta = Math.random() * 2 * Math.PI;
+            float x = (float)(r * Math.cos(theta));
+            float y = (float)(r * Math.sin(theta));
+            float [] temp = new float[] {x, y};
+            toReturn.add(temp);
         }
-
         return toReturn;
     }
 }
