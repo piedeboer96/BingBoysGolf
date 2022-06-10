@@ -19,7 +19,7 @@ public class MazeBot extends AdvancedBot {
 
     @Override
     public List<Float> runBot() {
-        ArrayList<float[]> candidates = (ArrayList<float[]>) BotHelper.availableVelocities(getStartX(), getStartY());
+        ArrayList<float[]> candidates = (ArrayList<float[]>) BotHelper.availableVelocities2();
 //        ArrayList<float[]> candidates = (ArrayList<float[]>) BotHelper.availableVelocities(getStartX(), getStartY());
         float bestFitness = Integer.MAX_VALUE;
         float [] bestCandidate = new float[2];

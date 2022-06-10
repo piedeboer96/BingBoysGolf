@@ -10,7 +10,6 @@ import com.project_1_2.group_16.math.StateVector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Class for Battle-Royale optimization algorithm to find a hole-in-one. BRO is an evolutionary-algorithm inspired by
@@ -40,7 +39,6 @@ public class BRO extends AdvancedBot {
 
     @Override
     public List<Float> runBot() {
-        Soldier prev_best_soldier = new Soldier(new StateVector(getStartX(), getStartY(), 1f, 1f), getGame());
         //Initialize variables and the population
         float upperBoundX, upperBoundY, lowerBoundX, lowerBoundY, ogUBx, ogLBx, ogUBy, ogLBy;
         initializePopulation();
@@ -71,7 +69,7 @@ public class BRO extends AdvancedBot {
             //Do local search of the current best soldier
             if(possibleBest.fitness < bestSoldier.fitness){
                 bestSoldier = possibleBest;
-                if(possibleBest.fitness < Input.R || Math.abs(prev_best_soldier.fitness-bestSoldier.fitness) < 0.001f){
+                if(possibleBest.fitness < Input.R){
                     break outerloop;
                 }
             }
@@ -119,7 +117,6 @@ public class BRO extends AdvancedBot {
                     bestSoldier = dam.createClone();
                     break outerloop;
                 }
-
             }
             //Update upper and lower bound
             if(iter>=delta) {
@@ -141,7 +138,6 @@ public class BRO extends AdvancedBot {
                     lowerBoundY = ogLBy;
                 }
             }
-            prev_best_soldier = bestSoldier.createClone();
         }
         //System.out.println("best is " + bestSoldier.toString());
         ArrayList<Float> toReturn = new ArrayList<>();
