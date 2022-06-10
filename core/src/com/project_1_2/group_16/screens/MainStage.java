@@ -11,9 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.io.Input;
+import com.project_1_2.group_16.io.LevelSelector;
 import com.project_1_2.group_16.misc.InfoDialog;
-import com.project_1_2.group_16.misc.LevelSelector;
 
 /**
  * Stage used as the main title screen.

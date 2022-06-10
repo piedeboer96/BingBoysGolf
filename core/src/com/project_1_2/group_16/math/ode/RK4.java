@@ -1,6 +1,8 @@
-package com.project_1_2.group_16.math;
+package com.project_1_2.group_16.math.ode;
 
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.math.Derivation;
+import com.project_1_2.group_16.math.StateVector;
 
 /**
  * Classical 4th-order Runge-Kutta method.

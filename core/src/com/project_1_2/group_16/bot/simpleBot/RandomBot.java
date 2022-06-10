@@ -1,11 +1,11 @@
 package com.project_1_2.group_16.bot.simpleBot;
 
-import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.BotHelper;
 import com.project_1_2.group_16.gamelogic.Game;
-import com.project_1_2.group_16.math.NumericalSolver;
+import com.project_1_2.group_16.io.Input;
 import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.math.ode.NumericalSolver;
 
 import java.util.Random;
 

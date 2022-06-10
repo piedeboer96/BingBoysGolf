@@ -1,7 +1,7 @@
 package com.project_1_2.group_16.math;
 
-import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.io.Input;
 
 /**
  * Class containing calculations related to physics.

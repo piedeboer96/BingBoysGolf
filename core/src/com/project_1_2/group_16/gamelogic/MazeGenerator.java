@@ -1,4 +1,4 @@
-package com.project_1_2.group_16.misc;
+package com.project_1_2.group_16.gamelogic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.Input;
+import com.project_1_2.group_16.io.Input;
 import com.project_1_2.group_16.models.Wall;
 
 /**

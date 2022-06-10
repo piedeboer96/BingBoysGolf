@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
-import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.gamelogic.Terrain;
+import com.project_1_2.group_16.io.Input;
 import com.project_1_2.group_16.math.StateVector;
 
 /**

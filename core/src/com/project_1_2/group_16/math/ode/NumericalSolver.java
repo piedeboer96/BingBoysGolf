@@ -1,4 +1,6 @@
-package com.project_1_2.group_16.math;
+package com.project_1_2.group_16.math.ode;
+
+import com.project_1_2.group_16.math.StateVector;
 
 /**
  * An interface for numerical solvers that can solve ODE's for our physics engine.

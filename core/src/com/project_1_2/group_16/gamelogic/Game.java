@@ -2,10 +2,14 @@ package com.project_1_2.group_16.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
 import com.project_1_2.group_16.App;
-import com.project_1_2.group_16.Input;
 import com.project_1_2.group_16.bot.Agent;
 import com.project_1_2.group_16.bot.BotHelper;
+import com.project_1_2.group_16.io.Input;
 import com.project_1_2.group_16.math.*;
+import com.project_1_2.group_16.math.ode.Euler;
+import com.project_1_2.group_16.math.ode.NumericalSolver;
+import com.project_1_2.group_16.math.ode.RK2;
+import com.project_1_2.group_16.math.ode.RK4;
 import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.models.Wall;
 
