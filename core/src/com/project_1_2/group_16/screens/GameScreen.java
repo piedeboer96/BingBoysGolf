@@ -289,33 +289,33 @@ public class GameScreen extends ScreenAdapter {
 
 		// bots
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_1)) { // sim. annealing
-			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false    );
+			if (!Input.WALLS.isEmpty()) {this.runMazeBot(); return;}
+			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
 			Float[] sol = this.sa.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){ // battle royale optimization
+			if (!Input.WALLS.isEmpty()) {this.runMazeBot(); return;}
 			this.bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
 			Float[] sol = this.bro.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ // particle swarm optimization
-			this.pso = new PSO(100, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
+			if (!Input.WALLS.isEmpty()) {this.runMazeBot(); return;}
+			this.pso = new PSO(200, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
 			Float[] sol = this.pso.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_4)) { // rule based bot
+			if (!Input.WALLS.isEmpty()) {this.runMazeBot(); return;}
 			this.dumbBot = new RuleBasedBot(this.golfball.STATE);
 			float[] sol = this.dumbBot.play();
 			this.shoot(sol[0], sol[1]);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_5)) { // random bot
+			if (!Input.WALLS.isEmpty()) {this.runMazeBot(); return;}
 			this.ruleBasedBot = new RandomBot(this.golfball.STATE);
 			float[] sol = this.ruleBasedBot.play();
-			this.shoot(sol[0], sol[1]);
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_6)) { // maze bot
-			this.mazeBot = new MazeBot(this.golfball.STATE.x, this.golfball.STATE.y, this.game);
-			Float[] sol = this.mazeBot.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
 		
@@ -337,6 +337,12 @@ public class GameScreen extends ScreenAdapter {
 			this.power = App.MIN_POWER;
 			this.ballMovement.setPowerStatus(PowerStatus.REST);
 		}
+	}
+
+	private void runMazeBot() {
+		this.mazeBot = new MazeBot(this.golfball.STATE.x, this.golfball.STATE.y, this.game);
+		Float[] sol = this.mazeBot.runBot().toArray(new Float[2]);
+		this.shoot(sol[0], sol[1]);
 	}
 
     /**
