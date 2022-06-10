@@ -64,7 +64,7 @@ public class MazeBot extends AdvancedBot {
             float tempFitness = BotHelper.getFloodFillFitness(sv.x, sv.y);
             shots.add(new Shot(sv.x, sv.y, candidate_a[0], candidate_a[1], tempFitness));
         }
-        Shot bestShot = new Shot(0,0,0,0,0);
+        Shot bestShot = shots.get(0);
         Collections.sort(shots);
         for(int i=0; i<5; i++){
             Shot firstShot = shots.get(i);

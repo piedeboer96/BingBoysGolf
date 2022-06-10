@@ -127,11 +127,32 @@ public class FloodFill {
         float x, y;
 
         for(int i = 0; i < size_X; i++) {
-            for(int j = 0; j < size_Y; j++) {
-                x = -1*FIELD_SIZE / 2  + stepSize * (i + 1);
-                y = -1*FIELD_SIZE / 2  + stepSize * (j + 1);
+            for (int j = 0; j < size_Y; j++) {
+                x = -1 * FIELD_SIZE / 2 + stepSize * (i + 1);
+                y = -1 * FIELD_SIZE / 2 + stepSize * (j + 1);
 
                 floodFillTable[i][j] = getArrayValue(x, y, i, j);
+            }
+        }
+        boolean [][] visitedNodes2 = new boolean[size_X][size_Y];
+        for(int i=0; i < size_X; i++){
+            for(int j=0; j < size_Y; j++){
+                if(floodFillTable[i][j] == Integer.MAX_VALUE && !visitedNodes2[i][j]){
+                    if(i != size_X - 1) {
+                        floodFillTable[i + 1][j] = Integer.MAX_VALUE;
+                        visitedNodes2[i + 1][j] = true;
+                    }else if (i != 0) {
+                        floodFillTable[i - 1][j] = Integer.MAX_VALUE;
+                        visitedNodes2[i - 1][j] = true;
+                    }else if (j != size_Y - 1) {
+                        floodFillTable[i][j + 1] = Integer.MAX_VALUE;
+                        visitedNodes2[i][j + 1] = true;
+                    } else if(j!=0) {
+                        floodFillTable[i][j - 1] = Integer.MAX_VALUE;
+                        visitedNodes2[i][j - 1] = true;
+                    }
+                    visitedNodes2[i][j] = true;
+                }
             }
         }
     }
