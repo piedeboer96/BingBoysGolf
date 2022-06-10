@@ -13,7 +13,7 @@ public class Tree {
     /**
      * Energy lost by hitting trees.
      */
-    public static final float treeCoefficient = 0.8f;
+    public static final float frictionCoefficient = 0.8f;
 
     public boolean recentlyHit;
 

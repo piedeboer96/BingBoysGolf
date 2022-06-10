@@ -10,6 +10,16 @@ import com.badlogic.gdx.math.Vector2;
 public class Wall {
 
     /**
+     * Represents if the wall is the wall of a maze (has collision).
+     */
+    public static final int MAZE_WALL = 0;
+
+    /**
+     * Represents if the wall should behave like a body of water.
+     */
+    public static final int WATER = 1;
+
+    /**
      * Standard height of the wall (above the ground).
      */
     public static final float HEIGHT = 0.25f;
@@ -18,10 +28,6 @@ public class Wall {
      * Energy lost by hitting walls
      */
     public static final float frictionCoeficient = 0.8f;
-
-    public static final int MAZE_WALL = 0;
-
-    public static final int WATER = 1;
 
     /**
      * If the ball has recently hit this wall. 

@@ -42,8 +42,6 @@ import com.project_1_2.group_16.models.Wall;
  */
 public class GameScreen extends ScreenAdapter {
 
-	public static float curFitness = 0;
-
     // app reference
     private App app;
 
@@ -74,6 +72,7 @@ public class GameScreen extends ScreenAdapter {
     private Vector3 v = new Vector3();
     private float colorutil;
 	private float v0x, v0y;
+	private float curFitness;
 
 	// bots
 	private RuleBasedBot dumbBot;
@@ -81,7 +80,6 @@ public class GameScreen extends ScreenAdapter {
 	private SA sa;
 	private BRO bro;
 	private PSO pso;
-	private NelderMead nelderMead;
 	private MazeBot mazeBot;
 
     public GameScreen(App app) {
@@ -164,7 +162,7 @@ public class GameScreen extends ScreenAdapter {
 		this.freeCam.update();
 		this.freeMovement = new FreeCamera(this.freeCam);
 
-		// creating the floodfillTable
+		// create the floodfillTable
 		BotHelper.setFloodFillTable();
     }
 
@@ -243,13 +241,11 @@ public class GameScreen extends ScreenAdapter {
 			this.allowHit = true;
 		}
 		this.golfball.updateState();
+		this.curFitness = BotHelper.getFloodFillFitness(this.golfball.STATE.x, this.golfball.STATE.y);
 
         // controls
 		if (this.useFreeCam) this.freeMovement.move(Gdx.input, Gdx.graphics.getDeltaTime());
 		this.controls();
-
-
-		curFitness = BotHelper.getFloodFillFitness(this.golfball.STATE.x, this.golfball.STATE.y);
     }
 
     @Override
@@ -317,14 +313,8 @@ public class GameScreen extends ScreenAdapter {
 			float[] sol = this.ruleBasedBot.play();
 			this.shoot(sol[0], sol[1]);
 		}
-
-		if (Gdx.input.isKeyJustPressed(Keys.NUM_6)) { //nelder mead
-			this.nelderMead = new NelderMead(this.golfball.STATE.x, this.golfball.STATE.y, this.game, 500, 1, 2, 0.5, 0.35, true);
-			Float[] sol = this.nelderMead.runBot().toArray(new Float[2]);
-			this.shoot(sol[0], sol[1]);
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_7)){ //maze bot (simple bruce forto)
-			this.mazeBot = new MazeBot(this.golfball.STATE.x, this.golfball.STATE.y,this.game);
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_6)) { // maze bot
+			this.mazeBot = new MazeBot(this.golfball.STATE.x, this.golfball.STATE.y, this.game);
 			Float[] sol = this.mazeBot.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
@@ -347,7 +337,6 @@ public class GameScreen extends ScreenAdapter {
 			this.power = App.MIN_POWER;
 			this.ballMovement.setPowerStatus(PowerStatus.REST);
 		}
-
 	}
 
     /**

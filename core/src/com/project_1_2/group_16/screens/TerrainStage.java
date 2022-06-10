@@ -157,6 +157,11 @@ public class TerrainStage extends InputScreen {
                 infoDialog.addText("(pressing the render button will take the current value of the brush-textfield,");
                 infoDialog.addText("and add it to the current gray-colored tiles. To apply multiple height changes make");
                 infoDialog.addText("sure to commit each height-level seperately)");
+                infoDialog.addText("");
+                infoDialog.addText("To generate a maze, input the desired complexity in the \"Maze Complexity\" field,");
+                infoDialog.addText("that is visible after pressing the render button at least once. This complexity");
+                infoDialog.addText("refers to the number of cells that the maze is subdivided in when generating.");
+                infoDialog.addText("To generate the maze simply press the \"Generate maze\" button.");
                 infoDialog.show(stage);
             }
         });
@@ -209,7 +214,7 @@ public class TerrainStage extends InputScreen {
         this.complexityField = new TextField("3", this.screen.skin);
         this.complexityField.setWidth(this.randomMaze.getWidth());
         this.complexityField.setPosition(this.randomMaze.getX(Align.center), this.randomMaze.getY(Align.center) + this.randomMaze.getHeight() + 10, Align.center);
-        this.complexityLabel = new Label("Complexity", this.screen.skin);
+        this.complexityLabel = new Label("Maze Complexity", this.screen.skin);
         this.complexityLabel.setColor(Color.BLACK);
         this.complexityLabel.setPosition(this.complexityField.getX(), this.complexityField.getY() + this.complexityField.getHeight());
     }

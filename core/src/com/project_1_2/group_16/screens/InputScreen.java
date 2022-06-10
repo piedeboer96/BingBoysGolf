@@ -9,16 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public abstract class InputScreen extends Stage {
 
     /**
-     * Reference to the screen for which this stage was created.
-     */
-    protected TitleScreen screen;
-
-    /**
-     * Reference to the sub-class of this inputscreen.
-     */
-    protected Stage stage;
-
-    /**
      * The main screen.
      */
     public static final int MAIN = 0;
@@ -32,6 +22,16 @@ public abstract class InputScreen extends Stage {
      * The terrain-settings screen.
      */
     public static final int TERRAIN_SETTINGS = 2;
+
+    /**
+     * Reference to the screen for which this stage was created.
+     */
+    protected TitleScreen screen;
+
+    /**
+     * Reference to the sub-class of this inputscreen.
+     */
+    protected Stage stage;
     
     public InputScreen(TitleScreen screen) {
         this.screen = screen;

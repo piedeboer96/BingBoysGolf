@@ -17,7 +17,7 @@ public class Game {
     public static float h = 0.05f;
 
     /**
-     * Determines whether we use the FloodFill table as a heuristic
+     * Determines whether we use the FloodFill table as a heuristic.
      */
     public static boolean useFloodFill;
 
@@ -37,6 +37,7 @@ public class Game {
      * @param reference a reference to an App object. leave null if doing simulations.
      */
     public void run(final StateVector sv, App reference) {
+        // save previous position for collision detection
         Vector2 previousPosition = new Vector2(sv.x, sv.y);
 
         // update state vector with numerical solver
@@ -73,8 +74,8 @@ public class Game {
 
             // https://stackoverflow.com/a/49059789
             velocity.sub(normal.scl(2*velocity.dot(normal)));
-            sv.vx = velocity.x * Tree.treeCoefficient;
-            sv.vy = velocity.y * Tree.treeCoefficient;
+            sv.vx = velocity.x * Tree.frictionCoefficient;
+            sv.vy = velocity.y * Tree.frictionCoefficient;
         }
 
         // check wall collision

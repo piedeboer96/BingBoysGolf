@@ -96,6 +96,7 @@ public class MainStage extends InputScreen {
                 infoDialog.addText("3 - Particle Swarm Optimization");
                 infoDialog.addText("4 - Rule-Based bot");
                 infoDialog.addText("5 - Random bot");
+                infoDialog.addText("6 - Maze bot (don't use other bots on mazes)");
                 infoDialog.show(stage);
             }
         });
