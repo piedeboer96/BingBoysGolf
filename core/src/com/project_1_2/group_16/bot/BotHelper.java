@@ -119,6 +119,10 @@ public class BotHelper {
         xH = (Math.abs(maxVelX - minVelX))/10.15f;
         yH = (Math.abs(maxVelY - minVelY))/10.15f;
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
+        toReturn.add(new float[] {5, 0});
+        toReturn.add(new float[] {-5, 0});
+        toReturn.add(new float[] {0, -5});
+        toReturn.add(new float[] {0, 5});
 
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
