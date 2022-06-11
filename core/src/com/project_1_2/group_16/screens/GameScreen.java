@@ -302,7 +302,7 @@ public class GameScreen extends ScreenAdapter {
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)){ // particle swarm optimization
 			if (!Input.WALLS.isEmpty()) {this.runMazeBot(); return;}
-			this.pso = new PSO(200, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
+			this.pso = new PSO(100, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
 			Float[] sol = this.pso.runBot().toArray(new Float[2]);
 			this.shoot(sol[0], sol[1]);
 		}
