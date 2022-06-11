@@ -98,7 +98,7 @@ public class BotHelper {
 
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
-                if(Physics.magnitude(velX, velY) < 5.0f){
+                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY, startX, startY)){
                     toReturn.add(new float [] {velX, velY});
                 }
             }
@@ -114,7 +114,7 @@ public class BotHelper {
      */
     public static List <float[]> mazeBotCandidates(){
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
-        for(int i=0; i<200; i++){
+        for(int i=0; i<100; i++){
             double r = 5 * Math.sqrt(Math.random());
             double theta = Math.random() * 2 * Math.PI;
             float x = (float)(r * Math.cos(theta));
