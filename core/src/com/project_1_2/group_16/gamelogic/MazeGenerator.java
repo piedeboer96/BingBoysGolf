@@ -118,6 +118,14 @@ public class MazeGenerator {
         return i >= 0 && i < complexity;
     }
 
+    /**
+     * Get the complexity of the current maze.
+     * @return
+     */
+    public static int getComplexity() {
+        return complexity;
+    }
+
 
 
     /**
