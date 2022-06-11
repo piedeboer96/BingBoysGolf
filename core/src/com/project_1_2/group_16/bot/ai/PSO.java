@@ -8,6 +8,7 @@ import com.project_1_2.group_16.io.Input;
 import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +20,13 @@ public class PSO extends AdvancedBot {
 
     private final int maxIterations;
     public List<Particle> particles;
+    boolean globelbestupdate;
 
     private int iteration = 1;
-    private final float N = population_size;
-    private final float W = (float) (0.4*((iteration-N)/Math.pow(N, 2)) + 0.4f);
-    private final float c1 = -3*(iteration/N)+3.5f;
-    private final float c2 = 3*(iteration/N)+0.5f;
+    private float N;
+    private float W;
+    private float c1;
+    private float c2;
 
     private Particle globalBest;
 
@@ -40,6 +42,10 @@ public class PSO extends AdvancedBot {
         this.maxIterations = maxIterations;
         this.population_size = population_size;
         particles = initializeParticles();
+        W = 0.8f;
+        c1 = 1;
+        c2 = 1;
+        this.globelbestupdate = true;
     }
 
     /**
@@ -53,63 +59,44 @@ public class PSO extends AdvancedBot {
         while (count < maxIterations && globalBest.fitness > Input.R) {
             count++;
 
+            N = population_size;
+            W = (float) (0.4*((iteration-N)/Math.pow(N, 2)) + 0.4f);
+            c1 = -3 * iteration/N + 3.5f;
+            c2 = 3 * iteration / N + 0.5f;
+
+            this.iteration++;
+
             Particle localSearch = doLocalSearch(globalBest);
-            if (localSearch.fitness < globalBest.fitness) {
+            if (localSearch.fitness < globalBest.fitness && globelbestupdate) {
                 globalBest = localSearch;
+                globelbestupdate = false;
             }
             if (globalBest.fitness < Input.R) {
                 break outerloop;
             }
-            ParticleThread[] threads = new ParticleThread[particles.size()];
+            List<Particle> updated_particles = new ArrayList<>();
             for (int i = 0; i < particles.size(); i++) {
-                iteration = i + 1;
-                ParticleThread.closedThreads = 0;
-
                 Particle current = particles.get(i);
                 float[] updated = getValidVelocity(updatedVelocity(current));
 
-                threads[i] = new ParticleThread(getStartX(), getStartY(), updated[0], updated[1], current.getlocalBest(), getGame());
-                threads[i].start();
+                updated_particles.add(new Particle(new StateVector(getStartX(), getStartY(), updated[0], updated[1]), getGame()));
+                updated_particles.get(i).setlocalBest(particles.get(i));
+                if(updated_particles.get(i).fitness < updated_particles.get(i).getlocalBest().fitness){
+                    updated_particles.get(i).setlocalBest(updated_particles.get(i));
+                    if(updated_particles.get(i).fitness < globalBest.fitness){
+                        globalBest = updated_particles.get(i);
+                        globelbestupdate = true;
+                    }
+                }
             }
-            particles = runThreads(threads);
+            particles = updated_particles;
+
         }
         ArrayList<Float> toReturn = new ArrayList<>();
-
         toReturn.add(globalBest.velX);
         toReturn.add(globalBest.velY);
 
         return toReturn;
-    }
-
-    /**
-     * Method used to create particles using multiple threads.
-     * @param threads ParticleThread
-     * @return Arraylist of particles
-     */
-    public List<Particle> runThreads(ParticleThread[] threads){
-        ArrayList<Particle> particleslocal = new ArrayList<>();
-        boolean stop = false;
-        while(!stop){
-            int count = 0;
-            for(int i = 0; i < threads.length; i++){
-                if(threads[i].hasFound){
-                    count++;
-                }
-            }
-            if(count >= threads.length){
-                stop = true;
-            }
-        }
-        for(int i = 0; i < threads.length; i++){
-            if (threads[i].getParticle().getlocalBest().fitness > threads[i].getParticle().fitness) {
-                threads[i].getParticle().setlocalBest(threads[i].getParticle());
-                if (threads[i].getParticle().getlocalBest().fitness < globalBest.fitness) {
-                    globalBest = threads[i].getParticle().createClone();
-                }
-            }
-            particleslocal.add(threads[i].getParticle());
-        }
-        return particleslocal;
     }
 
     /**
@@ -151,16 +138,15 @@ public class PSO extends AdvancedBot {
         neighbourHood.add(new float[] {vx-stepSize, vy-stepSize});
 
         double bestFitness = Integer.MAX_VALUE;
-        ParticleThread[] threads = new ParticleThread[neighbourHood.size()];
+        Particle[] threads = new Particle[neighbourHood.size()];
         int index = 0;
         for(float[] f : neighbourHood){
             f = getValidVelocity(f);
-            threads[index] = new ParticleThread(getStartX(), getStartY(), f[0], f[1],  p.getlocalBest(), getGame());
-            threads[index].start();
+            threads[index] = new Particle(new StateVector(getStartX(), getStartY(), f[0], f[1]), getGame());
             index++;
         }
-        List<Particle> particle_local = runThreads(threads);
-        for(Particle pt : particle_local){
+
+        for(Particle pt : threads){
             if(pt.fitness < Input.R * 3.15f){
                 return pt;
             }
@@ -184,7 +170,7 @@ public class PSO extends AdvancedBot {
             vxy[1] = globalBest.velY;
             return vxy;
         }
-        if(Physics.magnitude(vxvy[0], vxvy[1]) > App.MAX_POWER){
+        if(Physics.magnitude(vxvy[0], vxvy[1]) > 6f){
             float[] vxy = new float[2];
             vxy[0] = (float) (vxvy[0]/Math.sqrt(50));
             vxy[1] = (float) (vxvy[1]/Math.sqrt(50));
@@ -212,8 +198,8 @@ public class PSO extends AdvancedBot {
      */
     public float[] personalInfluence(Particle particle){
         float[] personalInfluenceXY = new float[2];
-        float U1x = (float) Math.random();
-        float U1y = (float) Math.random();
+        float U1x = (float) Math.random()*2;
+        float U1y = (float) Math.random()*2;
         personalInfluenceXY[0] = c1*U1x*(particle.getlocalBest().velX-particle.velX);
         personalInfluenceXY[1] = c1*U1y*(particle.getlocalBest().velY-particle.velY);
         return personalInfluenceXY;
@@ -226,8 +212,8 @@ public class PSO extends AdvancedBot {
      */
     public float[] socialInfluence(Particle particle){
         float[] socialInfluence = new float[2];
-        float U2x = (float) Math.random();
-        float U2y = (float) Math.random();
+        float U2x = (float) Math.random()*2;
+        float U2y = (float) Math.random()*2;
         socialInfluence[0] = c2*U2x*(globalBest.velX-particle.velX);
         socialInfluence[1] = c2*U2y*(globalBest.velY-particle.velY);
         return socialInfluence;
@@ -257,6 +243,7 @@ public class PSO extends AdvancedBot {
                 globalBest = particles.get(i).createClone();
             }
         }
+        globelbestupdate = true;
         return particles;
     }
 }

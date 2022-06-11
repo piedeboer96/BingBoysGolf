@@ -34,9 +34,6 @@ public class BotHelper {
         int fitness;
         try{
             fitness = scoreMatrix[floodFill.coordinateToIndex(x)][floodFill.coordinateToIndex(y)];
-            if(fitness < 1){
-                System.out.println("X_postion: " + x + " Y_position: " + y + "Fitness: " + fitness);
-            }
         }catch (Exception e){
             fitness = Integer.MAX_VALUE;
         }
