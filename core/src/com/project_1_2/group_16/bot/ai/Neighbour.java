@@ -24,7 +24,7 @@ public class Neighbour extends Agent {
     }
 
 
-    public double getFitness(){
+    public float getFitness(){
         return this.fitness;
     }
 

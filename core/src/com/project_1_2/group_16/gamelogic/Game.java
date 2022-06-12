@@ -87,7 +87,6 @@ public class Game {
         if (hitWall != null && !hitWall.recentlyHit) {
             this.recentlyHitWall = true;
             hitWall.recentlyHit = true;
-            System.out.println("something");
 
             if (hitWall.getType() == Wall.MAZE_WALL) { // collision
                 Vector2 position = new Vector2(sv.x, sv.y);
@@ -187,18 +186,6 @@ public class Game {
             run(sv, null);
             //float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
             float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
-
-            if (a!=null){
-                if(temp < a.fitness && Physics.magnitude(sv.vx, sv.vy) < Input.VH){
-                    a.fitness = temp;
-                }
-            }
-        }
-        if(useFloodFill){
-            float temp = BotHelper.getFloodFillFitness(sv.x, sv.y);
-            if(temp <= 1){
-                useFloodFill = false;
-            }
             if (a!=null){
                 if(temp < a.fitness && Physics.magnitude(sv.vx, sv.vy) < Input.VH){
                     a.fitness = temp;

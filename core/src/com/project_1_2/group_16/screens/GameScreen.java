@@ -318,6 +318,9 @@ public class GameScreen extends ScreenAdapter {
 			float[] sol = this.ruleBasedBot.play();
 			this.shoot(sol[0], sol[1]);
 		}
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_6)){
+			this.runMazeBot();
+		}
 		
 		// shooting the ball
 		if (this.ballMovement.getPowerStatus() == PowerStatus.POWER_UP) {

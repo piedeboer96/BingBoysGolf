@@ -25,7 +25,26 @@ public class MazeBot extends AdvancedBot {
      */
     @Override
     public List<Float> runBot() {
-        return (BotHelper.getFloodFillFitness(getStartX(), getStartY()) <= 50)? makeSimpleShot() : makeHeuristic_BasedShot();
+        return (simpleShotPossible())? makeSimpleShot() : makeHeuristic_BasedShot();
+    }
+
+    /**
+     * Boolean check, if a simple shot is possible, no need to make a heuristic shot
+     * @return true if simple shot is possible false otherwise
+     */
+    public boolean simpleShotPossible(){
+        if(BotHelper.getFloodFillFitness(getStartX(), getStartY()) <= 50){
+            return true;
+        }
+        Vector2 simShot = new Vector2(Input.VT.x - getStartX(), Input.VT.y - getStartY());
+        StateVector sv = new StateVector(getStartX(), getStartY(), simShot.x * 5.0f, simShot.y * 5.0f);
+        Neighbour tempAgent = new Neighbour(sv, getGame());
+        getGame().runEngine(sv, tempAgent);
+        if(tempAgent.getFitness() < Input.R){
+            System.out.println("something");
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -34,10 +53,16 @@ public class MazeBot extends AdvancedBot {
      * @return list containing velocity w.r.t x and y direction
      */
     private List<Float> makeSimpleShot(){
-        Vector2 v2 = new Vector2(Input.VT.x - getStartX(), Input.VT.y - getStartY()).nor();
         List<Float> toReturn = new ArrayList<Float>();
-        toReturn.add(v2.x);
-        toReturn.add(v2.y);
+        if(BotHelper.getFloodFillFitness(getStartX(), getStartY()) <= 50) {
+            Vector2 v2 = new Vector2(Input.VT.x - getStartX(), Input.VT.y - getStartY()).nor();
+            toReturn.add(v2.x);
+            toReturn.add(v2.y);
+            return toReturn;
+        }
+        Vector2 v2 = new Vector2(Input.VT.x - getStartX(), Input.VT.y - getStartY());
+        toReturn.add(v2.x * 5.0f);
+        toReturn.add(v2.y * 5.0f);
         return toReturn;
     }
 
