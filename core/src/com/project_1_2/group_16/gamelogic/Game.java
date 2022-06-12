@@ -49,14 +49,7 @@ public class Game {
 
         // check water collision
         if (Terrain.collision.ballIsInWater(sv)) {
-            // reset position
-            sv.x = reference == null ? Integer.MAX_VALUE : sv.prev.x;
-            sv.y = reference == null ? Integer.MAX_VALUE : sv.prev.y;
-
-            sv.stop = true;
-
-            // stroke penalty
-            if (reference != null) reference.GAME_SCREEN.increaseHitCounter(1);
+            Terrain.collision.waterCollision(sv, reference);
         }
 
         // check tree collision
@@ -71,15 +64,7 @@ public class Game {
             this.recentlyHitTree = true;
             hittree.recentlyHit = true;
 
-            Vector2 tree = new Vector2(hittree.getPosition().x, hittree.getPosition().z);
-            Vector2 position = new Vector2(sv.x, sv.y);
-            Vector2 velocity = new Vector2(sv.vx, sv.vy);
-            Vector2 normal = tree.cpy().sub(position).nor();
-
-            // https://stackoverflow.com/a/49059789
-            velocity.sub(normal.scl(2*velocity.dot(normal)));
-            sv.vx = velocity.x * Tree.frictionCoefficient;
-            sv.vy = velocity.y * Tree.frictionCoefficient;
+            Terrain.collision.treeCollision(sv, hittree);
         }
 
         // check wall collision
@@ -88,53 +73,7 @@ public class Game {
             this.recentlyHitWall = true;
             hitWall.recentlyHit = true;
 
-            if (hitWall.getType() == Wall.MAZE_WALL) { // collision
-                Vector2 position = new Vector2(sv.x, sv.y);
-                Vector2 velocity = new Vector2(sv.vx, sv.vy);
-                Vector2 tNegativeOne = position.cpy().sub(velocity);
-                
-                Vector2 wallVector = hitWall.closestWall(previousPosition.x, previousPosition.y);
-            
-                float adjacent, opposite;
-                double inputAngle, rotationAngle;
-                if (wallVector == Vector2.X) { // horizontal
-                    adjacent = Math.abs(position.x - tNegativeOne.x);
-                    opposite = Math.abs(position.y - tNegativeOne.y);
-
-                    inputAngle = Math.atan(opposite / adjacent);
-                    rotationAngle = Math.PI - 2 * inputAngle;
-
-                    if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
-                    else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                    else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                    else velocity.rotateRad((float)rotationAngle);
-                }
-                else { // vertical
-                    adjacent = Math.abs(position.y - tNegativeOne.y);
-                    opposite = Math.abs(position.x - tNegativeOne.x);
-
-                    inputAngle = Math.atan(opposite / adjacent);
-                    rotationAngle = Math.PI - 2 * inputAngle;
-
-                    if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                    else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)rotationAngle);
-                    else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
-                    else velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                }
-
-                sv.vx = -velocity.x * Wall.frictionCoeficient;
-                sv.vy = -velocity.y * Wall.frictionCoeficient;
-            }
-            else { // water body
-                // reset position
-                sv.x = reference == null ? Integer.MAX_VALUE : sv.prev.x;
-                sv.y = reference == null ? Integer.MAX_VALUE : sv.prev.y;
-
-                sv.stop = true;
-
-                // stroke penalty
-                if (reference != null) reference.GAME_SCREEN.increaseHitCounter(1);
-            }
+            Terrain.collision.wallCollision(sv, hitWall, previousPosition, reference);
         }
         else if (hitWall == null && this.recentlyHitWall) {
             this.recentlyHitWall = false;
@@ -184,7 +123,6 @@ public class Game {
         simulCounter++;
         while(!sv.stop) {
             run(sv, null);
-            //float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
             float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
             if (a!=null){
                 if(temp < a.fitness && Physics.magnitude(sv.vx, sv.vy) < Input.VH){

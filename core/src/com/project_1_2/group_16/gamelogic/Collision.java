@@ -1,6 +1,7 @@
 package com.project_1_2.group_16.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
+import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.io.Input;
 import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
@@ -82,5 +83,88 @@ public class Collision {
             }
         }
         return false;
+    }
+
+    /**
+     * Logic for water collision.
+     * @param sv statevector of the ball
+     * @param reference app reference, null if simulation
+     */
+    public void waterCollision(StateVector sv, App reference) {
+        // reset position
+        sv.x = reference == null ? Integer.MAX_VALUE : sv.prev.x;
+        sv.y = reference == null ? Integer.MAX_VALUE : sv.prev.y;
+
+        sv.stop = true;
+
+        // stroke penalty
+        if (reference != null) reference.GAME_SCREEN.increaseHitCounter(1);
+    }
+
+    /**
+     * Logic for tree collision.
+     * @param sv statevector of the ball
+     * @param tree tree that was hit
+     */
+    public void treeCollision(StateVector sv, Tree tree) {
+        Vector2 treePos = new Vector2(tree.getPosition().x, tree.getPosition().z);
+        Vector2 position = new Vector2(sv.x, sv.y);
+        Vector2 velocity = new Vector2(sv.vx, sv.vy);
+        Vector2 normal = treePos.cpy().sub(position).nor();
+
+        // https://stackoverflow.com/a/49059789
+        velocity.sub(normal.scl(2*velocity.dot(normal)));
+        sv.vx = velocity.x * Tree.frictionCoefficient;
+        sv.vy = velocity.y * Tree.frictionCoefficient;
+    }
+
+    /**
+     * Logic for wall collision.
+     * @param sv statevector of the ball
+     * @param wall wall that was hit
+     * @param previousPosition previous position of the ball
+     * @param reference app reference, null if simulation
+     */
+    public void wallCollision(StateVector sv, Wall wall, Vector2 previousPosition, App reference) {
+        if (wall.getType() == Wall.MAZE_WALL) { // collision
+            Vector2 position = new Vector2(sv.x, sv.y);
+            Vector2 velocity = new Vector2(sv.vx, sv.vy);
+            Vector2 tNegativeOne = position.cpy().sub(velocity);
+            
+            Vector2 wallVector = wall.closestWall(previousPosition.x, previousPosition.y);
+        
+            float adjacent, opposite;
+            double inputAngle, rotationAngle;
+            if (wallVector == Vector2.X) { // horizontal
+                adjacent = Math.abs(position.x - tNegativeOne.x);
+                opposite = Math.abs(position.y - tNegativeOne.y);
+
+                inputAngle = Math.atan(opposite / adjacent);
+                rotationAngle = Math.PI - 2 * inputAngle;
+
+                if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
+                else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+                else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+                else velocity.rotateRad((float)rotationAngle);
+            }
+            else { // vertical
+                adjacent = Math.abs(position.y - tNegativeOne.y);
+                opposite = Math.abs(position.x - tNegativeOne.x);
+
+                inputAngle = Math.atan(opposite / adjacent);
+                rotationAngle = Math.PI - 2 * inputAngle;
+
+                if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+                else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)rotationAngle);
+                else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
+                else velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+            }
+
+            sv.vx = -velocity.x * Wall.frictionCoeficient;
+            sv.vy = -velocity.y * Wall.frictionCoeficient;
+        }
+        else { // water body
+            waterCollision(sv, reference);
+        }
     }
 }
