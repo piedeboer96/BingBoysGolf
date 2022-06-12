@@ -3,12 +3,11 @@
 This is the golf game of Group 16 - BingBoysGolf.
 
 This directory contains all relevant code needed to launch the game,
-as well as another directory containing the full source code.
+as well as the full source code of the application.
 
 This game uses [LibGDX](https://libgdx.com/) as graphical engine.
 Auxiliariy libraries used include:
 [BeanShell Interpreter](https://beanshell.github.io/), for interpreting string formulas
-[packr](https://github.com/libgdx/packr), for creating launch shortcuts
 
 Group 16:
 - Mohammed Al-Azzani
