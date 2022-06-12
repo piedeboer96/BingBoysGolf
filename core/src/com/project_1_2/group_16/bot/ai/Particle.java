@@ -29,4 +29,7 @@ public class Particle extends Agent {
     public Particle getlocalBest(){
         return localBest;
     }
+    public String toString(){
+        return "PARTICLE --> VX: " + velX + " VY: " + velY + " FITNESS: " + this.fitness;
+    }
 }
