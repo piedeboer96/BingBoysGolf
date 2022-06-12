@@ -5,7 +5,10 @@ This is the golf game of Group 16 - BingBoysGolf.
 This directory contains all relevant code needed to launch the game,
 as well as another directory containing the full source code.
 
-This game uses LibGDX as graphical engine.
+This game uses [LibGDX](https://libgdx.com/) as graphical engine.
+Auxiliariy libraries used include:
+[BeanShell Interpreter](https://beanshell.github.io/), for interpreting string formulas
+[packr](https://github.com/libgdx/packr), for creating launch shortcuts
 
 Group 16:
 - Mohammed Al-Azzani
@@ -18,7 +21,7 @@ Group 16:
 
 
 
-### Instructions
+### Instructions TODO
 
 1. To launch the game, open this repository in your favourite IDE and navigate to the following file:
    BingBoysGolf/desktop/src/com/project_1_2/group_16/DesktopLauncher.java
@@ -27,7 +30,7 @@ Group 16:
 
 2. Use the input-textfields on the UI to customise the game.
 
-3. If anything is unclear, please read the info-buttons and the controls for further instructions.
+3. Please read the info-buttons and the controls for further instructions.
 
 4. Press the play button to run the game! You can find all relevant data in the pink labels on the screen.
 
@@ -39,6 +42,7 @@ Group 16:
   - ESC - Quit the application
   - C - Switch camera
   - R - Reset ball
+  - Ctrl + S - Save level
 
 - BALL CAMERA CONTROLS:
   - Drag the mouse to move the camera
@@ -56,6 +60,7 @@ Group 16:
   - 3 - Particle Swarm Optimization
   - 4 - Rule-Based bot
   - 5 - Random bot
+  If the course is a maze, the specialized maze bot will be selected automatically
 
 
 
@@ -65,7 +70,7 @@ Group 16:
   we believe it's the best one to use. 
   If you want to switch numerical solvers, navigate to the following file in the source code:
   BingBoysGolf/core/src/com/project_1_2/group16/screens/GameScreen.java
-  and change the numerical solver on line 87 to either RK2 or EULER.
+  and change the numerical solver on line 94 to either RK2 or EULER.
 
 - Gradle instructions:
   - make sure you have gradle installed: https://gradle.org/
