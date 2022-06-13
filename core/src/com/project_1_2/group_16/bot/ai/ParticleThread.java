@@ -3,41 +3,52 @@ package com.project_1_2.group_16.bot.ai;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.StateVector;
 
-
 /**
- * Class used for multithreading in PSO
+ * This class contains the thread used in PSO, for multithreading purpose.
  */
-public class ParticleThread extends Thread{
+public class ParticleThread implements Runnable {
 
-    StateVector sv;
-    Game game;
-    Particle particle;
+    public static int closedThreads = 0;
+    Thread thread;
+    float x, y, vx, vy;
+    public boolean hasFound;
+    Particle particle, localBest;
+    private final Game game;
 
     /**
-     * constructor for the particle thread
-     * @param sv statevector
-     * @param game game object
+     * Constructor for the particle thread
+     * @param x x position of ball
+     * @param y y position of ball
+     * @param vx velocity x
+     * @param vy velocity y
+     * @param localBest the current local best particle
      */
-    public ParticleThread(StateVector sv, Game game){
-        this.sv = sv;
+    public ParticleThread(float x, float y, float vx, float vy, Particle localBest, Game game){
+        this.x = x;
+        this.y = y;
+        this.vx = vx;
+        this.vy = vy;
         this.game = game;
+        this.hasFound = false;
+        this.localBest = localBest;
     }
 
-
-    /**
-     * Code which gets excecuted when the thread is started
-     */
     @Override
     public void run() {
-        this.particle = new Particle(this.sv, this.game);
+        particle = new Particle(new StateVector(this.x, this.y, this.vx, this.vy), this.game);
+        particle.setlocalBest(this.localBest);
+        closedThreads++;
+        hasFound = true;
     }
 
-    /**
-     * Method which returns the particle formed in the run method
-     * @return particle
-     */
-    public Particle getParticle(){
+    public void start() {
+        if(this.thread == null){
+            this.thread = new Thread(this);
+            this.thread.start();
+        }
+    }
+
+    public Particle getParticle() {
         return this.particle;
     }
-
 }

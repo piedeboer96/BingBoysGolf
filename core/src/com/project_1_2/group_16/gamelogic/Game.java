@@ -123,8 +123,18 @@ public class Game {
         simulCounter++;
         while(!sv.stop) {
             run(sv, null);
-            float temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
+            float temp;
             if (a!=null){
+
+                if(useFloodFill){
+                    temp = BotHelper.getFloodFillFitness(sv.x, sv.y);
+                    if(temp <= 1){
+                        useFloodFill = false;
+                    }
+                }else{
+                    temp = BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y);
+                }
+
                 if(temp < a.fitness && Physics.magnitude(sv.vx, sv.vy) < Input.VH){
                     a.fitness = temp;
                 }

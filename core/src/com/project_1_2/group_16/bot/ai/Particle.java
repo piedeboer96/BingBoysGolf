@@ -20,6 +20,10 @@ public class Particle extends Agent {
         super(sv, game);
     }
 
+    /**
+     * Constructor for particle
+     * @return particle
+     */
     public Particle createClone (){
         return new Particle(new StateVector(startX, startY, velX, velY), getGame());
     }
@@ -28,8 +32,5 @@ public class Particle extends Agent {
     }
     public Particle getlocalBest(){
         return localBest;
-    }
-    public String toString(){
-        return "PARTICLE --> VX: " + velX + " VY: " + velY + " FITNESS: " + this.fitness;
     }
 }
