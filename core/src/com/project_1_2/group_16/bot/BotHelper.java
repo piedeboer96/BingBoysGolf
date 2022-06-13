@@ -43,7 +43,7 @@ public class BotHelper {
     public static void setFloodFillTable(){
         floodFill = new FloodFill(.025f);
         scoreMatrix = floodFill.runFloodFill(Input.VT.x, Input.VT.y);
-        //floodFill.prettyPrint(scoreMatrix);
+//        floodFill.prettyPrint(scoreMatrix);
     }
 
     /**
@@ -114,7 +114,7 @@ public class BotHelper {
      */
     public static List <float[]> mazeBotCandidates(){
         ArrayList<float[]>toReturn = new ArrayList<float[]>();
-        for(int i=0; i<100; i++){
+        for(int i=0; i<200; i++){
             double r = 5 * Math.sqrt(Math.random());
             double theta = Math.random() * 2 * Math.PI;
             float x = (float)(r * Math.cos(theta));
