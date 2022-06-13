@@ -47,6 +47,7 @@ public class Game {
         // update state vector with numerical solver
         this.solver.solve(h, sv);
 
+
         // check water collision
         if (Terrain.collision.ballIsInWater(sv)) {
             Terrain.collision.waterCollision(sv, reference);
@@ -139,6 +140,7 @@ public class Game {
                     a.fitness = temp;
                 }
             }
+
         }
     }
 }

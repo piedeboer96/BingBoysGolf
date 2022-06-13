@@ -293,6 +293,7 @@ public class GameScreen extends ScreenAdapter {
 				this.sa = new SA(100, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y, this.game, true);
 				Float[] sol = this.sa.runBot().toArray(new Float[2]);
 				this.shoot(sol[0], sol[1]);
+				return;
 			}
 			this.sa = new SA(1000, 0.2f, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
 			Float[] sol = this.sa.runBot().toArray(new Float[2]);
@@ -303,6 +304,7 @@ public class GameScreen extends ScreenAdapter {
 				this.bro = new BRO(20, 10, 2, this.golfball.STATE.x, this.golfball.STATE.y, this.game, true);
 				Float[] sol = this.bro.runBot().toArray(new Float[2]);
 				this.shoot(sol[0], sol[1]);
+				return;
 			}
 			this.bro = new BRO(20, 100, 2, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
 			Float[] sol = this.bro.runBot().toArray(new Float[2]);
@@ -313,6 +315,7 @@ public class GameScreen extends ScreenAdapter {
 				this.pso = new PSO(10, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game, true);
 				Float[] sol = this.pso.runBot().toArray(new Float[2]);
 				this.shoot(sol[0], sol[1]);
+				return;
 			}
 			this.pso = new PSO(100, 20, this.golfball.STATE.x, this.golfball.STATE.y, this.game, false);
 			Float[] sol = this.pso.runBot().toArray(new Float[2]);
