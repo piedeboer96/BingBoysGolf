@@ -20,7 +20,6 @@ public class PSO extends AdvancedBot {
     private List<Particle> particles;
 
     private int iteration = 1;
-    private float N = population_size;
     private float W = (float) (0.4*((iteration-(maxIterations + 1))/Math.pow((maxIterations + 1), 2)) + 0.4f);
     private float c1 = -3*(iteration/(maxIterations + 1))+3.5f;
     private float c2 = 3*(iteration/(maxIterations + 1))+0.5f;
@@ -38,7 +37,6 @@ public class PSO extends AdvancedBot {
         super(startX, startY, game, useFloodFill);
         this.maxIterations = maxIterations;
         this.population_size = population_size;
-        this.N = population_size;
         particles = initializeParticles();
     }
 
