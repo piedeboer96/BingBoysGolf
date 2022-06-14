@@ -128,40 +128,21 @@ public class Collision {
     public void wallCollision(StateVector sv, Wall wall, Vector2 previousPosition, App reference) {
         if (wall.getType() == Wall.MAZE_WALL) { // collision
             Vector2 position = new Vector2(sv.x, sv.y);
-            Vector2 velocity = new Vector2(sv.vx, sv.vy);
-            Vector2 tNegativeOne = position.cpy().sub(velocity);
-            
-            Vector2 wallVector = wall.closestWall(previousPosition.x, previousPosition.y);
-        
-            float adjacent, opposite;
-            double inputAngle, rotationAngle;
-            if (wallVector == Vector2.X) { // horizontal
-                adjacent = Math.abs(position.x - tNegativeOne.x);
-                opposite = Math.abs(position.y - tNegativeOne.y);
+            Vector2 velocity = new Vector2(sv.vx, sv.vy);            
 
-                inputAngle = Math.atan(opposite / adjacent);
-                rotationAngle = Math.PI - 2 * inputAngle;
-
-                if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
-                else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                else velocity.rotateRad((float)rotationAngle);
+            // compute normal vector
+            Vector2 normal;
+            if (wall.closestWall(previousPosition.x, previousPosition.y) == Vector2.X) { // horizontal wall
+                normal = new Vector2(position.x, position.y + 1).sub(position).nor();
             }
-            else { // vertical
-                adjacent = Math.abs(position.y - tNegativeOne.y);
-                opposite = Math.abs(position.x - tNegativeOne.x);
-
-                inputAngle = Math.atan(opposite / adjacent);
-                rotationAngle = Math.PI - 2 * inputAngle;
-
-                if (velocity.x >= 0 && velocity.y >= 0) velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
-                else if (velocity.x >= 0 && velocity.y <= 0) velocity.rotateRad((float)rotationAngle);
-                else if (velocity.x <= 0 && velocity.y >= 0) velocity.rotateRad((float)rotationAngle);
-                else velocity.rotateRad((float)(2 * Math.PI - rotationAngle));
+            else { // vertical wall
+                normal = new Vector2(position.x + 1, position.y).sub(position).nor();
             }
 
-            sv.vx = -velocity.x * Wall.frictionCoeficient;
-            sv.vy = -velocity.y * Wall.frictionCoeficient;
+            // https://stackoverflow.com/a/49059789
+            velocity.sub(normal.scl(2*velocity.dot(normal)));
+            sv.vx = velocity.x * Wall.frictionCoeficient;
+            sv.vy = velocity.y * Wall.frictionCoeficient;
         }
         else { // water body
             waterCollision(sv, reference);
