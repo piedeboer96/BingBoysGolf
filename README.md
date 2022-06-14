@@ -59,7 +59,6 @@ Group 16:
   - 3 - Particle Swarm Optimization
   - 4 - Rule-Based bot
   - 5 - Random bot
-  If the course is a maze, the specialized maze bot will be selected automatically
 
 
 

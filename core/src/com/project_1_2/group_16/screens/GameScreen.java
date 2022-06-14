@@ -80,7 +80,6 @@ public class GameScreen extends ScreenAdapter {
 	private SA sa;
 	private BRO bro;
 	private PSO pso;
-	private MazeBot mazeBot;
 
     public GameScreen(App app) {
         this.app = app;
@@ -322,19 +321,14 @@ public class GameScreen extends ScreenAdapter {
 			this.shoot(sol[0], sol[1]);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_4)) { // rule based bot
-			if (!Input.WALLS.isEmpty()) {this.runMazeBot(); return;}
 			this.dumbBot = new RuleBasedBot(this.golfball.STATE);
 			float[] sol = this.dumbBot.play();
 			this.shoot(sol[0], sol[1]);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.NUM_5)) { // random bot
-			if (!Input.WALLS.isEmpty()) {this.runMazeBot(); return;}
 			this.ruleBasedBot = new RandomBot(this.golfball.STATE);
 			float[] sol = this.ruleBasedBot.play();
 			this.shoot(sol[0], sol[1]);
-		}
-		if (Gdx.input.isKeyJustPressed(Keys.NUM_6)){
-			this.runMazeBot();
 		}
 		
 		// shooting the ball
@@ -355,12 +349,6 @@ public class GameScreen extends ScreenAdapter {
 			this.power = App.MIN_POWER;
 			this.ballMovement.setPowerStatus(PowerStatus.REST);
 		}
-	}
-
-	private void runMazeBot() {
-		this.mazeBot = new MazeBot(this.golfball.STATE.x, this.golfball.STATE.y, this.game);
-		Float[] sol = this.mazeBot.runBot().toArray(new Float[2]);
-		this.shoot(sol[0], sol[1]);
 	}
 
     /**
