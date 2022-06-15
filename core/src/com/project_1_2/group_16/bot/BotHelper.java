@@ -86,8 +86,14 @@ public class BotHelper {
 
         for(float velX = minVelX; velX<=maxVelX; velX+=xH){
             for(float velY = minVelY; velY<=maxVelY; velY+=yH){
-                if(Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY, startX, startY)){
-                    toReturn.add(new float [] {velX, velY});
+                if(!Game.useFloodFill) {
+                    if (Physics.magnitude(velX, velY) < 5.0f && checkIfBetter(velX, velY, startX, startY)) {
+                        toReturn.add(new float[]{velX, velY});
+                    }
+                }else {
+                    if (Physics.magnitude(velX, velY) < 5.0f) {
+                        toReturn.add(new float[]{velX, velY});
+                    }
                 }
             }
         }
