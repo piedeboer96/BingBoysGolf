@@ -2,6 +2,7 @@ package com.project_1_2.group_16.misc;
 import com.badlogic.gdx.math.Vector2;
 
 import com.project_1_2.group_16.bot.ai.BRO;
+import com.project_1_2.group_16.bot.ai.MazeBot;
 import com.project_1_2.group_16.bot.ai.PSO;
 import com.project_1_2.group_16.bot.ai.SA;
 import com.project_1_2.group_16.gamelogic.Game;
@@ -39,9 +40,12 @@ public class TestMazeBot {
         float x = sv.x;
         float y = sv.y;
 
-        int prev_fitness = Integer.MAX_VALUE;
+        int stuck_count = 0;
 
-        MazeGenerator.display();
+
+        int prev_fitness = Integer.MAX_VALUE;
+        int cur_fitness;
+        boolean hasfound = true;
 
         while(!goal){
 
@@ -50,32 +54,72 @@ public class TestMazeBot {
 
             PSO pso = new PSO(20, 10, x, y, game, true);
             BRO bro = new BRO(20, 10, 2,x, y, game, true);
+            SA sa = new SA(10, 0.2f, x, y, game, true);
 
 
 
-            List<Float> sol = bro.runBot();
+            List<Float> sol = sa.runBot();
 
             sv.vx = sol.get(0);
             sv.vy = sol.get(1);
 
 
             game.runEngineTester(sv);
+            cur_fitness = BotHelper.getFloodFillFitness(x, y);
 
-
-            System.out.println("sv.x" + sv.x + "  sv.y " + sv.y + " immut x: " + x + " y: " + y + " FITNESS: " + BotHelper.getFloodFillFitness(x, y));
-
-
-            if(prev_fitness == BotHelper.getFloodFillFitness(x, y)){
-
-            }
-            if(Math.abs(x-sv.x) < 0.001f || Math.abs(y-sv.y) < 0.001f){
-                System.out.println("no sol found");
-                goal = true;
-                System.out.println("sv.x" + sv.x + "  sv.y " + sv.y + " immut x: " + x + " y: " + y);
+            if(stuck_count >= 5){
+                hasfound = false;
+                break;
             }
 
-            x = sv.x;
-            y = sv.y;
+            if(prev_fitness == cur_fitness){
+                stuck_count++;
+            }
+            else if(sv.x == Integer.MAX_VALUE || sv.y == Integer.MAX_VALUE){
+            }
+            else{
+                stuck_count = 0;
+            }
+
+            //invalid shot --> try mazebot shot
+            if(sv.x == Integer.MAX_VALUE || sv.y == Integer.MAX_VALUE){
+                sv.x = x;
+                sv.y = y;
+                prev_fitness = cur_fitness;
+                stuck_count++;
+                MazeBot maze_bot = new MazeBot(x, y, game);
+                sol = maze_bot.runBot();
+                sv.vx = sol.get(0);
+                sv.vy = sol.get(1);
+                sv.x = x;
+                sv.y = y;
+                game.runEngineTester(sv);
+                if(sv.x == Integer.MAX_VALUE || sv.y == Integer.MAX_VALUE){
+
+                }else{
+                    cur_fitness = BotHelper.getFloodFillFitness(sv.x, sv.y);
+                }
+
+
+            }
+            else{
+                //valid but either to close to the original position --> try mazebot
+                if(prev_fitness == cur_fitness || Math.abs(x-sv.x) < 0.001f || Math.abs(y-sv.y) < 0.001f){
+                    MazeBot maze_bot = new MazeBot(x, y, game);
+                    sol = maze_bot.runBot();
+                    sv.vx = sol.get(0);
+                    sv.vy = sol.get(1);
+                    sv.x = x;
+                    sv.y = y;
+                    game.runEngineTester(sv);
+                    cur_fitness = BotHelper.getFloodFillFitness(sv.x, sv.y);
+
+                }
+
+                prev_fitness = cur_fitness;
+                x = sv.x;
+                y = sv.y;
+            }
 
 
             if(BotHelper.calculateEucledianDistance(Input.VT.x, Input.VT.y, sv.x, sv.y) < Input.R){
@@ -85,8 +129,13 @@ public class TestMazeBot {
             sv.stop = false;
 
         }
-        System.out.println("Number of shots needed is "+ counter);
-        System.out.println("The number of simulation is " + Game.simulCounter);
+        if(hasfound){
+            System.out.println("Number of shots needed is "+ counter);
+            System.out.println("The number of simulation is " + Game.simulCounter);
+        }else{
+            System.out.println("Hasnt found a solution!");
+        }
+
     }
     public void run(){
         // Initiate all the inputs needed to run the tester class without the GUI

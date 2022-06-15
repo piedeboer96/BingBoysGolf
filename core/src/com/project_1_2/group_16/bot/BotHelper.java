@@ -109,4 +109,17 @@ public class BotHelper {
         toReturn = new float[] {x, y};
         return toReturn;
     }
+
+    public static List <float[]> mazeBotCandidates(){
+        ArrayList<float[]>toReturn = new ArrayList<float[]>();
+        for(int i=0; i<100; i++){
+            double r = 5 * Math.sqrt(Math.random());
+            double theta = Math.random() * 2 * Math.PI;
+            float x = (float)(r * Math.cos(theta));
+            float y = (float)(r * Math.sin(theta));
+            float [] temp = new float[] {x, y};
+            toReturn.add(temp);
+        }
+        return toReturn;
+    }
 }
