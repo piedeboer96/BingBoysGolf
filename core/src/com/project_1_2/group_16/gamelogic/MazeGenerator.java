@@ -204,4 +204,24 @@ public class MazeGenerator {
 			this.dy = dy;
 		}
 	};
+
+    public static void display() {
+        for (int i = 0; i < complexity; i++) {
+            // draw the north edge
+            for (int j = 0; j < complexity; j++) {
+                System.out.print((maze[j][i].bit & 1) == 0 ? "+---" : "+   ");
+            }
+            System.out.println("+");
+            // draw the west edge
+            for (int j = 0; j < complexity; j++) {
+                System.out.print((maze[j][i].bit & 8) == 0 ? "|   " : "    ");
+            }
+            System.out.println("|");
+        }
+        // draw the bottom line
+        for (int j = 0; j < complexity; j++) {
+            System.out.print("+---");
+        }
+        System.out.println("+");
+    }
 }

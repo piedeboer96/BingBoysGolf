@@ -49,6 +49,7 @@ public class BRO extends AdvancedBot {
         if(bestSoldier.fitness < Input.R){
             //System.out.println(bestSoldier.toString());
             ArrayList<Float> toReturn = new ArrayList<>();
+
             toReturn.add(bestSoldier.velX); toReturn.add(bestSoldier.velY);
             return toReturn;
         }

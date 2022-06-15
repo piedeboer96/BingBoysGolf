@@ -115,6 +115,14 @@ public class Game {
         app.GAME_SCREEN.createFlag(false);
     }
 
+    public void runEngineTester(StateVector sv){
+        while(!sv.stop){
+            run(sv, null);
+
+
+        }
+    }
+
     /**
      * Helper method for doing bot simulations, runs the Physics Engine until the Ball stops
      * @param sv StateVector of the ball
@@ -124,6 +132,8 @@ public class Game {
         simulCounter++;
         while(!sv.stop) {
             run(sv, null);
+
+
             float temp;
             if (a!=null){
                 if(useFloodFill){
