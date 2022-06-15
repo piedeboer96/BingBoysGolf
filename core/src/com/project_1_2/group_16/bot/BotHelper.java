@@ -2,6 +2,7 @@ package com.project_1_2.group_16.bot;
 
 import com.project_1_2.group_16.bot.ai.FloodFill;
 import com.project_1_2.group_16.gamelogic.Game;
+import com.project_1_2.group_16.gamelogic.Terrain;
 import com.project_1_2.group_16.io.Input;
 import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
@@ -33,6 +34,9 @@ public class BotHelper {
 
         int fitness;
         try{
+            if(Math.abs(x) > Terrain.MAP_EDGE || Math.abs(y) > Terrain.MAP_EDGE){
+                return Integer.MAX_VALUE;
+            }
             fitness = scoreMatrix[floodFill.coordinateToIndex(x)][floodFill.coordinateToIndex(y)];
         }catch (Exception e){
             fitness = Integer.MAX_VALUE;
@@ -44,22 +48,6 @@ public class BotHelper {
         floodFill = new FloodFill(.025f);
         scoreMatrix = floodFill.runFloodFill(Input.VT.x, Input.VT.y);
 //        floodFill.prettyPrint(scoreMatrix);
-    }
-
-    /**
-     * Calculates a random valid velocity
-     * @param minVelocity the minimum velocity
-     * @param maxVelocity the maximum velocity
-     * @return a velocity
-     */
-    public static float[] validVelocity(float minVelocity, float maxVelocity, float startX, float startY){
-        float[] vxy = new float[2];
-        vxy[0] = (float)(minVelocity + Math.random()*(Math.abs(maxVelocity-minVelocity)));
-        vxy[1] = (float)(minVelocity + Math.random()*(Math.abs(maxVelocity-minVelocity)));
-        if(Physics.magnitude(vxy[0], vxy[1]) > 5 || !checkIfBetter(vxy[0], vxy[1], startX, startY)){
-            return validVelocity(minVelocity, maxVelocity, startX, startY);
-        }
-        return vxy;
     }
 
     /**
@@ -107,21 +95,18 @@ public class BotHelper {
         return toReturn;
     }
     /**
-     * Static method to help develop a list of candidates of possible solutions (velocityX, velocityY pair) for the maze bot
+     * Static method to help develop a list of candidates of possible solutions (velocityX, velocityY pair) for the bots
      * by generating a random point in a circle with a radius of 5
      * CODE TAKEN FROM : https://stackoverflow.com/questions/5837572/generate-a-random-point-within-a-circle-uniformly
      * @return the list of possible solutions
      */
-    public static List <float[]> mazeBotCandidates(){
-        ArrayList<float[]>toReturn = new ArrayList<float[]>();
-        for(int i=0; i<200; i++){
-            double r = 5 * Math.sqrt(Math.random());
-            double theta = Math.random() * 2 * Math.PI;
-            float x = (float)(r * Math.cos(theta));
-            float y = (float)(r * Math.sin(theta));
-            float [] temp = new float[] {x, y};
-            toReturn.add(temp);
-        }
+    public static float[] randomVelocity(){
+        float[] toReturn = new float[2];
+        double r = 5 * Math.sqrt(Math.random());
+        double theta = Math.random() * 2 * Math.PI;
+        float x = (float)(r * Math.cos(theta));
+        float y = (float)(r * Math.sin(theta));
+        toReturn = new float[] {x, y};
         return toReturn;
     }
 }

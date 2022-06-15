@@ -235,7 +235,7 @@ public class PSO extends AdvancedBot {
             }
         }
         for(int i = particles.size(); i< population_size; i++){
-            float[] velocities = BotHelper.validVelocity(-5.0f, 5.0f, getStartX(), getStartY());
+            float[] velocities = BotHelper.randomVelocity();
             particles.add(new Particle(new StateVector(getStartX(), getStartY(), velocities[0], velocities[1]), getGame()));
             particles.get(i).setlocalBest(particles.get(i));
             if(particles.get(i).fitness < globalBest.fitness) {

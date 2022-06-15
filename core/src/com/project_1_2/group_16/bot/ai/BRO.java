@@ -196,7 +196,7 @@ public class BRO extends AdvancedBot {
             population.add(new Soldier(new StateVector(this.getStartX(), this.getStartY(), f[0], f[1]), this.getGame()));
         }
         for(int i=population.size(); i<popSize; i++){
-            float[] f = BotHelper.validVelocity(-5f, 5f, this.getStartX(), this.getStartY());
+            float[] f = BotHelper.randomVelocity();
             population.add(new Soldier(new StateVector(this.getStartX(), this.getStartY(), f[0], f[1]), this.getGame()));
         }
         for(Soldier s : population){
