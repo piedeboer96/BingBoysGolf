@@ -14,6 +14,7 @@ import java.util.List;
  * This class contains the Particle swarm optimization algorithm.
  */
 public class PSO extends AdvancedBot {
+
     private int population_size;
 
     private int maxIterations;
@@ -33,13 +34,12 @@ public class PSO extends AdvancedBot {
      * @param startX starting x position of the ball
      * @param startY starting y position of the ball
      */
-    public PSO(int maxIterations, int population_size, float startX, float startY, Game game, boolean useFloodFill){
+    public PSO(int maxIterations, int population_size, float startX, float startY, Game game, boolean useFloodFill) {
         super(startX, startY, game, useFloodFill);
         this.maxIterations = maxIterations;
         this.population_size = population_size;
         particles = initializeParticles();
     }
-
 
     @Override
     public List<Float> runBot() {
@@ -78,7 +78,7 @@ public class PSO extends AdvancedBot {
      * @param threads ParticleThread
      * @return Arraylist of particles
      */
-    public List<Particle> runThreads(ParticleThread[] threads){
+    public List<Particle> runThreads(ParticleThread[] threads) {
         ArrayList<Particle> particleslocal = new ArrayList<>();
         boolean stop = false;
         while(!stop){
@@ -109,7 +109,7 @@ public class PSO extends AdvancedBot {
      * @param particle The Particle in which the velocity is updated for
      * @return the updated velocity
      */
-    public float[] updatedVelocity(Particle particle){
+    public float[] updatedVelocity(Particle particle) {
         float[] updatedvxy = new float[2];
         float[] inertia = inertia(particle);
         float[] personalInfluence = personalInfluence(particle);
@@ -124,7 +124,7 @@ public class PSO extends AdvancedBot {
      * @param p particle
      * @return the best local particle
      */
-    public Particle doLocalSearch(Particle p){
+    public Particle doLocalSearch(Particle p) {
         ArrayList<float[]> neighbourHood = new ArrayList<float[]>();
         if(p.getlocalBest() == null){
             p.setlocalBest(p);
@@ -168,7 +168,7 @@ public class PSO extends AdvancedBot {
      * @param vxvy
      * @return a valid velocity
      */
-    public float[] getValidVelocity(float[] vxvy){
+    public float[] getValidVelocity(float[] vxvy) {
         if(Physics.magnitude(vxvy[0], vxvy[1]) > 5f){
             float[] vxy = new float[2];
             vxy[0] = (float) (vxvy[0]/Math.sqrt(50));
@@ -183,7 +183,7 @@ public class PSO extends AdvancedBot {
      * @param particle the particle into which to calculate the inertia (personal weight/W) for
      * @return inertia for xy
      */
-    public float[] inertia(Particle particle){
+    public float[] inertia(Particle particle) {
         float[] inertia = new float[2];
         inertia[0] = W * particle.velX;
         inertia[1] = W * particle.velY;
@@ -195,7 +195,7 @@ public class PSO extends AdvancedBot {
      * @param particle the particle to which to calculate the personal influence
      * @return personal influence for xy
      */
-    public float[] personalInfluence(Particle particle){
+    public float[] personalInfluence(Particle particle) {
         float[] personalInfluenceXY = new float[2];
         float U1x = (float) Math.random();
         float U1y = (float) Math.random();
@@ -209,7 +209,7 @@ public class PSO extends AdvancedBot {
      * @param particle the particle to which to calculate the social influence for
      * @return social influence for xy
      */
-    public float[] socialInfluence(Particle particle){
+    public float[] socialInfluence(Particle particle) {
         float[] socialInfluence = new float[2];
         float U2x = (float) Math.random();
         float U2y = (float) Math.random();
@@ -222,7 +222,7 @@ public class PSO extends AdvancedBot {
      * Method which initializes the particles
      * @return arraylist of particles
      */
-    public List<Particle> initializeParticles(){
+    public List<Particle> initializeParticles() {
         List<float[]> init_vel = BotHelper.availableVelocities(getStartX(), getStartY());
         globalBest = new Particle(new StateVector(getStartX(), getStartY(), 0.1f, 0.1f), getGame());
         ArrayList<Particle>particles  = new ArrayList<Particle>();

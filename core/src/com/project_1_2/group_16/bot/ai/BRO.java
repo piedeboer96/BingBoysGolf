@@ -30,12 +30,13 @@ public class BRO extends AdvancedBot {
      * @param maxIter The max iterations it will run
      * @param threshold The preferred threshold for which a player is damaged then it respawns
      */
-    public BRO(int popSize, int maxIter, int threshold, float startX, float startY, Game game, boolean useFloodFill){
+    public BRO(int popSize, int maxIter, int threshold, float startX, float startY, Game game, boolean useFloodFill) {
         super(startX, startY, game, useFloodFill);
         this.popSize = popSize;
         this.maxIter = maxIter;
         this.threshold = threshold;
     }
+
     /**
      * Runs the BroBot
      * @return the velocity pair
@@ -47,7 +48,6 @@ public class BRO extends AdvancedBot {
         initializePopulation();
         bestSoldier = findBestSoldierInPop();
         if(bestSoldier.fitness < Input.R){
-            //System.out.println(bestSoldier.toString());
             ArrayList<Float> toReturn = new ArrayList<>();
 
             toReturn.add(bestSoldier.velX); toReturn.add(bestSoldier.velY);
@@ -143,7 +143,6 @@ public class BRO extends AdvancedBot {
                 }
             }
         }
-        //System.out.println("best is " + bestSoldier.toString());
         ArrayList<Float> toReturn = new ArrayList<>();
         toReturn.add(bestSoldier.velX);
         toReturn.add(bestSoldier.velY);
@@ -155,7 +154,7 @@ public class BRO extends AdvancedBot {
      * @param s The best Soldier in the population
      * @return
      */
-    public Soldier doLocalSearch(Soldier s){
+    public Soldier doLocalSearch(Soldier s) {
         ArrayList<float[]> neighbourHood = new ArrayList<float[]>();
         Soldier toReturn = s;
         float stepSize = 0.2f;
@@ -191,12 +190,12 @@ public class BRO extends AdvancedBot {
     /**
      * Method to initialize population for BRO algorithm
      */
-    public void initializePopulation(){
+    public void initializePopulation() {
         List<float[]> temp = BotHelper.availableVelocities(this.getStartX(), this.getStartY());
         for(float[] f : temp){
             population.add(new Soldier(new StateVector(this.getStartX(), this.getStartY(), f[0], f[1]), this.getGame()));
         }
-        for(int i=population.size(); i<popSize; i++){
+        for(int i=population.size(); i<popSize; i++) {
             float[] f = BotHelper.randomVelocity();
             population.add(new Soldier(new StateVector(this.getStartX(), this.getStartY(), f[0], f[1]), this.getGame()));
         }
@@ -210,7 +209,7 @@ public class BRO extends AdvancedBot {
      * @param soldier the given soldier in which the nearest soldier is to be found
      * @return the nearest soldier
      */
-    public Soldier findNearestSoldier(Soldier soldier){
+    public Soldier findNearestSoldier(Soldier soldier) {
         float distance = Integer.MAX_VALUE;
         Soldier nearestSoldier = soldier;
         for(Soldier s : population){
@@ -230,7 +229,7 @@ public class BRO extends AdvancedBot {
      * Finds best soldier in population based on the fitness of all the soldiers in the population
      * @return best soldier
      */
-    public Soldier findBestSoldierInPop(){
+    public Soldier findBestSoldierInPop() {
         Soldier toReturn = null;
         float bestFitness = Integer.MAX_VALUE;
         for(Soldier s : population){
@@ -246,7 +245,7 @@ public class BRO extends AdvancedBot {
      * Finds worst soldier in population based on the fitness of all the soldiers in the population
      * @return worse soldier
      */
-    public Soldier findWorstSoldierInPop(){
+    public Soldier findWorstSoldierInPop() {
         Soldier toReturn = null;
         float bestFitness = Integer.MIN_VALUE;
         for(Soldier s : population){
@@ -262,7 +261,7 @@ public class BRO extends AdvancedBot {
      * Calculates the Standard Deviation of all x velocities
      * @return the SD of all x velocities
      */
-    public float calcSDVelX (){
+    public float calcSDVelX() {
         float [] xVels = new float[population.size()];
         //put all x velocities in an array
         for(int i = 0; i<population.size(); i++){
@@ -288,7 +287,7 @@ public class BRO extends AdvancedBot {
       Calculates the Standard Deviation of all y velocities
      * @return the SD of all y velocities
      */
-    public float calcSDVelY (){
+    public float calcSDVelY() {
         float [] yVels = new float[population.size()];
         //put all x velocities in an array
         for(int i = 0; i<population.size(); i++){
@@ -307,6 +306,6 @@ public class BRO extends AdvancedBot {
             sd += Math.pow(yVels[i] - mean, 2);
         }
         sd = sd/yVels.length-1;
-        return (float) (Math.sqrt(sd));
+        return (float)(Math.sqrt(sd));
     }
 }

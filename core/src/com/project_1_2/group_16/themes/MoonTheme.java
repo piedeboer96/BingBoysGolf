@@ -22,6 +22,9 @@ public class MoonTheme implements Theme {
     private final Color light_sand = new Color(0.8020f, 0.8020f, 0.6667f, 1f);
     private final Color dark_sand = new Color(0.7647f, 0.7333f, 0.6588f, 1f);
 
+    private final Color light_grass = new Color(0.4039f, 0.4039f, 0.4039f, 1f);
+    private final Color dark_grass = new Color(0.3039f, 0.3039f, 0.3039f, 1f);
+
     private final Color hole_off = Color.RED;
     private final Color hole_on = Color.GREEN;
 
@@ -81,12 +84,12 @@ public class MoonTheme implements Theme {
 
     @Override
     public Color grassColorLight(float height) {
-        return new Color(0.4039f, 0.4039f, 0.4039f, 1f);
+        return light_grass;
     }
 
     @Override
     public Color grassColorDark(float height) {
-        return new Color(0.3039f, 0.3039f, 0.3039f, 1f);
+        return dark_grass;
     }
 
     @Override

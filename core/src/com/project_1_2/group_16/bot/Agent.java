@@ -3,7 +3,11 @@ package com.project_1_2.group_16.bot;
 import com.project_1_2.group_16.gamelogic.Game;
 import com.project_1_2.group_16.math.StateVector;
 
+/**
+ * An abstract class used for AI simulations.
+ */
 public abstract class Agent {
+
     public float startX, startY, velX, velY;
     private final Game game;
     public float fitness = Integer.MAX_VALUE;

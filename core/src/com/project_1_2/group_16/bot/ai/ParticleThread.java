@@ -23,7 +23,7 @@ public class ParticleThread implements Runnable {
      * @param vy velocity y
      * @param localBest the current local best particle
      */
-    public ParticleThread(float x, float y, float vx, float vy, Particle localBest, Game game){
+    public ParticleThread(float x, float y, float vx, float vy, Particle localBest, Game game) {
         this.x = x;
         this.y = y;
         this.vx = vx;

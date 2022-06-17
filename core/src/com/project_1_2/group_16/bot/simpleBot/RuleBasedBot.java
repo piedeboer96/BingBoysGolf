@@ -19,31 +19,25 @@ public class RuleBasedBot {
     private final float maxV = 5f;
     private float c1;
     private float c2;
-    final boolean DEBUG = false;
 
-    //Initialisation of the StateVector
-    public RuleBasedBot(StateVector sv){
+    // Initialisation of the StateVector
+    public RuleBasedBot(StateVector sv) {
         this.sv = sv;
-        //adjust the scalar of c1 and c2
+        // adjust the scalar of c1 and c2
         scaleC();
     }
 
     public void scaleC() {
-        //Calculates the difference in the points
+        // Calculates the difference in the points
         c1 = target.x - sv.x;
         c2 = target.y - sv.y;
-        if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
-        //Scale the c1 and c2 down
+        // Scale the c1 and c2 down
         float total = Math.abs(c1)+Math.abs(c2);
         c1 = c1 / total;
         c2 = c2 / total;
-        if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
-        //multiply every Scaled velocity by the maximum velocity
+        // multiply every Scaled velocity by the maximum velocity
         c1 = c1*maxV;
         c2 = c2*maxV;
-        //System.out.println("total C " + c1 +" " + c2);
-
-        if(DEBUG) System.out.println("this is c1 " + c1 + "\n" + "this is c2 " + c2);
     }
 
     public float[] play() {

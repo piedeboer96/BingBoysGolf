@@ -28,13 +28,14 @@ public class SA extends AdvancedBot {
      * @param kmax max iterations
      * @param neigbourStepSize step size for generating neighbours
      */
-    public SA(int kmax, float neigbourStepSize, float startX, float startY, Game game, boolean useFloodFill){
+    public SA(int kmax, float neigbourStepSize, float startX, float startY, Game game, boolean useFloodFill) {
         super(startX, startY, game, useFloodFill);
         this.kmax = kmax;
         this.neigbourStepSize = neigbourStepSize;
         this.recalculate = true;
         setState(findInitalState());
     }
+
     /**
      * Runs the SA-Bot
      * @return the velocity pair
@@ -80,7 +81,7 @@ public class SA extends AdvancedBot {
      * Method which generates random vectors and picks the best vector which is used at the start of SA
      * @return the vector with highest fitness
      */
-    public Neighbour findInitalState(){
+    public Neighbour findInitalState() {
         List<float[]> initialCandidates = BotHelper.availableVelocities(getStartX(), getStartY());
         Neighbour bestNeighbour = null;
         double bestFitness = Integer.MAX_VALUE;
@@ -104,7 +105,7 @@ public class SA extends AdvancedBot {
      * @param sv a statevector
      * @return
      */
-    private static boolean viableVector(StateVector sv){
+    private static boolean viableVector(StateVector sv) {
         if((float)Math.sqrt(sv.vx*sv.vx+sv.vy+sv.vy) <= MAXVEL){
             return true;
         }
@@ -153,7 +154,7 @@ public class SA extends AdvancedBot {
         return state;
     }
 
-    private void setState(Neighbour updated_state){
+    private void setState(Neighbour updated_state) {
         this.state = updated_state.createClone();
     }
 
@@ -175,6 +176,4 @@ public class SA extends AdvancedBot {
     public double getTemperature(int k) {
         return 1 - (k+1)/kmax;
     }
-
-
 }

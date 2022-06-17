@@ -8,6 +8,7 @@ import com.project_1_2.group_16.math.StateVector;
  * Individual class for soldier (agent) for usage of the BRO algorithm.
  */
 public class Soldier extends Agent {
+
     public int damageCounter;
 
     /**
@@ -18,10 +19,9 @@ public class Soldier extends Agent {
     }
 
     /**
-     * Soldier cloning factory
-     * THIS IS REALLY INEFFICIENT, PLEASE FIND BETTER SOLUTION LATER LMAO
+     * Soldier cloning factory (slow).
      */
-    public Soldier createClone (){
+    public Soldier createClone() {
         return new Soldier(new StateVector(this.startX, this.startY, this.velX, this.velY), this.getGame());
     }
 

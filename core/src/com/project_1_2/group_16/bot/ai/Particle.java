@@ -16,7 +16,7 @@ public class Particle extends Agent {
      * Constructor for particle that initializes it's statevector with the passed statevector and runs the game.
      * @param sv statevector
      */
-    public Particle(StateVector sv, Game game){
+    public Particle(StateVector sv, Game game) {
         super(sv, game);
     }
 
@@ -24,13 +24,15 @@ public class Particle extends Agent {
      * Constructor for particle
      * @return particle
      */
-    public Particle createClone (){
+    public Particle createClone () {
         return new Particle(new StateVector(startX, startY, velX, velY), getGame());
     }
-    public void setlocalBest(Particle best){
+
+    public void setlocalBest(Particle best) {
         localBest = best.createClone();
     }
-    public Particle getlocalBest(){
+    
+    public Particle getlocalBest() {
         return localBest;
     }
 }

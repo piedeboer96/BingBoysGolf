@@ -14,7 +14,7 @@ public class Terrain {
     /**
      * The edge of the map.
      */
-    public static final float MAP_EDGE = App.FIELD_SIZE / 2 + App.TILE_SIZE;
+    public static final float MAP_EDGE = App.FIELD_SIZE / 2;
     
     /**
      * Collision detection for the terrain.

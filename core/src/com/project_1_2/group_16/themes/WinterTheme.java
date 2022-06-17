@@ -22,6 +22,9 @@ public class WinterTheme implements Theme {
     private final Color light_sand = new Color(0.99f, 0.99f, 0.99f, 0.99f);
     private final Color dark_sand = new Color(0.98f, 0.98f, 0.98f, 1f);
 
+    private final Color light_grass = new Color(0.8029f, 0.8147f, 0.8343f, 1f);
+    private final Color dark_grass = new Color(0.7480f, 0.7755f, 0.8225f, 1f);
+
     private final Color hole_off = Color.RED;
     private final Color hole_on = Color.GREEN;
 
@@ -81,12 +84,12 @@ public class WinterTheme implements Theme {
 
     @Override
     public Color grassColorLight(float height) {
-        return new Color(0.8029f, 0.8147f, 0.8343f, 1f);
+        return light_grass;
     }
 
     @Override
     public Color grassColorDark(float height) {
-        return new Color(0.7480f, 0.7755f, 0.8225f, 1f);
+        return dark_grass;
     }
 
     @Override
