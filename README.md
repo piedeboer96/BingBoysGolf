@@ -64,11 +64,10 @@ Group 16:
 
 ### Notes
 
-- The default numerical solver is RK4. This isn't changable through the UI cause 
-  we believe it's the best one to use. 
+- The default numerical solver is RK4. This isn't changable through the UI because we believe it's the best one to use. 
   If you want to switch numerical solvers, navigate to the following file in the source code:
   BingBoysGolf/core/src/com/project_1_2/group16/screens/GameScreen.java
-  and change the numerical solver on line 94 to either RK2 or EULER.
+  and change the numerical solver on line 93 to either RK2 or EULER.
 
 - Gradle instructions:
   - make sure you have gradle installed: https://gradle.org/
