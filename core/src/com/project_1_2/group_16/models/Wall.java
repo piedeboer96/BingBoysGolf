@@ -99,10 +99,10 @@ public class Wall {
      * @return
      */
     public boolean contains(float x, float z) {
-        if (x < this.bottomLeft.x) return false;
-        if (x > this.topRight.x) return false;
-        if (z < this.bottomLeft.y) return false;
-        if (z > this.topRight.y) return false;
+        if (x+Golfball.SIZE/2 < this.bottomLeft.x) return false;
+        if (x-Golfball.SIZE/2 > this.topRight.x) return false;
+        if (z+Golfball.SIZE/2 < this.bottomLeft.y) return false;
+        if (z-Golfball.SIZE/2 > this.topRight.y) return false;
         return true;
     }
 

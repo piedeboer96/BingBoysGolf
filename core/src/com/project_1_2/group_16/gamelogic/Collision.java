@@ -5,6 +5,7 @@ import com.project_1_2.group_16.App;
 import com.project_1_2.group_16.io.Input;
 import com.project_1_2.group_16.math.Physics;
 import com.project_1_2.group_16.math.StateVector;
+import com.project_1_2.group_16.models.Golfball;
 import com.project_1_2.group_16.models.Tree;
 import com.project_1_2.group_16.models.Wall;
 import com.project_1_2.group_16.themes.WinterTheme;
@@ -54,7 +55,7 @@ public class Collision {
      * @return
      */
     public boolean ballIsInTreeRadius(StateVector sv, Tree tree) {
-        return new Vector2(tree.getPosition().x, tree.getPosition().z).dst(sv.x, sv.y) < tree.getRadius();
+        return new Vector2(tree.getPosition().x, tree.getPosition().z).dst(sv.x, sv.y) < tree.getRadius() + Golfball.SIZE/2;
     }
 
     /**
