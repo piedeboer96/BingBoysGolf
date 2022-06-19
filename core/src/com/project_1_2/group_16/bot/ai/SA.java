@@ -174,6 +174,6 @@ public class SA extends AdvancedBot {
      * @return the current temprature
      */
     public double getTemperature(int k) {
-        return 1 - (double) ((k+1)/kmax);
+        return 1 -(((double)(k)+1)/(double)(kmax));
     }
 }
