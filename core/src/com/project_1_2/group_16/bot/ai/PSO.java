@@ -22,8 +22,8 @@ public class PSO extends AdvancedBot {
 
     private int iteration = 1;
     private float W = (float) (0.4*((iteration-(maxIterations + 1))/Math.pow((maxIterations + 1), 2)) + 0.4f);
-    private float c1 = -3*(iteration/(maxIterations + 1))+3.5f;
-    private float c2 = 3*(iteration/(maxIterations + 1))+0.5f;
+    private float c1 = 3.5f;
+    private float c2 = 0.5f;
 
     private Particle globalBest;
 
